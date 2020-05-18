@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: ['module:@haul-bundler/babel-preset-react-native'],
   plugins: [
     ['module-resolver', {
       alias: {
