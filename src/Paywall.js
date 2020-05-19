@@ -12,4 +12,6 @@ const Paywall = () => {
   );
 };
 
+Paywall.displayName = 'Paywall';
+
 export default Paywall;
