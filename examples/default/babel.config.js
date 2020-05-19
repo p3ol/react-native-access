@@ -5,7 +5,7 @@ module.exports = {
   plugins: [
     ['module-resolver', {
       alias: {
-        '@poool/react-native-access': path.resolve('../../'),
+        '@poool/react-native-access': path.resolve('../../src'),
       },
     }],
   ],

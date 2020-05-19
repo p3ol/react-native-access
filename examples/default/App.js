@@ -7,7 +7,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-import { Paywall } from '@poool/react-native-access';
+import { Paywall } from '../../src';
 
 const App = () => {
   return (

@@ -3,7 +3,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "rn": "./node_modules/.bin/react-native"
   },
   "dependencies": {
     "react": "16.11.0",
@@ -13,12 +14,12 @@
     "@babel/core": "7.9.6",
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-babel": "^5.3.0",
-    "eslint-plugin-react": "^7.20.0",
     "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-standard": "^4.0.1",
     "metro-react-native-babel-preset": "0.58.0",
     "react-test-renderer": "16.11.0"
