@@ -1,4 +1,4 @@
-package com.default;
+package com.poool.example;
 
 import android.app.Application;
 import android.content.Context;
