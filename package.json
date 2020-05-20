@@ -30,9 +30,9 @@
     "jest": "^26.0.1",
     "jest-canvas-mock": "^1.0.2",
     "metro-react-native-babel-preset": "^0.59.0",
-    "react": "16.9.0",
-    "react-dom": "16.9.0",
-    "react-native": "0.61.5",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-native": "0.62.2",
     "react-native-web": "0.12.2",
     "react-test-renderer": "16.9.0"
   }
