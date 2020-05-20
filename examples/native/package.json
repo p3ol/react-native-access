@@ -1,10 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
-    "rn": "./node_modules/.bin/react-native"
+    "rn": "./node_modules/.bin/react-native",
+    "android": "yarn rn run-android",
+    "ios": "yarn rn run-ios",
+    "start": "yarn rn start",
+    "install-pods": "pod install --project-directory=./ios",
+    "postinstall": "yarn install-pods"
   },
   "dependencies": {
     "react": "16.11.0",
