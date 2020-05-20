@@ -10,13 +10,14 @@ module.exports = {
     }),
   },
   resolver: {
-    customResolver: {
+    rootResolver: {
       root: path.resolve('../../src'),
       base: path.resolve('../base'),
     },
   },
   watchFolders: [
-    path.resolve('../../'),
-    path.resolve('../base/'),
+    path.resolve('../../node_modules'),
+    path.resolve('../../src'),
+    path.resolve('../base'),
   ],
 };
