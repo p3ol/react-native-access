@@ -17,6 +17,6 @@ module.exports = {
   },
   watchFolders: [
     path.resolve('../../'),
-    path.resolve('../base/')
+    path.resolve('../base/'),
   ],
 };
