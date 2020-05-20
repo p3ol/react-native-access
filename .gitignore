@@ -113,3 +113,7 @@ xcshareddata/
 
 # Android
 build/
+.idea
+.gradle
+local.properties
+*.iml
