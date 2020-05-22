@@ -1,1 +1,1 @@
-export { default as Paywall } from './Paywall';
+export { default as Paywall } from './paywall/components/Paywall';
