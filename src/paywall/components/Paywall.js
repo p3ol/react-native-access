@@ -1,32 +1,60 @@
 import React from 'react';
-import Premium from './Premium';
+import Widget from './Widget';
 import {
   ImageBackground,
   StyleSheet,
   View,
-  Image,
   Linking,
   Text,
 } from 'react-native';
 
+const Paywall = () => {
+  return (
+
+    <View >
+      <ImageBackground
+        source={'https://cdn.poool.fr/assets/bones.svg'}
+        style={styles.background}>
+        <View style={styles.wrapper}>
+          <Widget />
+          <Text
+            onPress={() => Linking.openURL('https://poool.fr/')}>
+            <ImageBackground
+              source={'https://cdn.poool.fr/assets/poool-square.svg'}
+              style={styles.logo}
+            />
+          </Text>
+        </View>
+      </ImageBackground>
+    </View>
+
+  );
+};
+
+Paywall.displayName = 'Paywall';
+
+export default Paywall;
+
 const styles = StyleSheet.create({
-  p3_widget: {
-  },
-  p3_widget_background: {
+
+  background: {
     resizeMode: 'cover',
   },
-  p3_widget_logo: {
+
+  logo: {
     width: 50,
     height: 12,
     left: 440,
     bottom: 10,
   },
-  p3_wrapper: {
+
+  wrapper: {
     flex: 1,
     margin: 'auto',
     width: 500,
     backgroundColor: '#FFFFFF',
     top: -50,
+
     // Box Shadow
     shadowColor: '#000',
     shadowOffset: {
@@ -39,29 +67,3 @@ const styles = StyleSheet.create({
     // ============
   },
 });
-
-const Paywall = () => {
-  return (
-    <View style={styles.p3_widget}>
-      <ImageBackground
-        source={'https://cdn.poool.fr/assets/bones.svg'}
-        style={styles.p3_widget_background}
-      >
-        <View style={styles.p3_wrapper}>
-          <Premium />
-          <Text
-            onPress={() => Linking.openURL('https://poool.fr/')}>
-            <ImageBackground
-              source={'https://cdn.poool.fr/assets/poool-square.svg'}
-              style={styles.p3_widget_logo}
-            />
-          </Text>
-        </View>
-      </ImageBackground>
-    </View>
-  );
-};
-
-Paywall.displayName = 'Paywall';
-
-export default Paywall;

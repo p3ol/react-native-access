@@ -5,6 +5,7 @@ module.exports = {
   entry: './index.js',
   resolve: {
     alias: {
+      react: path.resolve('../../node_modules/react'),
       'react-native$': 'react-native-web',
       '@poool/react-native-access$': path.resolve('../../'),
     },

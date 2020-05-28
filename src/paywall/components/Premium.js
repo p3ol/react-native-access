@@ -7,6 +7,35 @@ import {
   Linking,
 } from 'react-native';
 
+const Premium = (props) => {
+  return (
+
+    <View style={styles.p3_container}>
+      <Text style={styles.p3_title}>
+        Cet article est reservé aux abonnés.
+      </Text>
+      <Text style={styles.p3_text}>
+        Pour profiter pleinement de l&apos;ensemble de ses articles,
+        Test vous propose de découvrir ses offres d&apos;abonnement.
+      </Text>
+      <Button
+        title="Découvrir les offres"
+        style={styles.p3_actions}
+        color="#000A24"
+        onPress={() => Linking.openURL(props.data.config.subscription_url)}
+      />
+      <Text
+        style={styles.p3_subactions}
+        onPress={() => Linking.openURL(props.data.config.login_url)}>
+        Je me connecte
+      </Text>
+    </View>
+
+  );
+};
+
+export default Premium;
+
 const styles = StyleSheet.create({
   p3_container: {
     paddingHorizontal: 30,
@@ -33,30 +62,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-const Premium = () => {
-  return (
-    <View style={styles.p3_container}>
-      <Text style={styles.p3_title}>
-        Cet article est reservé aux abonnés.
-      </Text>
-      <Text style={styles.p3_text}>
-        Pour profiter pleinement de l&apos;ensemble de ses articles,
-        Test vous propose de découvrir ses offres d&apos;abonnement.
-      </Text>
-      <Button
-        title="Découvrir les offres"
-        style={styles.p3_actions}
-        color="#000A24"
-      />
-      <Text
-        style={styles.p3_subactions}
-        onPress={() => Linking.openURL('http://google.com')}>
-        Je me connecte
-      </Text>
-    </View>
-
-  );
-};
-
-export default Premium;

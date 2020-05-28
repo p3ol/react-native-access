@@ -1,0 +1,75 @@
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
+import { track, setConfig, getPaywall } from '@poool/sdk';
+
+import Premium from './Premium';
+import FormWidget from './FormWidget';
+import SubscriptionWidget from './SubscriptionWidget';
+import QuestionWidget from './QuestionWidget';
+
+const Widget = () => {
+
+  const [widget, setWidget] = useState(<Premium/>);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const setCookie = (name, value) =>
+    AsyncStorage.setItem(`@${name}`, value);
+
+  const getCookie = name =>
+    AsyncStorage.getItem(`@${name}`);
+
+  const init = async () => {
+
+    setConfig({
+      appId: 'ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH',
+      apiUrl: 'https://api.poool-staging.fr/api/v3',
+      setCookie,
+      getCookie,
+    });
+
+    const trackData = await track('page-view', { type: 'premium' });
+    console.log(trackData);
+    widgetSelector(trackData);
+
+  };
+
+  const widgetSelector = (trackData) => {
+    switch (trackData.action) {
+      case 'question':
+        setWidget(
+          <QuestionWidget
+            data={trackData}
+          />
+        );
+        break;
+      case 'form':
+        setWidget(
+          <FormWidget
+            data={trackData}
+          />
+        );
+        break;
+      case 'subscription':
+        setWidget(
+          <SubscriptionWidget
+            data={trackData}
+          />
+        );
+        break;
+      default:
+        setWidget(
+          <Premium
+            data={trackData}
+          />
+        );
+
+    }
+  };
+
+  return (widget);
+};
+
+export default Widget;
