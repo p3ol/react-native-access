@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Widget from './Widget';
+import Thanks from './Thanks';
+import { AppContext } from '../services/contexts';
 import {
   ImageBackground,
   StyleSheet,
@@ -9,26 +11,41 @@ import {
 } from 'react-native';
 
 const Paywall = () => {
-  return (
 
-    <View >
-      <ImageBackground
-        source={'https://cdn.poool.fr/assets/bones.svg'}
-        style={styles.background}>
-        <View style={styles.wrapper}>
-          <Widget />
-          <Text
-            onPress={() => Linking.openURL('https://poool.fr/')}>
-            <ImageBackground
-              source={'https://cdn.poool.fr/assets/poool-square.svg'}
-              style={styles.logo}
-            />
-          </Text>
+  const [active, setActive] = useState(true);
+  const [alternativeWidget, setAlternativeWidget] = useState(<Thanks />);
+
+  if (active) {
+    return (
+      <AppContext.Provider value={{ setActive: setActive }}>
+        <View >
+          <ImageBackground
+            source={'https://cdn.poool.fr/assets/bones.svg'}
+            style={styles.background}>
+            <View style={styles.wrapper}>
+              <Widget setActive={setActive} />
+              <View style={styles.logo}>
+                <Text onPress={() => Linking.openURL('https://poool.fr/')}>
+                  <ImageBackground
+                    source={'https://cdn.poool.fr/assets/poool-square.svg'}
+                    style={styles.logo_background}
+                  />
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
         </View>
-      </ImageBackground>
-    </View>
+      </AppContext.Provider >
 
-  );
+    );
+  } else {
+    setTimeout(() => {
+      setAlternativeWidget(null);
+    }, 2000);
+    return (
+      alternativeWidget
+    );
+  }
 };
 
 Paywall.displayName = 'Paywall';
@@ -42,16 +59,19 @@ const styles = StyleSheet.create({
   },
 
   logo: {
+    flexDirection: 'row-reverse',
+  },
+
+  logo_background: {
     width: 50,
     height: 12,
-    left: 440,
     bottom: 10,
+    right: 10,
   },
 
   wrapper: {
     flex: 1,
     margin: 'auto',
-    width: 500,
     backgroundColor: '#FFFFFF',
     top: -50,
 

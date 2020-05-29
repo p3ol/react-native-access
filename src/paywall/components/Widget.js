@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { track, setConfig, getPaywall } from '@poool/sdk';
+import { track, setConfig } from '@poool/sdk';
 
-import Premium from './Premium';
-import FormWidget from './FormWidget';
 import SubscriptionWidget from './SubscriptionWidget';
+import FormWidget from './FormWidget';
 import QuestionWidget from './QuestionWidget';
+import GiftWidget from './GiftWidget';
 
 const Widget = () => {
 
-  const [widget, setWidget] = useState(<Premium/>);
+  const [widget, setWidget] = useState(<SubscriptionWidget/>); // initiate with a loader
 
   useEffect(() => {
     init();
@@ -25,7 +25,7 @@ const Widget = () => {
 
     setConfig({
       appId: 'ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH',
-      apiUrl: 'https://api.poool-staging.fr/api/v3',
+      apiUrl: 'https://api.poool.local:8443/api/v3',
       setCookie,
       getCookie,
     });
@@ -52,6 +52,20 @@ const Widget = () => {
           />
         );
         break;
+      case 'restriction':
+        setWidget(
+          <SubscriptionWidget
+            data={trackData}
+          />
+        );
+        break;
+      case 'gift':
+        setWidget(
+          <GiftWidget
+            data={trackData}
+          />
+        );
+        break;
       case 'subscription':
         setWidget(
           <SubscriptionWidget
@@ -61,7 +75,7 @@ const Widget = () => {
         break;
       default:
         setWidget(
-          <Premium
+          <SubscriptionWidget
             data={trackData}
           />
         );
