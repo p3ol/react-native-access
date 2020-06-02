@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Widget from './Widget';
-import Thanks from './Thanks';
 import { AppContext } from '../services/contexts';
 import {
   ImageBackground,
@@ -13,7 +12,6 @@ import {
 const Paywall = () => {
 
   const [active, setActive] = useState(true);
-  const [alternativeWidget, setAlternativeWidget] = useState(<Thanks />);
 
   if (active) {
     return (
@@ -23,7 +21,7 @@ const Paywall = () => {
             source={'https://cdn.poool.fr/assets/bones.svg'}
             style={styles.background}>
             <View style={styles.wrapper}>
-              <Widget setActive={setActive} />
+              <Widget />
               <View style={styles.logo}>
                 <Text onPress={() => Linking.openURL('https://poool.fr/')}>
                   <ImageBackground
@@ -39,12 +37,7 @@ const Paywall = () => {
 
     );
   } else {
-    setTimeout(() => {
-      setAlternativeWidget(null);
-    }, 2000);
-    return (
-      alternativeWidget
-    );
+    return (null);
   }
 };
 

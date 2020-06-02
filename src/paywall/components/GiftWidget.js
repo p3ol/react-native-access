@@ -31,14 +31,21 @@ const GiftWidget = (props) => {
       <Button
         title="Merci, je profite de cet article offert !"
         style={defaultStyles.p3_actions}
-        color="#000A24"
+        color={props.data.styles.button_color}
         onPress={() => contextValue.setActive(false)}
       />
-      <Text
-        style={defaultStyles.p3_subactions}
-        onPress={() => Linking.openURL(props.data.config.login_url)}>
-        Je me connecte
-      </Text>
+      <View style={defaultStyles.p3_subactions_container}>
+        <Text
+          style={defaultStyles.p3_subaction}
+          onPress={() => Linking.openURL(props.data.config.login_url)}>
+          Je me connecte
+        </Text>
+        <Text
+          style={defaultStyles.p3_subaction}
+          onPress={() => Linking.openURL(props.data.config.subscription_url)}>
+          Je m&apos;abonne
+        </Text>
+      </View>
     </View>
   );
 };

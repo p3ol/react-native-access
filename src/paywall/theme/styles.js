@@ -24,8 +24,12 @@ export const defaultStyles = StyleSheet.create({
   p3_actions: {
     textAlign: 'center',
   },
-  p3_subactions: {
-    textAlign: 'center',
+  p3_subactions_container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  p3_subaction: {
     marginTop: 32,
     marginBottom: 10,
     textDecorationLine: 'underline',

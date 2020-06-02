@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { track, setConfig } from '@poool/sdk';
 
@@ -9,7 +9,7 @@ import GiftWidget from './GiftWidget';
 
 const Widget = () => {
 
-  const [widget, setWidget] = useState(<SubscriptionWidget/>); // initiate with a loader
+  const [widget, setWidget] = useState(null); // initiate with a loader
 
   useEffect(() => {
     init();
