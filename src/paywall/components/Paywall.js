@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import Widget from './Widget';
 import { AppContext } from '../services/contexts';
 import {
@@ -9,32 +9,29 @@ import {
   Text,
 } from 'react-native';
 
-const Paywall = () => {
+const Paywall = (props) => {
 
-  const [active, setActive] = useState(true);
+  const contextValue = useContext(AppContext);
 
-  if (active) {
+  if (contextValue.active) {
     return (
-      <AppContext.Provider value={{ setActive: setActive }}>
-        <View >
-          <ImageBackground
-            source={'https://cdn.poool.fr/assets/bones.svg'}
-            style={styles.background}>
-            <View style={styles.wrapper}>
-              <Widget />
-              <View style={styles.logo}>
-                <Text onPress={() => Linking.openURL('https://poool.fr/')}>
-                  <ImageBackground
-                    source={'https://cdn.poool.fr/assets/poool-square.svg'}
-                    style={styles.logo_background}
-                  />
-                </Text>
-              </View>
+      <View >
+        <ImageBackground
+          source={'https://cdn.poool.fr/assets/bones.svg'}
+          style={styles.background}>
+          <View style={styles.wrapper}>
+            <Widget />
+            <View style={styles.logo}>
+              <Text onPress={() => Linking.openURL('https://poool.fr/')}>
+                <ImageBackground
+                  source={'https://cdn.poool.fr/assets/poool-square.svg'}
+                  style={styles.logo_background}
+                />
+              </Text>
             </View>
-          </ImageBackground>
-        </View>
-      </AppContext.Provider >
-
+          </View>
+        </ImageBackground>
+      </View>
     );
   } else {
     return (null);
