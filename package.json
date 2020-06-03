@@ -33,7 +33,7 @@
     "react": "16.11.0",
     "react-dom": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-web": "0.12.2",
+    "react-native-web": "0.12.3",
     "react-test-renderer": "16.9.0"
   }
 }
