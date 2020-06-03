@@ -18,7 +18,7 @@ const SubscriptionWidget = (props) => {
       </Text>
       <Text style={defaultStyles.p3_text}>
         Pour profiter pleinement de l&apos;ensemble de ses articles,
-        Test vous propose de découvrir ses offres d&apos;abonnement.
+        {'\n'} Test vous propose de découvrir ses offres d&apos;abonnement.
       </Text>
       <Button
         title="Découvrir les offres"
@@ -26,11 +26,13 @@ const SubscriptionWidget = (props) => {
         color="#000A24"
         onPress={() => Linking.openURL(props.data.config.subscription_url)}
       />
-      <Text
-        style={defaultStyles.p3_subactions}
-        onPress={() => Linking.openURL(props.data.config.login_url)}>
-        Je me connecte
-      </Text>
+      <View style={defaultStyles.p3_subactions_container}>
+        <Text
+          style={defaultStyles.p3_subaction}
+          onPress={() => Linking.openURL(props.data.config.login_url)}>
+          Je me connecte
+        </Text>
+      </View>
     </View>
 
   );
