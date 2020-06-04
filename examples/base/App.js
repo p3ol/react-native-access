@@ -16,7 +16,12 @@ const App = () => (
     <SafeAreaView>
       <ScrollView contentInsetAdjustmentBehavior="automatic">
         <View>
-          <PaywallContext>
+          <PaywallContext
+            onLock={() => console.log('Content locked')}
+            onRelease={() => console.log('Content released')}
+            onReady={() => console.log('Paywall Ready')}
+            onHidden={() => console.log('Paywall config set to hidden')}
+          >
             <Text>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
               tortor leo, sollicitudin quis posuere sed, pharetra cursus
@@ -43,7 +48,10 @@ const App = () => (
                 congue felis quis sem porta iaculis.
               </Text>
             </RestrictedContent>
-            <Paywall/>
+            <Paywall
+              onLock={() => console.log('Content locked')}
+              onRelease={() => console.log('Content released')}
+            />
           </PaywallContext>
         </View>
       </ScrollView>

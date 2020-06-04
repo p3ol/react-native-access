@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
 import { track } from '@poool/sdk';
 
-const RestrictedContent = ({ children }, props) => {
+const RestrictedContent = ({ children }) => {
 
   const contextValue = useContext(AppContext);
 

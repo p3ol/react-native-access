@@ -11,11 +11,12 @@ import {
 
 const Paywall = (props) => {
 
-  const contextValue = useContext(AppContext);
+  const { onRelease, onLock, active } = useContext(AppContext);
 
-  if (contextValue.active) {
+  if (active) {
+    onLock?.();
     return (
-      <View >
+      <View>
         <ImageBackground
           source={'https://cdn.poool.fr/assets/bones.svg'}
           style={styles.background}>
@@ -34,6 +35,7 @@ const Paywall = (props) => {
       </View>
     );
   } else {
+    onRelease?.();
     return (null);
   }
 };
