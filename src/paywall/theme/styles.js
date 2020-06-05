@@ -10,7 +10,7 @@ export const defaultStyles = StyleSheet.create({
   },
   p3_logo: {
     height: 60,
-    resizeMode: 'center',
+    resizeMode: 'contain',
   },
   p3_subaction: {
     marginBottom: 10,
