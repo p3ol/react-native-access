@@ -4,13 +4,13 @@ import { track } from '@poool/sdk';
 
 const RestrictedContent = ({ children }) => {
 
-  const contextValue = useContext(AppContext);
+  const { active } = useContext(AppContext);
 
   const setRead = async () => {
     await track('premium-read');
   };
 
-  if (!contextValue.active) {
+  if (!active) {
     setRead();
     return React.cloneElement(React.Children.only(children));
   } else {

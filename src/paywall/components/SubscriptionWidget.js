@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Image,
   View,
@@ -6,10 +6,14 @@ import {
   Button,
   Linking,
 } from 'react-native';
+import { AppContext } from '../services/contexts';
 
 import { defaultStyles } from '../theme/styles';
 
-const SubscriptionWidget = (props) => {
+const SubscriptionWidget = ({ data, widget }) => {
+
+  const { onSubscribeClick } = useContext(AppContext);
+
   return (
 
     <View style={defaultStyles.p3_container}>
@@ -24,12 +28,19 @@ const SubscriptionWidget = (props) => {
         title="Découvrir les offres"
         style={defaultStyles.p3_actions}
         color="#000A24"
-        onPress={() => Linking.openURL(props.data.config.subscription_url)}
+        onPress={(e) => {
+          Linking.openURL(data.config.subscription_url);
+          onSubscribeClick(
+            widget,
+            e.target,
+            data.config.subscription_url
+          );
+        }}
       />
       <View style={defaultStyles.p3_subactions_container}>
         <Text
           style={defaultStyles.p3_subaction}
-          onPress={() => Linking.openURL(props.data.config.login_url)}>
+          onPress={() => Linking.openURL(data.config.login_url)}>
           Je me connecte
         </Text>
       </View>

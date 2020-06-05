@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
   },
 
   logo_background: {
-    width: 50,
-    height: 12,
     bottom: 10,
+    height: 12,
     right: 10,
+    width: 50,
   },
 
   wrapper: {

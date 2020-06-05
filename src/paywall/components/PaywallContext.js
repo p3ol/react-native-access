@@ -5,11 +5,12 @@ const PaywallContext = ({
   children,
   onLock,
   onRelease,
-  onReady,
-  onHidden
+  onSubscribeClick,
+  onLoginClick,
 }) => {
 
   const [active, setActive] = useState(true);
+
   return (
     <AppContext.Provider
       value={{
@@ -17,8 +18,8 @@ const PaywallContext = ({
         active: active,
         onLock: onLock,
         onRelease: onRelease,
-        onReady: onReady,
-        onHidden: onHidden,
+        onSubscribeClick: onSubscribeClick,
+        onLoginClick: onLoginClick,
       }}>
       {children}
     </AppContext.Provider >

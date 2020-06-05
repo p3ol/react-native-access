@@ -41,6 +41,7 @@ const Widget = () => {
       case 'question':
         setWidget(
           <QuestionWidget
+            widget={trackData.action}
             data={trackData}
           />
         );
@@ -48,6 +49,7 @@ const Widget = () => {
       case 'form':
         setWidget(
           <FormWidget
+            widget={trackData.action}
             data={trackData}
           />
         );
@@ -55,6 +57,7 @@ const Widget = () => {
       case 'restriction':
         setWidget(
           <SubscriptionWidget
+            widget={trackData.action}
             data={trackData}
           />
         );
@@ -62,6 +65,7 @@ const Widget = () => {
       case 'gift':
         setWidget(
           <GiftWidget
+            widget={trackData.action}
             data={trackData}
           />
         );
@@ -69,6 +73,7 @@ const Widget = () => {
       case 'subscription':
         setWidget(
           <SubscriptionWidget
+            widget={trackData.action}
             data={trackData}
           />
         );
@@ -76,6 +81,7 @@ const Widget = () => {
       default:
         setWidget(
           <SubscriptionWidget
+            widget='default'
             data={trackData}
           />
         );
