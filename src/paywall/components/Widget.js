@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { track, setConfig } from '@poool/sdk';
 
 import SubscriptionWidget from './SubscriptionWidget';
-import FormWidget from './FormWidget';
-import QuestionWidget from './QuestionWidget';
 import GiftWidget from './GiftWidget';
 
 const Widget = () => {
@@ -30,8 +28,14 @@ const Widget = () => {
       getCookie,
     });
 
-    const trackData = await track('page-view', { type: 'premium' });
-    console.log(trackData);
+    let trackData;
+
+    try {
+      trackData = await track('page-view', { type: 'premium' });
+    } catch (e) {
+      console.error(e);
+    }
+
     widgetSelector(trackData);
 
   };
@@ -40,7 +44,7 @@ const Widget = () => {
     switch (trackData.action) {
       case 'question':
         setWidget(
-          <QuestionWidget
+          <SubscriptionWidget
             widget={trackData.action}
             data={trackData}
           />
@@ -48,7 +52,7 @@ const Widget = () => {
         break;
       case 'form':
         setWidget(
-          <FormWidget
+          <SubscriptionWidget
             widget={trackData.action}
             data={trackData}
           />
@@ -89,7 +93,7 @@ const Widget = () => {
     }
   };
 
-  return (widget);
+  return widget;
 };
 
 export default Widget;

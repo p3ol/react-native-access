@@ -65,7 +65,7 @@ const App = () => {
         </ScrollView>
       </SafeAreaView>
     </React.Fragment>
-  )
+  );
 };
 
 App.displayName = 'App';

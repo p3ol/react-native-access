@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
 import {
-  StyleSheet,
   View,
   Image,
   Text,
   Button,
   Linking,
 } from 'react-native';
-
+import PropTypes from 'prop-types';
 import { defaultStyles } from '../theme/styles';
 
 const GiftWidget = ({ data, widget }) => {
@@ -16,10 +15,13 @@ const GiftWidget = ({ data, widget }) => {
   const { setActive, onSubscribeClick, onLoginClick } = useContext(AppContext);
 
   return (
-    <View style={defaultStyles.p3_container}>
+    <View
+      style={defaultStyles.p3_container}
+      testID="widgetView"
+    >
       <Image
         style={defaultStyles.p3_logo}
-        source={data.styles.brand_logo}
+        source={{ uri: data.styles.brand_logo }}
       />
       <Text style={defaultStyles.p3_title}>
         Besoin de lire cet article {'\n'}
@@ -29,6 +31,7 @@ const GiftWidget = ({ data, widget }) => {
         {data.texts.gift_desc}
       </Text>
       <Button
+        testID="mainButton"
         title="Merci, je profite de cet article offert !"
         style={defaultStyles.p3_actions}
         color={data.styles.button_color}
@@ -36,6 +39,7 @@ const GiftWidget = ({ data, widget }) => {
       />
       <View style={defaultStyles.p3_subactions_container}>
         <Text
+          testID="loginButton"
           style={defaultStyles.p3_subaction}
           onPress={(e) => {
             Linking.openURL(data.config.login_url);
@@ -48,6 +52,7 @@ const GiftWidget = ({ data, widget }) => {
           Je me connecte
         </Text>
         <Text
+          testID="subscribeButton"
           style={defaultStyles.p3_subaction}
           onPress={(e) => {
             Linking.openURL(data.config.subscription_url);
@@ -63,5 +68,12 @@ const GiftWidget = ({ data, widget }) => {
     </View>
   );
 };
+
+GiftWidget.propTypes = {
+  data: PropTypes.object,
+  widget: PropTypes.string,
+};
+
+GiftWidget.displayName = 'GiftWidget';
 
 export default GiftWidget;

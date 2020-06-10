@@ -16,14 +16,17 @@ const Paywall = (props) => {
   if (active) {
     onLock?.();
     return (
-      <View>
+      <View testID="paywallView">
         <ImageBackground
-          source={'https://cdn.poool.fr/assets/bones.svg'}
+          source={{ uri: 'https://cdn.poool.fr/assets/bones.svg' }}
           style={styles.background}>
           <View style={styles.wrapper}>
             <Widget />
             <View style={styles.logo}>
-              <Text onPress={() => Linking.openURL('https://poool.fr/')}>
+              <Text
+                onPress={() => Linking.openURL('https://poool.fr/')}
+                testID="pooolLogo"
+              >
                 <ImageBackground
                   source={'https://cdn.poool.fr/assets/poool-square.svg'}
                   style={styles.logo_background}
@@ -36,7 +39,7 @@ const Paywall = (props) => {
     );
   } else {
     onRelease?.();
-    return (null);
+    return null;
   }
 };
 

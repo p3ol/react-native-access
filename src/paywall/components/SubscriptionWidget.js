@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import {
-  Image,
   View,
   Text,
   Button,
   Linking,
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 
 import { defaultStyles } from '../theme/styles';
@@ -16,7 +16,10 @@ const SubscriptionWidget = ({ data, widget }) => {
 
   return (
 
-    <View style={defaultStyles.p3_container}>
+    <View
+      style={defaultStyles.p3_container}
+      testID="widgetView"
+    >
       <Text style={defaultStyles.p3_title}>
         Cet article est reservé aux abonnés.
       </Text>
@@ -25,6 +28,7 @@ const SubscriptionWidget = ({ data, widget }) => {
         {'\n'} Test vous propose de découvrir ses offres d&apos;abonnement.
       </Text>
       <Button
+        testID="mainButton"
         title="Découvrir les offres"
         style={defaultStyles.p3_actions}
         color="#000A24"
@@ -39,6 +43,7 @@ const SubscriptionWidget = ({ data, widget }) => {
       />
       <View style={defaultStyles.p3_subactions_container}>
         <Text
+          testID="loginButton"
           style={defaultStyles.p3_subaction}
           onPress={() => Linking.openURL(data.config.login_url)}>
           Je me connecte
@@ -48,5 +53,12 @@ const SubscriptionWidget = ({ data, widget }) => {
 
   );
 };
+
+SubscriptionWidget.propTypes = {
+  data: PropTypes.object,
+  widget: PropTypes.string,
+};
+
+SubscriptionWidget.displayName = 'SubscriptionWidget';
 
 export default SubscriptionWidget;
