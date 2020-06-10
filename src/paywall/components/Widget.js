@@ -20,24 +20,19 @@ const Widget = () => {
     AsyncStorage.getItem(`@${name}`);
 
   const init = async () => {
-
     setConfig({
       appId: 'ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH',
       apiUrl: 'https://api.poool.local:8443/api/v3',
       setCookie,
       getCookie,
     });
-
     let trackData;
-
     try {
       trackData = await track('page-view', { type: 'premium' });
+      widgetSelector(trackData);
     } catch (e) {
       console.error(e);
     }
-
-    widgetSelector(trackData);
-
   };
 
   const widgetSelector = (trackData) => {

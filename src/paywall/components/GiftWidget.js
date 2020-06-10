@@ -45,7 +45,7 @@ const GiftWidget = ({ data, widget }) => {
             Linking.openURL(data.config.login_url);
             onLoginClick(
               widget,
-              e.target,
+              e?.target,
               data.config.login_url
             );
           }}>
@@ -58,7 +58,7 @@ const GiftWidget = ({ data, widget }) => {
             Linking.openURL(data.config.subscription_url);
             onSubscribeClick(
               widget,
-              e.target,
+              e?.target,
               data.config.subscription_url
             );
           }}>

@@ -12,7 +12,7 @@ import { defaultStyles } from '../theme/styles';
 
 const SubscriptionWidget = ({ data, widget }) => {
 
-  const { onSubscribeClick } = useContext(AppContext);
+  const { onSubscribeClick, onLoginClick } = useContext(AppContext);
 
   return (
 
@@ -36,7 +36,7 @@ const SubscriptionWidget = ({ data, widget }) => {
           Linking.openURL(data.config.subscription_url);
           onSubscribeClick(
             widget,
-            e.target,
+            e?.target,
             data.config.subscription_url
           );
         }}
@@ -45,7 +45,14 @@ const SubscriptionWidget = ({ data, widget }) => {
         <Text
           testID="loginButton"
           style={defaultStyles.p3_subaction}
-          onPress={() => Linking.openURL(data.config.login_url)}>
+          onPress={(e) => {
+            Linking.openURL(data.config.login_url);
+            onLoginClick(
+              widget,
+              e?.target,
+              data.config.login_url
+            );
+          }}>
           Je me connecte
         </Text>
       </View>

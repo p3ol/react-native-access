@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Text } from 'react-native';
 import { render, fireEvent } from 'react-native-testing-library';
 
 import GiftWidget from '../../src/paywall/components/GiftWidget';
@@ -30,6 +30,9 @@ describe('<GiftWidget />', () => {
         onSubscribeClick={() => {}}
         onLoginClick={() => {}}
       >
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+        </Text>
         <GiftWidget { ... widgetProps }/>
       </PaywallContext>
     );

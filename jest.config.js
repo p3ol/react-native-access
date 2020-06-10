@@ -16,9 +16,6 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '<rootDir>/tests/config/enzyme.js',
-    '<rootDir>/tests/config/atob.js',
-    '<rootDir>/tests/config/crypto.js',
-    '<rootDir>/tests/config/fetch.js',
     '@testing-library/jest-native/extend-expect',
   ],
 };

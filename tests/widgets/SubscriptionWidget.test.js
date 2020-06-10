@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Text } from 'react-native';
 import { render, fireEvent } from 'react-native-testing-library';
 
 import SubscriptionWidget from '../../src/paywall/components/SubscriptionWidget';
@@ -26,7 +26,13 @@ describe('<SubscriptionWidget />', () => {
   it('should render without issues', () => {
 
     const { getByTestId } = render(
-      <PaywallContext onSubscribeClick={(a, b, c) => {}} >
+      <PaywallContext
+        onSubscribeClick={() => {}}
+        onLoginClick={() => {}}
+      >
+        <Text>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+        </Text>
         <SubscriptionWidget { ... widgetProps }/>
       </PaywallContext>
     );
