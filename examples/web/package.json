@@ -6,7 +6,6 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.10.3",
-    "eslint-plugin-react-hooks": "^4.0.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.62.2",
