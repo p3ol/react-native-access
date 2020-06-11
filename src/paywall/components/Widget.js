@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { track, setConfig } from '@poool/sdk';
 
+import { AppContext } from '../services/contexts';
 import SubscriptionWidget from './SubscriptionWidget';
 import GiftWidget from './GiftWidget';
 
 const Widget = () => {
-
-  const [widget, setWidget] = useState(null); // initiate with a loader
+  const { trackData, updateContext, onReady } = useContext(AppContext);
 
   useEffect(() => {
     init();
@@ -26,70 +26,36 @@ const Widget = () => {
       setCookie,
       getCookie,
     });
-    let trackData;
+
     try {
-      trackData = await track('page-view', { type: 'premium' });
-      widgetSelector(trackData);
-      console.log(trackData);
+      const result = await track('page-view', { type: 'premium' });
+      updateContext({ trackData: result });
+      onReady();
     } catch (e) {
       console.error(e);
     }
   };
 
-  const widgetSelector = (trackData) => {
-    switch (trackData.action) {
-      case 'question':
-        setWidget(
-          <SubscriptionWidget
-            widget={trackData.action}
-            data={trackData}
-          />
-        );
-        break;
-      case 'form':
-        setWidget(
-          <SubscriptionWidget
-            widget={trackData.action}
-            data={trackData}
-          />
-        );
-        break;
-      case 'restriction':
-        setWidget(
-          <SubscriptionWidget
-            widget={trackData.action}
-            data={trackData}
-          />
-        );
-        break;
-      case 'gift':
-        setWidget(
-          <GiftWidget
-            widget={trackData.action}
-            data={trackData}
-          />
-        );
-        break;
-      case 'subscription':
-        setWidget(
-          <SubscriptionWidget
-            widget={trackData.action}
-            data={trackData}
-          />
-        );
-        break;
-      default:
-        setWidget(
-          <SubscriptionWidget
-            widget='default'
-            data={trackData}
-          />
-        );
+  if (!trackData) {
+    // TODO: Show loader
+    return null;
+  }
 
-    }
-  };
-
-  return widget;
+  switch (trackData.action) {
+    case 'gift':
+      return (
+        <GiftWidget
+          data={trackData}
+        />
+      );
+    default:
+      return (
+        <SubscriptionWidget
+          widget='default'
+          data={trackData}
+        />
+      );
+  }
 };
 
 export default Widget;

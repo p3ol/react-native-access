@@ -1,35 +1,45 @@
-import React, { useState } from 'react';
+import React, { useReducer } from 'react';
 import PropTypes from 'prop-types';
+
 import { AppContext } from '../services/contexts';
+import { mockState } from '../services/reducers';
 
 const PaywallContext = ({
   children,
-  onLock,
-  onRelease,
-  onSubscribeClick,
-  onLoginClick,
+  onLock = () => {},
+  onReady = () => {},
+  onRelease = () => {},
+  onSubscribeClick = () => {},
+  onLoginClick = () => {},
 }) => {
-
-  const [active, setActive] = useState(true);
+  const [state, dispatch] = useReducer(mockState, {
+    active: true,
+    trackData: null,
+  });
 
   return (
     <AppContext.Provider
       value={{
-        setActive: setActive,
-        active: active,
-        onLock: onLock,
-        onRelease: onRelease,
-        onSubscribeClick: onSubscribeClick,
-        onLoginClick: onLoginClick,
-      }}>
-      {children}
-    </AppContext.Provider >
+        setActive: active => dispatch({ active }),
+        updateContext: dispatch,
+        trackData: state.trackData,
+        active: state.active,
+        onLock,
+        onReady,
+        onRelease,
+        onSubscribeClick,
+        onLoginClick,
+      }}
+    >
+      { children }
+    </AppContext.Provider>
   );
 };
 
 PaywallContext.propTypes = {
   children: PropTypes.array,
   onLock: PropTypes.func,
+  onReady: PropTypes.func,
   onRelease: PropTypes.func,
   onSubscribeClick: PropTypes.func,
   onLoginClick: PropTypes.func,

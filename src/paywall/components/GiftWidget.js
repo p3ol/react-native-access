@@ -11,13 +11,12 @@ import PropTypes from 'prop-types';
 import { defaultStyles } from '../theme/styles';
 
 const GiftWidget = ({ data, widget }) => {
-
   const { setActive, onSubscribeClick, onLoginClick } = useContext(AppContext);
 
   return (
     <View
       style={defaultStyles.p3_container}
-      testID="widgetView"
+      testID="giftWidget"
     >
       <Image
         style={defaultStyles.p3_logo}
