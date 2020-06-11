@@ -30,6 +30,7 @@ const Widget = () => {
     try {
       trackData = await track('page-view', { type: 'premium' });
       widgetSelector(trackData);
+      console.log(trackData);
     } catch (e) {
       console.error(e);
     }
