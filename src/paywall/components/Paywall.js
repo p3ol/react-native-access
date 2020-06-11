@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 
 const Paywall = (props) => {
-
   const { onRelease, onLock, active } = useContext(AppContext);
 
   if (active) {
@@ -28,7 +27,9 @@ const Paywall = (props) => {
                 testID="pooolLogo"
               >
                 <ImageBackground
-                  source={'https://cdn.poool.fr/assets/poool-square.svg'}
+                  source={{
+                    uri: 'https://cdn.poool.fr/assets/poool-square.svg',
+                  }}
                   style={styles.logo_background}
                 />
               </Text>
