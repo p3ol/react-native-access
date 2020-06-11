@@ -1013,7 +1013,7 @@
   resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.0.0.tgz#ea415d15227920b2e32df335eb70a22572dc2b1e"
   integrity sha512-7BU/d780ICinl7Yb4RAtrn8D/cxLnD6d85f/E9ZUI3QZjUJOQba95cN/zz7Eeqnz0Zje30OY7pU8T0N3h07wmg==
 
-"@poool/sdk@^0.0.1-alpha.3":
+"@poool/sdk@0.0.1-alpha.3":
   version "0.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@poool/sdk/-/sdk-0.0.1-alpha.3.tgz#7d131ed129816efa4b9fb8af147e7259bfa1c4ec"
   integrity sha512-TZvl1stR/B7PRM7x8K6AaYrA+6joMqh94+QaG7dH/JwUWCmVBH1CRRJcuaZY6Sq/Xya/mSTMuZ7VU+PjxHzSIA==
@@ -1156,7 +1156,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@testing-library/jest-native@^3.1.0":
+"@testing-library/jest-native@3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@testing-library/jest-native/-/jest-native-3.1.0.tgz#414c834dfb524ca82b86509d5479e365d4d5bbec"
   integrity sha512-MZdsTsD6xrP5V0FTz2gVPG00ZMoKn4WniRitUH40zZTQ0DfMa5CVDpkAd5ed6qX1coDwS8vSCZS/JGMIDYjRQQ==
@@ -1167,6 +1167,14 @@
     pretty-format "^24.0.0"
     ramda "^0.26.1"
     redent "^2.0.0"
+
+"@testing-library/react-native@5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-5.0.3.tgz#8821dcf7fe7364bc7f427d853cd96e4407d88a4f"
+  integrity sha512-lQH7vUgwESfagFw4BlKsfpX7Rv/m7h2NYfubY0aoQromSwI1slCxrhwZws8gABTXweob/DyLATsOamHsWdwDnA==
+  dependencies:
+    pretty-format "^24.9.0"
+    wait-for-expect "^3.0.0"
 
 "@types/babel__core@^7.1.7":
   version "7.1.8"
@@ -4055,7 +4063,7 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
+isomorphic-fetch@2.2.1, isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   integrity sha1-YRrhrPFPXoH3KVB0coGf6XM1WKk=
@@ -5410,7 +5418,7 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nock@^12.0.3:
+nock@12.0.3:
   version "12.0.3"
   resolved "https://registry.yarnpkg.com/nock/-/nock-12.0.3.tgz#83f25076dbc4c9aa82b5cdf54c9604c7a778d1c9"
   integrity sha512-QNb/j8kbFnKCiyqi9C5DD0jH/FubFGj5rt9NQFONXwQm3IPB0CULECg/eS3AU1KgZb/6SwUa4/DTRKhVxkGABw==
@@ -6155,13 +6163,6 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.8.6, react-i
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-native-testing-library@^2.0.1:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-testing-library/-/react-native-testing-library-2.1.0.tgz#820a300dcae70d3da64813b816d208a14ab05f19"
-  integrity sha512-cBZIQ60XzT8pN5XNcvI5OE4ADej43pT43jLynKIrQRnBuw5cIJotN+xHyLxyGcv4WdiCCONmyK3yhIOXV8PTyQ==
-  dependencies:
-    pretty-format "^26.0.1"
-
 react-native-web@0.12.3:
   version "0.12.3"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.12.3.tgz#9f43301539672d46a302ee642afd29243a4376d5"
@@ -6219,16 +6220,6 @@ react-refresh@^0.4.0:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.4.3.tgz#966f1750c191672e76e16c2efa569150cc73ab53"
   integrity sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==
-
-react-test-renderer@16.9.0:
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.9.0.tgz#7ed657a374af47af88f66f33a3ef99c9610c8ae9"
-  integrity sha512-R62stB73qZyhrJo7wmCW9jgl/07ai+YzvouvCXIJLBkRlRqLx4j9RqcLEAfNfU3OxTGucqR2Whmn3/Aad6L3hQ==
-  dependencies:
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    react-is "^16.9.0"
-    scheduler "^0.15.0"
 
 react-test-renderer@^16.0.0-0:
   version "16.13.1"
@@ -6648,14 +6639,6 @@ scheduler@0.17.0, scheduler@^0.17.0:
   version "0.17.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.17.0.tgz#7c9c673e4ec781fac853927916d1c426b6f3ddfe"
   integrity sha512-7rro8Io3tnCPuY4la/NuI5F2yfESpnfZyT6TtkXnSWVkcu0BCDJ+8gk5ozUaFaxpIyNuWAPXrH0yFcSi28fnDA==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-scheduler@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.15.0.tgz#6bfcf80ff850b280fed4aeecc6513bc0b4f17f8e"
-  integrity sha512-xAefmSfN6jqAa7Kuq7LIJY0bwAPG3xlCj0HMEBQk1lxYiDKZscY2xJ5U/61ZTrYbmNQbXa+gc7czPkVo11tnCg==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -7608,6 +7591,11 @@ w3c-xmlserializer@^2.0.0:
   integrity sha512-4tzD0mF8iSiMiNs30BiLO3EpfGLZUT2MSX/G+o7ZywDzliWQ3OPtTZ0PTC3B3ca1UAf4cJMHB+2Bf56EriJuRA==
   dependencies:
     xml-name-validator "^3.0.0"
+
+wait-for-expect@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/wait-for-expect/-/wait-for-expect-3.0.2.tgz#d2f14b2f7b778c9b82144109c8fa89ceaadaa463"
+  integrity sha512-cfS1+DZxuav1aBYbaO/kE06EOS8yRw7qOFoD3XtjTkYvCvh3zUvNST8DXK/nPaeqIzIv3P3kL3lRJn8iwOiSag==
 
 walker@^1.0.7, walker@~1.0.5:
   version "1.0.7"
