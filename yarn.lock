@@ -998,20 +998,20 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@poool/eslint-config-react-native@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.0.1.tgz#37f01dfd21d4e630fa5e3dd34b2af0137eb58fd9"
-  integrity sha512-kM64vj8w4gYEfDLmAmXc6wI+GJBKuISxusj1f3geXtzGBuqdoY6uTxf7t6720dnc8TTalHv0t7+aPbdcCf6sLA==
+"@poool/eslint-config-react-native@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.0.3.tgz#39328489d6075da24f1d3844164fe82d07cb9cb7"
+  integrity sha512-Mo7kAJnayV8gfyrAZDE1ErrJxixLeA1vhQSr76RHa1i/OQK4xdzDCEgpwKDJVPzHhmkz3edPlIh0sJKvOqDDnw==
 
-"@poool/eslint-config-react@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react/-/eslint-config-react-1.0.0.tgz#c9dbfcdf086ddb52171986dd792c7df5502f63e1"
-  integrity sha512-5w2jiaN2/Fu4dgJmfatMH/DtPS4rvRPQKiLHmVQktZjEaH6ktLPGYCOXixH5bLK032Fs6OkKZIGzfsHSay+NIg==
+"@poool/eslint-config-react@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react/-/eslint-config-react-1.0.3.tgz#a863d54871314e273f7737796e357fc6241ab193"
+  integrity sha512-7nI3dtHFimdRmG5jkkU0GsIv0IAyR3WQAyRdOy3a9m3/PpDVaxTCCnD+4J1/pDXfzru2DMah23WbwDFB0ojyRQ==
 
-"@poool/eslint-config@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.0.0.tgz#ea415d15227920b2e32df335eb70a22572dc2b1e"
-  integrity sha512-7BU/d780ICinl7Yb4RAtrn8D/cxLnD6d85f/E9ZUI3QZjUJOQba95cN/zz7Eeqnz0Zje30OY7pU8T0N3h07wmg==
+"@poool/eslint-config@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.0.3.tgz#c9b249b542f9927b49659c8ee9bba201e3f51658"
+  integrity sha512-guRKFNXXar/XtRRPM9ZW18mvr1qiGDa5+k/pVQt9N12+SZsf6KApNB8VXWOlCBTgzTkaPUnujtJFivHJJp8j1A==
 
 "@poool/sdk@0.0.1-alpha.3":
   version "0.0.1-alpha.3"
@@ -6221,7 +6221,7 @@ react-refresh@^0.4.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.4.3.tgz#966f1750c191672e76e16c2efa569150cc73ab53"
   integrity sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==
 
-react-test-renderer@^16.0.0-0:
+react-test-renderer@^16.0.0-0, react-test-renderer@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.13.1.tgz#de25ea358d9012606de51e012d9742e7f0deabc1"
   integrity sha512-Sn2VRyOK2YJJldOqoh8Tn/lWQ+ZiKhyZTPtaO0Q6yNj+QDbmRkVFap6pZPy3YQk8DScRDfyqm/KxKYP9gCMRiQ==
