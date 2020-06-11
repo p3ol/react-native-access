@@ -18,7 +18,7 @@ const SubscriptionWidget = ({ data, widget }) => {
 
     <View
       style={defaultStyles.p3_container}
-      testID="widgetView"
+      testID="subscriptionWidget"
     >
       <Text style={defaultStyles.p3_title}>
         Cet article est reservé aux abonnés.
@@ -28,7 +28,7 @@ const SubscriptionWidget = ({ data, widget }) => {
         {'\n'} Test vous propose de découvrir ses offres d&apos;abonnement.
       </Text>
       <Button
-        testID="mainButton"
+        testID="subscribeButton"
         title="Découvrir les offres"
         style={defaultStyles.p3_actions}
         color="#000A24"
