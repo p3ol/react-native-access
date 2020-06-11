@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { render, fireEvent } from 'react-native-testing-library';
+import { render, fireEvent } from '@testing-library/react-native';
 
 import GiftWidget from '../../src/paywall/components/GiftWidget';
 import PaywallContext from '../../src/paywall/components/PaywallContext';
@@ -33,11 +33,11 @@ describe('<GiftWidget />', () => {
         <Text>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
         </Text>
-        <GiftWidget { ... widgetProps }/>
+        <GiftWidget { ...widgetProps }/>
       </PaywallContext>
     );
 
-    const element = getByTestId('widgetView');
+    const element = getByTestId('giftWidget');
     const loginButton = getByTestId('loginButton');
     const mainButton = getByTestId('mainButton');
     const subscribeButton = getByTestId('subscribeButton');

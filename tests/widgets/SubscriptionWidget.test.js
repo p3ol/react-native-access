@@ -1,8 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { render, fireEvent } from 'react-native-testing-library';
+import { render, fireEvent } from '@testing-library/react-native';
 
-import SubscriptionWidget from '../../src/paywall/components/SubscriptionWidget';
+import SubscriptionWidget
+  from '../../src/paywall/components/SubscriptionWidget';
 import PaywallContext from '../../src/paywall/components/PaywallContext';
 
 const widgetProps = {
@@ -37,7 +38,6 @@ describe('<SubscriptionWidget />', () => {
       </PaywallContext>
     );
 
-    const element = getByTestId('widgetView');
     const loginButton = getByTestId('loginButton');
     const mainButton = getByTestId('mainButton');
     fireEvent.press(loginButton);
