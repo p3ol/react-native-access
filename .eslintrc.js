@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['@poool/eslint-config/frontend'],
+  extends: ['@poool/eslint-config-react-native'],
   overrides: [{
     files: ['tests/**/*.js'],
     parser: 'babel-eslint',
@@ -7,4 +7,4 @@ module.exports = {
       jest: true,
     },
   }],
-}
+};

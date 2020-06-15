@@ -1188,10 +1188,27 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@poool/eslint-config@1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.0.3.tgz#c9b249b542f9927b49659c8ee9bba201e3f51658"
-  integrity sha512-guRKFNXXar/XtRRPM9ZW18mvr1qiGDa5+k/pVQt9N12+SZsf6KApNB8VXWOlCBTgzTkaPUnujtJFivHJJp8j1A==
+"@poool/eslint-config-react-native@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.2.1.tgz#7532bce4245c1f6095033e2321d1771c4b88dfb9"
+  integrity sha512-l5+faoVklzQa7e6CczykPMJgCgaDHgCYI5rp+1WJAzdFYgRSauGRzX4MA317ZXEWgN6/WKbzKjmYqx1QyfWbdQ==
+
+"@poool/eslint-config-react@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react/-/eslint-config-react-1.2.1.tgz#df086ad5a9568e52fca04e3c559594716d4023e6"
+  integrity sha512-GygNosc6pq97U1dTlwWAPqPNM9JK++cv5oFfFJCmldYlOgGCQoRKsva2Csahra+J75yN5oNQN6bqMn+77XX6Sw==
+
+"@poool/eslint-config@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.2.1.tgz#dd1695032548aa1c5a9ba00e86f1707133cb1a72"
+  integrity sha512-2i1qMc0kWbFECdqEeh50sJH5siuzuQH+mr6SIosVdU/EQeog+KZEjuYPEijLCkUKUE79rof9fK/IAqySeI6l2g==
+
+"@poool/eslint-plugin@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-plugin/-/eslint-plugin-1.2.1.tgz#5fa834d9660d75a3c8c60a5e91e39ccd71086194"
+  integrity sha512-C90w/TUUwSK1qz03zsUKW9yRJjr2EgjM9YDKoqd84IyqqAwz7f1NX4Te4JXW8BMHCaYgIjJh1dKJmszfmwkl5w==
+  dependencies:
+    eslint-rule-composer "0.3.0"
 
 "@react-native-community/cli-debugger-ui@^4.9.0":
   version "4.9.0"
@@ -2929,6 +2946,18 @@ eslint-plugin-promise@4.2.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-4.2.1.tgz#845fd8b2260ad8f82564c1222fce44ad71d9418a"
   integrity sha512-VoM09vT7bfA7D+upt+FjeBO5eHIJQBUWki1aPvB+vbNiHS3+oGIJGIeyBtKQTME6UPXXy3vV07OL1tHd3ANuDw==
 
+eslint-plugin-react-native-globals@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-native-globals/-/eslint-plugin-react-native-globals-0.1.2.tgz#ee1348bc2ceb912303ce6bdbd22e2f045ea86ea2"
+  integrity sha512-9aEPf1JEpiTjcFAmmyw8eiIXmcNZOqaZyHO77wgm0/dWfT/oxC1SrIq8ET38pMxHYrcB6Uew+TzUVsBeczF88g==
+
+eslint-plugin-react-native@3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-native/-/eslint-plugin-react-native-3.8.1.tgz#92811e37191ecb0d29c0f0a0c9e5c943ee573821"
+  integrity sha512-6Z4s4nvgFRdda/1s1+uu4a6EMZwEjjJ9Bk/1yBImv0fd9U2CsGu2cUakAtV83cZKhizbWhSouXoaK4JtlScdFg==
+  dependencies:
+    eslint-plugin-react-native-globals "^0.1.1"
+
 eslint-plugin-react@7.20.0:
   version "7.20.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.20.0.tgz#f98712f0a5e57dfd3e5542ef0604b8739cd47be3"
@@ -2958,7 +2987,7 @@ eslint-plugin-standard@4.0.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.1.tgz#ff0519f7ffaff114f76d1bd7c3996eef0f6e20b4"
   integrity sha512-v/KBnfyaOMPmZc/dmc6ozOdWqekGp7bBGq4jLAecEfPGmfKiWS4sA8sC0LqiV9w5qmXAtXVn4M3p1jSyhY85SQ==
 
-eslint-rule-composer@^0.3.0:
+eslint-rule-composer@0.3.0, eslint-rule-composer@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
   integrity sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==
