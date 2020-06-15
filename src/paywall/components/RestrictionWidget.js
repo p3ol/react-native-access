@@ -10,7 +10,7 @@ import { AppContext } from '../services/contexts';
 
 import { defaultStyles } from '../theme/styles';
 
-const SubscriptionWidget = ({ data, widget }) => {
+const RestrictionWidget = ({ data, widget }) => {
 
   const { onSubscribeClick, onLoginClick } = useContext(AppContext);
 
@@ -18,7 +18,7 @@ const SubscriptionWidget = ({ data, widget }) => {
 
     <View
       style={defaultStyles.p3_container}
-      testID="subscriptionWidget"
+      testID="RestrictionWidget"
     >
       <Text style={defaultStyles.p3_title}>
         Cet article est reservé aux abonnés.
@@ -61,11 +61,11 @@ const SubscriptionWidget = ({ data, widget }) => {
   );
 };
 
-SubscriptionWidget.propTypes = {
+RestrictionWidget.propTypes = {
   data: PropTypes.object,
   widget: PropTypes.string,
 };
 
-SubscriptionWidget.displayName = 'SubscriptionWidget';
+RestrictionWidget.displayName = 'RestrictionWidget';
 
-export default SubscriptionWidget;
+export default RestrictionWidget;

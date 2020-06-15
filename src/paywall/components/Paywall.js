@@ -19,20 +19,22 @@ const Paywall = (props) => {
         <ImageBackground
           source={{ uri: 'https://cdn.poool.fr/assets/bones.svg' }}
           style={styles.background}>
-          <View style={styles.wrapper}>
-            <Widget />
-            <View style={styles.logo}>
-              <Text
-                onPress={() => Linking.openURL('https://poool.fr/')}
-                testID="pooolLogo"
-              >
-                <ImageBackground
-                  source={{
-                    uri: 'https://cdn.poool.fr/assets/poool-square.svg',
-                  }}
-                  style={styles.logo_background}
-                />
-              </Text>
+          <View style={styles.paywall} >
+            <View style={styles.wrapper}>
+              <Widget />
+              <View style={styles.logo}>
+                <Text
+                  onPress={() => Linking.openURL('https://poool.fr/')}
+                  testID="pooolLogo"
+                >
+                  <ImageBackground
+                    source={{
+                      uri: 'https://cdn.poool.fr/assets/poool-square.svg',
+                    }}
+                    style={styles.logo_background}
+                  />
+                </Text>
+              </View>
             </View>
           </View>
         </ImageBackground>
@@ -65,11 +67,16 @@ const styles = StyleSheet.create({
     width: 50,
   },
 
+  paywall: {
+    margin: 'auto',
+  },
+
   wrapper: {
     flex: 1,
-    margin: 'auto',
     backgroundColor: '#FFFFFF',
     top: -50,
+    marginHorizontal: 20,
+    maxWidth: 500,
 
     // Box Shadow
     shadowColor: '#000',

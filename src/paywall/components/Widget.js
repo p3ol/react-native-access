@@ -3,11 +3,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { track, setConfig } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
-import SubscriptionWidget from './SubscriptionWidget';
+import RestrictionWidget from './RestrictionWidget';
 import GiftWidget from './GiftWidget';
+import LinkWidget from './LinkWidget';
 
 const Widget = () => {
-  const { trackData, updateContext, onReady } = useContext(AppContext);
+  const {
+    setActive,
+    trackData,
+    updateContext,
+    onReady,
+  } = useContext(AppContext);
 
   useEffect(() => {
     init();
@@ -48,12 +54,28 @@ const Widget = () => {
           data={trackData}
         />
       );
-    default:
+    case 'link':
       return (
-        <SubscriptionWidget
-          widget='default'
+        <LinkWidget
           data={trackData}
         />
+      );
+    case 'invisible':
+      setActive(false);
+      return null;
+    case 'unlock':
+      setActive(false);
+      // TODO: Add a "popover" message
+      return null;
+    default:
+      return (
+        <LinkWidget
+          data={trackData}
+        />
+        // <RestrictionWidget
+        //   widget='default'
+        //   data={trackData}
+        // />
       );
   }
 };
