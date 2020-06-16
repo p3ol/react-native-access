@@ -12,18 +12,29 @@ const PaywallContext = ({
   onSubscribeClick = () => {},
   onLoginClick = () => {},
 }) => {
+
   const [state, dispatch] = useReducer(mockState, {
     active: true,
+    alternative: false,
     trackData: null,
+    config: {
+      alternative_widget: 'gift',
+      // TODO: add a way to modify config by passing it to props
+    },
   });
+
+  console.log(state.alternative);
 
   return (
     <AppContext.Provider
       value={{
         setActive: active => dispatch({ active }),
+        setAlternative: alternative => dispatch({ alternative }),
         updateContext: dispatch,
         trackData: state.trackData,
         active: state.active,
+        config: state.config,
+        alternative: state.alternative,
         onLock,
         onReady,
         onRelease,

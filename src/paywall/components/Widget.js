@@ -10,6 +10,8 @@ import LinkWidget from './LinkWidget';
 const Widget = () => {
   const {
     setActive,
+    alternative,
+    config,
     trackData,
     updateContext,
     onReady,
@@ -28,13 +30,14 @@ const Widget = () => {
   const init = async () => {
     setConfig({
       appId: 'ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH',
-      apiUrl: 'https://api.poool.local:8443/api/v3',
+      apiUrl: 'https://api.poool.develop:8443/api/v3',
       setCookie,
       getCookie,
     });
 
     try {
       const result = await track('page-view', { type: 'premium' });
+      console.log(result);
       updateContext({ trackData: result });
       onReady();
     } catch (e) {
@@ -47,7 +50,7 @@ const Widget = () => {
     return null;
   }
 
-  switch (trackData.action) {
+  switch (alternative ? config.alternative_widget : trackData.action) {
     case 'gift':
       return (
         <GiftWidget
@@ -69,13 +72,10 @@ const Widget = () => {
       return null;
     default:
       return (
-        <LinkWidget
+        <RestrictionWidget
+          widget='default'
           data={trackData}
         />
-        // <RestrictionWidget
-        //   widget='default'
-        //   data={trackData}
-        // />
       );
   }
 };

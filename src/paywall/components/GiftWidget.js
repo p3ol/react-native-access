@@ -15,31 +15,31 @@ const GiftWidget = ({ data, widget }) => {
 
   return (
     <View
-      style={defaultStyles.p3_container}
+      style={defaultStyles.container}
       testID="giftWidget"
     >
       <Image
-        style={defaultStyles.p3_logo}
+        style={defaultStyles.logo}
         source={{ uri: data.styles.brand_logo }}
       />
-      <Text style={defaultStyles.p3_title}>
+      <Text style={defaultStyles.title}>
         Besoin de lire cet article {'\n'}
         réservé aux abonnés ?
       </Text>
-      <Text style={defaultStyles.p3_text}>
+      <Text style={defaultStyles.text}>
         {data.texts.gift_desc}
       </Text>
       <Button
         testID="mainButton"
         title="Merci, je profite de cet article offert !"
-        style={defaultStyles.p3_actions}
+        style={defaultStyles.actions}
         color={data.styles.button_color}
         onPress={() => setActive(false)}
       />
-      <View style={defaultStyles.p3_subactions_container}>
+      <View style={defaultStyles.subactions_container}>
         <Text
           testID="loginButton"
-          style={defaultStyles.p3_subaction}
+          style={defaultStyles.subaction}
           onPress={(e) => {
             Linking.openURL(data.config.login_url);
             onLoginClick(
@@ -52,7 +52,7 @@ const GiftWidget = ({ data, widget }) => {
         </Text>
         <Text
           testID="subscribeButton"
-          style={defaultStyles.p3_subaction}
+          style={defaultStyles.subaction}
           onPress={(e) => {
             Linking.openURL(data.config.subscription_url);
             onSubscribeClick(

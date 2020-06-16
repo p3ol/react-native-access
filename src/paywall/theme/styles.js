@@ -1,33 +1,33 @@
 import { StyleSheet } from 'react-native';
 
 export const defaultStyles = StyleSheet.create({
-  p3_actions: {
+  actions: {
     textAlign: 'center',
   },
-  p3_container: {
+  container: {
     paddingHorizontal: 30,
     paddingVertical: 40,
   },
-  p3_logo: {
+  logo: {
     height: 60,
     resizeMode: 'contain',
   },
-  p3_subaction: {
+  subaction: {
     marginBottom: 10,
     marginTop: 32,
     textDecorationLine: 'underline',
   },
-  p3_subactions_container: {
+  subactions_container: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
-  p3_text: {
+  text: {
     lineHeight: 22,
     marginBottom: 25,
     textAlign: 'center',
   },
-  p3_title: {
+  title: {
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: 10,

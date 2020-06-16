@@ -17,22 +17,22 @@ const RestrictionWidget = ({ data, widget }) => {
   return (
 
     <View
-      style={defaultStyles.p3_container}
+      style={defaultStyles.container}
       testID="RestrictionWidget"
     >
-      <Text style={defaultStyles.p3_title}>
+      <Text style={defaultStyles.title}>
         Cet article est reservé aux abonnés.
       </Text>
-      <Text style={defaultStyles.p3_text}>
+      <Text style={defaultStyles.text}>
         Pour profiter pleinement de l&apos;ensemble de ses articles,
         {'\n'} Test vous propose de découvrir ses offres d&apos;abonnement.
       </Text>
       <Button
         testID="subscribeButton"
         title="Découvrir les offres"
-        style={defaultStyles.p3_actions}
+        style={defaultStyles.actions}
         color="#000A24"
-        onPress={(e) => {
+        onPress={e => {
           Linking.openURL(data.config.subscription_url);
           onSubscribeClick(
             widget,
@@ -41,11 +41,11 @@ const RestrictionWidget = ({ data, widget }) => {
           );
         }}
       />
-      <View style={defaultStyles.p3_subactions_container}>
+      <View style={defaultStyles.subactions_container}>
         <Text
           testID="loginButton"
-          style={defaultStyles.p3_subaction}
-          onPress={(e) => {
+          style={defaultStyles.subaction}
+          onPress={e => {
             Linking.openURL(data.config.login_url);
             onLoginClick(
               widget,

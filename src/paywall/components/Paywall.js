@@ -9,7 +9,7 @@ import {
   Text,
 } from 'react-native';
 
-const Paywall = (props) => {
+const Paywall = () => {
   const { onRelease, onLock, active } = useContext(AppContext);
 
   if (active) {
@@ -69,14 +69,15 @@ const styles = StyleSheet.create({
 
   paywall: {
     margin: 'auto',
+    minWidth: 400,
+    width: '30%',
   },
 
   wrapper: {
-    flex: 1,
     backgroundColor: '#FFFFFF',
-    top: -50,
+    elevation: 8,
+    flex: 1,
     marginHorizontal: 20,
-    maxWidth: 500,
 
     // Box Shadow
     shadowColor: '#000',
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.30,
     shadowRadius: 10,
-    elevation: 8,
+    top: -50,
     // ============
   },
 });
