@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 
   paywall: {
     margin: 'auto',
-    minWidth: 400,
+    minWidth: 450,
     width: '30%',
   },
 

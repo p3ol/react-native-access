@@ -3,9 +3,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { track, setConfig } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
+
 import RestrictionWidget from './RestrictionWidget';
 import GiftWidget from './GiftWidget';
 import LinkWidget from './LinkWidget';
+import NewsletterWidget from './NewsletterWidget';
 
 const Widget = () => {
   const {
@@ -43,6 +45,16 @@ const Widget = () => {
     } catch (e) {
       console.error(e);
     }
+
+  };
+
+  const onRelease = async () => {
+    try {
+      // TODO add premium read call
+      //await track('premium-read', { type: 'premium' });
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   if (!trackData) {
@@ -50,10 +62,15 @@ const Widget = () => {
     return null;
   }
 
-  switch (alternative ? config.alternative_widget : trackData.action) {
+  switch (alternative
+    ? config.alternative_widget
+      ? config.alternative_widget
+      : trackData.config.alternative_widget
+    : trackData.action) {
     case 'gift':
       return (
         <GiftWidget
+          onRelease={onRelease}
           data={trackData}
         />
       );
@@ -63,10 +80,19 @@ const Widget = () => {
           data={trackData}
         />
       );
+    case 'newsletter':
+      return (
+        <NewsletterWidget
+          onRelease={onRelease}
+          data={trackData}
+        />
+      );
     case 'invisible':
+      onRelease();
       setActive(false);
       return null;
     case 'unlock':
+      onRelease();
       setActive(false);
       // TODO: Add a "popover" message
       return null;

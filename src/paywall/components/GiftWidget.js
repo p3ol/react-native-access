@@ -40,7 +40,7 @@ const GiftWidget = ({ data, widget }) => {
         <Text
           testID="loginButton"
           style={defaultStyles.subaction}
-          onPress={(e) => {
+          onPress={e => {
             Linking.openURL(data.config.login_url);
             onLoginClick(
               widget,
@@ -53,7 +53,7 @@ const GiftWidget = ({ data, widget }) => {
         <Text
           testID="subscribeButton"
           style={defaultStyles.subaction}
-          onPress={(e) => {
+          onPress={e => {
             Linking.openURL(data.config.subscription_url);
             onSubscribeClick(
               widget,

@@ -18,12 +18,10 @@ const PaywallContext = ({
     alternative: false,
     trackData: null,
     config: {
-      alternative_widget: 'gift',
+      alternative_widget: null,
       // TODO: add a way to modify config by passing it to props
     },
   });
-
-  console.log(state.alternative);
 
   return (
     <AppContext.Provider
