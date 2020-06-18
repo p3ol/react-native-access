@@ -25,7 +25,7 @@ const Paywall = () => {
               <View style={styles.logo}>
                 <Text
                   onPress={() => Linking.openURL('https://poool.fr/')}
-                  testID="pooolLogo"
+                  testID="pooolButton"
                 >
                   <ImageBackground
                     source={{

@@ -13,6 +13,7 @@ import { defaultStyles } from '../theme/styles';
 const LinkWidget = ({ data, widget }) => {
   const {
     setAlternative,
+    onDiscoveryLinkClick,
     onLoginClick,
     config = {},
   } = useContext(AppContext);
@@ -23,52 +24,56 @@ const LinkWidget = ({ data, widget }) => {
     >
       <Image
         style={defaultStyles.logo}
-        source={{ uri: data.styles.brand_logo }}
+        source={{ uri: data?.styles?.brand_logo }}
       />
       <Text style={defaultStyles.title}>
-        {data.texts.link_title ||
+        {data?.texts?.link_title ||
         'Cet article est réservé aux abonnés.'}
       </Text>
       <Text style={defaultStyles.text}>
-        {data.texts.link_desc ||
-        ` ${data.config.app_name} vous suggère de
+        {data?.texts?.link_desc ||
+        ` ${data?.config.app_name} vous suggère de
         vous rendre sur la page Web suivante.`}
       </Text>
       <Button
-        testID="mainButton"
-        title={data.texts.link_button || 'Visiter la page'}
+        testID="linkButton"
+        title={data?.texts?.link_button || 'Visiter la page'}
         style={defaultStyles.actions}
-        color={data.styles.button_color}
-        onPress={() =>
-          data.config.link_url
-            ? Linking.openURL(config.login_url || data.config.link_url)
+        color={data?.styles?.button_color}
+        onPress={e => {
+          onDiscoveryLinkClick(
+            widget,
+            e?.target,
+            config.login_url || data?.config.link_url
+          );
+          data?.config.link_url
+            ? Linking.openURL(config.login_url || data?.config.link_url)
             : console.warn(
               'No link_url config value has been provided, cannot open url'
-            )
-        }
+            );
+        }}
       />
       <View style={defaultStyles.subactions_container}>
-        {data.config.login_button_enabled &&
+        {data?.config.login_button_enabled &&
           <Text
             testID="loginButton"
             style={defaultStyles.subaction}
             onPress={e => {
-              Linking.openURL(data.config.login_url);
+              Linking.openURL(data?.config.login_url);
               onLoginClick(
                 widget,
                 e?.target,
-                data.config.login_url
+                data?.config?.login_url
               );
             }}>
             Je me connecte
           </Text>
         }
         <Text
-          testID="subscribeButton"
+          testID="rejectButton"
           style={defaultStyles.subaction}
-          onPress={() =>
-            setAlternative(true)
-          }>
+          onPress={() => setAlternative(true)}
+        >
           Non, merci
         </Text>
       </View>

@@ -11,7 +11,7 @@ export const defaultStyles = StyleSheet.create({
   },
   backButton: {
     marginTop: -25,
-    position: 'abslute',
+    position: 'absolute',
   },
   container: {
     paddingHorizontal: 30,

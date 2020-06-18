@@ -11,6 +11,7 @@ import NewsletterWidget from './NewsletterWidget';
 
 const Widget = () => {
   const {
+    active,
     setActive,
     alternative,
     config,
@@ -49,7 +50,9 @@ const Widget = () => {
   };
 
   const onRelease = async () => {
+    setActive(false);
     try {
+      console.log('premium reading call');
       // TODO add premium read call
       //await track('premium-read', { type: 'premium' });
     } catch (e) {
@@ -65,8 +68,8 @@ const Widget = () => {
   switch (alternative
     ? config.alternative_widget
       ? config.alternative_widget
-      : trackData.config.alternative_widget
-    : trackData.action) {
+      : trackData?.config.alternative_widget
+    : trackData?.action) {
     case 'gift':
       return (
         <GiftWidget

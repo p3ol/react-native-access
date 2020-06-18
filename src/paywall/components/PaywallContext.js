@@ -6,8 +6,11 @@ import { mockState } from '../services/reducers';
 
 const PaywallContext = ({
   children,
+  onDataPolicyClick = () => {},
+  onDiscoveryLinkClick = () => {},
   onLock = () => {},
   onReady = () => {},
+  onRegister = () => {},
   onRelease = () => {},
   onSubscribeClick = () => {},
   onLoginClick = () => {},
@@ -34,7 +37,10 @@ const PaywallContext = ({
         config: state.config,
         alternative: state.alternative,
         onLock,
+        onDataPolicyClick,
+        onDiscoveryLinkClick,
         onReady,
+        onRegister,
         onRelease,
         onSubscribeClick,
         onLoginClick,
@@ -47,8 +53,11 @@ const PaywallContext = ({
 
 PaywallContext.propTypes = {
   children: PropTypes.array,
+  onDataPolicyClick: PropTypes.func,
+  onDiscoveryLinkClick: PropTypes.func,
   onLock: PropTypes.func,
   onReady: PropTypes.func,
+  onRegister: PropTypes.func,
   onRelease: PropTypes.func,
   onSubscribeClick: PropTypes.func,
   onLoginClick: PropTypes.func,

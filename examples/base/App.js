@@ -14,12 +14,15 @@ const App = () => {
   // Events definition
   const onLock = () => console.log('Content locked');
   const onRelease = () => console.log('Content released');
-  const onSubscribeClick = (widget, button, url) => {
-    console.log(widget, button, url);
-  };
-  const onLoginClick = (widget, button, url) => {
-    console.log(widget, button, url);
-  };
+  const onSubscribeClick = (widget, button, url) =>
+    console.log('Subscribe click', widget, button, url);
+  const onLoginClick = (widget, button, url) =>
+    console.log('Login click', widget, button, url);
+  const onReject = (widget, button, alternativeWidget) =>
+    console.log('Widget rejected', widget, button, alternativeWidget);
+  const onDiscoveryLinkClick = (widget, button, url) =>
+    console.log('Link click', widget, button, url);
+  const onDataPolicyClick = () => console.log('Data policy clicked');
 
   return (
     <React.Fragment>
@@ -30,8 +33,11 @@ const App = () => {
             <PaywallContext
               onLock={onLock}
               onRelease={onRelease}
+              onRejectClick={onReject}
               onSubscribeClick={onSubscribeClick}
               onLoginClick={onLoginClick}
+              onDiscoveryLinkClick={onDiscoveryLinkClick}
+              onDataPolicyClick={onDataPolicyClick}
             >
               <Text>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam

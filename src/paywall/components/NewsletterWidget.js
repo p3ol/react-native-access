@@ -16,8 +16,10 @@ import { defaultStyles } from '../theme/styles';
 
 const NewsletterWidget = ({ data, onRelease, widget }) => {
   const {
+    onDataPolicyClick,
     setAlternative,
     onLoginClick,
+    onRegister,
     onSubscribeClick,
   } = useContext(AppContext);
 
@@ -45,22 +47,23 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
 
         <Image
           style={defaultStyles.logo}
-          source={{ uri: data.styles.brand_logo }}
+          source={{ uri: data?.styles?.brand_logo }}
         />
 
         <Text style={defaultStyles.title}>
-          {data.texts.newsletter_title ||
+          {data?.texts?.newsletter_title ||
           'Besoin de lire cet article réservé aux abonnés ?'}
         </Text>
 
         <Text style={defaultStyles.text}>
-          {data.texts.newsletter_desc ||
-          ` Abonnez-vous à la newsletter ${data.config.newsletter_name} pour` +
+          {data?.texts?.newsletter_desc ||
+          ` Abonnez-vous à la newsletter ${data?.config.newsletter_name} pour` +
           'ne rien rater de l\'actualité et nous vous offrons ' +
           'l\'accès à cet article.'}
         </Text>
 
         <TextInput
+          testID="mailInput"
           style={state.inputFocused
             ? defaultStyles.input
             : emailRegex.test(state.mail)
@@ -68,7 +71,7 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
               : defaultStyles.inputWrong
           }
           placeholder={
-            data.texts.newsletter_input || 'Votre adresse email'
+            data?.texts?.newsletter_input || 'Votre adresse email'
           }
           onChange={e => dispatch({ mail: e.target.value })}
           onFocus={() => dispatch({ inputFocused: true })}
@@ -78,57 +81,67 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
           ? <Text style={defaultStyles.inputWarning}>
             {state.mail === ''
               ? 'Ce champ est oblgatoire'
-              : data.texts.newsletter_error
+              : data?.texts?.newsletter_error
             }
           </Text>
           : null
         }
 
         <Text //Substitute to checkbox coming with Junipero v2
+          testID="acceptDataButton"
           style={defaultStyles.authorization}
-          onPress={() => dispatch({ approve: !state.approve }) }
+          onPress={() => {
+            dispatch({ approve: !state.approve });
+            console.log(state.mail);
+          }}
         >
-          {data.texts.newsletter_optin_label ||
+          {data?.texts?.newsletter_optin_label ||
           'J\'accepte que mon email soit collecté pour que' +
-          `${data.config.app_name} m'envoie des newsletters`}
+          `${data?.config.app_name} m'envoie des newsletters`}
         </Text>
 
         <Text
-          testID="optinLink"
+          testID="dataButton"
           style={defaultStyles.subaction}
-          onPress={() => dispatch({ optin: 'open' }) }
+          onPress={() => {
+            dispatch({ optin: 'open' });
+            onDataPolicyClick();
+          }}
         >
-          { data.texts.newsletter_optin_link || 'Où vont mes données ?' }
+          { data?.texts?.newsletter_optin_link || 'Où vont mes données ?' }
         </Text>
 
         <Button
-          testID="mainButton"
-          title={data.texts.newsletter_button || 'Visiter la page'}
+          testID="registerButton"
+          title={data?.texts?.newsletter_button || 'Merci, j\'en profite !'}
           style={defaultStyles.actions}
           disabled={ !(state.approve && emailRegex.test(state.mail))}
-          color={data.styles.button_color}
-          onPress={() => onRelease()}
+          color={data?.styles?.button_color}
+          onPress={() => {
+            onRelease();
+            onRegister();
+          }}
         />
 
         <View style={defaultStyles.subactions_container}>
-          {data.config.login_button_enabled &&
+          {data?.config.login_button_enabled &&
             <Text
               testID="loginButton"
               style={defaultStyles.subaction}
               onPress={e => {
-                Linking.openURL(data.config.login_url);
+                Linking.openURL(data?.config.login_url);
                 onLoginClick(
                   widget,
                   e?.target,
-                  data.config.login_url
+                  data?.config.login_url
                 );
               }}>
               Je me connecte
             </Text>
           }
-          { data.config.alternative_widget !== 'none'
+          { data?.config.alternative_widget !== 'none'
             ? <Text
-              testID="subscribeButton"
+              testID="rejectButton"
               style={defaultStyles.subaction}
               onPress={() => setAlternative(true)}
             >
@@ -138,11 +151,11 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
               testID="subscribeButton"
               style={defaultStyles.subaction}
               onPress={e => {
-                Linking.openURL(data.config.subscription_url);
+                Linking.openURL(data?.config.subscription_url);
                 onSubscribeClick(
                   widget,
                   e?.target,
-                  data.config.subscription_url
+                  data?.config.subscription_url
                 );
               }}>
               {'Je m\'abonne'}
@@ -159,17 +172,18 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
         testID="dataInfos"
       >
         <Text
+          testID="returnButton"
           style={defaultStyles.backButton}
-          onClick={() => dispatch({ optin: 'closed' })}
+          onPress={() => dispatch({ optin: 'closed' })}
         >
           Retour
         </Text>
         <Image
           style={defaultStyles.logo}
-          source={{ uri: data.styles.brand_logo }}
+          source={{ uri: data?.styles?.brand_logo }}
         />
         <Text style={defaultStyles.text}>
-          { data.texts.newsletter_optin_link || 'Où vont mes données ?'}
+          { data?.texts?.newsletter_optin_link || 'Où vont mes données ?'}
         </Text>
         <Text style={defaultStyles.title}>
           À propos des données collectées
@@ -178,13 +192,13 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
           <Text style={defaultStyles.newsletterLabel}>
             Donnée collectée :
             <Text style={defaultStyles.newsletterText}>
-              {' ' + data.texts.newsletter_processed_data}
+              {' ' + data?.texts?.newsletter_processed_data}
             </Text>
           </Text>
           <Text style={defaultStyles.newsletterLabel}>
             Donneur d&apos;ordre :
             <Text style={defaultStyles.newsletterText}>
-              {' ' + data.texts.newsletter_process_ordering_institution}
+              {' ' + data?.texts?.newsletter_process_ordering_institution}
             </Text>
           </Text>
           <Text style={defaultStyles.newsletterLabel}>
@@ -196,13 +210,13 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
           <Text style={defaultStyles.newsletterLabel}>
             But de la collecte :
             <Text style={defaultStyles.newsletterText}>
-              {' ' + data.texts.newsletter_data_process_purpose}
+              {' ' + data?.texts?.newsletter_data_process_purpose}
             </Text>
           </Text>
           <Text style={defaultStyles.newsletterLabel}>
             Durée du traitement :
             <Text style={defaultStyles.newsletterText}>
-              {' ' + data.texts.newsletter_data_process_duration}
+              {' ' + data?.texts?.newsletter_data_process_duration}
             </Text>
           </Text>
         </View>
@@ -221,6 +235,7 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
             <Text style={defaultStyles.newsletterText}>
             Politiques de données : Donneur d&apos;ordre|
               <Text
+                testID="pooolData"
                 style={defaultStyles.subaction}
                 onPress={() =>
                   Linking.openURL('https://www.poool.fr/gdpr')}>

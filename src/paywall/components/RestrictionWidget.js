@@ -33,11 +33,11 @@ const RestrictionWidget = ({ data, widget }) => {
         style={defaultStyles.actions}
         color="#000A24"
         onPress={e => {
-          Linking.openURL(data.config.subscription_url);
+          Linking.openURL(data?.config.subscription_url);
           onSubscribeClick(
             widget,
             e?.target,
-            data.config.subscription_url
+            data?.config.subscription_url
           );
         }}
       />
@@ -46,11 +46,11 @@ const RestrictionWidget = ({ data, widget }) => {
           testID="loginButton"
           style={defaultStyles.subaction}
           onPress={e => {
-            Linking.openURL(data.config.login_url);
+            Linking.openURL(data?.config.login_url);
             onLoginClick(
               widget,
               e?.target,
-              data.config.login_url
+              data?.config.login_url
             );
           }}>
           Je me connecte

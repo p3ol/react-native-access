@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { defaultStyles } from '../theme/styles';
 
 const GiftWidget = ({ data, widget }) => {
-  const { setActive, onSubscribeClick, onLoginClick } = useContext(AppContext);
+  const { onRelease, onSubscribeClick, onLoginClick } = useContext(AppContext);
 
   return (
     <View
@@ -20,32 +20,34 @@ const GiftWidget = ({ data, widget }) => {
     >
       <Image
         style={defaultStyles.logo}
-        source={{ uri: data.styles.brand_logo }}
+        source={{ uri: data?.styles.brand_logo }}
       />
       <Text style={defaultStyles.title}>
         Besoin de lire cet article {'\n'}
         réservé aux abonnés ?
       </Text>
       <Text style={defaultStyles.text}>
-        {data.texts.gift_desc}
+        {data?.texts.gift_desc}
       </Text>
       <Button
-        testID="mainButton"
+        testID="releaseButton"
         title="Merci, je profite de cet article offert !"
         style={defaultStyles.actions}
-        color={data.styles.button_color}
-        onPress={() => setActive(false)}
+        color={data?.styles.button_color}
+        onPress={() => {
+          onRelease();
+        }}
       />
       <View style={defaultStyles.subactions_container}>
         <Text
           testID="loginButton"
           style={defaultStyles.subaction}
           onPress={e => {
-            Linking.openURL(data.config.login_url);
+            Linking.openURL(data?.config.login_url);
             onLoginClick(
               widget,
               e?.target,
-              data.config.login_url
+              data?.config.login_url
             );
           }}>
           Je me connecte
@@ -54,11 +56,11 @@ const GiftWidget = ({ data, widget }) => {
           testID="subscribeButton"
           style={defaultStyles.subaction}
           onPress={e => {
-            Linking.openURL(data.config.subscription_url);
+            Linking.openURL(data?.config.subscription_url);
             onSubscribeClick(
               widget,
               e?.target,
-              data.config.subscription_url
+              data?.config.subscription_url
             );
           }}>
           Je m&apos;abonne
