@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { Text, Linking } from 'react-native';
 import {
   render,
@@ -15,7 +15,7 @@ import NewsletterWidget from '../../src/paywall/components/NewsletterWidget';
 describe('<NewsletterWidget />', () => {
 
   it('should render without issues', async () => {
-    const component = shallow(< NewsletterWidget />);
+    const component = shallow(<NewsletterWidget />);
 
     expect(component.length).toBe(1);
 
@@ -28,7 +28,7 @@ describe('<NewsletterWidget />', () => {
     const component = render(
       <PaywallContext onLoginClick={onLoginClick} >
         <Text>Test text</Text>
-        < NewsletterWidget data={{ config: { login_button_enabled: true } }}/>
+        <NewsletterWidget data={{ config: { login_button_enabled: true } }} />
       </PaywallContext>
     );
 
@@ -50,7 +50,7 @@ describe('<NewsletterWidget />', () => {
 
     const component = render(
       <AppContext.Provider value={context}>
-        < NewsletterWidget/>
+        <NewsletterWidget />
       </AppContext.Provider >
     );
 
@@ -69,7 +69,7 @@ describe('<NewsletterWidget />', () => {
       const component = render(
         <PaywallContext>
           <Text>Test text</Text>
-          < NewsletterWidget/>
+          <NewsletterWidget />
         </PaywallContext>
       );
 
@@ -88,7 +88,7 @@ describe('<NewsletterWidget />', () => {
       const component = render(
         <PaywallContext>
           <Text>Test text</Text>
-          < NewsletterWidget/>
+          <NewsletterWidget />
         </PaywallContext>
       );
 
@@ -110,7 +110,7 @@ describe('<NewsletterWidget />', () => {
     const component = render(
       <PaywallContext>
         <Text>Test text</Text>
-        < NewsletterWidget/>
+        <NewsletterWidget />
       </PaywallContext>
     );
 
@@ -133,7 +133,7 @@ describe('<NewsletterWidget />', () => {
       const component = render(
         <PaywallContext onSubscribeClick={onSubscribeClick} >
           <Text>Test text</Text>
-          < NewsletterWidget data={{ config: { alternative_widget: 'none' } }}/>
+          <NewsletterWidget data={{ config: { alternative_widget: 'none' } }}/>
         </PaywallContext>
       );
 
@@ -146,33 +146,93 @@ describe('<NewsletterWidget />', () => {
 
     });
 
-  // it('should be able to click on registerButton',
-  //   async () => {
-  //
-  //     const onRegister = jest.fn();
-  //
-  //     const component = render(
-  //       <PaywallContext onRegister={onRegister} >
-  //         <Text>Test text</Text>
-  //         < NewsletterWidget/>
-  //       </PaywallContext>
-  //     );
-  //
-  //     const mailInput = component.getByTestId('mailInput');
-  //     fireEvent.changeText(mailInput, 'test@poool.fr');
-  //
-  //     const acceptDataButton = component.getByTestId('acceptDataButton');
-  //     fireEvent.press(acceptDataButton);
-  //
-  //     const registerButton = component.getByTestId('registerButton');
-  //     fireEvent.press(registerButton);
-  //
-  //     console.log(getNodeText(mailInput));
-  //
-  //     await wait(() => {
-  //       expect(onRegister.mock.calls.length).toBe(1);
-  //     });
-  //
-  //   });
+  it('should be able to click on registerButton',
+    async () => {
+
+      const ref = createRef();
+
+      const onRegister = jest.fn();
+      const onRelease = jest.fn();
+
+      const component = render(
+        <PaywallContext onRegister={onRegister} onRelease={onRelease} >
+          <Text>Test text</Text>
+          <NewsletterWidget ref={ref} />
+        </PaywallContext>
+      );
+
+      const mailInput = component.getByTestId('mailInput');
+
+      fireEvent.focus(mailInput);
+
+      fireEvent.change(mailInput,
+        { target: { value: 'test@poool.fr' } }
+      );
+
+      expect(ref.current.mail).toBe('test@poool.fr');
+
+      const acceptDataButton = component.getByTestId('acceptDataButton');
+      fireEvent.press(acceptDataButton);
+
+      const registerButton = component.getByTestId('registerButton');
+      fireEvent.press(registerButton);
+
+      fireEvent.blur(mailInput);
+
+      await wait(() => {
+        expect(onRegister.mock.calls.length).toBe(1);
+        expect(onRelease.mock.calls.length).toBe(1);
+      });
+
+    });
+
+  it('should display a warning on a wrong mail format input',
+    async () => {
+
+      const ref = createRef();
+
+      const component = render(
+        <PaywallContext>
+          <Text>Test text</Text>
+          <NewsletterWidget ref={ref} />
+        </PaywallContext>
+      );
+
+      const mailInput = component.getByTestId('mailInput');
+      fireEvent.change(mailInput,
+        { target: { value: 'wrong#mail.fr' } }
+      );
+
+      fireEvent.blur(mailInput);
+
+      await wait(() => {
+        expect(component.getByTestId('warningMessage')).toBeTruthy();
+      });
+
+    });
+
+  it('should display a warning on a missing mail input',
+    async () => {
+
+      const ref = createRef();
+
+      const component = render(
+        <PaywallContext>
+          <Text>Test text</Text>
+          <NewsletterWidget ref={ref} />
+        </PaywallContext>
+      );
+
+      const mailInput = component.getByTestId('mailInput');
+
+      fireEvent.blur(mailInput);
+
+      await wait(() => {
+        expect(
+          getNodeText(component.getByTestId('warningMessage'))
+        ).toBe('Ce champ est oblgatoire');
+      });
+
+    });
 
 });

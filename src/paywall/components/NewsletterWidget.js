@@ -1,4 +1,8 @@
-import React, { useContext, useReducer } from 'react';
+import React, {
+  useContext,
+  useReducer,
+  forwardRef,
+  useImperativeHandle } from 'react';
 import {
   View,
   Image,
@@ -14,12 +18,13 @@ import { mockState } from '../services/reducers';
 
 import { defaultStyles } from '../theme/styles';
 
-const NewsletterWidget = ({ data, onRelease, widget }) => {
+const NewsletterWidget = forwardRef(({ data, widget }, ref) => {
   const {
     onDataPolicyClick,
     setAlternative,
     onLoginClick,
     onRegister,
+    onRelease,
     onSubscribeClick,
   } = useContext(AppContext);
 
@@ -30,10 +35,9 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
     inputFocused: true,
   });
 
-  // const [approve, setApprove] = useState(false);
-  // const [mail, setMail] = useState('');
-  // const [optin, setOptin] = useState('closed');
-  // const [inputFocused, setInputFocused] = useState(true);
+  useImperativeHandle(ref, () => ({
+    mail: state.mail,
+  }));
 
   /* eslint-disable-next-line */
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -78,7 +82,7 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
           onBlur={() => dispatch({ inputFocused: false })}
         />
         { !state.inputFocused && !emailRegex.test(state.mail)
-          ? <Text style={defaultStyles.inputWarning}>
+          ? <Text style={defaultStyles.inputWarning} testID="warningMessage">
             {state.mail === ''
               ? 'Ce champ est oblgatoire'
               : data?.texts?.newsletter_error
@@ -92,7 +96,6 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
           style={defaultStyles.authorization}
           onPress={() => {
             dispatch({ approve: !state.approve });
-            console.log(state.mail);
           }}
         >
           {data?.texts?.newsletter_optin_label ||
@@ -247,7 +250,7 @@ const NewsletterWidget = ({ data, onRelease, widget }) => {
       </View>
     );
   }
-};
+});
 
 NewsletterWidget.propTypes = {
   data: PropTypes.object,

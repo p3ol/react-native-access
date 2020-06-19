@@ -2,7 +2,6 @@ import nock from 'nock';
 import React from 'react';
 import { Text, Linking } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
-import sinon from 'sinon';
 
 import Paywall from '../src/paywall/components/Paywall';
 import PaywallContext from '../src/paywall/components/PaywallContext';
