@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { track, setConfig } from '@poool/sdk';
+import { track, setConfig, unlock } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 
@@ -40,7 +40,6 @@ const Widget = () => {
 
     try {
       const result = await track('page-view', { type: 'premium' });
-      console.log(result);
       updateContext({ trackData: result });
       onReady();
     } catch (e) {
@@ -49,12 +48,10 @@ const Widget = () => {
 
   };
 
-  const onRelease = async () => {
-    setActive(false);
+  const release = async () => {
     try {
-      console.log('premium reading call');
-      // TODO add premium read call
-      //await track('premium-read', { type: 'premium' });
+      await unlock(trackData, { body: { cookiesEnabled: true } });
+      setActive(false);
     } catch (e) {
       console.error(e);
     }
@@ -73,7 +70,7 @@ const Widget = () => {
     case 'gift':
       return (
         <GiftWidget
-          onRelease={onRelease}
+          release={release}
           data={trackData}
         />
       );
@@ -86,16 +83,16 @@ const Widget = () => {
     case 'newsletter':
       return (
         <NewsletterWidget
-          onRelease={onRelease}
+          release={release}
           data={trackData}
         />
       );
     case 'invisible':
-      onRelease();
+      release();
       setActive(false);
       return null;
     case 'unlock':
-      onRelease();
+      release();
       setActive(false);
       // TODO: Add a "popover" message
       return null;

@@ -157,7 +157,7 @@ describe('<NewsletterWidget />', () => {
       const component = render(
         <PaywallContext onRegister={onRegister} onRelease={onRelease} >
           <Text>Test text</Text>
-          <NewsletterWidget ref={ref} />
+          <NewsletterWidget ref={ref} release={() => {}}/>
         </PaywallContext>
       );
 

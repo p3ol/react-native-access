@@ -18,7 +18,7 @@ import { mockState } from '../services/reducers';
 
 import { defaultStyles } from '../theme/styles';
 
-const NewsletterWidget = forwardRef(({ data, widget }, ref) => {
+const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
   const {
     onDataPolicyClick,
     setAlternative,
@@ -123,6 +123,7 @@ const NewsletterWidget = forwardRef(({ data, widget }, ref) => {
           onPress={() => {
             onRelease();
             onRegister();
+            release();
           }}
         />
 
@@ -254,6 +255,7 @@ const NewsletterWidget = forwardRef(({ data, widget }, ref) => {
 
 NewsletterWidget.propTypes = {
   data: PropTypes.object,
+  release: PropTypes.func,
   widget: PropTypes.string,
 };
 

@@ -10,8 +10,8 @@ import {
 import PropTypes from 'prop-types';
 import { defaultStyles } from '../theme/styles';
 
-const GiftWidget = ({ data, widget }) => {
-  const { onRelease, onSubscribeClick, onLoginClick } = useContext(AppContext);
+const GiftWidget = ({ data, release, widget }) => {
+  const { onSubscribeClick, onLoginClick, onRelease } = useContext(AppContext);
 
   return (
     <View
@@ -36,6 +36,7 @@ const GiftWidget = ({ data, widget }) => {
         color={data?.styles.button_color}
         onPress={() => {
           onRelease();
+          release();
         }}
       />
       <View style={defaultStyles.subactions_container}>
@@ -72,6 +73,7 @@ const GiftWidget = ({ data, widget }) => {
 
 GiftWidget.propTypes = {
   data: PropTypes.object,
+  release: PropTypes.func,
   widget: PropTypes.string,
 };
 

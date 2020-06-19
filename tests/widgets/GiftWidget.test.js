@@ -19,12 +19,12 @@ describe('<GiftWidget />', () => {
       onSubscribeClick={onSubscribeClick}
     >
       <Text>Test text</Text>
-      < GiftWidget />
+      <GiftWidget release={() => {}}/>
     </PaywallContext>
   );
 
   it('should render without issues', async () => {
-    const component = shallow(< GiftWidget />);
+    const component = shallow(<GiftWidget />);
 
     expect(component.length).toBe(1);
 

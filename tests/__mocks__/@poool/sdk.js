@@ -8,4 +8,5 @@ module.exports = {
     return response.json();
   },
   setConfig: () => ({}),
+  unlock: () => ({}),
 };
