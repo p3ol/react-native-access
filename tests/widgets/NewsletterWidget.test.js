@@ -157,7 +157,7 @@ describe('<NewsletterWidget />', () => {
       const component = render(
         <PaywallContext onRegister={onRegister} onRelease={onRelease} >
           <Text>Test text</Text>
-          <NewsletterWidget ref={ref} release={() => {}}/>
+          <NewsletterWidget register={() => {}} ref={ref} release={() => {}}/>
         </PaywallContext>
       );
 
@@ -216,11 +216,19 @@ describe('<NewsletterWidget />', () => {
 
       const ref = createRef();
 
+      const context = {
+        trackData: {
+          config: {
+            locale: 'fr',
+          },
+        },
+      };
+
       const component = render(
-        <PaywallContext>
+        <AppContext.Provider value={context}>
           <Text>Test text</Text>
           <NewsletterWidget ref={ref} />
-        </PaywallContext>
+        </AppContext.Provider>
       );
 
       const mailInput = component.getByTestId('mailInput');
@@ -230,7 +238,7 @@ describe('<NewsletterWidget />', () => {
       await wait(() => {
         expect(
           getNodeText(component.getByTestId('warningMessage'))
-        ).toBe('Ce champ est oblgatoire');
+        ).toBe('Ce champ est obligatoire.');
       });
 
     });

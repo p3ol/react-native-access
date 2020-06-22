@@ -50,6 +50,9 @@ export const defaultStyles = StyleSheet.create({
   newsletterDataInfos: {
     marginBottom: 30,
   },
+  newsletterDataInfosItem: {
+    flexDirection: 'row',
+  },
   newsletterLabel: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -57,7 +60,9 @@ export const defaultStyles = StyleSheet.create({
     marginTop: 10,
   },
   newsletterText: {
+    fontSize: 16,
     fontWeight: 'normal',
+    lineHeight: 26,
   },
   subaction: {
     marginBottom: 10,

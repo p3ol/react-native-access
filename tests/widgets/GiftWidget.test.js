@@ -32,9 +32,7 @@ describe('<GiftWidget />', () => {
 
   it('should release the paywall by clicking the releaseButton', async () => {
 
-    const releaseButton = await component.getByTitle(
-      /Merci, je profite de cet article offert !/i
-    );
+    const releaseButton = await component.getByTestId('releaseButton');
     fireEvent.press(releaseButton);
 
     await wait(() => {

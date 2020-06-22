@@ -20,18 +20,18 @@ const Translate = ({
   const finalReplacers = {
     ...replace,
     ...(replace.app_name
-      ? { app_name: trackData.config.app_name }
+      ? { app_name: trackData?.config.app_name }
       : {}
     ),
   };
 
-  var text = trackData.texts[textKey] ||
-    (Locales.availableLocales[trackData.config.locale.toLowerCase()]
+  var text = trackData?.texts?.[textKey] ||
+    (Locales.availableLocales[trackData?.config.locale.toLowerCase()]
       ?.[textKey] || '') ||
     children;
 
   Object.entries(finalReplacers).map(([k, v]) => {
-    text = text.replace(`{${k}}`, v);
+    text = text?.replace(`{${k}}`, v);
   });
 
   return asString

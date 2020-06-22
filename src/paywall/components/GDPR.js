@@ -1,25 +1,23 @@
-import React, {
-  useContext,
-  useReducer,
-  forwardRef,
-  useImperativeHandle } from 'react';
+import React, { useContext } from 'react';
 import {
   View,
   Image,
   Text,
-  Button,
   Linking,
-  TextInput,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
-import { mockState } from '../services/reducers';
 import Translate from './Translate';
 
 import { defaultStyles } from '../theme/styles';
 
-const GDPR = () => {
+const GDPR = ({ onBackClick }) => {
+
+  const {
+    trackData,
+  } = useContext(AppContext);
+
   return (
     <View
       style={defaultStyles.container}
@@ -28,76 +26,112 @@ const GDPR = () => {
       <Text
         testID="returnButton"
         style={defaultStyles.backButton}
-        onPress={() => dispatch({ optin: 'closed' })}
+        onPress={() => onBackClick()}
       >
         Retour
       </Text>
       <Image
         style={defaultStyles.logo}
-        source={{ uri: data?.styles?.brand_logo }}
+        source={{ uri: trackData?.styles?.brand_logo }}
       />
-      <Text style={defaultStyles.text}>
-        { data?.texts?.newsletter_optin_link || 'Où vont mes données ?'}
-      </Text>
-      <Text style={defaultStyles.title}>
-        À propos des données collectées
-      </Text>
+      <Translate
+        textKey={'$gdpr_title'}
+        style={defaultStyles.text}
+      />
+      <Translate
+        textKey={'$gdpr_desc'}
+        style={defaultStyles.title}
+      />
       <View style={defaultStyles.newsletterDataInfos}>
         <Text style={defaultStyles.newsletterLabel}>
-          Donnée collectée :
-          <Text style={defaultStyles.newsletterText}>
-            {' ' + data?.texts?.newsletter_processed_data}
-          </Text>
+          <Translate
+            textKey={'$gdpr_processed_data_title'}
+            style={defaultStyles.newsletterLabel}
+          />
+          <Translate
+            textKey={'newsletter_processed_data'}
+            style={defaultStyles.newsletterText}
+          />
         </Text>
         <Text style={defaultStyles.newsletterLabel}>
-          Donneur d&apos;ordre :
-          <Text style={defaultStyles.newsletterText}>
-            {' ' + data?.texts?.newsletter_process_ordering_institution}
-          </Text>
+          <Translate
+            textKey={'$gdpr_process_ordering_institution_title'}
+            style={defaultStyles.newsletterLabel}
+          />
+          <Translate
+            textKey={'newsletter_process_ordering_institution'}
+            style={defaultStyles.newsletterText}
+            replace={{ app_name: true }}
+          />
         </Text>
         <Text style={defaultStyles.newsletterLabel}>
-          Organisme collecteur (sous-traitant) :
-          <Text style={defaultStyles.newsletterText}>
-            {' '} Poool
-          </Text>
+          <Translate
+            textKey={'$gdpr_data_processor'}
+            style={defaultStyles.newsletterLabel}
+          />
+          <Text style={defaultStyles.newsletterText} >Poool</Text>
         </Text>
         <Text style={defaultStyles.newsletterLabel}>
-          But de la collecte :
-          <Text style={defaultStyles.newsletterText}>
-            {' ' + data?.texts?.newsletter_data_process_purpose}
-          </Text>
+          <Translate
+            textKey={'$gdpr_data_process_purpose_title'}
+            style={defaultStyles.newsletterLabel}
+          />
+          <Translate
+            textKey={'newsletter_data_process_purpose'}
+            style={defaultStyles.newsletterText}
+          />
         </Text>
         <Text style={defaultStyles.newsletterLabel}>
-          Durée du traitement :
-          <Text style={defaultStyles.newsletterText}>
-            {' ' + data?.texts?.newsletter_data_process_duration}
-          </Text>
+          <Translate
+            textKey={'$gdpr_data_process_duration_title'}
+            style={defaultStyles.newsletterLabel}
+          />
+          <Translate
+            textKey={'pass_data_process_duration'}
+            style={defaultStyles.newsletterText}
+          />
         </Text>
       </View>
       <View>
-        <Text style={defaultStyles.newsletterLabel}>
-          Vos droits concernant vos données. {'\n'}
-          <Text style={defaultStyles.newsletterText}>
-          Accès, rectification, mise à jour, effacement, portabilité,
-          opposition pour des motifs légitimes, limitation du traitement,
-          indication du sort de la donnée en cas de décès. Exercer vos droits
-          </Text>
-        </Text>
-        <Text style={defaultStyles.newsletterLabel}>
-          Nous mettons tous nos moyens en œuvre
-          pour nous conformer au RGPD {'\n'}
-          <Text style={defaultStyles.newsletterText}>
-          Politiques de données : Donneur d&apos;ordre|
-            <Text
-              testID="pooolData"
-              style={defaultStyles.subaction}
-              onPress={() =>
-                Linking.openURL('https://www.poool.fr/gdpr')}>
-              Organisme collecteur
-            </Text>
-          </Text>
+        <Translate
+          textKey={'$gdpr_rights_title'}
+          style={defaultStyles.newsletterLabel}
+        />
+        <Translate
+          textKey={'$gdpr_rights_desc'}
+          style={defaultStyles.newsletterText}
+        />
+        <Translate
+          textKey={'$gdpr_conformity_title'}
+          style={defaultStyles.newsletterLabel}
+        />
+        <Text style={defaultStyles.newsletterText}>
+          <Translate
+            textKey={'$gdpr_conformity_desc'}
+          />
+          <Translate
+            textKey={'$gdpr_conformity_ordering_institution_button'}
+            style={defaultStyles.subaction}
+            onPress={() => {}}
+          /> |
+          <Translate
+            textKey={'$gdpr_conformity_processing_institution_button'}
+            testID="pooolData"
+            style={defaultStyles.subaction}
+            onPress={() =>
+              Linking.openURL('https://www.poool.fr/gdpr')}
+          />
         </Text>
       </View>
     </View>
-  )
-}
+  );
+
+};
+
+GDPR.propTypes = {
+  onBackClick: PropTypes.func,
+};
+
+GDPR.displayName = 'GDPR';
+
+export default GDPR;

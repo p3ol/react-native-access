@@ -6,7 +6,6 @@ import React, {
 import {
   View,
   Image,
-  Text,
   Button,
   Linking,
   TextInput,
@@ -16,6 +15,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 import Translate from './Translate';
+import GDPR from './GDPR';
 
 import { defaultStyles } from '../theme/styles';
 
@@ -95,11 +95,17 @@ const NewsletterWidget = forwardRef(({
         </Translate>
 
         { !state.inputFocused && !emailRegex.test(state.mail)
-          ? <Translate
-            textKey={'newsletter_error'}
-            style={defaultStyles.inputWarning}
-            testID="warningMessage"
-          />
+          ? state.mail === ''
+            ? <Translate
+              textKey={'form_empty_error'}
+              style={defaultStyles.inputWarning}
+              testID="warningMessage"
+            />
+            : <Translate
+              textKey={'form_email_error'}
+              style={defaultStyles.inputWarning}
+              testID="warningMessage"
+            />
           : null
         }
 
@@ -125,19 +131,23 @@ const NewsletterWidget = forwardRef(({
           }}
         />
 
-        <Button
-          testID="registerButton"
-          title={data?.texts?.newsletter_button || 'Merci, j\'en profite !'}
-          style={defaultStyles.actions}
-          disabled={ !(state.approve && emailRegex.test(state.mail))}
-          color={data?.styles?.button_color}
-          onPress={() => {
-            onRelease();
-            onRegister();
-            release();
-            register(state.mail);
-          }}
-        />
+        <Translate textKey={'newsletter_button'} asString={true}>
+          {({ text }) => (
+            <Button
+              testID="registerButton"
+              title={text}
+              style={defaultStyles.actions}
+              disabled={ !(state.approve && emailRegex.test(state.mail))}
+              color={data?.styles?.button_color}
+              onPress={() => {
+                onRelease();
+                onRegister();
+                release();
+                register(state.mail);
+              }}
+            />
+          )}
+        </Translate>
 
         <View style={defaultStyles.subactions_container}>
           {data?.config.login_button_enabled &&
@@ -181,87 +191,7 @@ const NewsletterWidget = forwardRef(({
     );
   } else {
     return (
-      <View
-        style={defaultStyles.container}
-        testID="dataInfos"
-      >
-        <Text
-          testID="returnButton"
-          style={defaultStyles.backButton}
-          onPress={() => dispatch({ optin: 'closed' })}
-        >
-          Retour
-        </Text>
-        <Image
-          style={defaultStyles.logo}
-          source={{ uri: data?.styles?.brand_logo }}
-        />
-        <Translate
-          textKey={'$gdpr_title'}
-          style={defaultStyles.text}
-        />
-        <Translate
-          textKey={'$gdpr_desc'}
-          style={defaultStyles.title}
-        />
-        <View style={defaultStyles.newsletterDataInfos}>
-          <Text style={defaultStyles.newsletterLabel}>
-            Donnée collectée :
-            <Translate
-              textKey={'newsletter_processed_data'}
-              style={defaultStyles.newsletterText}
-            />
-          </Text>
-          <Text style={defaultStyles.newsletterLabel}>
-            Donneur d&apos;ordre :
-            <Text style={defaultStyles.newsletterText}>
-              {' ' + data?.texts?.newsletter_process_ordering_institution}
-            </Text>
-          </Text>
-          <Text style={defaultStyles.newsletterLabel}>
-            Organisme collecteur (sous-traitant) :
-            <Text style={defaultStyles.newsletterText}>
-              {' '} Poool
-            </Text>
-          </Text>
-          <Text style={defaultStyles.newsletterLabel}>
-            But de la collecte :
-            <Text style={defaultStyles.newsletterText}>
-              {' ' + data?.texts?.newsletter_data_process_purpose}
-            </Text>
-          </Text>
-          <Text style={defaultStyles.newsletterLabel}>
-            Durée du traitement :
-            <Text style={defaultStyles.newsletterText}>
-              {' ' + data?.texts?.newsletter_data_process_duration}
-            </Text>
-          </Text>
-        </View>
-        <View>
-          <Text style={defaultStyles.newsletterLabel}>
-            Vos droits concernant vos données. {'\n'}
-            <Text style={defaultStyles.newsletterText}>
-            Accès, rectification, mise à jour, effacement, portabilité,
-            opposition pour des motifs légitimes, limitation du traitement,
-            indication du sort de la donnée en cas de décès. Exercer vos droits
-            </Text>
-          </Text>
-          <Text style={defaultStyles.newsletterLabel}>
-            Nous mettons tous nos moyens en œuvre
-            pour nous conformer au RGPD {'\n'}
-            <Text style={defaultStyles.newsletterText}>
-            Politiques de données : Donneur d&apos;ordre|
-              <Text
-                testID="pooolData"
-                style={defaultStyles.subaction}
-                onPress={() =>
-                  Linking.openURL('https://www.poool.fr/gdpr')}>
-                Organisme collecteur
-              </Text>
-            </Text>
-          </Text>
-        </View>
-      </View>
+      <GDPR onBackClick={() => dispatch({ optin: 'closed' })}/>
     );
   }
 });

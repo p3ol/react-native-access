@@ -33,9 +33,7 @@ describe('<LinkWidget />', () => {
 
   it('should fire onDiscoveryLinkClick event by clicking on link', async () => {
 
-    const linkButton = await component.getByTitle(
-      /Visiter la page/i
-    );
+    const linkButton = await component.getByTestId('linkButton');
     fireEvent.press(linkButton);
 
     await wait(() => {

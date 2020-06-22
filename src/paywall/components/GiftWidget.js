@@ -3,11 +3,12 @@ import { AppContext } from '../services/contexts';
 import {
   View,
   Image,
-  Text,
   Button,
   Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
+import Translate from './Translate';
 import { defaultStyles } from '../theme/styles';
 
 const GiftWidget = ({ data, release, widget }) => {
@@ -22,25 +23,32 @@ const GiftWidget = ({ data, release, widget }) => {
         style={defaultStyles.logo}
         source={{ uri: data?.styles.brand_logo }}
       />
-      <Text style={defaultStyles.title}>
-        Besoin de lire cet article {'\n'}
-        réservé aux abonnés ?
-      </Text>
-      <Text style={defaultStyles.text}>
-        {data?.texts.gift_desc}
-      </Text>
-      <Button
-        testID="releaseButton"
-        title="Merci, je profite de cet article offert !"
-        style={defaultStyles.actions}
-        color={data?.styles.button_color}
-        onPress={() => {
-          onRelease();
-          release();
-        }}
+      <Translate
+        textKey={'gift_title'}
+        style={defaultStyles.title}
       />
+      <Translate
+        textKey={'gift_desc'}
+        style={defaultStyles.text}
+        replace={{ app_name: true }}
+      />
+      <Translate textKey={'gift_button'} asString={true}>
+        {({ text }) => (
+          <Button
+            testID="releaseButton"
+            title={text}
+            style={defaultStyles.actions}
+            color={data?.styles.button_color}
+            onPress={() => {
+              onRelease();
+              release();
+            }}
+          />
+        )}
+      </Translate>
       <View style={defaultStyles.subactions_container}>
-        <Text
+        <Translate
+          textKey={'login_link'}
           testID="loginButton"
           style={defaultStyles.subaction}
           onPress={e => {
@@ -50,10 +58,10 @@ const GiftWidget = ({ data, release, widget }) => {
               e?.target,
               data?.config.login_url
             );
-          }}>
-          Je me connecte
-        </Text>
-        <Text
+          }}
+        />
+        <Translate
+          textKey={'subscribe_link'}
           testID="subscribeButton"
           style={defaultStyles.subaction}
           onPress={e => {
@@ -63,9 +71,8 @@ const GiftWidget = ({ data, release, widget }) => {
               e?.target,
               data?.config.subscription_url
             );
-          }}>
-          Je m&apos;abonne
-        </Text>
+          }}
+        />
       </View>
     </View>
   );

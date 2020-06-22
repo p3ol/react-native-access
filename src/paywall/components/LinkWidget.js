@@ -3,11 +3,12 @@ import { AppContext } from '../services/contexts';
 import {
   View,
   Image,
-  Text,
   Button,
   Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
+import Translate from './Translate';
 import { defaultStyles } from '../theme/styles';
 
 const LinkWidget = ({ data, widget }) => {
@@ -26,36 +27,44 @@ const LinkWidget = ({ data, widget }) => {
         style={defaultStyles.logo}
         source={{ uri: data?.styles?.brand_logo }}
       />
-      <Text style={defaultStyles.title}>
-        {data?.texts?.link_title ||
-        'Cet article est réservé aux abonnés.'}
-      </Text>
-      <Text style={defaultStyles.text}>
-        {data?.texts?.link_desc ||
-        ` ${data?.config.app_name} vous suggère de
-        vous rendre sur la page Web suivante.`}
-      </Text>
-      <Button
-        testID="linkButton"
-        title={data?.texts?.link_button || 'Visiter la page'}
-        style={defaultStyles.actions}
-        color={data?.styles?.button_color}
-        onPress={e => {
-          onDiscoveryLinkClick(
-            widget,
-            e?.target,
-            config.login_url || data?.config.link_url
-          );
-          data?.config.link_url
-            ? Linking.openURL(config.login_url || data?.config.link_url)
-            : console.warn(
-              'No link_url config value has been provided, cannot open url'
-            );
-        }}
+      <Translate
+        textKey={'link_title'}
+        style={defaultStyles.title}
       />
+      <Translate
+        textKey={'link_desc'}
+        style={defaultStyles.text}
+        replace={{ app_name: true }}
+      />
+      <Translate
+        textKey={'link_button'}
+        asString={true}
+      >
+        {({ text }) => (
+          <Button
+            testID="linkButton"
+            title={text}
+            style={defaultStyles.actions}
+            color={data?.styles?.button_color}
+            onPress={e => {
+              onDiscoveryLinkClick(
+                widget,
+                e?.target,
+                config.login_url || data?.config.link_url
+              );
+              data?.config.link_url
+                ? Linking.openURL(config.login_url || data?.config.link_url)
+                : console.warn(
+                  'No link_url config value has been provided, cannot open url'
+                );
+            }}
+          />
+        )}
+      </Translate>
       <View style={defaultStyles.subactions_container}>
         {data?.config.login_button_enabled &&
-          <Text
+          <Translate
+            textKey={'login_link'}
             testID="loginButton"
             style={defaultStyles.subaction}
             onPress={e => {
@@ -65,17 +74,15 @@ const LinkWidget = ({ data, widget }) => {
                 e?.target,
                 data?.config?.login_url
               );
-            }}>
-            Je me connecte
-          </Text>
+            }}
+          />
         }
-        <Text
+        <Translate
+          textKey={'no_thanks'}
           testID="rejectButton"
           style={defaultStyles.subaction}
           onPress={() => setAlternative(true)}
-        >
-          Non, merci
-        </Text>
+        />
       </View>
     </View>
   );
