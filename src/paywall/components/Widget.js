@@ -1,6 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { track, setConfig, unlock } from '@poool/sdk';
+import {
+  register,
+  setConfig,
+  track,
+  unlock,
+} from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 
@@ -48,9 +53,26 @@ const Widget = () => {
 
   };
 
-  const release = async () => {
+  const releasing = async () => {
     try {
       await unlock(trackData, { body: { cookiesEnabled: true } });
+      setActive(false);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const registering = async email => {
+    try {
+      await register(
+        trackData.segment,
+        trackData.journey,
+        trackData.actionName,
+        email,
+        trackData.config.newsletter_id,
+        trackData.config?.externalListid,
+        { body: { cookiesEnabled: true } }
+      );
       setActive(false);
     } catch (e) {
       console.error(e);
@@ -70,7 +92,7 @@ const Widget = () => {
     case 'gift':
       return (
         <GiftWidget
-          release={release}
+          release={releasing}
           data={trackData}
         />
       );
@@ -83,17 +105,16 @@ const Widget = () => {
     case 'newsletter':
       return (
         <NewsletterWidget
-          release={release}
+          register={registering}
+          release={releasing}
           data={trackData}
         />
       );
     case 'invisible':
-      release();
-      setActive(false);
+      releasing();
       return null;
     case 'unlock':
-      release();
-      setActive(false);
+      releasing();
       // TODO: Add a "popover" message
       return null;
     default:

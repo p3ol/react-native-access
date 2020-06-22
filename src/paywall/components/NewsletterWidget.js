@@ -15,10 +15,17 @@ import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
+import Translate from './Translate';
 
 import { defaultStyles } from '../theme/styles';
 
-const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
+const NewsletterWidget = forwardRef(({
+  data,
+  release,
+  register,
+  widget,
+}, ref) => {
+
   const {
     onDataPolicyClick,
     setAlternative,
@@ -54,65 +61,69 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
           source={{ uri: data?.styles?.brand_logo }}
         />
 
-        <Text style={defaultStyles.title}>
-          {data?.texts?.newsletter_title ||
-          'Besoin de lire cet article réservé aux abonnés ?'}
-        </Text>
-
-        <Text style={defaultStyles.text}>
-          {data?.texts?.newsletter_desc ||
-          ` Abonnez-vous à la newsletter ${data?.config.newsletter_name} pour` +
-          'ne rien rater de l\'actualité et nous vous offrons ' +
-          'l\'accès à cet article.'}
-        </Text>
-
-        <TextInput
-          testID="mailInput"
-          style={state.inputFocused
-            ? defaultStyles.input
-            : emailRegex.test(state.mail)
-              ? defaultStyles.inputCorrect
-              : defaultStyles.inputWrong
-          }
-          placeholder={
-            data?.texts?.newsletter_input || 'Votre adresse email'
-          }
-          onChange={e => dispatch({ mail: e.target.value })}
-          onFocus={() => dispatch({ inputFocused: true })}
-          onBlur={() => dispatch({ inputFocused: false })}
+        <Translate
+          textKey={'newsletter_title'}
+          style={defaultStyles.title}
         />
+
+        <Translate
+          textKey={'newsletter_desc'}
+          style={defaultStyles.text}
+          replace={{
+            newsletter_name: data?.config.newsletter_name,
+          }}/>
+
+        <Translate
+          textKey={'newsletter_input'}
+          asString={true}
+        >
+          { ({ text }) => (
+            <TextInput
+              testID="mailInput"
+              style={state.inputFocused
+                ? defaultStyles.input
+                : emailRegex.test(state.mail)
+                  ? defaultStyles.inputCorrect
+                  : defaultStyles.inputWrong
+              }
+              placeholder={text}
+              onChange={e => dispatch({ mail: e.target.value })}
+              onFocus={() => dispatch({ inputFocused: true })}
+              onBlur={() => dispatch({ inputFocused: false })}
+            />
+          )}
+        </Translate>
+
         { !state.inputFocused && !emailRegex.test(state.mail)
-          ? <Text style={defaultStyles.inputWarning} testID="warningMessage">
-            {state.mail === ''
-              ? 'Ce champ est oblgatoire'
-              : data?.texts?.newsletter_error
-            }
-          </Text>
+          ? <Translate
+            textKey={'newsletter_error'}
+            style={defaultStyles.inputWarning}
+            testID="warningMessage"
+          />
           : null
         }
 
-        <Text //Substitute to checkbox coming with Junipero v2
+        <Translate
           testID="acceptDataButton"
           style={defaultStyles.authorization}
           onPress={() => {
             dispatch({ approve: !state.approve });
           }}
-        >
-          {data?.texts?.newsletter_optin_label ||
-          'J\'accepte que mon email soit collecté pour que' +
-          `${data?.config.app_name} m'envoie des newsletters`}
-        </Text>
+          textKey={'newsletter_desc'}
+          replace={{
+            newsletter_name: data?.config.newsletter_name,
+          }}
+        />
 
-        <Text
+        <Translate
+          textKey={'newsletter_optin_link'}
           testID="dataButton"
           style={defaultStyles.subaction}
           onPress={() => {
             dispatch({ optin: 'open' });
             onDataPolicyClick();
           }}
-        >
-          { data?.texts?.newsletter_optin_link || 'Où vont mes données ?' }
-        </Text>
+        />
 
         <Button
           testID="registerButton"
@@ -124,12 +135,14 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
             onRelease();
             onRegister();
             release();
+            register(state.mail);
           }}
         />
 
         <View style={defaultStyles.subactions_container}>
           {data?.config.login_button_enabled &&
-            <Text
+            <Translate
+              textKey={'login_link'}
               testID="loginButton"
               style={defaultStyles.subaction}
               onPress={e => {
@@ -139,19 +152,18 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
                   e?.target,
                   data?.config.login_url
                 );
-              }}>
-              Je me connecte
-            </Text>
+              }}
+            />
           }
           { data?.config.alternative_widget !== 'none'
-            ? <Text
+            ? <Translate
+              textKey={'no_thanks'}
               testID="rejectButton"
               style={defaultStyles.subaction}
               onPress={() => setAlternative(true)}
-            >
-              Non, merci
-            </Text>
-            : <Text
+            />
+            : <Translate
+              textKey={'subscribe_link'}
               testID="subscribeButton"
               style={defaultStyles.subaction}
               onPress={e => {
@@ -161,9 +173,7 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
                   e?.target,
                   data?.config.subscription_url
                 );
-              }}>
-              {'Je m\'abonne'}
-            </Text>
+              }}/>
           }
         </View>
 
@@ -186,18 +196,21 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
           style={defaultStyles.logo}
           source={{ uri: data?.styles?.brand_logo }}
         />
-        <Text style={defaultStyles.text}>
-          { data?.texts?.newsletter_optin_link || 'Où vont mes données ?'}
-        </Text>
-        <Text style={defaultStyles.title}>
-          À propos des données collectées
-        </Text>
+        <Translate
+          textKey={'$gdpr_title'}
+          style={defaultStyles.text}
+        />
+        <Translate
+          textKey={'$gdpr_desc'}
+          style={defaultStyles.title}
+        />
         <View style={defaultStyles.newsletterDataInfos}>
           <Text style={defaultStyles.newsletterLabel}>
             Donnée collectée :
-            <Text style={defaultStyles.newsletterText}>
-              {' ' + data?.texts?.newsletter_processed_data}
-            </Text>
+            <Translate
+              textKey={'newsletter_processed_data'}
+              style={defaultStyles.newsletterText}
+            />
           </Text>
           <Text style={defaultStyles.newsletterLabel}>
             Donneur d&apos;ordre :
@@ -255,6 +268,7 @@ const NewsletterWidget = forwardRef(({ data, release, widget }, ref) => {
 
 NewsletterWidget.propTypes = {
   data: PropTypes.object,
+  register: PropTypes.func,
   release: PropTypes.func,
   widget: PropTypes.string,
 };
