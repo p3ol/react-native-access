@@ -9,7 +9,7 @@ const RestrictedContent = ({ children }) => {
   if (!active) {
     return (
       <React.Fragment>
-        { React.cloneElement(React.Children.only(children))}
+        { children }
         { trackData?.action === 'invisible'
           ? trackData?.config?.signature_enabled
             ? <Signature />
