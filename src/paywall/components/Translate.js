@@ -26,7 +26,7 @@ const Translate = ({
   };
 
   var text = trackData?.texts?.[textKey] ||
-    (Locales.availableLocales[trackData?.config.locale.toLowerCase()]
+    (Locales.availableLocales[trackData?.config?.locale?.toLowerCase()]
       ?.[textKey] || '') ||
     children;
 

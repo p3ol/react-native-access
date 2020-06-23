@@ -16,7 +16,6 @@ import NewsletterWidget from './NewsletterWidget';
 
 const Widget = () => {
   const {
-    active,
     setActive,
     alternative,
     config,
@@ -50,7 +49,6 @@ const Widget = () => {
     } catch (e) {
       console.error(e);
     }
-
   };
 
   const releasing = async () => {
@@ -115,7 +113,6 @@ const Widget = () => {
       return null;
     case 'unlock':
       releasing();
-      // TODO: Add a "popover" message
       return null;
     default:
       return (

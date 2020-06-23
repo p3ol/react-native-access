@@ -1,12 +1,23 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
+import Signature from './Signature';
 
 const RestrictedContent = ({ children }) => {
 
-  const { active } = useContext(AppContext);
+  const { active, trackData } = useContext(AppContext);
 
   if (!active) {
-    return React.cloneElement(React.Children.only(children));
+    return (
+      <React.Fragment>
+        { React.cloneElement(React.Children.only(children))}
+        { trackData?.action === 'invisible'
+          ? trackData?.config?.signature_enabled
+            ? <Signature />
+            : null
+          : <Signature />
+        }
+      </React.Fragment>
+    );
   } else {
     return null;
   }

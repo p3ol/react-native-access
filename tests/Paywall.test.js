@@ -9,7 +9,7 @@ import PaywallContext from '../src/paywall/components/PaywallContext';
 describe('<Paywall />', () => {
 
   it('should render without issues', async () => {
-    nock('https://api.poool.local:8443/api/v3')
+    nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
         action: 'gift',
@@ -20,9 +20,7 @@ describe('<Paywall />', () => {
 
     const component = render(
       <PaywallContext>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-        </Text>
+        <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
@@ -33,7 +31,7 @@ describe('<Paywall />', () => {
   });
 
   it('should unlock the paywall ', async () => {
-    nock('https://api.poool.local:8443/api/v3')
+    nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
         action: 'unlock',
@@ -44,9 +42,7 @@ describe('<Paywall />', () => {
 
     const component = render(
       <PaywallContext>
-        <Text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-        </Text>
+        <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
@@ -58,7 +54,7 @@ describe('<Paywall />', () => {
 });
 
 it('should click poool without errors ', async () => {
-  nock('https://api.poool.local:8443/api/v3')
+  nock('https://api.poool.develop:8443/api/v3')
     .post('/access/track')
     .reply(200, {
       action: 'unlock',
@@ -71,9 +67,7 @@ it('should click poool without errors ', async () => {
 
   const component = render(
     <PaywallContext>
-      <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-      </Text>
+      <Text>Test text</Text>
       <Paywall />
     </PaywallContext>
   );

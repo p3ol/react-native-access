@@ -64,6 +64,17 @@ export const defaultStyles = StyleSheet.create({
     fontWeight: 'normal',
     lineHeight: 26,
   },
+  signatureLink: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 10,
+  },
+  signatureText: {
+    fontSize: 16,
+  },
+  signatureView: {
+    marginTop: 50,
+  },
   subaction: {
     marginBottom: 10,
     textDecorationLine: 'underline',

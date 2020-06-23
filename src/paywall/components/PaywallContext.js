@@ -1,10 +1,10 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 
-const PaywallContext = ({
+const PaywallContext = forwardRef(({
   children,
   onDataPolicyClick = () => {},
   onDiscoveryLinkClick = () => {},
@@ -14,7 +14,7 @@ const PaywallContext = ({
   onRelease = () => {},
   onSubscribeClick = () => {},
   onLoginClick = () => {},
-}) => {
+}, ref) => {
 
   const [state, dispatch] = useReducer(mockState, {
     active: true,
@@ -25,6 +25,11 @@ const PaywallContext = ({
       // TODO: add a way to modify config by passing it to props
     },
   });
+
+  useImperativeHandle(ref, () => ({
+    alternative: state.alternative,
+    active: state.active,
+  }));
 
   return (
     <AppContext.Provider
@@ -49,7 +54,7 @@ const PaywallContext = ({
       { children }
     </AppContext.Provider>
   );
-};
+});
 
 PaywallContext.propTypes = {
   children: PropTypes.array,

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { Text } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
-import { AppContext } from '../../src/paywall/services/contexts';
 import PaywallContext from '../../src/paywall/components/PaywallContext';
 import LinkWidget from '../../src/paywall/components/LinkWidget';
 
@@ -20,12 +19,16 @@ describe('<LinkWidget />', () => {
       onRejectClick={onRejectClick}
     >
       <Text>Test text</Text>
-      < LinkWidget data={{ config: { login_button_enabled: true } }}/>
+      <LinkWidget
+        data={{
+          config: { login_button_enabled: true, link_url: 'url.fr' },
+        }}
+      />
     </PaywallContext>
   );
 
   it('should render without issues', async () => {
-    const component = shallow(< LinkWidget />);
+    const component = shallow(<LinkWidget />);
 
     expect(component.length).toBe(1);
 
@@ -55,22 +58,20 @@ describe('<LinkWidget />', () => {
 
   it('should set Alternative to true by clicking on no thanks', async () => {
 
-    const context = {
-      setAlternative: alternative => { context.alternative = alternative; },
-      alternative: false,
-    };
+    const ref = createRef();
 
     const component = render(
-      <AppContext.Provider value={context}>
-        < LinkWidget/>
-      </AppContext.Provider >
+      <PaywallContext ref={ref}>
+        <Text>Test text</Text>
+        <LinkWidget />
+      </PaywallContext>
     );
 
     const rejectButton = component.getByTestId('rejectButton');
     fireEvent.press(rejectButton);
 
     await wait(() => {
-      expect(context.alternative).toBe(true);
+      expect(ref.current.alternative).toBe(true);
     });
 
   });

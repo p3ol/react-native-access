@@ -86,7 +86,7 @@ const NewsletterWidget = forwardRef(({
                   ? defaultStyles.inputCorrect
                   : defaultStyles.inputWrong
               }
-              placeholder={text}
+              placeholder={text.toString()}
               onChange={e => dispatch({ mail: e.target.value })}
               onFocus={() => dispatch({ inputFocused: true })}
               onBlur={() => dispatch({ inputFocused: false })}

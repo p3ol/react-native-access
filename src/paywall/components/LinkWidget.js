@@ -21,7 +21,7 @@ const LinkWidget = ({ data, widget }) => {
   return (
     <View
       style={defaultStyles.container}
-      testID="giftWidget"
+      testID="linkWidget"
     >
       <Image
         style={defaultStyles.logo}
@@ -52,7 +52,7 @@ const LinkWidget = ({ data, widget }) => {
                 e?.target,
                 config.login_url || data?.config.link_url
               );
-              data?.config.link_url
+              data?.config?.link_url
                 ? Linking.openURL(config.login_url || data?.config.link_url)
                 : console.warn(
                   'No link_url config value has been provided, cannot open url'
