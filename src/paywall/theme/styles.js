@@ -4,6 +4,15 @@ export const defaultStyles = StyleSheet.create({
   actions: {
     textAlign: 'center',
   },
+  answer: {
+    backgroundColor: '#eee',
+    borderColor: '#567',
+    borderWidth: 1,
+    marginTop: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 4,
+  },
   authorization: {
     marginBottom: 10,
     marginTop: 30,
@@ -63,6 +72,9 @@ export const defaultStyles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'normal',
     lineHeight: 26,
+  },
+  question: {
+    fontWeight: 'bold',
   },
   signatureLink: {
     fontSize: 16,

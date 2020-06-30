@@ -1,6 +1,8 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
+  getQuestion,
+  postAnswer,
   register,
   setConfig,
   track,
@@ -13,6 +15,7 @@ import RestrictionWidget from './RestrictionWidget';
 import GiftWidget from './GiftWidget';
 import LinkWidget from './LinkWidget';
 import NewsletterWidget from './NewsletterWidget';
+import QuestionWidget from './QuestionWidget';
 
 const Widget = () => {
   const {
@@ -111,6 +114,13 @@ const Widget = () => {
     case 'invisible':
       releasing();
       return null;
+    case 'question':
+      return (
+        <QuestionWidget
+          release={releasing}
+          data={trackData}
+        />
+      );
     case 'unlock':
       releasing();
       return null;
