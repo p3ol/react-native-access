@@ -2,8 +2,6 @@ import React, {
   useContext,
   useEffect,
   useState,
-  forwardRef,
-  useImperativeHandle,
 } from 'react';
 import {
   View,
@@ -11,7 +9,6 @@ import {
   Text,
   TouchableOpacity,
   Linking,
-  TextInput,
 } from 'react-native';
 import {
   getQuestion,
@@ -21,16 +18,11 @@ import {
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
-import { mockState } from '../services/reducers';
 import Translate from './Translate';
 
 import { defaultStyles } from '../theme/styles';
 
-const QuestionWidget = forwardRef(({
-  data,
-  release,
-  widget,
-}, ref) => {
+const QuestionWidget = ({ data, release, widget }) => {
 
   const [question, setQuestion] = useState();
 
@@ -43,10 +35,6 @@ const QuestionWidget = forwardRef(({
     onRelease,
     onSubscribeClick,
   } = useContext(AppContext);
-
-  useImperativeHandle(ref, () => ({
-
-  }));
 
   const init = async () => {
     setQuestion(await getaQuestion());
@@ -68,8 +56,6 @@ const QuestionWidget = forwardRef(({
       console.error(e);
     }
   };
-
-  console.log(question?.question);
 
   return (
     <View
@@ -100,6 +86,7 @@ const QuestionWidget = forwardRef(({
           question?.question.answers.map((answer, index) => (
             <TouchableOpacity
               key={index}
+              testID={answer}
               style={defaultStyles.answer}
               onPress={() => {
                 onRelease();
@@ -117,13 +104,13 @@ const QuestionWidget = forwardRef(({
         }
       </View>
       <View style={defaultStyles.subactions_container}>
-        {data?.config.login_button_enabled &&
+        {data?.config?.login_button_enabled &&
           <Translate
             textKey={'login_link'}
             testID="loginButton"
             style={defaultStyles.subaction}
             onPress={e => {
-              Linking.openURL(data?.config.login_url);
+              Linking.openURL(data?.config?.login_url);
               onLoginClick(
                 widget,
                 e?.target,
@@ -149,7 +136,7 @@ const QuestionWidget = forwardRef(({
 
     </View>
   );
-});
+};
 
 QuestionWidget.propTypes = {
   data: PropTypes.object,

@@ -10,4 +10,10 @@ module.exports = {
   setConfig: () => ({}),
   unlock: () => ({}),
   register: () => ({}),
+  getQuestion: () => ({
+    question: {
+      answers: ['answer0', 'answer1'],
+    },
+  }),
+  postAnswer: () => {},
 };

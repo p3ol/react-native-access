@@ -1,8 +1,6 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
-  getQuestion,
-  postAnswer,
   register,
   setConfig,
   track,
