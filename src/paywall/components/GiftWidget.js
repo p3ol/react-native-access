@@ -28,6 +28,7 @@ const GiftWidget = ({ data, release, widget }) => {
         style={defaultStyles.title}
       />
       <Translate
+        testID={'description'}
         textKey={'gift_desc'}
         style={defaultStyles.text}
         replace={{ app_name: true }}

@@ -69,6 +69,7 @@ const QuestionWidget = ({ data, release, widget }) => {
       />
 
       <Translate
+        testID={'title'}
         textKey={'question_title'}
         style={defaultStyles.title}
       />
