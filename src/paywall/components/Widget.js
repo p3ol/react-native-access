@@ -10,6 +10,7 @@ import {
 import { AppContext } from '../services/contexts';
 
 import RestrictionWidget from './RestrictionWidget';
+import FormWidget from './FormWidget';
 import GiftWidget from './GiftWidget';
 import LinkWidget from './LinkWidget';
 import NewsletterWidget from './NewsletterWidget';
@@ -88,6 +89,13 @@ const Widget = () => {
       ? config.alternative_widget
       : trackData?.config.alternative_widget
     : trackData?.action) {
+    case 'form':
+      return (
+        <FormWidget
+          release={releasing}
+          data={trackData}
+        />
+      );
     case 'gift':
       return (
         <GiftWidget

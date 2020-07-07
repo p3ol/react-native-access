@@ -31,6 +31,7 @@ export const defaultStyles = StyleSheet.create({
     borderColor: '#567',
     borderWidth: 1,
     height: 40,
+    marginTop: 25,
 
     paddingLeft: 10,
   },
@@ -39,16 +40,20 @@ export const defaultStyles = StyleSheet.create({
     borderColor: '#168212',
     borderWidth: 1,
     height: 40,
+    marginTop: 25,
     paddingLeft: 10,
   },
   inputWarning: {
     color: 'red',
+    marginTop: 10,
+    marginBottom: 20,
   },
   inputWrong: {
     backgroundColor: '#ffebee',
     borderColor: '#d0021b',
     borderWidth: 1,
     height: 40,
+    marginTop: 25,
     paddingLeft: 10,
   },
   logo: {
