@@ -79,6 +79,7 @@ const NewsletterWidget = forwardRef(({
         >
           { ({ text }) => (
             <TextInput
+              value={state.mail}
               testID="mailInput"
               style={state.inputFocused
                 ? defaultStyles.input

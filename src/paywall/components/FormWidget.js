@@ -78,7 +78,7 @@ const FormWidget = forwardRef(({
         type: formItem.fieldType,
         value: '',
         focused: true,
-        valid: false,
+        valid: !formItem.fieldRequired,
       };
     });
     dispatch({ fields: state.fields });
@@ -203,6 +203,7 @@ const FormWidget = forwardRef(({
             <Translate textKey={'form_optional'} asString={true} >
               {({ text }) => (
                 <TextInput
+                  value={field.value}
                   secureTextEntry={field.type === 'password'}
                   multiline={field.type === 'multiline'}
                   testID={'text' + field.key}
