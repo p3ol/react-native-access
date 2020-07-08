@@ -16,6 +16,7 @@ const LinkWidget = ({ data, widget }) => {
     setAlternative,
     onDiscoveryLinkClick,
     onLoginClick,
+    onError,
     config = {},
   } = useContext(AppContext);
   return (
@@ -47,14 +48,15 @@ const LinkWidget = ({ data, widget }) => {
             style={defaultStyles.actions}
             color={data?.styles?.button_color}
             onPress={e => {
-              onDiscoveryLinkClick(
-                widget,
-                e?.target,
-                config.login_url || data?.config.link_url
-              );
+              onDiscoveryLinkClick({
+                widget: widget,
+                button: e?.target,
+                originalEvent: e,
+                url: config.login_url || data?.config.link_url,
+              });
               data?.config?.link_url
                 ? Linking.openURL(config.login_url || data?.config.link_url)
-                : console.warn(
+                : onError(
                   'No link_url config value has been provided, cannot open url'
                 );
             }}
@@ -69,11 +71,12 @@ const LinkWidget = ({ data, widget }) => {
             style={defaultStyles.subaction}
             onPress={e => {
               Linking.openURL(data?.config.login_url);
-              onLoginClick(
-                widget,
-                e?.target,
-                data?.config?.login_url
-              );
+              onLoginClick({
+                widget: widget,
+                button: e?.target,
+                originalEvent: e,
+                url: data?.config.login_url,
+              });
             }}
           />
         }

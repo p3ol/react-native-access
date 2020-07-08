@@ -125,9 +125,14 @@ const NewsletterWidget = forwardRef(({
           textKey={'newsletter_optin_link'}
           testID="dataButton"
           style={defaultStyles.subaction}
-          onPress={() => {
+          onPress={ e => {
             dispatch({ optin: 'open' });
-            onDataPolicyClick();
+            onDataPolicyClick({
+              widget: data?.action,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config?.data_policy_url,
+            });
           }}
         />
 
@@ -140,10 +145,16 @@ const NewsletterWidget = forwardRef(({
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
               onPress={() => {
-                onRelease();
-                onRegister();
+                onRegister({
+                  email: state.mail,
+                  newsletter_id: data?.config?.newsletter_id,
+                });
                 release();
-                register(state.mail);
+                register();
+                onRelease({
+                  widget: data?.action,
+                  actionName: data?.actionName,
+                });
               }}
             />
           )}
@@ -157,11 +168,12 @@ const NewsletterWidget = forwardRef(({
               style={defaultStyles.subaction}
               onPress={e => {
                 Linking.openURL(data?.config.login_url);
-                onLoginClick(
-                  widget,
-                  e?.target,
-                  data?.config.login_url
-                );
+                onLoginClick({
+                  widget: widget,
+                  button: e?.target,
+                  originalEvent: e,
+                  url: data?.config.login_url,
+                });
               }}
             />
           }
@@ -178,11 +190,12 @@ const NewsletterWidget = forwardRef(({
               style={defaultStyles.subaction}
               onPress={e => {
                 Linking.openURL(data?.config.subscription_url);
-                onSubscribeClick(
-                  widget,
-                  e?.target,
-                  data?.config.subscription_url
-                );
+                onSubscribeClick({
+                  widget: widget,
+                  button: e?.target,
+                  originalEvent: e,
+                  url: data?.config.login_url,
+                });
               }}/>
           }
         </View>

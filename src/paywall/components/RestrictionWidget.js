@@ -34,11 +34,12 @@ const RestrictionWidget = ({ data, widget }) => {
         color="#000A24"
         onPress={e => {
           Linking.openURL(data?.config.subscription_url);
-          onSubscribeClick(
-            widget,
-            e?.target,
-            data?.config.subscription_url
-          );
+          onSubscribeClick({
+            widget: widget,
+            button: e?.target,
+            originalEvent: e,
+            url: data?.config.login_url,
+          });
         }}
       />
       <View style={defaultStyles.subactions_container}>
@@ -47,11 +48,12 @@ const RestrictionWidget = ({ data, widget }) => {
           style={defaultStyles.subaction}
           onPress={e => {
             Linking.openURL(data?.config.login_url);
-            onLoginClick(
-              widget,
-              e?.target,
-              data?.config.login_url
-            );
+            onLoginClick({
+              widget: widget,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config.login_url,
+            });
           }}>
           Je me connecte
         </Text>

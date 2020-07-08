@@ -41,7 +41,10 @@ const GiftWidget = ({ data, release, widget }) => {
             style={defaultStyles.actions}
             color={data?.styles.button_color}
             onPress={() => {
-              onRelease();
+              onRelease({
+                widget: data?.action,
+                actionName: data?.actionName,
+              });
               release();
             }}
           />
@@ -54,11 +57,12 @@ const GiftWidget = ({ data, release, widget }) => {
           style={defaultStyles.subaction}
           onPress={e => {
             Linking.openURL(data?.config.login_url);
-            onLoginClick(
-              widget,
-              e?.target,
-              data?.config.login_url
-            );
+            onLoginClick({
+              widget: widget,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config.login_url,
+            });
           }}
         />
         <Translate
@@ -67,11 +71,12 @@ const GiftWidget = ({ data, release, widget }) => {
           style={defaultStyles.subaction}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
-            onSubscribeClick(
-              widget,
-              e?.target,
-              data?.config.subscription_url
-            );
+            onSubscribeClick({
+              widget: widget,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config.login_url,
+            });
           }}
         />
       </View>

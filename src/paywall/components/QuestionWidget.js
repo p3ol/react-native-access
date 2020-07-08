@@ -32,6 +32,7 @@ const QuestionWidget = ({ data, release, widget }) => {
 
   const {
     onLoginClick,
+    onError,
     onRelease,
     onSubscribeClick,
   } = useContext(AppContext);
@@ -45,7 +46,7 @@ const QuestionWidget = ({ data, release, widget }) => {
       const question = await getQuestion();
       return question;
     } catch (e) {
-      console.error(e);
+      onError(e);
     }
   };
 
@@ -53,7 +54,7 @@ const QuestionWidget = ({ data, release, widget }) => {
     try {
       await postAnswer(questionId, answer, options);
     } catch (e) {
-      console.error(e);
+      onError(e);
     }
   };
 
@@ -90,7 +91,10 @@ const QuestionWidget = ({ data, release, widget }) => {
               testID={answer}
               style={defaultStyles.answer}
               onPress={() => {
-                onRelease();
+                onRelease({
+                  widget: data?.action,
+                  actionName: data?.actionName,
+                });
                 release();
                 answering(
                   question?.question._id,
@@ -112,11 +116,12 @@ const QuestionWidget = ({ data, release, widget }) => {
             style={defaultStyles.subaction}
             onPress={e => {
               Linking.openURL(data?.config?.login_url);
-              onLoginClick(
-                widget,
-                e?.target,
-                data?.config?.login_url
-              );
+              onLoginClick({
+                widget: widget,
+                button: e?.target,
+                originalEvent: e,
+                url: data?.config.login_url,
+              });
             }}
           />
         }
@@ -126,11 +131,12 @@ const QuestionWidget = ({ data, release, widget }) => {
           style={defaultStyles.subaction}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
-            onSubscribeClick(
-              widget,
-              e?.target,
-              data?.config.subscription_url
-            );
+            onSubscribeClick({
+              widget: widget,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config.login_url,
+            });
           }}
         />
       </View>

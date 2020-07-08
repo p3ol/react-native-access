@@ -6,8 +6,12 @@ import { mockState } from '../services/reducers';
 
 const PaywallContext = forwardRef(({
   children,
+  onDisabled = () => {},
   onDataPolicyClick = () => {},
   onDiscoveryLinkClick = () => {},
+  onError = () => {},
+  onFormSubmit = () => {},
+  onIdentityAvailable = () => {},
   onLock = () => {},
   onReady = () => {},
   onRegister = () => {},
@@ -42,8 +46,12 @@ const PaywallContext = forwardRef(({
         config: state.config,
         alternative: state.alternative,
         onLock,
+        onDisabled,
         onDataPolicyClick,
         onDiscoveryLinkClick,
+        onError,
+        onFormSubmit,
+        onIdentityAvailable,
         onReady,
         onRegister,
         onRelease,
@@ -58,8 +66,12 @@ const PaywallContext = forwardRef(({
 
 PaywallContext.propTypes = {
   children: PropTypes.array,
+  onDisabled: PropTypes.func,
   onDataPolicyClick: PropTypes.func,
   onDiscoveryLinkClick: PropTypes.func,
+  onError: PropTypes.func,
+  onFormSubmit: PropTypes.func,
+  onIdentityAvailable: PropTypes.func,
   onLock: PropTypes.func,
   onReady: PropTypes.func,
   onRegister: PropTypes.func,

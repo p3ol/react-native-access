@@ -13,7 +13,6 @@ const Paywall = () => {
   const { onRelease, onLock, active } = useContext(AppContext);
 
   if (active) {
-    onLock?.();
     return (
       <View testID="paywallView">
         <ImageBackground
@@ -41,7 +40,6 @@ const Paywall = () => {
       </View>
     );
   } else {
-    onRelease?.();
     return null;
   }
 };

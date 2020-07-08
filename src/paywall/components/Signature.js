@@ -25,9 +25,14 @@ const Signature = () => {
           style={defaultStyles.signatureLink}
           textKey="signature_button"
           testID="signatureButton"
-          onPress={() => {
+          onPress={e => {
             Linking.openURL(trackData?.config?.subscription_url);
-            onSubscribeClick();
+            onSubscribeClick({
+              widget: trackData?.action,
+              button: e?.target,
+              originalEvent: e,
+              url: trackData?.config?.login_url,
+            });
           }}
         />
       </Text>

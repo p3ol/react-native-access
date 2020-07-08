@@ -23,11 +23,15 @@ const Widget = () => {
     config,
     trackData,
     updateContext,
+    onDisabled,
+    onError,
+    onRelease,
     onReady,
   } = useContext(AppContext);
 
   useEffect(() => {
     init();
+    onReady();
   }, []);
 
   const setCookie = (name, value) =>
@@ -47,9 +51,8 @@ const Widget = () => {
     try {
       const result = await track('page-view', { type: 'premium' });
       updateContext({ trackData: result });
-      onReady();
     } catch (e) {
-      console.error(e);
+      onError(e);
     }
   };
 
@@ -58,7 +61,7 @@ const Widget = () => {
       await unlock(trackData, { body: { cookiesEnabled: true } });
       setActive(false);
     } catch (e) {
-      console.error(e);
+      onError(e);
     }
   };
 
@@ -75,7 +78,7 @@ const Widget = () => {
       );
       setActive(false);
     } catch (e) {
-      console.error(e);
+      onError(e);
     }
   };
 
@@ -89,6 +92,10 @@ const Widget = () => {
       ? config.alternative_widget
       : trackData?.config.alternative_widget
     : trackData?.action) {
+    case 'disabled':
+      onDisabled();
+      setActive(false);
+      return null;
     case 'form':
       return (
         <FormWidget
@@ -118,6 +125,10 @@ const Widget = () => {
         />
       );
     case 'invisible':
+      onRelease({
+        widget: trackData?.action,
+        actionName: trackData?.actionName,
+      });
       releasing();
       return null;
     case 'question':
@@ -128,6 +139,10 @@ const Widget = () => {
         />
       );
     case 'unlock':
+      onRelease({
+        widget: trackData?.action,
+        actionName: trackData?.actionName,
+      });
       releasing();
       return null;
     default:

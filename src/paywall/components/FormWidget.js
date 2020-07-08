@@ -32,6 +32,7 @@ const FormWidget = forwardRef(({
     onLoginClick,
     onRelease,
     onSubscribeClick,
+    onFormSubmit,
   } = useContext(AppContext);
 
   /* eslint-disable max-len */
@@ -60,6 +61,12 @@ const FormWidget = forwardRef(({
     optin: 'closed',
     fields: {},
   });
+
+  useImperativeHandle(ref, () => ({
+    approve: false,
+    optin: 'closed',
+    fields: {},
+  }));
 
   const init = () => {
     data?.form?.fields.map(formItem => {
@@ -154,15 +161,33 @@ const FormWidget = forwardRef(({
     );
   };
 
-  const isFormValid = () => {
+  const getValidFields = () => {
 
-    let isValid = false;
+    var validFields = [];
 
     Object.values(state.fields).map(field => {
-      field.valid ? isValid = true : isValid = false;
+      validFields.push({ [field.key]: field.valid });
     });
 
-    return isValid;
+    return validFields;
+  };
+
+  const isFormValid = () => {
+
+    let count = 0;
+    let isValid = 0;
+
+    Object.values(state.fields).map(field => {
+      field.valid && (isValid += 1);
+      count += 1;
+    });
+
+    if (isValid === count) {
+      return true;
+    } else {
+      return false;
+    }
+
   };
 
   const getFormItem = field => {
@@ -245,9 +270,14 @@ const FormWidget = forwardRef(({
           textKey={'newsletter_optin_link'}
           testID="dataButton"
           style={defaultStyles.subaction}
-          onPress={() => {
+          onPress={ e => {
             dispatch({ optin: 'open' });
-            onDataPolicyClick();
+            onDataPolicyClick({
+              widget: data?.action,
+              button: e?.target,
+              originalEvent: e,
+              url: data?.config?.data_policy_url,
+            });
           }}
         />
 
@@ -260,7 +290,15 @@ const FormWidget = forwardRef(({
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
               onPress={() => {
-                onRelease();
+                onFormSubmit({
+                  name: data?.form?.name,
+                  fields: data?.form?.fields,
+                  valid: getValidFields(),
+                });
+                onRelease({
+                  widget: data?.action,
+                  actionName: data?.actionName,
+                });
                 release();
               }}
             />
@@ -275,11 +313,12 @@ const FormWidget = forwardRef(({
               style={defaultStyles.subaction}
               onPress={e => {
                 Linking.openURL(data?.config.login_url);
-                onLoginClick(
-                  widget,
-                  e?.target,
-                  data?.config.login_url
-                );
+                onLoginClick({
+                  widget: widget,
+                  button: e?.target,
+                  originalEvent: e,
+                  url: data?.config.login_url,
+                });
               }}
             />
           }
@@ -296,11 +335,12 @@ const FormWidget = forwardRef(({
               style={defaultStyles.subaction}
               onPress={e => {
                 Linking.openURL(data?.config.subscription_url);
-                onSubscribeClick(
-                  widget,
-                  e?.target,
-                  data?.config.subscription_url
-                );
+                onSubscribeClick({
+                  widget: widget,
+                  button: e?.target,
+                  originalEvent: e,
+                  url: data?.config.login_url,
+                });
               }}/>
           }
         </View>

@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../services/contexts';
 import Signature from './Signature';
 
 const RestrictedContent = ({ children }) => {
 
-  const { active, trackData } = useContext(AppContext);
+  const { active, trackData, onLock } = useContext(AppContext);
+
+  useEffect(() => {
+    onLock();
+  }, []);
 
   if (!active) {
     return (
