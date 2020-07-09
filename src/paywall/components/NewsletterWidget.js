@@ -116,9 +116,9 @@ const NewsletterWidget = forwardRef(({
           onPress={() => {
             dispatch({ approve: !state.approve });
           }}
-          textKey={'newsletter_desc'}
+          textKey={'newsletter_optin_label'}
           replace={{
-            newsletter_name: data?.config.newsletter_name,
+            app_name: true,
           }}
         />
 

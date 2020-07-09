@@ -20,11 +20,11 @@ import GDPR from './GDPR';
 
 import { defaultStyles } from '../theme/styles';
 
-const FormWidget = forwardRef(({
+const FormWidget = ({
   data,
   release,
   widget,
-}, ref) => {
+}) => {
 
   const {
     onDataPolicyClick,
@@ -62,12 +62,6 @@ const FormWidget = forwardRef(({
     fields: {},
   });
 
-  useImperativeHandle(ref, () => ({
-    approve: false,
-    optin: 'closed',
-    fields: {},
-  }));
-
   const init = () => {
     data?.form?.fields.map(formItem => {
       state.fields[formItem.fieldKey] =
@@ -93,30 +87,31 @@ const FormWidget = forwardRef(({
   const onFocus = field => {
     state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].focused = true;
-    if (!field.required) {
-      state.fields[field.key].valid = true;
-    }
     dispatch({ fields: state.fields });
   };
 
   const onChange = (field, event) => {
     state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].value = event.target.value;
-    if (field.type === 'email') {
-      if (!mailRegex.test(field.value) && field.required) {
-        state.fields[field.key].valid = false;
-      } else {
-        state.fields[field.key].valid = true;
-      }
-    } else if (field.type === 'date') {
-      if (!getDateRegex().test(field.value) && field.required) {
+    if (field.value === '') {
+      if (field.required) {
         state.fields[field.key].valid = false;
       } else {
         state.fields[field.key].valid = true;
       }
     } else {
-      if (field.value === '' && field.required) {
-        state.fields[field.key].valid = false;
+      if (field.type === 'email') {
+        if (!mailRegex.test(field.value)) {
+          state.fields[field.key].valid = false;
+        } else {
+          state.fields[field.key].valid = true;
+        }
+      } else if (field.type === 'date') {
+        if (!getDateRegex().test(field.value)) {
+          state.fields[field.key].valid = false;
+        } else {
+          state.fields[field.key].valid = true;
+        }
       } else {
         state.fields[field.key].valid = true;
       }
@@ -128,7 +123,7 @@ const FormWidget = forwardRef(({
 
     let error;
 
-    if (!field.focused && field.value !== '' && field.required) {
+    if (!field.focused && field.value !== '') {
       if (field.type === 'email') {
         if (field.valid === false) {
           error = 'form_email_error';
@@ -192,9 +187,9 @@ const FormWidget = forwardRef(({
 
   const getFormItem = field => {
 
-    switch (field.fieldType) {
+    switch (field.type) {
 
-      case 'CB':
+      case 'creditCard':
         return null;
 
       default:
@@ -206,7 +201,7 @@ const FormWidget = forwardRef(({
                   value={field.value}
                   secureTextEntry={field.type === 'password'}
                   multiline={field.type === 'multiline'}
-                  testID={'text' + field.key}
+                  testID={field.key}
                   style={field.focused
                     ? defaultStyles.input
                     : field.valid
@@ -229,7 +224,7 @@ const FormWidget = forwardRef(({
     return (
       <View
         style={defaultStyles.container}
-        testID="newsletterWidget"
+        testID="formWidget"
       >
 
         <Image
@@ -238,16 +233,14 @@ const FormWidget = forwardRef(({
         />
 
         <Translate
-          textKey={'newsletter_title'}
+          textKey={'form_title'}
           style={defaultStyles.title}
         />
 
         <Translate
-          textKey={'newsletter_desc'}
+          textKey={'form_desc'}
           style={defaultStyles.text}
-          replace={{
-            newsletter_name: data?.config.newsletter_name,
-          }}/>
+        />
 
         <View>
           {
@@ -261,14 +254,14 @@ const FormWidget = forwardRef(({
           onPress={() => {
             dispatch({ approve: !state.approve });
           }}
-          textKey={'newsletter_desc'}
+          textKey={'form_optin_label'}
           replace={{
-            newsletter_name: data?.config.newsletter_name,
+            app_name: true,
           }}
         />
 
         <Translate
-          textKey={'newsletter_optin_link'}
+          textKey={'form_optin_link'}
           testID="dataButton"
           style={defaultStyles.subaction}
           onPress={ e => {
@@ -282,10 +275,10 @@ const FormWidget = forwardRef(({
           }}
         />
 
-        <Translate textKey={'newsletter_button'} asString={true}>
+        <Translate textKey={'form_button'} asString={true}>
           {({ text }) => (
             <Button
-              testID="registerButton"
+              testID="submitButton"
               title={text}
               style={defaultStyles.actions}
               disabled={ !(state.approve && isFormValid()) }
@@ -307,23 +300,23 @@ const FormWidget = forwardRef(({
         </Translate>
 
         <View style={defaultStyles.subactions_container}>
-          {data?.config.login_button_enabled &&
+          {data?.config?.login_button_enabled &&
             <Translate
               textKey={'login_link'}
               testID="loginButton"
               style={defaultStyles.subaction}
               onPress={e => {
-                Linking.openURL(data?.config.login_url);
+                Linking.openURL(data?.config?.login_url);
                 onLoginClick({
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config.login_url,
+                  url: data?.config?.login_url,
                 });
               }}
             />
           }
-          { data?.config.alternative_widget !== 'none'
+          { data?.config?.alternative_widget !== 'none'
             ? <Translate
               textKey={'no_thanks'}
               testID="rejectButton"
@@ -335,12 +328,12 @@ const FormWidget = forwardRef(({
               testID="subscribeButton"
               style={defaultStyles.subaction}
               onPress={e => {
-                Linking.openURL(data?.config.subscription_url);
+                Linking.openURL(data?.config?.subscription_url);
                 onSubscribeClick({
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config.login_url,
+                  url: data?.config?.login_url,
                 });
               }}/>
           }
@@ -353,7 +346,7 @@ const FormWidget = forwardRef(({
       <GDPR onBackClick={() => dispatch({ optin: 'closed' })}/>
     );
   }
-});
+};
 
 FormWidget.propTypes = {
   data: PropTypes.object,
