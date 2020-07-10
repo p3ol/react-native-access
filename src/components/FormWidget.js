@@ -2,15 +2,15 @@ import React, {
   useContext,
   useReducer,
   useEffect,
-  forwardRef,
-  useImperativeHandle } from 'react';
+} from 'react';
 import {
   View,
   Image,
   Button,
   Linking,
-  TextInput,
 } from 'react-native';
+import { CheckboxField, TextField } from '@poool/junipero-native';
+
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
@@ -18,7 +18,7 @@ import { mockState } from '../services/reducers';
 import Translate from './Translate';
 import GDPR from './GDPR';
 
-import { defaultStyles } from '../theme/styles';
+import { texts, layouts } from '../styles';
 
 const FormWidget = ({
   data,
@@ -81,6 +81,9 @@ const FormWidget = ({
   const onBlur = field => {
     state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].focused = false;
+    if (field.value === '') {
+      state.fields[field.key].valid = false;
+    }
     dispatch({ fields: state.fields });
   };
 
@@ -92,7 +95,7 @@ const FormWidget = ({
 
   const onChange = (field, event) => {
     state.fields[field.key] = state.fields[field.key] || {};
-    state.fields[field.key].value = event.target.value;
+    state.fields[field.key].value = event.value;
     if (field.value === '') {
       if (field.required) {
         state.fields[field.key].valid = false;
@@ -150,7 +153,7 @@ const FormWidget = ({
     return (
       <Translate
         textKey={error}
-        style={defaultStyles.inputWarning}
+        style={texts.warning}
         testID={error}
       />
     );
@@ -195,27 +198,28 @@ const FormWidget = ({
       default:
         return (
           <React.Fragment key={field.key}>
-            <Translate textKey={'form_optional'} asString={true} >
-              {({ text }) => (
-                <TextInput
-                  value={field.value}
-                  secureTextEntry={field.type === 'password'}
-                  multiline={field.type === 'multiline'}
-                  testID={field.key}
-                  style={field.focused
-                    ? defaultStyles.input
-                    : field.valid
-                      ? defaultStyles.inputCorrect
-                      : defaultStyles.inputWrong
-                  }
-                  placeholder={field.name + (!field.required ? text : '')}
-                  onChange={onChange.bind(null, field)}
-                  onFocus={onFocus.bind(null, field)}
-                  onBlur={onBlur.bind(null, field)}
-                />
-              )}
-            </Translate>
-            { getFieldError(field) }
+            <View style={{ marginVertical: 10}}>
+              <Translate
+                textKey='form_optional'
+                asString
+                replace={{ app_name: true }}
+              >
+                {({ text }) => (
+                  <TextField
+                    value={field.value}
+                    rows={field.type === 'multiline' ? 5 : 1}
+                    secureTextEntry={field.type === 'password'}
+                    placeholder={field.name + (field.required ? '' : text)}
+                    testID='mailInput'
+                    valid={field.focused ? true : !!field.valid}
+                    onChange={onChange.bind(null, field)}
+                    onFocus={onFocus.bind(null, field)}
+                    onBlur={onBlur.bind(null, field)}
+                  />
+                )}
+              </Translate>
+              { getFieldError(field) }
+            </View>
           </React.Fragment>
         );
     }
@@ -223,23 +227,23 @@ const FormWidget = ({
   if (state.optin === 'closed') {
     return (
       <View
-        style={defaultStyles.container}
-        testID="formWidget"
+        style={layouts.widget}
+        testID='formWidget'
       >
 
         <Image
-          style={defaultStyles.logo}
+          style={layouts.logo}
           source={{ uri: data?.styles?.brand_logo }}
         />
 
         <Translate
-          textKey={'form_title'}
-          style={defaultStyles.title}
+          textKey='form_title'
+          style={texts.title}
         />
 
         <Translate
-          textKey={'form_desc'}
-          style={defaultStyles.text}
+          textKey='form_desc'
+          style={texts.desc}
         />
 
         <View>
@@ -248,22 +252,26 @@ const FormWidget = ({
           }
         </View>
 
-        <Translate
-          testID="acceptDataButton"
-          style={defaultStyles.authorization}
-          onPress={() => {
-            dispatch({ approve: !state.approve });
-          }}
-          textKey={'form_optin_label'}
-          replace={{
-            app_name: true,
-          }}
-        />
+        <View style={{ marginVertical: 20 }} >
+          <CheckboxField
+            onChange={() => {
+              dispatch({ approve: !state.approve });
+            }}
+            children={
+              <Translate
+                textKey='newsletter_optin_label'
+                replace={{
+                  app_name: true,
+                }}
+              />
+            }
+          />
+        </View>
 
         <Translate
-          textKey={'form_optin_link'}
-          testID="dataButton"
-          style={defaultStyles.subaction}
+          textKey='form_optin_link'
+          testID='dataButton'
+          style={texts.link}
           onPress={ e => {
             dispatch({ optin: 'open' });
             onDataPolicyClick({
@@ -275,12 +283,12 @@ const FormWidget = ({
           }}
         />
 
-        <Translate textKey={'form_button'} asString={true}>
+        <Translate textKey='form_button' asString={true}>
           {({ text }) => (
             <Button
-              testID="submitButton"
+              testID='submitButton'
               title={text}
-              style={defaultStyles.actions}
+
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
               onPress={() => {
@@ -299,12 +307,12 @@ const FormWidget = ({
           )}
         </Translate>
 
-        <View style={defaultStyles.subactions_container}>
+        <View style={layouts.subactions}>
           {data?.config?.login_button_enabled &&
             <Translate
-              textKey={'login_link'}
-              testID="loginButton"
-              style={defaultStyles.subaction}
+              textKey='login_link'
+              testID='loginButton'
+              style={texts.link}
               onPress={e => {
                 Linking.openURL(data?.config?.login_url);
                 onLoginClick({
@@ -318,15 +326,15 @@ const FormWidget = ({
           }
           { data?.config?.alternative_widget !== 'none'
             ? <Translate
-              textKey={'no_thanks'}
-              testID="rejectButton"
-              style={defaultStyles.subaction}
+              textKey='no_thanks'
+              testID='rejectButton'
+              style={texts.link}
               onPress={() => setAlternative(true)}
             />
             : <Translate
-              textKey={'subscribe_link'}
-              testID="subscribeButton"
-              style={defaultStyles.subaction}
+              textKey='subscribe_link'
+              testID='subscribeButton'
+              style={texts.link}
               onPress={e => {
                 Linking.openURL(data?.config?.subscription_url);
                 onSubscribeClick({

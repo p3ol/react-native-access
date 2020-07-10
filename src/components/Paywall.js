@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 
 const Paywall = () => {
-  const { onRelease, onLock, active } = useContext(AppContext);
+  const { active } = useContext(AppContext);
 
   if (active) {
     return (
-      <View testID="paywallView">
+      <View testID='paywallView'>
         <ImageBackground
           source={{ uri: 'https://cdn.poool.fr/assets/bones.svg' }}
           style={styles.background}>
@@ -49,6 +49,8 @@ Paywall.displayName = 'Paywall';
 export default Paywall;
 
 const styles = StyleSheet.create({
+
+  /* eslint-disable react-native/no-color-literals */
 
   background: {
     resizeMode: 'cover',

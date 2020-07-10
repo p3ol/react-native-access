@@ -5,26 +5,27 @@ import {
   Linking,
 } from 'react-native';
 
-import { defaultStyles } from '../theme/styles';
 import Translate from './Translate';
 import { AppContext } from '../services/contexts';
+
+import { texts } from '../styles';
 
 const Signature = () => {
 
   const { trackData, onSubscribeClick } = useContext(AppContext);
 
   return (
-    <View style={defaultStyles.signatureView} testID={'signature'}>
+    <View style={{ marginTop: 25 }} testID='signature'>
       <Text >
         <Translate
-          style={defaultStyles.signatureText}
-          textKey="signature"
+          style={texts.text}
+          textKey='signature'
           replace={{ app_name: true }}
         />
         <Translate
-          style={defaultStyles.signatureLink}
-          textKey="signature_button"
-          testID="signatureButton"
+          style={texts.signatureLink}
+          textKey='signature_button'
+          testID='signatureButton'
           onPress={e => {
             Linking.openURL(trackData?.config?.subscription_url);
             onSubscribeClick({

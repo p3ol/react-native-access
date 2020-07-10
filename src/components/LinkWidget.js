@@ -9,7 +9,8 @@ import {
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
-import { defaultStyles } from '../theme/styles';
+
+import { texts, layouts } from '../styles';
 
 const LinkWidget = ({ data, widget }) => {
   const {
@@ -21,20 +22,20 @@ const LinkWidget = ({ data, widget }) => {
   } = useContext(AppContext);
   return (
     <View
-      style={defaultStyles.container}
+      style={layouts.widget}
       testID="linkWidget"
     >
       <Image
-        style={defaultStyles.logo}
+        style={layouts.logo}
         source={{ uri: data?.styles?.brand_logo }}
       />
       <Translate
         textKey={'link_title'}
-        style={defaultStyles.title}
+        style={texts.title}
       />
       <Translate
         textKey={'link_desc'}
-        style={defaultStyles.text}
+        style={texts.desc}
         replace={{ app_name: true }}
       />
       <Translate
@@ -45,7 +46,7 @@ const LinkWidget = ({ data, widget }) => {
           <Button
             testID="linkButton"
             title={text}
-            style={defaultStyles.actions}
+
             color={data?.styles?.button_color}
             onPress={e => {
               onDiscoveryLinkClick({
@@ -63,12 +64,12 @@ const LinkWidget = ({ data, widget }) => {
           />
         )}
       </Translate>
-      <View style={defaultStyles.subactions_container}>
+      <View style={layouts.subactions}>
         {data?.config.login_button_enabled &&
           <Translate
             textKey={'login_link'}
             testID="loginButton"
-            style={defaultStyles.subaction}
+            style={texts.link}
             onPress={e => {
               Linking.openURL(data?.config.login_url);
               onLoginClick({
@@ -83,7 +84,7 @@ const LinkWidget = ({ data, widget }) => {
         <Translate
           textKey={'no_thanks'}
           testID="rejectButton"
-          style={defaultStyles.subaction}
+          style={texts.link}
           onPress={() => setAlternative(true)}
         />
       </View>

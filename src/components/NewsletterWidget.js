@@ -8,16 +8,18 @@ import {
   Image,
   Button,
   Linking,
-  TextInput,
 } from 'react-native';
+import { CheckboxField, TextField } from '@poool/junipero-native';
+
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
+
 import Translate from './Translate';
 import GDPR from './GDPR';
 
-import { defaultStyles } from '../theme/styles';
+import { texts, layouts } from '../styles';
 
 const NewsletterWidget = forwardRef(({
   data,
@@ -52,80 +54,70 @@ const NewsletterWidget = forwardRef(({
   if (state.optin === 'closed') {
     return (
       <View
-        style={defaultStyles.container}
-        testID="newsletterWidget"
+        style={layouts.widget}
+        testID='newsletterWidget'
       >
 
         <Image
-          style={defaultStyles.logo}
+          style={layouts.logo}
           source={{ uri: data?.styles?.brand_logo }}
         />
 
         <Translate
-          textKey={'newsletter_title'}
-          style={defaultStyles.title}
+          textKey='newsletter_title'
+          style={texts.title}
         />
 
         <Translate
-          textKey={'newsletter_desc'}
-          style={defaultStyles.text}
+          textKey='newsletter_desc'
+          style={texts.desc}
           replace={{
             newsletter_name: data?.config.newsletter_name,
           }}/>
 
-        <Translate
-          textKey={'newsletter_input'}
-          asString={true}
-        >
-          { ({ text }) => (
-            <TextInput
-              value={state.mail}
-              testID="mailInput"
-              style={state.inputFocused
-                ? defaultStyles.input
-                : emailRegex.test(state.mail)
-                  ? defaultStyles.inputCorrect
-                  : defaultStyles.inputWrong
-              }
-              placeholder={text.toString()}
-              onChange={e => dispatch({ mail: e.target.value })}
-              onFocus={() => dispatch({ inputFocused: true })}
-              onBlur={() => dispatch({ inputFocused: false })}
-            />
-          )}
-        </Translate>
+        <TextField
+          value={state.mail}
+          testID='mailInput'
+          valid={state.inputFocused ? true : !!emailRegex.test(state.mail)}
+          onChange={e => dispatch({ mail: e.value })}
+          onFocus={() => dispatch({ inputFocused: true })}
+          onBlur={() => dispatch({ inputFocused: false })}
+        />
 
         { !state.inputFocused && !emailRegex.test(state.mail)
           ? state.mail === ''
             ? <Translate
-              textKey={'form_empty_error'}
-              style={defaultStyles.inputWarning}
-              testID="warningMessage"
+              textKey='form_empty_error'
+              style={texts.warning}
+              testID='warningMessage'
             />
             : <Translate
-              textKey={'form_email_error'}
-              style={defaultStyles.inputWarning}
-              testID="warningMessage"
+              textKey='form_email_error'
+              style={texts.warning}
+              testID='warningMessage'
             />
           : null
         }
+        <View style={{ marginVertical: 20 }} >
+          <CheckboxField
+            onChange={() => {
+              dispatch({ approve: !state.approve });
+            }}
+            children={
+              <Translate
+                textKey='newsletter_optin_label'
+                replace={{
+                  app_name: true,
+                }}
+              />
+            }
+          />
+        </View>
 
         <Translate
-          testID="acceptDataButton"
-          style={defaultStyles.authorization}
-          onPress={() => {
-            dispatch({ approve: !state.approve });
-          }}
-          textKey={'newsletter_optin_label'}
-          replace={{
-            app_name: true,
-          }}
-        />
-
-        <Translate
-          textKey={'newsletter_optin_link'}
-          testID="dataButton"
-          style={defaultStyles.subaction}
+          textKey='newsletter_optin_link'
+          testID='dataButton'
+          style={texts.link}
           onPress={ e => {
             dispatch({ optin: 'open' });
             onDataPolicyClick({
@@ -137,12 +129,12 @@ const NewsletterWidget = forwardRef(({
           }}
         />
 
-        <Translate textKey={'newsletter_button'} asString={true}>
+        <Translate textKey='newsletter_button' asString={true}>
           {({ text }) => (
             <Button
-              testID="registerButton"
+              testID='registerButton'
               title={text}
-              style={defaultStyles.actions}
+
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
               onPress={() => {
@@ -161,12 +153,12 @@ const NewsletterWidget = forwardRef(({
           )}
         </Translate>
 
-        <View style={defaultStyles.subactions_container}>
+        <View style={layouts.subactions}>
           {data?.config.login_button_enabled &&
             <Translate
-              textKey={'login_link'}
-              testID="loginButton"
-              style={defaultStyles.subaction}
+              textKey='login_link'
+              testID='loginButton'
+              style={texts.link}
               onPress={e => {
                 Linking.openURL(data?.config.login_url);
                 onLoginClick({
@@ -180,15 +172,15 @@ const NewsletterWidget = forwardRef(({
           }
           { data?.config.alternative_widget !== 'none'
             ? <Translate
-              textKey={'no_thanks'}
-              testID="rejectButton"
-              style={defaultStyles.subaction}
+              textKey='no_thanks'
+              testID='rejectButton'
+              style={texts.link}
               onPress={() => setAlternative(true)}
             />
             : <Translate
-              textKey={'subscribe_link'}
-              testID="subscribeButton"
-              style={defaultStyles.subaction}
+              textKey='subscribe_link'
+              testID='subscribeButton'
+              style={texts.link}
               onPress={e => {
                 Linking.openURL(data?.config.subscription_url);
                 onSubscribeClick({

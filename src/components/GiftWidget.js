@@ -9,36 +9,37 @@ import {
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
-import { defaultStyles } from '../theme/styles';
+
+import { texts, layouts } from '../styles';
 
 const GiftWidget = ({ data, release, widget }) => {
   const { onSubscribeClick, onLoginClick, onRelease } = useContext(AppContext);
 
   return (
     <View
-      style={defaultStyles.container}
-      testID="giftWidget"
+      style={layouts.widget}
+      testID='giftWidget'
     >
       <Image
-        style={defaultStyles.logo}
+        style={layouts.logo}
         source={{ uri: data?.styles.brand_logo }}
       />
       <Translate
-        textKey={'gift_title'}
-        style={defaultStyles.title}
+        textKey='gift_title'
+        style={texts.title}
       />
       <Translate
-        testID={'description'}
-        textKey={'gift_desc'}
-        style={defaultStyles.text}
+        testID='description'
+        textKey='gift_desc'
+        style={texts.desc}
         replace={{ app_name: true }}
       />
-      <Translate textKey={'gift_button'} asString={true}>
+      <Translate textKey='gift_button' asString={true}>
         {({ text }) => (
           <Button
-            testID="releaseButton"
+            testID='releaseButton'
             title={text}
-            style={defaultStyles.actions}
+
             color={data?.styles.button_color}
             onPress={() => {
               onRelease({
@@ -50,11 +51,11 @@ const GiftWidget = ({ data, release, widget }) => {
           />
         )}
       </Translate>
-      <View style={defaultStyles.subactions_container}>
+      <View style={layouts.subactions}>
         <Translate
-          textKey={'login_link'}
-          testID="loginButton"
-          style={defaultStyles.subaction}
+          textKey='login_link'
+          testID='loginButton'
+          style={texts.link}
           onPress={e => {
             Linking.openURL(data?.config.login_url);
             onLoginClick({
@@ -66,9 +67,9 @@ const GiftWidget = ({ data, release, widget }) => {
           }}
         />
         <Translate
-          textKey={'subscribe_link'}
-          testID="subscribeButton"
-          style={defaultStyles.subaction}
+          textKey='subscribe_link'
+          testID='subscribeButton'
+          style={texts.link}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
             onSubscribeClick({

@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 import Translate from './Translate';
 
-import { defaultStyles } from '../theme/styles';
+import { texts, layouts } from '../styles';
 
 const QuestionWidget = ({ data, release, widget }) => {
 
@@ -60,27 +60,27 @@ const QuestionWidget = ({ data, release, widget }) => {
 
   return (
     <View
-      style={defaultStyles.container}
-      testID="newsletterWidget"
+      style={layouts.widget}
+      testID='newsletterWidget'
     >
 
       <Image
-        style={defaultStyles.logo}
+        style={layouts.logo}
         source={{ uri: data?.styles?.brand_logo }}
       />
 
       <Translate
-        testID={'title'}
-        textKey={'question_title'}
-        style={defaultStyles.title}
+        testID='title'
+        textKey='question_title'
+        style={texts.title}
       />
 
       <Translate
-        textKey={'question_desc'}
-        style={defaultStyles.text}
+        textKey='question_desc'
+        style={texts.desc}
       />
 
-      <Text style={defaultStyles.question}>
+      <Text style={texts.question}>
         {question?.question.text}
       </Text>
       <View>
@@ -89,7 +89,7 @@ const QuestionWidget = ({ data, release, widget }) => {
             <TouchableOpacity
               key={index}
               testID={answer}
-              style={defaultStyles.answer}
+              style={layouts.answer}
               onPress={() => {
                 onRelease({
                   widget: data?.action,
@@ -108,12 +108,12 @@ const QuestionWidget = ({ data, release, widget }) => {
           ))
         }
       </View>
-      <View style={defaultStyles.subactions_container}>
+      <View style={layouts.subactions}>
         {data?.config?.login_button_enabled &&
           <Translate
-            textKey={'login_link'}
-            testID="loginButton"
-            style={defaultStyles.subaction}
+            textKey='login_link'
+            testID='loginButton'
+            style={texts.link}
             onPress={e => {
               Linking.openURL(data?.config?.login_url);
               onLoginClick({
@@ -126,9 +126,9 @@ const QuestionWidget = ({ data, release, widget }) => {
           />
         }
         <Translate
-          textKey={'subscribe_link'}
-          testID="subscribeButton"
-          style={defaultStyles.subaction}
+          textKey='subscribe_link'
+          testID='subscribeButton'
+          style={texts.link}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
             onSubscribeClick({
