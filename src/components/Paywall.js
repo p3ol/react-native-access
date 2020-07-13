@@ -3,25 +3,38 @@ import Widget from './Widget';
 import { AppContext } from '../services/contexts';
 import {
   ImageBackground,
-  StyleSheet,
+  Image,
   View,
   Linking,
   Text,
 } from 'react-native';
 
+import { layouts } from '../styles';
+
 const Paywall = () => {
-  const { active } = useContext(AppContext);
+  const { active, trackData } = useContext(AppContext);
 
   if (active) {
     return (
       <View testID='paywallView'>
         <ImageBackground
-          source={{ uri: 'https://cdn.poool.fr/assets/bones.svg' }}
-          style={styles.background}>
-          <View style={styles.paywall} >
-            <View style={styles.wrapper}>
+          source={ trackData?.styles?.layout === 'portrait' &&
+            { uri: 'https://cdn.poool.fr/assets/bones.svg' }
+          }
+          style={layouts.paywallBackground}>
+          <View style={layouts.paywall[trackData?.styles?.layout]}>
+            <View style={layouts.wrapper}>
+              <Image
+                source={ trackData?.styles?.layout !== 'portrait' &&
+                  { uri: trackData?.styles.brand_cover }}
+                style={layouts.cover}
+              />
+              <Image
+                style={layouts.logo}
+                source={{ uri: trackData?.styles.brand_logo }}
+              />
               <Widget />
-              <View style={styles.logo}>
+              <View style={layouts.pooolLogo}>
                 <Text
                   onPress={() => Linking.openURL('https://poool.fr/')}
                   testID="pooolButton"
@@ -30,7 +43,7 @@ const Paywall = () => {
                     source={{
                       uri: 'https://cdn.poool.fr/assets/poool-square.svg',
                     }}
-                    style={styles.logo_background}
+                    style={layouts.pooolLogoBackground}
                   />
                 </Text>
               </View>
@@ -47,47 +60,3 @@ const Paywall = () => {
 Paywall.displayName = 'Paywall';
 
 export default Paywall;
-
-const styles = StyleSheet.create({
-
-  /* eslint-disable react-native/no-color-literals */
-
-  background: {
-    resizeMode: 'cover',
-  },
-
-  logo: {
-    flexDirection: 'row-reverse',
-  },
-
-  logo_background: {
-    bottom: 10,
-    height: 12,
-    right: 10,
-    width: 50,
-  },
-
-  paywall: {
-    margin: 'auto',
-    minWidth: 450,
-    width: '30%',
-  },
-
-  wrapper: {
-    backgroundColor: '#FFFFFF',
-    elevation: 8,
-    flex: 1,
-    marginHorizontal: 20,
-
-    // Box Shadow
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.30,
-    shadowRadius: 10,
-    top: -50,
-    // ============
-  },
-});

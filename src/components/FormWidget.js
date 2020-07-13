@@ -5,7 +5,6 @@ import React, {
 } from 'react';
 import {
   View,
-  Image,
   Button,
   Linking,
 } from 'react-native';
@@ -198,7 +197,7 @@ const FormWidget = ({
       default:
         return (
           <React.Fragment key={field.key}>
-            <View style={{ marginVertical: 10}}>
+            <View style={layouts.mediumSpacing}>
               <Translate
                 textKey='form_optional'
                 asString
@@ -231,11 +230,6 @@ const FormWidget = ({
         testID='formWidget'
       >
 
-        <Image
-          style={layouts.logo}
-          source={{ uri: data?.styles?.brand_logo }}
-        />
-
         <Translate
           textKey='form_title'
           style={texts.title}
@@ -252,7 +246,7 @@ const FormWidget = ({
           }
         </View>
 
-        <View style={{ marginVertical: 20 }} >
+        <View style={layouts.largeSpacing} >
           <CheckboxField
             onChange={() => {
               dispatch({ approve: !state.approve });

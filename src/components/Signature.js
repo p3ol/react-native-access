@@ -8,14 +8,14 @@ import {
 import Translate from './Translate';
 import { AppContext } from '../services/contexts';
 
-import { texts } from '../styles';
+import { texts, layouts } from '../styles';
 
 const Signature = () => {
 
   const { trackData, onSubscribeClick } = useContext(AppContext);
 
   return (
-    <View style={{ marginTop: 25 }} testID='signature'>
+    <View style={ layouts.largeSpacing } testID='signature'>
       <Text >
         <Translate
           style={texts.text}

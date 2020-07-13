@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
 import {
   View,
-  Image,
   Button,
   Linking,
 } from 'react-native';
@@ -20,10 +19,6 @@ const GiftWidget = ({ data, release, widget }) => {
       style={layouts.widget}
       testID='giftWidget'
     >
-      <Image
-        style={layouts.logo}
-        source={{ uri: data?.styles.brand_logo }}
-      />
       <Translate
         textKey='gift_title'
         style={texts.title}
@@ -39,7 +34,6 @@ const GiftWidget = ({ data, release, widget }) => {
           <Button
             testID='releaseButton'
             title={text}
-
             color={data?.styles.button_color}
             onPress={() => {
               onRelease({

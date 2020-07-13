@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
 import {
   View,
-  Image,
   Button,
   Linking,
 } from 'react-native';
@@ -25,10 +24,6 @@ const LinkWidget = ({ data, widget }) => {
       style={layouts.widget}
       testID="linkWidget"
     >
-      <Image
-        style={layouts.logo}
-        source={{ uri: data?.styles?.brand_logo }}
-      />
       <Translate
         textKey={'link_title'}
         style={texts.title}

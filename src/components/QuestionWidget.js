@@ -5,7 +5,6 @@ import React, {
 } from 'react';
 import {
   View,
-  Image,
   Text,
   TouchableOpacity,
   Linking,
@@ -63,12 +62,6 @@ const QuestionWidget = ({ data, release, widget }) => {
       style={layouts.widget}
       testID='newsletterWidget'
     >
-
-      <Image
-        style={layouts.logo}
-        source={{ uri: data?.styles?.brand_logo }}
-      />
-
       <Translate
         testID='title'
         textKey='question_title'

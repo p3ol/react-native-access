@@ -5,7 +5,6 @@ import React, {
   useImperativeHandle } from 'react';
 import {
   View,
-  Image,
   Button,
   Linking,
 } from 'react-native';
@@ -57,12 +56,6 @@ const NewsletterWidget = forwardRef(({
         style={layouts.widget}
         testID='newsletterWidget'
       >
-
-        <Image
-          style={layouts.logo}
-          source={{ uri: data?.styles?.brand_logo }}
-        />
-
         <Translate
           textKey='newsletter_title'
           style={texts.title}
@@ -98,7 +91,7 @@ const NewsletterWidget = forwardRef(({
             />
           : null
         }
-        <View style={{ marginVertical: 20 }} >
+        <View style={ layouts.largeSpacing } >
           <CheckboxField
             onChange={() => {
               dispatch({ approve: !state.approve });
