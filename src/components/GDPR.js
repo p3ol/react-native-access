@@ -25,15 +25,11 @@ const GDPR = ({ onBackClick }) => {
     >
       <Text
         testID='returnButton'
-        style={texts.link}
+        style={[texts.link, {top: 0}]}
         onPress={() => onBackClick()}
       >
         Retour
       </Text>
-      <Image
-        style={layouts.logo}
-        source={{ uri: trackData?.styles?.brand_logo }}
-      />
       <Translate
         textKey='$gdpr_title'
         style={texts.desc}

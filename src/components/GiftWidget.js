@@ -45,11 +45,11 @@ const GiftWidget = ({ data, release, widget }) => {
           />
         )}
       </Translate>
-      <View style={layouts.subactions}>
+      <View style={layouts.subactions[data?.styles?.layout]}>
         <Translate
           textKey='login_link'
           testID='loginButton'
-          style={texts.link}
+          style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.login_url);
             onLoginClick({
@@ -63,7 +63,7 @@ const GiftWidget = ({ data, release, widget }) => {
         <Translate
           textKey='subscribe_link'
           testID='subscribeButton'
-          style={texts.link}
+          style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
             onSubscribeClick({

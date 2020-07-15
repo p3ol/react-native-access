@@ -11,10 +11,17 @@ export const largeSpacing = {
 };
 
 export const subactions = {
-  marginTop: 30,
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'space-around',
+  portrait: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  landscape: {
+    marginTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
 };
 
 export const shadows = {

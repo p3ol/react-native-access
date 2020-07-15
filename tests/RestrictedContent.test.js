@@ -6,9 +6,9 @@ import {
   wait,
 } from '@testing-library/react-native';
 
-import Paywall from '../src/paywall/components/Paywall';
-import PaywallContext from '../src/paywall/components/PaywallContext';
-import RestrictedContent from '../src/paywall/components/RestrictedContent';
+import Paywall from '../src/components/Paywall';
+import PaywallContext from '../src/components/PaywallContext';
+import RestrictedContent from '../src/components/RestrictedContent';
 
 describe('<RestrictedContent />', () => {
 

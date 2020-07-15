@@ -101,12 +101,12 @@ const QuestionWidget = ({ data, release, widget }) => {
           ))
         }
       </View>
-      <View style={layouts.subactions}>
+      <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config?.login_button_enabled &&
           <Translate
             textKey='login_link'
             testID='loginButton'
-            style={texts.link}
+            style={texts.subaction[data?.styles?.layout]}
             onPress={e => {
               Linking.openURL(data?.config?.login_url);
               onLoginClick({
@@ -121,7 +121,7 @@ const QuestionWidget = ({ data, release, widget }) => {
         <Translate
           textKey='subscribe_link'
           testID='subscribeButton'
-          style={texts.link}
+          style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);
             onSubscribeClick({

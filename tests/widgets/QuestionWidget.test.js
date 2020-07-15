@@ -2,8 +2,8 @@ import React from 'react';
 import { Text } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 
-import PaywallContext from '../../src/paywall/components/PaywallContext';
-import QuestionWidget from '../../src/paywall/components/QuestionWidget';
+import PaywallContext from '../../src/components/PaywallContext';
+import QuestionWidget from '../../src/components/QuestionWidget';
 
 describe('<GiftWidget />', () => {
 

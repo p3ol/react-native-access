@@ -3,9 +3,9 @@ import React, { createRef } from 'react';
 import { Text } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 
-import Paywall from '../src/paywall/components/Paywall';
-import Widget from '../src/paywall/components/Widget';
-import PaywallContext from '../src/paywall/components/PaywallContext';
+import Paywall from '../src/components/Paywall';
+import Widget from '../src/components/Widget';
+import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Widget />', () => {
 

@@ -42,6 +42,22 @@ export const link = {
   textDecorationLine: 'underline',
 };
 
+export const subaction = {
+  portrait: {
+    ...link,
+    textDecorationLine: 'underline',
+  },
+  landscape: {
+    ...text,
+    textAlign: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flex: 0.45,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+};
+
 export const signatureLink = {
   ...link,
   fontWeight: 'bold',

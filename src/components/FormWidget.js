@@ -282,7 +282,7 @@ const FormWidget = ({
             <Button
               testID='submitButton'
               title={text}
-
+              style={layouts.mediumSpacing}
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
               onPress={() => {
@@ -301,12 +301,12 @@ const FormWidget = ({
           )}
         </Translate>
 
-        <View style={layouts.subactions}>
+        <View style={layouts.subactions[data?.styles?.layout]}>
           {data?.config?.login_button_enabled &&
             <Translate
               textKey='login_link'
               testID='loginButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config?.login_url);
                 onLoginClick({
@@ -322,13 +322,13 @@ const FormWidget = ({
             ? <Translate
               textKey='no_thanks'
               testID='rejectButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={() => setAlternative(true)}
             />
             : <Translate
               textKey='subscribe_link'
               testID='subscribeButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config?.subscription_url);
                 onSubscribeClick({

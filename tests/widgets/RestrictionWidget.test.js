@@ -3,8 +3,8 @@ import { Text } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
-import PaywallContext from '../../src/paywall/components/PaywallContext';
-import RestrictionWidget from '../../src/paywall/components/RestrictionWidget';
+import PaywallContext from '../../src/components/PaywallContext';
+import RestrictionWidget from '../../src/components/RestrictionWidget';
 
 describe('<RestrictionWidget />', () => {
 

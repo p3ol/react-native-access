@@ -6,9 +6,9 @@ import {
   fireEvent,
 } from '@testing-library/react-native';
 
-import { AppContext } from '../../src/paywall/services/contexts';
-import PaywallContext from '../../src/paywall/components/PaywallContext';
-import FormWidget from '../../src/paywall/components/FormWidget';
+import { AppContext } from '../../src/services/contexts';
+import PaywallContext from '../../src/components/PaywallContext';
+import FormWidget from '../../src/components/FormWidget';
 
 describe('<NewsletterWidget />', () => {
 

@@ -3,8 +3,8 @@ import React from 'react';
 import { Text, Linking } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 
-import Paywall from '../src/paywall/components/Paywall';
-import PaywallContext from '../src/paywall/components/PaywallContext';
+import Paywall from '../src/components/Paywall';
+import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Paywall />', () => {
 

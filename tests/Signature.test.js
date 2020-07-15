@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, Linking } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 
-import Signature from '../src/paywall/components/Signature';
-import PaywallContext from '../src/paywall/components/PaywallContext';
+import Signature from '../src/components/Signature';
+import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Signature />', () => {
 

@@ -59,12 +59,12 @@ const LinkWidget = ({ data, widget }) => {
           />
         )}
       </Translate>
-      <View style={layouts.subactions}>
+      <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config.login_button_enabled &&
           <Translate
             textKey={'login_link'}
             testID="loginButton"
-            style={texts.link}
+            style={texts.subaction[data?.styles?.layout]}
             onPress={e => {
               Linking.openURL(data?.config.login_url);
               onLoginClick({
@@ -79,7 +79,7 @@ const LinkWidget = ({ data, widget }) => {
         <Translate
           textKey={'no_thanks'}
           testID="rejectButton"
-          style={texts.link}
+          style={texts.subaction[data?.styles?.layout]}
           onPress={() => setAlternative(true)}
         />
       </View>

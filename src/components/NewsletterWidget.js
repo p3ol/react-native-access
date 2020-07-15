@@ -91,7 +91,7 @@ const NewsletterWidget = forwardRef(({
             />
           : null
         }
-        <View style={ layouts.largeSpacing } >
+        <View style={ layouts.mediumSpacing } >
           <CheckboxField
             onChange={() => {
               dispatch({ approve: !state.approve });
@@ -110,7 +110,7 @@ const NewsletterWidget = forwardRef(({
         <Translate
           textKey='newsletter_optin_link'
           testID='dataButton'
-          style={texts.link}
+          style={[texts.link, layouts.mediumSpacing]}
           onPress={ e => {
             dispatch({ optin: 'open' });
             onDataPolicyClick({
@@ -127,7 +127,6 @@ const NewsletterWidget = forwardRef(({
             <Button
               testID='registerButton'
               title={text}
-
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
               onPress={() => {
@@ -146,12 +145,12 @@ const NewsletterWidget = forwardRef(({
           )}
         </Translate>
 
-        <View style={layouts.subactions}>
+        <View style={layouts.subactions[data?.styles?.layout]}>
           {data?.config.login_button_enabled &&
             <Translate
               textKey='login_link'
               testID='loginButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config.login_url);
                 onLoginClick({
@@ -167,13 +166,13 @@ const NewsletterWidget = forwardRef(({
             ? <Translate
               textKey='no_thanks'
               testID='rejectButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={() => setAlternative(true)}
             />
             : <Translate
               textKey='subscribe_link'
               testID='subscribeButton'
-              style={texts.link}
+              style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config.subscription_url);
                 onSubscribeClick({

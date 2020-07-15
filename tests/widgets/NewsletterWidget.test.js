@@ -8,9 +8,9 @@ import {
 } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
-import { AppContext } from '../../src/paywall/services/contexts';
-import PaywallContext from '../../src/paywall/components/PaywallContext';
-import NewsletterWidget from '../../src/paywall/components/NewsletterWidget';
+import { AppContext } from '../../src/services/contexts';
+import PaywallContext from '../../src/components/PaywallContext';
+import NewsletterWidget from '../../src/components/NewsletterWidget';
 
 describe('<NewsletterWidget />', () => {
 

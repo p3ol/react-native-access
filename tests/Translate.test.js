@@ -3,9 +3,9 @@ import React from 'react';
 import { Button, Text } from 'react-native';
 import { render, wait, getNodeText } from '@testing-library/react-native';
 
-import Translate from '../src/paywall/components/Translate';
-import Widget from '../src/paywall/components/Widget';
-import PaywallContext from '../src/paywall/components/PaywallContext';
+import Translate from '../src/components/Translate';
+import Widget from '../src/components/Widget';
+import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Paywall />', () => {
 

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import {
   View,
-  Text,
   Button,
   Linking,
 } from 'react-native';
@@ -50,10 +49,10 @@ const RestrictionWidget = ({ data, widget }) => {
           />
         )}
       </Translate>
-      <View style={layouts.subactions}>
+      <View style={layouts.subactions[data?.styles?.layout]}>
         <Translate
           testID='loginButton'
-          style={texts.link}
+          style={texts.subaction[data?.styles?.layout]}
           textKey='login_link'
           replace={{ app_name: true }}
           onPress={e => {
