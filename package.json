@@ -33,7 +33,7 @@
     "eslint-plugin-standard": "4.0.1",
     "jest": "26.1.0",
     "jest-canvas-mock": "2.2.0",
-    "metro-react-native-babel-preset": "0.60.0",
+    "metro-react-native-babel-preset": "0.61.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "0.63.1",
