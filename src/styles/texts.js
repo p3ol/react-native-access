@@ -8,6 +8,11 @@ export const text = {
   lineHeight: 24,
 };
 
+export const icon = {
+  fontSize: 16,
+  fontFamily: 'Poool-Ico-2',
+};
+
 export const desc = {
   ...text,
   marginBottom: 25,

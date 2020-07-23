@@ -19,10 +19,10 @@ const GDPR = ({ onBackClick }) => {
     >
       <Text
         testID='returnButton'
-        style={[texts.link, { top: 0 }]}
+        style={[texts.icon, { top: 0 }]}
         onPress={() => onBackClick()}
       >
-        Retour
+        {'\u{e901}'}
       </Text>
       <Translate
         textKey='$gdpr_title'
