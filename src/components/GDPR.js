@@ -1,22 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   View,
-  Image,
   Text,
   Linking,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { AppContext } from '../services/contexts';
 import Translate from './Translate';
 
 import { texts, layouts } from '../styles';
 
 const GDPR = ({ onBackClick }) => {
-
-  const {
-    trackData,
-  } = useContext(AppContext);
 
   return (
     <View
@@ -25,7 +19,7 @@ const GDPR = ({ onBackClick }) => {
     >
       <Text
         testID='returnButton'
-        style={[texts.link, {top: 0}]}
+        style={[texts.link, { top: 0 }]}
         onPress={() => onBackClick()}
       >
         Retour
