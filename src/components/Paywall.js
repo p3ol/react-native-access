@@ -23,19 +23,23 @@ const Paywall = () => {
           }
           style={layouts.paywallBackground}>
           <View style={[
-            layouts.paywall[trackData?.styles?.layout],
+            layouts.paywall[trackData?.styles?.layout || 'portrait'],
             layouts.border(trackData?.styles?.skin_color),
           ]}>
             <View style={layouts.wrapper}>
-              <Image
-                source={ trackData?.styles?.layout !== 'portrait' &&
-                  { uri: trackData?.styles.brand_cover }}
-                style={layouts.cover}
-              />
-              <Image
-                style={layouts.logo}
-                source={{ uri: trackData?.styles.brand_logo }}
-              />
+              { trackData && (
+                <React.Fragment>
+                  <Image
+                    source={ trackData?.styles?.layout !== 'portrait' &&
+                      { uri: trackData?.styles.brand_cover }}
+                    style={layouts.cover}
+                  />
+                  <Image
+                    style={layouts.logo}
+                    source={{ uri: trackData?.styles.brand_logo }}
+                  />
+                </React.Fragment>
+              )}
               <Widget />
               <View style={layouts.pooolLogo}>
                 <Text

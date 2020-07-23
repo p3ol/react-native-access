@@ -20,7 +20,7 @@ const Translate = ({
   const finalReplacers = {
     ...replace,
     ...(replace.app_name
-      ? { app_name: trackData?.config.app_name }
+      ? { app_name: trackData?.config?.app_name }
       : {}
     ),
   };

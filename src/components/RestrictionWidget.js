@@ -43,16 +43,16 @@ const RestrictionWidget = ({ data, widget }) => {
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: data?.config.login_url,
+                url: data?.config.login_url, //add local config here for default
               });
             }}
           />
         )}
       </Translate>
-      <View style={layouts.subactions[data?.styles?.layout]}>
+      <View style={layouts.subactions[data?.styles?.layout || 'portrait']}>
         <Translate
           testID="loginButton"
-          style={texts.subaction[data?.styles?.layout]}
+          style={texts.subaction[data?.styles?.layout || 'portrait']}
           textKey="login_link"
           replace={{ app_name: true }}
           onPress={e => {

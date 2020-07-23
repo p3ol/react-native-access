@@ -51,7 +51,13 @@ const Widget = () => {
     try {
       const result = await track('page-view', { type: 'premium' });
       updateContext({ trackData: result });
+      AsyncStorage.setItem(
+        '@_poool:customStyles',
+        JSON.stringify(result?.styles)
+      );
     } catch (e) {
+      const styles = await AsyncStorage.getItem('@_poool:customStyles');
+      updateContext({ trackData: { styles: JSON.parse(styles) } });
       onError(e);
     }
   };
@@ -81,11 +87,6 @@ const Widget = () => {
       onError(e);
     }
   };
-
-  if (!trackData) {
-    // TODO: Show loader
-    return null;
-  }
 
   switch (alternative
     ? config.alternative_widget
@@ -138,6 +139,19 @@ const Widget = () => {
           data={trackData}
         />
       );
+    case 'restriction':
+      return (
+        <RestrictionWidget
+          data={trackData}
+        />
+      );
+    case 'subscription':
+      return (
+        <QuestionWidget
+          release={releasing}
+          data={trackData}
+        />
+      );
     case 'unlock':
       onRelease({
         widget: trackData?.action,
@@ -146,10 +160,10 @@ const Widget = () => {
       releasing();
       return null;
     default:
+      console.log('default');
       return (
         <RestrictionWidget
           widget="default"
-          data={trackData}
         />
       );
   }
