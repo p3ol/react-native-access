@@ -32,16 +32,22 @@ export const shadows = {
   },
   shadowOpacity: 0.30,
   shadowRadius: 10,
-  top: -50,
+};
+
+export const border = color => {
+  return { borderLeftColor: color };
 };
 
 export const paywall = {
   portrait: {
+    top: -50,
+    borderLeftWidth: 6,
+    borderLeftColor: a => `${a}`,
     margin: 'auto',
     marginHorizontal: 30,
   },
   landscape: {
-
+    top: -50,
   },
 };
 

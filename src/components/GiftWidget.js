@@ -17,22 +17,22 @@ const GiftWidget = ({ data, release, widget }) => {
   return (
     <View
       style={layouts.widget}
-      testID='giftWidget'
+      testID="giftWidget"
     >
       <Translate
-        textKey='gift_title'
+        textKey="gift_title"
         style={texts.title}
       />
       <Translate
-        testID='description'
-        textKey='gift_desc'
+        testID="description"
+        textKey="gift_desc"
         style={texts.desc}
         replace={{ app_name: true }}
       />
-      <Translate textKey='gift_button' asString={true}>
+      <Translate textKey="gift_button" asString={true}>
         {({ text }) => (
           <Button
-            testID='releaseButton'
+            testID="releaseButton"
             title={text}
             color={data?.styles.button_color}
             onPress={() => {
@@ -47,8 +47,8 @@ const GiftWidget = ({ data, release, widget }) => {
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
         <Translate
-          textKey='login_link'
-          testID='loginButton'
+          textKey="login_link"
+          testID="loginButton"
           style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.login_url);
@@ -61,8 +61,8 @@ const GiftWidget = ({ data, release, widget }) => {
           }}
         />
         <Translate
-          textKey='subscribe_link'
-          testID='subscribeButton'
+          textKey="subscribe_link"
+          testID="subscribeButton"
           style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);

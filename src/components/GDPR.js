@@ -19,7 +19,7 @@ const GDPR = ({ onBackClick }) => {
     >
       <Text
         testID='returnButton'
-        style={[texts.icon, { top: 0 }]}
+        style={texts.returnButton}
         onPress={() => onBackClick()}
       >
         {'\u{e901}'}

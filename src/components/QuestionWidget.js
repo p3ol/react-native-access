@@ -60,16 +60,16 @@ const QuestionWidget = ({ data, release, widget }) => {
   return (
     <View
       style={layouts.widget}
-      testID='newsletterWidget'
+      testID="newsletterWidget"
     >
       <Translate
-        testID='title'
-        textKey='question_title'
+        testID="title"
+        textKey="question_title"
         style={texts.title}
       />
 
       <Translate
-        textKey='question_desc'
+        textKey="question_desc"
         style={texts.desc}
       />
 
@@ -104,8 +104,8 @@ const QuestionWidget = ({ data, release, widget }) => {
       <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config?.login_button_enabled &&
           <Translate
-            textKey='login_link'
-            testID='loginButton'
+            textKey="login_link"
+            testID="loginButton"
             style={texts.subaction[data?.styles?.layout]}
             onPress={e => {
               Linking.openURL(data?.config?.login_url);
@@ -119,8 +119,8 @@ const QuestionWidget = ({ data, release, widget }) => {
           />
         }
         <Translate
-          textKey='subscribe_link'
-          testID='subscribeButton'
+          textKey="subscribe_link"
+          testID="subscribeButton"
           style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
             Linking.openURL(data?.config.subscription_url);

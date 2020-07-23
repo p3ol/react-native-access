@@ -15,17 +15,17 @@ const Signature = () => {
   const { trackData, onSubscribeClick } = useContext(AppContext);
 
   return (
-    <View style={ layouts.largeSpacing } testID='signature'>
+    <View style={ layouts.largeSpacing } testID="signature">
       <Text >
         <Translate
           style={texts.text}
-          textKey='signature'
+          textKey="signature"
           replace={{ app_name: true }}
         />
         <Translate
           style={texts.signatureLink}
-          textKey='signature_button'
-          testID='signatureButton'
+          textKey="signature_button"
+          testID="signatureButton"
           onPress={e => {
             Linking.openURL(trackData?.config?.subscription_url);
             onSubscribeClick({

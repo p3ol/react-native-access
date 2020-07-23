@@ -13,6 +13,11 @@ export const icon = {
   fontFamily: 'Poool-Ico-2',
 };
 
+export const returnButton = {
+  ...icon,
+  top: 0,
+};
+
 export const desc = {
   ...text,
   marginBottom: 25,

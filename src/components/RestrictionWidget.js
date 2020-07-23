@@ -24,19 +24,19 @@ const RestrictionWidget = ({ data, widget }) => {
 
       <Translate textKey='subscription_title' style={texts.title}/>
       <Translate
-        textKey='subscription_desc'
+        textKey="subscription_desc"
         style={texts.desc}
         replace={{ app_name: true }}
       />
       <Translate
-        textKey='subscription_button'
+        textKey="subscription_button"
         asString
       >
         {({ text }) => (
           <Button
-            testID='subscribeButton'
+            testID="subscribeButton"
             title={text}
-            color='#000A24'
+            color="#000A24"
             onPress={e => {
               Linking.openURL(data?.config.subscription_url);
               onSubscribeClick({
@@ -51,9 +51,9 @@ const RestrictionWidget = ({ data, widget }) => {
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
         <Translate
-          testID='loginButton'
+          testID="loginButton"
           style={texts.subaction[data?.styles?.layout]}
-          textKey='login_link'
+          textKey="login_link"
           replace={{ app_name: true }}
           onPress={e => {
             Linking.openURL(data?.config.login_url);

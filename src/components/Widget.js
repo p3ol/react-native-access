@@ -148,7 +148,7 @@ const Widget = () => {
     default:
       return (
         <RestrictionWidget
-          widget='default'
+          widget="default"
           data={trackData}
         />
       );

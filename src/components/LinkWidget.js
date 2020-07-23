@@ -25,16 +25,16 @@ const LinkWidget = ({ data, widget }) => {
       testID="linkWidget"
     >
       <Translate
-        textKey={'link_title'}
+        textKey="link_title"
         style={texts.title}
       />
       <Translate
-        textKey={'link_desc'}
+        textKey="link_desc"
         style={texts.desc}
         replace={{ app_name: true }}
       />
       <Translate
-        textKey={'link_button'}
+        textKey="link_button"
         asString={true}
       >
         {({ text }) => (
@@ -62,7 +62,7 @@ const LinkWidget = ({ data, widget }) => {
       <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config.login_button_enabled &&
           <Translate
-            textKey={'login_link'}
+            textKey="login_link"
             testID="loginButton"
             style={texts.subaction[data?.styles?.layout]}
             onPress={e => {
@@ -77,7 +77,7 @@ const LinkWidget = ({ data, widget }) => {
           />
         }
         <Translate
-          textKey={'no_thanks'}
+          textKey="no_thanks"
           testID="rejectButton"
           style={texts.subaction[data?.styles?.layout]}
           onPress={() => setAlternative(true)}

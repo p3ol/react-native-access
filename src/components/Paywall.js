@@ -16,13 +16,16 @@ const Paywall = () => {
 
   if (active) {
     return (
-      <View testID='paywallView'>
+      <View testID="paywallView">
         <ImageBackground
           source={ trackData?.styles?.layout === 'portrait' &&
             { uri: 'https://cdn.poool.fr/assets/bones.svg' }
           }
           style={layouts.paywallBackground}>
-          <View style={layouts.paywall[trackData?.styles?.layout]}>
+          <View style={[
+            layouts.paywall[trackData?.styles?.layout],
+            layouts.border(trackData?.styles?.skin_color),
+          ]}>
             <View style={layouts.wrapper}>
               <Image
                 source={ trackData?.styles?.layout !== 'portrait' &&

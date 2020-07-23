@@ -54,15 +54,15 @@ const NewsletterWidget = forwardRef(({
     return (
       <View
         style={layouts.widget}
-        testID='newsletterWidget'
+        testID="newsletterWidget"
       >
         <Translate
-          textKey='newsletter_title'
+          textKey="newsletter_title"
           style={texts.title}
         />
 
         <Translate
-          textKey='newsletter_desc'
+          textKey="newsletter_desc"
           style={texts.desc}
           replace={{
             newsletter_name: data?.config.newsletter_name,
@@ -70,7 +70,7 @@ const NewsletterWidget = forwardRef(({
 
         <TextField
           value={state.mail}
-          testID='mailInput'
+          testID="mailInput"
           valid={state.inputFocused ? true : !!emailRegex.test(state.mail)}
           onChange={e => dispatch({ mail: e.value })}
           onFocus={() => dispatch({ inputFocused: true })}
@@ -80,14 +80,14 @@ const NewsletterWidget = forwardRef(({
         { !state.inputFocused && !emailRegex.test(state.mail)
           ? state.mail === ''
             ? <Translate
-              textKey='form_empty_error'
+              textKey="form_empty_error"
               style={texts.warning}
-              testID='warningMessage'
+              testID="warningMessage"
             />
             : <Translate
-              textKey='form_email_error'
+              textKey="form_email_error"
               style={texts.warning}
-              testID='warningMessage'
+              testID="warningMessage"
             />
           : null
         }
@@ -98,7 +98,7 @@ const NewsletterWidget = forwardRef(({
             }}
             children={
               <Translate
-                textKey='newsletter_optin_label'
+                textKey="newsletter_optin_label"
                 replace={{
                   app_name: true,
                 }}
@@ -108,8 +108,8 @@ const NewsletterWidget = forwardRef(({
         </View>
 
         <Translate
-          textKey='newsletter_optin_link'
-          testID='dataButton'
+          textKey="newsletter_optin_link"
+          testID="dataButton"
           style={[texts.link, layouts.mediumSpacing]}
           onPress={ e => {
             dispatch({ optin: 'open' });
@@ -122,10 +122,10 @@ const NewsletterWidget = forwardRef(({
           }}
         />
 
-        <Translate textKey='newsletter_button' asString={true}>
+        <Translate textKey="newsletter_button" asString={true}>
           {({ text }) => (
             <Button
-              testID='registerButton'
+              testID="registerButton"
               title={text}
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
@@ -148,8 +148,8 @@ const NewsletterWidget = forwardRef(({
         <View style={layouts.subactions[data?.styles?.layout]}>
           {data?.config.login_button_enabled &&
             <Translate
-              textKey='login_link'
-              testID='loginButton'
+              textKey="login_link"
+              testID="loginButton"
               style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config.login_url);
@@ -164,14 +164,14 @@ const NewsletterWidget = forwardRef(({
           }
           { data?.config.alternative_widget !== 'none'
             ? <Translate
-              textKey='no_thanks'
-              testID='rejectButton'
+              textKey="no_thanks"
+              testID="rejectButton"
               style={texts.subaction[data?.styles?.layout]}
               onPress={() => setAlternative(true)}
             />
             : <Translate
-              textKey='subscribe_link'
-              testID='subscribeButton'
+              textKey="subscribe_link"
+              testID="subscribeButton"
               style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
                 Linking.openURL(data?.config.subscription_url);
