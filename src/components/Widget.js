@@ -147,8 +147,7 @@ const Widget = () => {
       );
     case 'subscription':
       return (
-        <QuestionWidget
-          release={releasing}
+        <RestrictionWidget
           data={trackData}
         />
       );
@@ -160,7 +159,6 @@ const Widget = () => {
       releasing();
       return null;
     default:
-      console.log('default');
       return (
         <RestrictionWidget
           widget="default"

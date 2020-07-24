@@ -13,13 +13,17 @@ import { texts, layouts } from '../styles';
 
 const RestrictionWidget = ({ data, widget }) => {
 
-  const { onSubscribeClick, onLoginClick } = useContext(AppContext);
+  const {
+    onSubscribeClick,
+    onLoginClick,
+    setAlternative,
+  } = useContext(AppContext);
 
   return (
 
     <View
       style={layouts.widget}
-      testID='RestrictionWidget'
+      testID="RestrictionWidget"
     >
 
       <Translate textKey='subscription_title' style={texts.title}/>
@@ -36,7 +40,7 @@ const RestrictionWidget = ({ data, widget }) => {
           <Button
             testID="subscribeButton"
             title={text}
-            color="#000A24"
+            color={data?.styles?.button_color || '#000A24'}
             onPress={e => {
               Linking.openURL(data?.config.subscription_url);
               onSubscribeClick({
@@ -65,6 +69,15 @@ const RestrictionWidget = ({ data, widget }) => {
             });
           }}
         />
+        { data?.action !== 'restriction' &&
+          data?.config?.alternative_widget !== 'none' &&
+          <Translate
+            textKey="no_thanks"
+            testID="rejectButton"
+            style={texts.subaction[data?.styles?.layout]}
+            onPress={() => setAlternative(true)}
+          />
+        }
       </View>
     </View>
 
