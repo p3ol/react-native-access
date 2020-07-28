@@ -78,7 +78,6 @@ const FormWidget = ({
   };
 
   const onBlur = field => {
-    state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].focused = false;
     if (field.value === '') {
       state.fields[field.key].valid = false;
@@ -87,13 +86,11 @@ const FormWidget = ({
   };
 
   const onFocus = field => {
-    state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].focused = true;
     dispatch({ fields: state.fields });
   };
 
   const onChange = (field, event) => {
-    state.fields[field.key] = state.fields[field.key] || {};
     state.fields[field.key].value = event.value;
     if (field.value === '') {
       if (field.required) {
@@ -209,7 +206,7 @@ const FormWidget = ({
                     rows={field.type === 'multiline' ? 5 : 1}
                     secureTextEntry={field.type === 'password'}
                     placeholder={field.name + (field.required ? '' : text)}
-                    testID='mailInput'
+                    testID={field.key}
                     valid={field.focused ? true : !!field.valid}
                     onChange={onChange.bind(null, field)}
                     onFocus={onFocus.bind(null, field)}

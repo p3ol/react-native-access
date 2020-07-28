@@ -69,7 +69,8 @@ const RestrictionWidget = ({ data, widget }) => {
             });
           }}
         />
-        { data?.action !== 'restriction' &&
+        { data &&
+          data?.action === 'subscription' &&
           data?.config?.alternative_widget !== 'none' &&
           <Translate
             textKey="no_thanks"

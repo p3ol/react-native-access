@@ -8,23 +8,41 @@ import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Paywall />', () => {
 
-  it('should render without issues', async () => {
+  it('should render without issues in portrait mode', async () => {
     nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
         action: 'gift',
-        styles: {},
+        styles: { layout: 'portrait' },
         texts: {},
         config: {},
       });
-
     const component = render(
       <PaywallContext>
         <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
+    await wait(() =>
+      expect(component.queryByTestId('paywallView')).toBeTruthy()
+    );
+  });
 
+  it('should render without issues in landscape mode', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'gift',
+        styles: { layout: 'landscape' },
+        texts: {},
+        config: {},
+      });
+    const component = render(
+      <PaywallContext>
+        <Text>Test Text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
     await wait(() =>
       expect(component.queryByTestId('paywallView')).toBeTruthy()
     );
@@ -39,14 +57,12 @@ describe('<Paywall />', () => {
         texts: {},
         config: {},
       });
-
     const component = render(
       <PaywallContext>
         <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
-
     await wait(() => {
       expect(component.queryByTestId('paywallView')).toBeNull();
     });
@@ -62,20 +78,15 @@ it('should click poool without errors ', async () => {
       texts: {},
       config: {},
     });
-
   Linking.openUrl = jest.fn();
-
   const component = render(
     <PaywallContext>
       <Text>Test text</Text>
       <Paywall />
     </PaywallContext>
   );
-
   const pooolButton = component.getByTestId('pooolButton');
-
   fireEvent.press(pooolButton);
-
   await wait(() => {
     expect(Linking.openURL.mock.calls.length).toBe(1);
   });

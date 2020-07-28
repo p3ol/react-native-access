@@ -16,7 +16,6 @@ const LinkWidget = ({ data, widget }) => {
     setAlternative,
     onDiscoveryLinkClick,
     onLoginClick,
-    onError,
     config = {},
   } = useContext(AppContext);
   return (
@@ -50,11 +49,7 @@ const LinkWidget = ({ data, widget }) => {
                 originalEvent: e,
                 url: config.login_url || data?.config.link_url,
               });
-              data?.config?.link_url
-                ? Linking.openURL(config.login_url || data?.config.link_url)
-                : onError(
-                  'No link_url config value has been provided, cannot open url'
-                );
+              Linking.openURL(data?.config.link_url);
             }}
           />
         )}

@@ -25,8 +25,19 @@ const PaywallContext = forwardRef(({
     alternative: false,
     trackData: null,
     config: {
-      alternative_widget: null,
-      // TODO: add a way to modify config by passing it to props
+      available_widgets: [
+        'restriction',
+        'form',
+        'gift',
+        'link',
+        'newsletter',
+        'question',
+      ],
+      login_button_enabled: true,
+      alternative_enabled: true,
+      alternative_widget: 'gift',
+      signature_enabled: true,
+      locale: 'fr',
     },
   });
 

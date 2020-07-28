@@ -60,7 +60,7 @@ const QuestionWidget = ({ data, release, widget }) => {
   return (
     <View
       style={layouts.widget}
-      testID="newsletterWidget"
+      testID="questionWidget"
     >
       <Translate
         testID="title"

@@ -27,16 +27,16 @@ const Paywall = () => {
             layouts.border(trackData?.styles?.skin_color),
           ]}>
             <View style={layouts.wrapper}>
-              { trackData && (
+              { trackData?.styles && (
                 <React.Fragment>
                   <Image
                     source={ trackData?.styles?.layout !== 'portrait' &&
-                      { uri: trackData?.styles.brand_cover }}
+                      { uri: trackData?.styles?.brand_cover }}
                     style={layouts.cover}
                   />
                   <Image
                     style={layouts.logo}
-                    source={{ uri: trackData?.styles.brand_logo }}
+                    source={{ uri: trackData?.styles?.brand_logo }}
                   />
                 </React.Fragment>
               )}

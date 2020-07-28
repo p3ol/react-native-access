@@ -1025,10 +1025,10 @@
     "@babel/runtime-corejs3" "7.10.2"
     core-js "3.6.5"
 
-"@poool/junipero-native@^2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0-alpha.1.tgz#bbc88e29727da449bef13c25638536cf07d11393"
-  integrity sha512-tR3pber7911cbZmYZcX0GmB3Vnx2nvUC0kcOMGT8drCNlFHmXy9dsTValrlcoOtgCZ5iwmKOHeIQRFy4MvLtqg==
+"@poool/junipero-native@^2.0.0-alpha.3":
+  version "2.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0-alpha.3.tgz#754c54ddaad8bfe3a8031e06f8316785984b636c"
+  integrity sha512-Gj8Cks1FG2BgAoiKoUM8yYE1puXHtesAVosHFGrFGBuN7MaWDc9Ryz9z2q9D4VYRJQ3LNWToKmKqbij0UXorTQ==
   dependencies:
     "@poool/junipero-hooks" "^2.0.0-alpha.0"
     "@poool/junipero-utils" "^2.0.0-alpha.0"
@@ -1197,10 +1197,10 @@
     ramda "^0.26.1"
     redent "^2.0.0"
 
-"@testing-library/react-native@5.0.3":
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-5.0.3.tgz#8821dcf7fe7364bc7f427d853cd96e4407d88a4f"
-  integrity sha512-lQH7vUgwESfagFw4BlKsfpX7Rv/m7h2NYfubY0aoQromSwI1slCxrhwZws8gABTXweob/DyLATsOamHsWdwDnA==
+"@testing-library/react-native@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@testing-library/react-native/-/react-native-6.0.0.tgz#195c3d6e093e248aa5b6949fe8ee7e86222b6b7f"
+  integrity sha512-jLdaEQAH3RC8OtSabrNbpb0qzBOIpKX9xNO0D+83ohfQjY7PZ/3/sX2hMtRB5T7pHChtCrlymYQ5tJcW8Ga1oQ==
   dependencies:
     pretty-format "^24.9.0"
     wait-for-expect "^3.0.0"

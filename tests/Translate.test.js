@@ -7,7 +7,7 @@ import Translate from '../src/components/Translate';
 import Widget from '../src/components/Widget';
 import PaywallContext from '../src/components/PaywallContext';
 
-describe('<Paywall />', () => {
+describe('<Translate />', () => {
 
   it('should return the rigth text component according to the textkey',
     async () => {

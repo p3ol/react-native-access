@@ -10,10 +10,18 @@ module.exports = {
   setConfig: () => ({}),
   unlock: () => ({}),
   register: () => ({}),
-  getQuestion: () => ({
-    question: {
-      answers: ['answer0', 'answer1'],
-    },
-  }),
-  postAnswer: () => {},
+  getQuestion: async () => {
+    const response = await fetch(
+      'https://api.poool.develop:8443/api/v3/access/question/roll',
+      { method: 'get' }
+    );
+    return response.json();
+  },
+  postAnswer: async () => {
+    const response = await fetch(
+      'https://api.poool.develop:8443/api/v3/access/question/answer',
+      { method: 'post' }
+    );
+    return response.json();
+  },
 };

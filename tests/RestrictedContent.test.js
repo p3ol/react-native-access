@@ -20,7 +20,7 @@ describe('<RestrictedContent />', () => {
           action: 'invisible',
           styles: {},
           texts: {},
-          config: {},
+          config: { signature_enabled: true },
         });
 
       const component = render(

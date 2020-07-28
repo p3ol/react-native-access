@@ -42,7 +42,6 @@ export const paywall = {
   portrait: {
     top: -50,
     borderLeftWidth: 6,
-    borderLeftColor: a => `${a}`,
     margin: 'auto',
     marginHorizontal: 30,
   },

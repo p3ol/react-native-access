@@ -1,5 +1,5 @@
 import React, { createRef } from 'react';
-import { Text } from 'react-native';
+import { Text, Linking } from 'react-native';
 import { render, wait, fireEvent } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
@@ -8,13 +8,12 @@ import LinkWidget from '../../src/components/LinkWidget';
 
 describe('<LinkWidget />', () => {
 
-  const onDiscoveryLinkClick = jest.fn();
   const onLoginClick = jest.fn();
   const onRejectClick = jest.fn();
+  Linking.openUrl = jest.fn();
 
   const component = render(
     <PaywallContext
-      onDiscoveryLinkClick={onDiscoveryLinkClick}
       onLoginClick={onLoginClick}
       onRejectClick={onRejectClick}
     >
@@ -40,7 +39,7 @@ describe('<LinkWidget />', () => {
     fireEvent.press(linkButton);
 
     await wait(() => {
-      expect(onDiscoveryLinkClick.mock.calls.length).toBe(1);
+      expect(Linking.openURL.mock.calls.length).toBe(1);
     });
 
   });

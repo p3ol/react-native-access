@@ -25,6 +25,7 @@ const Widget = () => {
     updateContext,
     onDisabled,
     onError,
+    onIdentityAvailable,
     onRelease,
     onReady,
   } = useContext(AppContext);
@@ -51,12 +52,15 @@ const Widget = () => {
     try {
       const result = await track('page-view', { type: 'premium' });
       updateContext({ trackData: result });
-      AsyncStorage.setItem(
-        '@_poool:customStyles',
-        JSON.stringify(result?.styles)
-      );
+      onIdentityAvailable();
+      setCookie('_poool:customStyles', JSON.stringify(result?.styles));
+      // AsyncStorage.setItem(
+      //   '@_poool:customStyles',
+      //   JSON.stringify(result?.styles)
+      // );
     } catch (e) {
-      const styles = await AsyncStorage.getItem('@_poool:customStyles');
+      const styles = await getCookie('_poool:customStyles');
+      //const styles = await AsyncStorage.getItem('@_poool:customStyles');
       updateContext({ trackData: { styles: JSON.parse(styles) } });
       onError(e);
     }
@@ -82,16 +86,15 @@ const Widget = () => {
         trackData.config?.externalListid,
         { body: { cookiesEnabled: true } }
       );
-      setActive(false);
     } catch (e) {
       onError(e);
     }
   };
 
   switch (alternative
-    ? config.alternative_widget
-      ? config.alternative_widget
-      : trackData?.config.alternative_widget
+    ? config.available_widgets.includes(trackData?.config.alternative_widget)
+      ? trackData?.config.alternative_widget
+      : config.alternative_widget
     : trackData?.action) {
     case 'disabled':
       onDisabled();

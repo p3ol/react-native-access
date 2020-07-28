@@ -102,7 +102,6 @@ const GDPR = ({ onBackClick }) => {
           <Translate
             textKey='$gdpr_conformity_ordering_institution_button'
             style={texts.link}
-            onPress={() => {}}
           /> |
           <Translate
             textKey='$gdpr_conformity_processing_institution_button'
