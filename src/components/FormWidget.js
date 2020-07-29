@@ -6,8 +6,11 @@ import React, {
 import {
   View,
   Button,
+  Text,
+  TextInput,
   Linking,
 } from 'react-native';
+import Stripe from 'stripe-client';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 
 import PropTypes from 'prop-types';
@@ -15,6 +18,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 import Translate from './Translate';
+import CardField from './CardField';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
@@ -24,6 +28,8 @@ const FormWidget = ({
   release,
   widget,
 }) => {
+
+  const stripeClient = Stripe('pk_test_80Ib5ct89zl7w9FJsBvQZxIs');
 
   const {
     onDataPolicyClick,
@@ -59,10 +65,20 @@ const FormWidget = ({
     approve: false,
     optin: 'closed',
     fields: {},
+    card: {
+      number: '',
+      exp_month: '',
+      exp_year: '',
+      cvc: '',
+      name: '',
+    },
+    cardKey: null,
   });
 
   const init = () => {
     data?.form?.fields.map(formItem => {
+      formItem.fieldType === 'creditCard' &&
+        dispatch({ cardKey: formItem.fieldKey });
       state.fields[formItem.fieldKey] =
       {
         key: formItem.fieldKey,
@@ -116,6 +132,23 @@ const FormWidget = ({
       }
     }
     dispatch({ fields: state.fields });
+  };
+
+  const onCardChange = (info, value) => {
+    state.card[info] = value;
+    dispatch({ card: state.card });
+    if (state.card.number !== '' && state.card.exp_month !== '' &&
+    state.card.exp_year !== '' && state.card.cvc !== '') {
+      state.fields[state.cardKey].valid = true;
+      dispatch({ fields: state.fields });
+    }
+  };
+
+  const generateToken = async () => {
+    const card = await stripeClient.createToken({ card: state.card });
+    const token = await card.json();
+    state.fields[state.cardKey].value = token.id;
+    dispatch({ card: state.card });
   };
 
   const getFieldError = field => {
@@ -189,7 +222,13 @@ const FormWidget = ({
     switch (field.type) {
 
       case 'creditCard':
-        return null;
+        return (
+          <CardField
+            key={field.key}
+            card={state.card}
+            onCardChange={onCardChange}
+          />
+        );
 
       default:
         return (
@@ -220,6 +259,21 @@ const FormWidget = ({
         );
     }
   };
+
+  const submitForm = async () => {
+    await generateToken();
+    onFormSubmit({
+      name: data?.form?.name,
+      fields: state?.fields,
+      valid: getValidFields(),
+    });
+    onRelease({
+      widget: data?.action,
+      actionName: data?.actionName,
+    });
+    //release();
+  };
+
   if (state.optin === 'closed') {
     return (
       <View
@@ -282,18 +336,7 @@ const FormWidget = ({
               style={layouts.mediumSpacing}
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
-              onPress={() => {
-                onFormSubmit({
-                  name: data?.form?.name,
-                  fields: data?.form?.fields,
-                  valid: getValidFields(),
-                });
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-                release();
-              }}
+              onPress={() => submitForm()}
             />
           )}
         </Translate>

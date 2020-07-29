@@ -54,13 +54,8 @@ const Widget = () => {
       updateContext({ trackData: result });
       onIdentityAvailable();
       setCookie('_poool:customStyles', JSON.stringify(result?.styles));
-      // AsyncStorage.setItem(
-      //   '@_poool:customStyles',
-      //   JSON.stringify(result?.styles)
-      // );
     } catch (e) {
       const styles = await getCookie('_poool:customStyles');
-      //const styles = await AsyncStorage.getItem('@_poool:customStyles');
       updateContext({ trackData: { styles: JSON.parse(styles) } });
       onError(e);
     }

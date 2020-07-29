@@ -116,6 +116,8 @@ export default {
   form_data_process_duration: '(missing information)',
   form_fields_error: 'Some fields are incorrect: {fields}',
   form_email_error: 'The email address provided is incorrect',
+  form_card_number: 'Card Number',
+  form_card_date: 'MM / YY',
   form_date_mdy_error: 'The date format must be MM/DD/YYYY',
   form_date_dmy_error: 'The date format must be DD/MM/YYYY',
   form_date_ymd_error: 'The date format must be YYYY/MM/DD',
