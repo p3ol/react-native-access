@@ -1,5 +1,5 @@
 module.exports = {
-  preset: 'react-native',
+  preset: '@testing-library/react-native',
   timers: 'fake',
   clearMocks: true,
   testPathIgnorePatterns: [
@@ -16,5 +16,6 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '<rootDir>/tests/config/enzyme.js',
+    '@testing-library/jest-native/extend-expect',
   ],
 };

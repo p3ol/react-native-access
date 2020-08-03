@@ -6,6 +6,7 @@ module.exports = {
     ['module-resolver', {
       alias: {
         '@poool/react-native-access': path.resolve('../../src'),
+        stream: 'readable-stream',
       },
     }],
   ],
