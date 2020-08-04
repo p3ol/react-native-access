@@ -6,5 +6,10 @@ module.exports = {
     env: {
       jest: true,
     },
+  }, {
+    files: ['examples/base/**/*.js'],
+    rules: {
+      'no-console': 0,
+    },
   }],
 };
