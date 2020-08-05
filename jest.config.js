@@ -1,5 +1,5 @@
 module.exports = {
-  preset: '@testing-library/react-native',
+  preset: 'react-native',
   timers: 'fake',
   clearMocks: true,
   testPathIgnorePatterns: [

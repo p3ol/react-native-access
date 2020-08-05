@@ -183,13 +183,6 @@ describe('<Widget />', () => {
 
     const ref = createRef();
 
-    const component = render(
-      <PaywallContext ref={ref}>
-        <Text> Test Text </Text>
-        <Paywall />
-      </PaywallContext>
-    );
-
     await wait(() =>
       expect(ref.current.active).toBe(false)
     );
@@ -205,12 +198,7 @@ describe('<Widget />', () => {
         config: {},
       });
     const ref = createRef();
-    const component = render(
-      <PaywallContext ref={ref}>
-        <Text> Test Text </Text>
-        <Paywall />
-      </PaywallContext>
-    );
+
     await wait(() =>
       expect(ref.current.active).toBe(false)
     );
@@ -226,12 +214,7 @@ describe('<Widget />', () => {
         config: {},
       });
     const ref = createRef();
-    const component = render(
-      <PaywallContext ref={ref}>
-        <Text> Test Text </Text>
-        <Paywall />
-      </PaywallContext>
-    );
+
     await wait(() =>
       expect(ref.current.active).toBe(false)
     );
