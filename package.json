@@ -19,7 +19,7 @@
     "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.11.0",
+    "@babel/core": "7.11.1",
     "@poool/eslint-config": "1.2.3",
     "@poool/eslint-config-react": "1.2.3",
     "@poool/eslint-config-react-native": "1.2.3",
