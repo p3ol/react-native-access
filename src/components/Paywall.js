@@ -20,7 +20,7 @@ const Paywall = () => {
         <ImageBackground
           source={ trackData?.styles?.layout === 'portrait'
             ? { uri: 'https://cdn.poool.fr/assets/bones.svg' }
-            : ''
+            : { uri: '' }
           }
           style={layouts.paywallBackground}>
           <View style={[

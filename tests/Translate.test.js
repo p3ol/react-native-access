@@ -1,7 +1,7 @@
 import nock from 'nock';
 import React from 'react';
 import { Button, Text } from 'react-native';
-import { render, wait, getNodeText } from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 
 import Translate from '../src/components/Translate';
 import Widget from '../src/components/Widget';
@@ -19,11 +19,11 @@ describe('<Translate />', () => {
         />
       );
 
-      const title = component.getByTestId('title');
+      const title = component.getByText(
+        'Cet article offert contre votre avis !');
 
-      await wait(() => {
-        expect(getNodeText(title))
-          .toEqual('Cet article offert contre votre avis !');
+      await waitFor(() => {
+        expect(title).toBeTruthy();
       });
 
     });
@@ -45,10 +45,9 @@ describe('<Translate />', () => {
         </Translate>
       );
 
-      const linkButton = component.getByTestId('linkButton');
-      await wait(() => {
-        expect(getNodeText(linkButton))
-          .toEqual('Visiter la page');
+      const linkButton = component.getByText('Visiter la page');
+      await waitFor(() => {
+        expect(linkButton).toBeTruthy();
       });
 
     });
@@ -74,10 +73,11 @@ describe('<Translate />', () => {
         </PaywallContext>
       );
 
-      await wait(() => {
-        const title = component.getByTestId('title');
-        expect(getNodeText(title))
-          .toEqual('This article in exchange for your opinion!');
+      await waitFor(() => {
+        const title = component.getByText(
+          'This article in exchange for your opinion!');
+
+        expect(title).toBeTruthy();
       });
 
     });
@@ -103,10 +103,9 @@ describe('<Translate />', () => {
         </PaywallContext>
       );
 
-      await wait(() => {
-        const title = component.getByTestId('title');
-        expect(getNodeText(title))
-          .toEqual('test title');
+      await waitFor(() => {
+        const title = component.getByText('test title');
+        expect(title).toBeTruthy();
       });
 
     });
@@ -132,10 +131,9 @@ describe('<Translate />', () => {
         </PaywallContext>
       );
 
-      await wait(() => {
-        const description = component.getByTestId('description');
-        expect(getNodeText(description))
-          .toEqual('Test App');
+      await waitFor(() => {
+        const description = component.getByText('Test App');
+        expect(description).toBeTruthy();
       });
 
     });

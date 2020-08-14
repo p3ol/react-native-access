@@ -1,7 +1,8 @@
 module.exports = {
   preset: 'react-native',
-  timers: 'fake',
+  timers: 'real',
   clearMocks: true,
+  restoreMocks: true,
   testPathIgnorePatterns: [
     '<rootDir>/node_modules',
     '<rootDir>/examples',

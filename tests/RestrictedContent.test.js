@@ -3,7 +3,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import {
   render,
-  wait,
+  waitFor,
 } from '@testing-library/react-native';
 
 import Paywall from '../src/components/Paywall';
@@ -33,7 +33,7 @@ describe('<RestrictedContent />', () => {
         </PaywallContext>
       );
 
-      await wait(() =>
+      await waitFor(() =>
         expect(component.queryByTestId('restrictedTest')).toBeTruthy()
       );
     });
@@ -59,9 +59,12 @@ describe('<RestrictedContent />', () => {
         </PaywallContext>
       );
 
-      await wait(() =>
-        expect(component.queryByTestId('signature')).toBeNull()
+      await waitFor(() =>
+        component.queryByTestId('signature')
       );
+
+      expect(component.queryByTestId('signature')).toBeNull();
+
     });
 
   it('should render the restricted content and the signature on unlock',
@@ -85,8 +88,13 @@ describe('<RestrictedContent />', () => {
         </PaywallContext>
       );
 
-      await wait(() =>
+      await waitFor(() =>
         expect(component.queryByTestId('signature')).toBeTruthy()
       );
     });
+
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+  });
 });

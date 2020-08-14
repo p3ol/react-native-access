@@ -1,7 +1,7 @@
 import nock from 'nock';
 import React from 'react';
 import { Text } from 'react-native';
-import { render, wait, fireEvent } from '@testing-library/react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 
 import PaywallContext from '../../src/components/PaywallContext';
 import QuestionWidget from '../../src/components/QuestionWidget';
@@ -12,20 +12,6 @@ describe('<QuestionWidget />', () => {
     () => 'TouchableOpacity');
   const onLoginClick = jest.fn();
   const onSubscribeClick = jest.fn();
-  const component = render(
-    <PaywallContext
-      onLoginClick={onLoginClick}
-      onSubscribeClick={onSubscribeClick}
-    >
-      <Text>Test text</Text>
-      <QuestionWidget
-        release={() => {}}
-        data={{
-          config: { login_button_enabled: true },
-        }}
-      />
-    </PaywallContext>
-  );
 
   it('should release the paywall by clicking an answer', async () => {
     nock('https://api.poool.develop:8443/api/v3')
@@ -45,7 +31,7 @@ describe('<QuestionWidget />', () => {
         <QuestionWidget release={() => {}} />
       </PaywallContext>
     );
-    await wait(() => {
+    await waitFor(() => {
       const answer = component.getByTestId('answer0');
       fireEvent.press(answer);
       expect(onRelease.mock.calls.length).toBe(1);
@@ -64,7 +50,7 @@ describe('<QuestionWidget />', () => {
         <QuestionWidget release={() => {}} />
       </PaywallContext>
     );
-    await wait(() => {
+    await waitFor(() => {
       expect(component.getByTestId('questionWidget')).toBeDefined();
       expect(onError.mock.calls.length).toBe(1);
     });
@@ -89,7 +75,7 @@ describe('<QuestionWidget />', () => {
         <QuestionWidget release={() => {}} />
       </PaywallContext>
     );
-    await wait(() => {
+    await waitFor(() => {
       const answer = component.getByTestId('answer0');
       fireEvent.press(answer);
       expect(onError.mock.calls.length).toBe(1);
@@ -98,9 +84,25 @@ describe('<QuestionWidget />', () => {
   });
 
   it('should fire onLoginClick event by clicking on login', async () => {
+
+    const component = render(
+      <PaywallContext
+        onLoginClick={onLoginClick}
+        onSubscribeClick={onSubscribeClick}
+      >
+        <Text>Test text</Text>
+        <QuestionWidget
+          release={() => {}}
+          data={{
+            config: { login_button_enabled: true },
+          }}
+        />
+      </PaywallContext>
+    );
+
     const loginButton = component.getByTestId('loginButton');
     fireEvent.press(loginButton);
-    await wait(() => {
+    await waitFor(() => {
       expect(onLoginClick.mock.calls.length).toBe(1);
     });
 
@@ -108,9 +110,25 @@ describe('<QuestionWidget />', () => {
 
   it('should fire onSubscribeClick event by clicking on subscribe',
     async () => {
+
+      const component = render(
+        <PaywallContext
+          onLoginClick={onLoginClick}
+          onSubscribeClick={onSubscribeClick}
+        >
+          <Text>Test text</Text>
+          <QuestionWidget
+            release={() => {}}
+            data={{
+              config: { login_button_enabled: true },
+            }}
+          />
+        </PaywallContext>
+      );
+
       const subscribeButton = component.getByTestId('subscribeButton');
       fireEvent.press(subscribeButton);
-      await wait(() => {
+      await waitFor(() => {
         expect(onSubscribeClick.mock.calls.length).toBe(1);
       });
 

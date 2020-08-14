@@ -10,6 +10,7 @@ const Translate = ({
   children,
   replace = {},
   asString = false,
+  tag: Tag = Text,
   ...rest
 }) => {
 
@@ -36,12 +37,14 @@ const Translate = ({
 
   return asString
     ? children({ text })
-    : <Text { ...rest }>{ text }</Text>;
+    : Tag instanceof Text
+      ? <Tag { ...rest }>{ text }</Tag>
+      : <Tag { ...rest }><Text>{ text }</Text></Tag>;
 };
 
 Translate.propTypes = {
   textKey: PropTypes.string,
-  tag: PropTypes.element,
+  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
   children: PropTypes.func,
   replace: PropTypes.object,
   asString: PropTypes.bool,
