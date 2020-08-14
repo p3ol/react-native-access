@@ -4,7 +4,6 @@ import {
   render,
   waitFor,
   fireEvent,
-  act,
 } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
