@@ -27,7 +27,7 @@
     "@poool/sdk": "0.0.1-beta.0",
     "@react-native-community/async-storage": "1.11.0",
     "@testing-library/jest-native": "3.3.0",
-    "@testing-library/react-native": "7.0.1",
+    "@testing-library/react-native": "7.0.2",
     "atob": "2.1.2",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.3.0",
