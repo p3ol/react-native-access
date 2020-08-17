@@ -1163,27 +1163,27 @@
   dependencies:
     eslint-rule-composer "0.3.0"
 
-"@poool/junipero-hooks@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-hooks/-/junipero-hooks-2.0.0-alpha.0.tgz#d73a6dfa39f147ade9cc43af8d2b0eeffbfca302"
-  integrity sha512-3Fcydn+nUCF/CuaGPG3W3bj9ydwCbAf8TX+NofuKlCsB+SZubcDBfd5O7UQ+3BqakGIt2N6rxotGsWyh714U0A==
+"@poool/junipero-hooks@^2.0.0-alpha.7":
+  version "2.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-hooks/-/junipero-hooks-2.0.0-alpha.7.tgz#0ceb2e2cf2d6cbc86188ab85aff9478d254c41cd"
+  integrity sha512-Hci/bc3uDA8GnvP23+eXd7A3PWkJ/29whyFaH3x4F5r171ctd49lf4UhqbyZiZe81Wt75hEi6BFc2RuswNJaCA==
   dependencies:
     "@babel/runtime-corejs3" "7.10.2"
     core-js "3.6.5"
 
-"@poool/junipero-native@^2.0.0-alpha.3":
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0-alpha.3.tgz#754c54ddaad8bfe3a8031e06f8316785984b636c"
-  integrity sha512-Gj8Cks1FG2BgAoiKoUM8yYE1puXHtesAVosHFGrFGBuN7MaWDc9Ryz9z2q9D4VYRJQ3LNWToKmKqbij0UXorTQ==
+"@poool/junipero-native@2.0.0-alpha.7":
+  version "2.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0-alpha.7.tgz#7b15a27172e78971de8ac8536291eb3188b00030"
+  integrity sha512-Afg0RuL9vgiVsCqLoDspKzz5Fgw6qz/l6GVNc7Mn5DpiuC3lrrzMBDsSukGvOZStowzb2FniQwrlD7U1LV9t5A==
   dependencies:
-    "@poool/junipero-hooks" "^2.0.0-alpha.0"
-    "@poool/junipero-utils" "^2.0.0-alpha.0"
+    "@poool/junipero-hooks" "^2.0.0-alpha.7"
+    "@poool/junipero-utils" "^2.0.0-alpha.7"
     prop-types "15.7.2"
 
-"@poool/junipero-utils@^2.0.0-alpha.0":
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0-alpha.0.tgz#c5ccbd20d81ffbc3cc6ba4901877c43b7ca3cf79"
-  integrity sha512-xlB6CKruuO+oGbucliGb1Y7X8fKQhDiG3h13lV1Zs0k0EUc6VjaeaT2x6Y0dhz446vJwXNY2SDILlqtnpM4fiQ==
+"@poool/junipero-utils@^2.0.0-alpha.7":
+  version "2.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0-alpha.7.tgz#07b4499f8d6bf1936c842139dcc07c3598e87ec1"
+  integrity sha512-MlRDz9CVKBp7pBhf5QBkvWl19m199ca/EeViPWSibH2yXxL5mXNbUR3ibrOTsc0AmLA+9Vu/Qou2FFGWwFNAGg==
   dependencies:
     "@babel/runtime-corejs3" "7.10.2"
     core-js "3.6.5"
@@ -2109,7 +2109,7 @@ buffer-xor@^1.0.3:
   resolved "https://registry.yarnpkg.com/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
   integrity sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk=
 
-buffer@5.6.0, buffer@^5.6.0:
+buffer@5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.6.0.tgz#a31749dc7d81d84db08abf937b6b8c4033f62786"
   integrity sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==
@@ -3260,10 +3260,10 @@ eventemitter3@^3.0.0:
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
   integrity sha512-tvtQIeLVHjDkJYnzf2dgVMxfuSGJeM/7UCG17TT4EumTfNtF+0nebF/4zWOIkCreAbtNqhGEboB6BWrwqNaw4Q==
 
-events@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/events/-/events-3.2.0.tgz#93b87c18f8efcd4202a461aec4dfc0556b639379"
-  integrity sha512-/46HWwbfCX2xTawVfkKLGxMifJYQBWMwY1mjywRtb4c9x8l5NP3KoJtnIOiL1hfdRkIuYhETxQlo62IF8tcnlg==
+events@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-3.1.0.tgz#84279af1b34cb75aa88bf5ff291f6d0bd9b31a59"
+  integrity sha512-Rv+u8MLHNOdMjTAFeT3nCjHn2aGlx435FP/sDHNaRhDEMwyI/aB22Kj2qIN8R0cw3z28psEQLYwxVKLsKrMgWg==
 
 evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
   version "1.0.3"
@@ -7328,7 +7328,7 @@ stealthy-require@^1.1.1:
   resolved "https://registry.yarnpkg.com/stealthy-require/-/stealthy-require-1.1.1.tgz#35b09875b4ff49f26a777e509b3090a3226bf24b"
   integrity sha1-NbCYdbT/SfJqd35QmzCQoyJr8ks=
 
-stream-browserify@^3.0.0:
+stream-browserify@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-3.0.0.tgz#22b0a2850cdf6503e73085da1fc7b7d0c2122f2f"
   integrity sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA==

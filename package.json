@@ -10,14 +10,14 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint --max-warnings=0 .",
     "test": "./node_modules/.bin/jest",
-    "build" "echo 0"
+    "build": "echo 0"
   },
   "dependencies": {
-    "@poool/junipero-native": "^2.0.0-alpha.3",
-    "buffer": "^5.6.0",
-    "events": "^3.1.0",
-    "prop-types": "^15.7.2",
-    "stream-browserify": "^3.0.0"
+    "@poool/junipero-native": "2.0.0-alpha.7",
+    "buffer": "5.6.0",
+    "events": "3.1.0",
+    "prop-types": "15.7.2",
+    "stream-browserify": "3.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.11.1",
