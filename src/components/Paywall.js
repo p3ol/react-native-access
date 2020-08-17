@@ -3,10 +3,10 @@ import Widget from './Widget';
 import { AppContext } from '../services/contexts';
 import {
   ImageBackground,
+  TouchableWithoutFeedback,
   Image,
   View,
   Linking,
-  Text,
 } from 'react-native';
 
 import { layouts } from '../styles';
@@ -18,8 +18,9 @@ const Paywall = () => {
     return (
       <View testID="paywallView">
         <ImageBackground
-          source={ trackData?.styles?.layout === 'portrait' &&
-            { uri: 'https://cdn.poool.fr/assets/bones.svg' }
+          source={ trackData?.styles?.layout === 'portrait'
+            ? { uri: 'https://cdn.poool.fr/assets/bones.svg' }
+            : { uri: '' }
           }
           style={layouts.paywallBackground}>
           <View style={[
@@ -42,7 +43,7 @@ const Paywall = () => {
               )}
               <Widget />
               <View style={layouts.pooolLogo}>
-                <Text
+                <TouchableWithoutFeedback
                   onPress={() => Linking.openURL('https://poool.fr/')}
                   testID="pooolButton"
                 >
@@ -52,7 +53,7 @@ const Paywall = () => {
                     }}
                     style={layouts.pooolLogoBackground}
                   />
-                </Text>
+                </TouchableWithoutFeedback>
               </View>
             </View>
           </View>

@@ -27,7 +27,12 @@ const App = () => {
   const onDiscoveryLinkClick = event =>
     console.log('Link click', event?.widget, event?.button, event?.url);
   const onDataPolicyClick = event =>
-    console.log('Data policy clicked' + event?.widget, event?.button, event?.url);
+    console.log(
+      'Data policy clicked',
+      event?.widget,
+      event?.button,
+      event?.url
+    );
   const onIdentityAvailable = event =>
     console.log('Identity recover',
       event?.userId, event?.segmentSlug, event?.journey, event?.widget);

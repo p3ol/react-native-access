@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
 import { Text } from 'react-native';
-import { render, wait, fireEvent } from '@testing-library/react-native';
+import { render, waitFor, fireEvent } from '@testing-library/react-native';
 import { shallow } from 'enzyme';
 
 import PaywallContext from '../../src/components/PaywallContext';
@@ -10,7 +10,7 @@ describe('<RestrictionWidget />', () => {
 
   it('should render without issues', async () => {
     const component = shallow(<RestrictionWidget />);
-    expect(component.length).toBe(1);
+    await waitFor(() => expect(component.length).toBe(1));
   });
 
   it('should fire onSubscribeClick event by clicking on subscribe',
@@ -26,7 +26,7 @@ describe('<RestrictionWidget />', () => {
       fireEvent.press(subscribeButton);
       const loginButton = component.getByTestId('loginButton');
       fireEvent.press(loginButton);
-      await wait(() => {
+      await waitFor(() => {
         expect(onSubscribeClick.mock.calls.length).toBe(1);
       });
     });
@@ -43,7 +43,7 @@ describe('<RestrictionWidget />', () => {
     fireEvent.press(subscribeButton);
     const loginButton = component.getByTestId('loginButton');
     fireEvent.press(loginButton);
-    await wait(() => {
+    await waitFor(() => {
       expect(onLoginClick.mock.calls.length).toBe(1);
     });
   });
@@ -58,7 +58,7 @@ describe('<RestrictionWidget />', () => {
     );
     const noThanks = component.getByTestId('rejectButton');
     fireEvent.press(noThanks);
-    await wait(() => {
+    await waitFor(() => {
       expect(ref.current.alternative).toBe(true);
     });
   });

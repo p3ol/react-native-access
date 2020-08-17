@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import Translate from './Translate';
@@ -26,8 +27,9 @@ const Signature = () => {
           style={texts.signatureLink}
           textKey="signature_button"
           testID="signatureButton"
+          tag={TouchableWithoutFeedback}
           onPress={e => {
-            Linking.openURL(trackData?.config?.subscription_url);
+            Linking.openURL(trackData?.config?.subscription_url || '');
             onSubscribeClick({
               widget: trackData?.action,
               button: e?.target,
