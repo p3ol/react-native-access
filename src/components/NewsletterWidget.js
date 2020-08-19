@@ -135,7 +135,7 @@ const NewsletterWidget = forwardRef(({
                   newsletter_id: data?.config?.newsletter_id,
                 });
                 release();
-                register();
+                register(state.mail);
                 onRelease({
                   widget: data?.action,
                   actionName: data?.actionName,
