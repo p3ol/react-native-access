@@ -134,4 +134,8 @@ describe('<QuestionWidget />', () => {
 
     });
 
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+  });
 });

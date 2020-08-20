@@ -137,4 +137,9 @@ describe('<Translate />', () => {
       });
 
     });
+
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+  });
 });
