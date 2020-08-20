@@ -37,7 +37,7 @@ const Translate = ({
 
   return asString
     ? children({ text })
-    : Tag instanceof Text
+    : Tag?.displayName === 'Text'
       ? <Tag { ...rest }>{ text }</Tag>
       : <Tag { ...rest }><Text>{ text }</Text></Tag>;
 };
