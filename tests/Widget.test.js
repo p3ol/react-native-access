@@ -231,26 +231,29 @@ describe('<Widget />', () => {
   });
   //
   // it('should disable the paywall on disabled', async () => {
+  // trackData in context is not update
+  // it('should render restriction widget without issues', async () => {
   //   nock('https://api.poool.develop:8443/api/v3')
   //     .post('/access/track')
   //     .reply(200, {
-  //       action: 'disabled',
+  //       action: 'restriction',
+  //       originalAction: 'restriction',
   //       styles: {},
   //       texts: {},
   //       config: {},
   //     });
-  //   const ref = createRef();
+  //
+  //   const component = render(
+  //     <PaywallContext>
+  //       <Text> Test Text </Text>
+  //       <Paywall />
+  //     </PaywallContext>
+  //   );
   //
   //   await waitFor(() => {
-  //     render(
-  //       <PaywallContext ref={ref}>
-  //         <Text> Test Text </Text>
-  //         <Paywall />
-  //       </PaywallContext>
-  //     );
+  //     expect(component.queryByTestId('RestrictionWidget')).toBeTruthy();
   //   });
   //
-  //   expect(ref.current.active).toBe(false);
   // });
 
   it('should render the default widget', async () => {
