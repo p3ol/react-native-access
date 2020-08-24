@@ -152,7 +152,7 @@ const NewsletterWidget = forwardRef(({
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config?.action.login_url,
+                  url: data?.config?.login_url,
                 });
               }}
             />
