@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
-import {
-  View,
-  Button,
-  Linking,
-} from 'react-native';
-
+import { Button, Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
+
 import { AppContext } from '../services/contexts';
+
 import Translate from './Translate';
 
 import { texts, layouts } from '../styles';
@@ -20,12 +17,10 @@ const RestrictionWidget = ({ data, widget }) => {
   } = useContext(AppContext);
 
   return (
-
     <View
       style={layouts.widget}
       testID="RestrictionWidget"
     >
-
       <Translate textKey='subscription_title' style={texts.title}/>
       <Translate
         textKey="subscription_desc"
@@ -47,7 +42,7 @@ const RestrictionWidget = ({ data, widget }) => {
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: data?.config.login_url, //add local config here for default
+                url: data?.config.login_url,
               });
             }}
           />
@@ -71,14 +66,14 @@ const RestrictionWidget = ({ data, widget }) => {
         />
         { data &&
           data?.action === 'subscription' &&
-          data?.config?.alternative_widget !== 'none' &&
+          data?.config?.alternative_widget !== 'none' && (
           <Translate
             textKey="no_thanks"
             testID="rejectButton"
             style={texts.subaction[data?.styles?.layout]}
             onPress={() => setAlternative(true)}
           />
-        }
+        )}
       </View>
     </View>
 

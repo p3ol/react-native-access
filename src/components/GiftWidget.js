@@ -1,10 +1,6 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
-import {
-  View,
-  Button,
-  Linking,
-} from 'react-native';
+import { Button, Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';

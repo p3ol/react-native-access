@@ -1,29 +1,17 @@
-import React, {
-  useContext,
-  useReducer,
-  useEffect,
-} from 'react';
-import {
-  View,
-  Button,
-  Linking,
-} from 'react-native';
-import { CheckboxField, TextField } from '@poool/junipero-native';
-
+import React, { useContext, useEffect, useReducer } from 'react';
+import { Button, Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
+import { CheckboxField, TextField } from '@poool/junipero-native';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
+
 import Translate from './Translate';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
 
-const FormWidget = ({
-  data,
-  release,
-  widget,
-}) => {
+const FormWidget = ({ data, release, widget }) => {
 
   const {
     onDataPolicyClick,
@@ -79,7 +67,7 @@ const FormWidget = ({
 
   const onBlur = field => {
     state.fields[field.key].focused = false;
-    if (field.value === '') {
+    if (!field.value) {
       state.fields[field.key].valid = false;
     }
     dispatch({ fields: state.fields });
@@ -92,25 +80,13 @@ const FormWidget = ({
 
   const onChange = (field, event) => {
     state.fields[field.key].value = event.value;
-    if (field.value === '') {
-      if (field.required) {
-        state.fields[field.key].valid = false;
-      } else {
-        state.fields[field.key].valid = true;
-      }
+    if (!field.value) {
+      state.fields[field.key].valid = !field.required;
     } else {
       if (field.type === 'email') {
-        if (!mailRegex.test(field.value)) {
-          state.fields[field.key].valid = false;
-        } else {
-          state.fields[field.key].valid = true;
-        }
+        state.fields[field.key].valid = mailRegex.test(field.value);
       } else if (field.type === 'date') {
-        if (!getDateRegex().test(field.value)) {
-          state.fields[field.key].valid = false;
-        } else {
-          state.fields[field.key].valid = true;
-        }
+        state.fields[field.key].valid = getDateRegex().test(field.value);
       } else {
         state.fields[field.key].valid = true;
       }
@@ -122,28 +98,24 @@ const FormWidget = ({
 
     let error;
 
-    if (!field.focused && field.value !== '') {
-      if (field.type === 'email') {
-        if (field.valid === false) {
-          error = 'form_email_error';
+    if (!field.focused && field.value) {
+      if (field.type === 'email' && !field.valid) {
+        error = 'form_email_error';
+      }
+      if (field.type === 'date' && !field.valid) {
+        switch (data?.form?.config?.date_format) {
+          case 'mm/dd/yyyy':
+            error = 'form_date_mdy_error';
+            break;
+          case 'yyyy/mm/dd':
+            error = 'form_date_ymd_error';
+            break;
+          default:
+            error = 'form_date_dmy_error';
+            break;
         }
       }
-      if (field.type === 'date') {
-        if (field.valid === false) {
-          switch (data?.form?.config?.date_format) {
-            case 'mm/dd/yyyy':
-              error = 'form_date_mdy_error';
-              break;
-            case 'yyyy/mm/dd':
-              error = 'form_date_ymd_error';
-              break;
-            default:
-              error = 'form_date_dmy_error';
-              break;
-          }
-        }
-      }
-    } else if (!field.focused && field.value === '' && field.required) {
+    } else if (!field.focused && !field.value && field.required) {
       error = 'form_empty_error';
     }
     return (
@@ -156,18 +128,15 @@ const FormWidget = ({
   };
 
   const getValidFields = () => {
-
-    var validFields = [];
+    const validFields = [];
 
     Object.values(state.fields).map(field => {
       validFields.push({ [field.key]: field.valid });
     });
-
     return validFields;
   };
 
   const isFormValid = () => {
-
     let count = 0;
     let isValid = 0;
 
@@ -176,12 +145,7 @@ const FormWidget = ({
       count += 1;
     });
 
-    if (isValid === count) {
-      return true;
-    } else {
-      return false;
-    }
-
+    return isValid === count;
   };
 
   const getFormItem = field => {
@@ -251,9 +215,7 @@ const FormWidget = ({
             children={
               <Translate
                 textKey='newsletter_optin_label'
-                replace={{
-                  app_name: true,
-                }}
+                replace={{ app_name: true }}
               />
             }
           />

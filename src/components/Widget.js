@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   register,
@@ -56,13 +56,8 @@ const Widget = () => {
       updateContext({ trackData: result });
       onIdentityAvailable();
       setCookie('_poool:customStyles', JSON.stringify(result?.styles));
-      // AsyncStorage.setItem(
-      //   '@_poool:customStyles',
-      //   JSON.stringify(result?.styles)
-      // );
     } catch (e) {
       const styles = await getCookie('_poool:customStyles');
-      //const styles = await AsyncStorage.getItem('@_poool:customStyles');
       updateContext({ trackData: { styles: JSON.parse(styles) } });
       onError(e);
     }

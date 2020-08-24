@@ -1,22 +1,10 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
-import {
-  getQuestion,
-  postAnswer,
-} from '@poool/sdk';
-
+import React, { useContext, useEffect, useState } from 'react';
+import { Linking, Text, TouchableOpacity, View } from 'react-native';
+import { getQuestion, postAnswer } from '@poool/sdk';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
+
 import Translate from './Translate';
 
 import { texts, layouts } from '../styles';
@@ -26,7 +14,7 @@ const QuestionWidget = ({ data, release, widget }) => {
   const [question, setQuestion] = useState();
 
   useEffect(() => {
-    init();
+    retrieveQuestion();
   }, []);
 
   const {
@@ -36,14 +24,10 @@ const QuestionWidget = ({ data, release, widget }) => {
     onSubscribeClick,
   } = useContext(AppContext);
 
-  const init = async () => {
-    setQuestion(await getaQuestion());
-  };
-
-  const getaQuestion = async () => {
+  const retrieveQuestion = async () => {
     try {
       const question = await getQuestion();
-      return question;
+      setQuestion(question);
     } catch (e) {
       onError(e);
     }

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
+import PropTypes from 'prop-types';
+
 import { AppContext } from '../services/contexts';
 import { Locales } from '../utils/Locales';
-
-import PropTypes from 'prop-types';
 
 const Translate = ({
   textKey,

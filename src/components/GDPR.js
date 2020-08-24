@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Linking,
-} from 'react-native';
+import { Linking, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';

@@ -3,13 +3,8 @@ import React, {
   useReducer,
   forwardRef,
   useImperativeHandle } from 'react';
-import {
-  View,
-  Button,
-  Linking,
-} from 'react-native';
+import { Button, Linking, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
-
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
