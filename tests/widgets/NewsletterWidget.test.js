@@ -163,29 +163,33 @@ describe('<NewsletterWidget />', () => {
       });
     });
 
-  // it('should display a warning on a missing mail input',
-  //   async () => {
-  //     const ref = createRef();
-  //     const context = {
-  //       trackData: {
-  //         config: {
-  //           locale: 'fr',
-  //         },
-  //       },
-  //     };
-  //     const component = render(
-  //       <AppContext.Provider value={context}>
-  //         <Text>Test text</Text>
-  //         <NewsletterWidget ref={ref} />
-  //       </AppContext.Provider>
-  //     );
-  //
-  //     await waitFor(() => component.getByTestId('mailInput'));
-  //     const mailInput = component.getByTestId('mailInput');
-  //     fireEvent(mailInput, 'blur');
-  //
-  //     await waitFor(() => component.getByText('Ce champ est obligatoire.'));
-//     const warningMessage = component.getByText('Ce champ est obligatoire.');
-  //     expect(warningMessage).toBeTruthy();
-  //   });
+  it('should display a warning on a missing mail input',
+    async () => {
+      const ref = createRef();
+      const context = {
+        trackData: {
+          config: {
+            locale: 'fr',
+          },
+        },
+      };
+      const component = render(
+        <AppContext.Provider value={context}>
+          <Text>Test text</Text>
+          <NewsletterWidget ref={ref} />
+        </AppContext.Provider>
+      );
+
+      await waitFor(() => {
+        component.getByTestId('mailInput');
+      });
+      const mailInput = component.getByTestId('mailInput');
+      fireEvent(mailInput, 'blur');
+
+      // this error/warning happens when I use more than 1 await waitFor
+      // within a it statement
+      // await waitFor(() => component.getByTestId('warningMessage'));
+      const warningMessage = component.getByTestId('warningMessage');
+      expect(warningMessage).toBeTruthy();
+    });
 });
