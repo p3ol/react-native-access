@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {
   register,
@@ -17,6 +17,7 @@ import NewsletterWidget from './NewsletterWidget';
 import QuestionWidget from './QuestionWidget';
 
 const Widget = () => {
+  let disableTimeout;
   const {
     setActive,
     alternative,
@@ -33,6 +34,7 @@ const Widget = () => {
   useEffect(() => {
     init();
     onReady();
+    return () => clearTimeout(disableTimeout);
   }, []);
 
   const setCookie = (name, value) =>
@@ -91,6 +93,10 @@ const Widget = () => {
     }
   };
 
+  const disable = () => {
+    disableTimeout = setTimeout(() => setActive(false), 100);
+  };
+
   switch (alternative
     ? config.available_widgets.includes(trackData?.config.alternative_widget)
       ? trackData?.config.alternative_widget
@@ -98,7 +104,7 @@ const Widget = () => {
     : trackData?.action) {
     case 'disabled':
       onDisabled();
-      setActive(false);
+      disable();
       return null;
     case 'form':
       return (
