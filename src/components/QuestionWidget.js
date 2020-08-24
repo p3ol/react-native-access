@@ -97,7 +97,7 @@ const QuestionWidget = ({ data, release, widget }) => {
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: data?.config.login_url,
+                url: data?.config?.login_url,
               });
             }}
           />
@@ -107,12 +107,12 @@ const QuestionWidget = ({ data, release, widget }) => {
           testID="subscribeButton"
           style={texts.subaction[data?.styles?.layout]}
           onPress={e => {
-            Linking.openURL(data?.config.subscription_url);
+            Linking.openURL(data?.config?.subscription_url);
             onSubscribeClick({
               widget: widget,
               button: e?.target,
               originalEvent: e,
-              url: data?.config.login_url,
+              url: data?.config?.subscription_url,
             });
           }}
         />

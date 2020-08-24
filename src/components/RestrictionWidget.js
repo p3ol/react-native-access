@@ -37,12 +37,12 @@ const RestrictionWidget = ({ data, widget }) => {
             title={text}
             color={data?.styles?.button_color || '#000A24'}
             onPress={e => {
-              Linking.openURL(data?.config.subscription_url);
+              Linking.openURL(data?.config?.subscription_url);
               onSubscribeClick({
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: data?.config.login_url,
+                url: data?.config?.subscription_url,
               });
             }}
           />
@@ -55,12 +55,12 @@ const RestrictionWidget = ({ data, widget }) => {
           textKey="login_link"
           replace={{ app_name: true }}
           onPress={e => {
-            Linking.openURL(data?.config.login_url);
+            Linking.openURL(data?.config?.login_url);
             onLoginClick({
               widget: widget,
               button: e?.target,
               originalEvent: e,
-              url: data?.config.login_url,
+              url: data?.config?.login_url,
             });
           }}
         />

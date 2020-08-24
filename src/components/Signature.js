@@ -30,7 +30,7 @@ const Signature = () => {
               widget: trackData?.action,
               button: e?.target,
               originalEvent: e,
-              url: trackData?.config?.login_url,
+              url: trackData?.config?.subscription_url,
             });
           }}
         />

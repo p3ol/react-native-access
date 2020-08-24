@@ -294,7 +294,7 @@ const FormWidget = ({ data, release, widget }) => {
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config?.login_url,
+                  url: data?.config?.subscription_url,
                 });
               }}/>
           }

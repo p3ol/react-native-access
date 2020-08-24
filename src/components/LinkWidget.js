@@ -43,9 +43,9 @@ const LinkWidget = ({ data, widget }) => {
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: config.login_url || data?.config.link_url,
+                url: config.login_url || data?.config?.link_url,
               });
-              Linking.openURL(data?.config.link_url);
+              Linking.openURL(data?.config?.link_url);
             }}
           />
         )}
@@ -57,12 +57,12 @@ const LinkWidget = ({ data, widget }) => {
             testID="loginButton"
             style={texts.subaction[data?.styles?.layout]}
             onPress={e => {
-              Linking.openURL(data?.config.login_url);
+              Linking.openURL(data?.config?.login_url);
               onLoginClick({
                 widget: widget,
                 button: e?.target,
                 originalEvent: e,
-                url: data?.config.login_url,
+                url: data?.config?.login_url,
               });
             }}
           />

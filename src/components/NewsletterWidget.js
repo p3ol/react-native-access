@@ -141,23 +141,23 @@ const NewsletterWidget = forwardRef(({
         </Translate>
 
         <View style={layouts.subactions[data?.styles?.layout]}>
-          {data?.config.login_button_enabled &&
+          {data?.config?.login_button_enabled &&
             <Translate
               textKey="login_link"
               testID="loginButton"
               style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
-                Linking.openURL(data?.config.login_url);
+                Linking.openURL(data?.config?.login_url);
                 onLoginClick({
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config.login_url,
+                  url: data?.config?.action.login_url,
                 });
               }}
             />
           }
-          { data?.config.alternative_widget !== 'none'
+          { data?.config?.alternative_widget !== 'none'
             ? <Translate
               textKey="no_thanks"
               testID="rejectButton"
@@ -169,12 +169,12 @@ const NewsletterWidget = forwardRef(({
               testID="subscribeButton"
               style={texts.subaction[data?.styles?.layout]}
               onPress={e => {
-                Linking.openURL(data?.config.subscription_url);
+                Linking.openURL(data?.config?.subscription_url);
                 onSubscribeClick({
                   widget: widget,
                   button: e?.target,
                   originalEvent: e,
-                  url: data?.config.login_url,
+                  url: data?.config?.subscription_url,
                 });
               }}/>
           }
