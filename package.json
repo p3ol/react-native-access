@@ -5,7 +5,9 @@
   "main": "src/index.js",
   "author": "Ugo Stephant <ugo@poool.fr>",
   "contributors": [
-    "Simon Deflesschouwer <simon@poool.fr>"
+    "Simon Deflesschouwer <simon@poool.fr>",
+    "Tyler Escolano <tyler@poool.fr>",
+    "Nicolas Auger <nicolas@poool.fr>"
   ],
   "scripts": {
     "lint": "./node_modules/.bin/eslint --max-warnings=0 .",
