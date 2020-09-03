@@ -6,6 +6,7 @@ import { CheckboxField, TextField } from '@poool/junipero-native';
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 
+import NoThanksLink from './NoThanksLink';
 import Translate from './Translate';
 import GDPR from './GDPR';
 
@@ -15,7 +16,6 @@ const FormWidget = ({ data, release, widget }) => {
 
   const {
     onDataPolicyClick,
-    setAlternative,
     onLoginClick,
     onRelease,
     onSubscribeClick,
@@ -278,12 +278,7 @@ const FormWidget = ({ data, release, widget }) => {
             />
           }
           { data?.config?.alternative_widget !== 'none'
-            ? <Translate
-              textKey='no_thanks'
-              testID='rejectButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={() => setAlternative(true)}
-            />
+            ? <NoThanksLink />
             : <Translate
               textKey='subscribe_link'
               testID='subscribeButton'

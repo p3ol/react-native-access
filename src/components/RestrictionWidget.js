@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
+import NoThanksLink from './NoThanksLink';
 
 import { texts, layouts } from '../styles';
 
@@ -13,7 +14,6 @@ const RestrictionWidget = ({ data, widget }) => {
   const {
     onSubscribeClick,
     onLoginClick,
-    setAlternative,
   } = useContext(AppContext);
 
   return (
@@ -67,12 +67,7 @@ const RestrictionWidget = ({ data, widget }) => {
         { data &&
           data?.action === 'subscription' &&
           data?.config?.alternative_widget !== 'none' && (
-          <Translate
-            textKey="no_thanks"
-            testID="rejectButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={() => setAlternative(true)}
-          />
+          <NoThanksLink />
         )}
       </View>
     </View>

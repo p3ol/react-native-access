@@ -11,6 +11,7 @@ import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 
 import Translate from './Translate';
+import NoThanksLink from './NoThanksLink';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
@@ -24,7 +25,6 @@ const NewsletterWidget = forwardRef(({
 
   const {
     onDataPolicyClick,
-    setAlternative,
     onLoginClick,
     onRegister,
     onRelease,
@@ -158,12 +158,7 @@ const NewsletterWidget = forwardRef(({
             />
           }
           { data?.config?.alternative_widget !== 'none'
-            ? <Translate
-              textKey="no_thanks"
-              testID="rejectButton"
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={() => setAlternative(true)}
-            />
+            ? <NoThanksLink />
             : <Translate
               textKey="subscribe_link"
               testID="subscribeButton"

@@ -4,12 +4,12 @@ import { Button, Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
+import NoThanksLink from './NoThanksLink';
 
 import { texts, layouts } from '../styles';
 
 const LinkWidget = ({ data, widget }) => {
   const {
-    setAlternative,
     onDiscoveryLinkClick,
     onLoginClick,
     config = {},
@@ -67,12 +67,7 @@ const LinkWidget = ({ data, widget }) => {
             }}
           />
         }
-        <Translate
-          textKey="no_thanks"
-          testID="rejectButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={() => setAlternative(true)}
-        />
+        <NoThanksLink />
       </View>
     </View>
   );

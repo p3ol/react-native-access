@@ -42,6 +42,8 @@ const App = () => {
     console.log(`form ${event?.name} submitted`, event?.fields, event?.valid);
   const onRegister = event =>
     console.log('Register to Newsletter ' + event?.newsletter_id, event?.email);
+  const onAlternativeClick = event =>
+    console.log('Click on no_thanks, alternative: ' + event.alternativeWidget);
 
   return (
     <React.Fragment>
@@ -62,6 +64,7 @@ const App = () => {
               onLoginClick={onLoginClick}
               onDiscoveryLinkClick={onDiscoveryLinkClick}
               onDataPolicyClick={onDataPolicyClick}
+              onAlternativeClick={onAlternativeClick}
             >
               <PreviewContent>
                 <Text>
