@@ -7,6 +7,7 @@ import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 
 import NoThanksLink from './NoThanksLink';
+import LoginLink from './LoginLink';
 import Translate from './Translate';
 import GDPR from './GDPR';
 
@@ -16,7 +17,6 @@ const FormWidget = ({ data, release, widget }) => {
 
   const {
     onDataPolicyClick,
-    onLoginClick,
     onRelease,
     onSubscribeClick,
     onFormSubmit,
@@ -262,20 +262,7 @@ const FormWidget = ({ data, release, widget }) => {
 
         <View style={layouts.subactions[data?.styles?.layout]}>
           {data?.config?.login_button_enabled &&
-            <Translate
-              textKey='login_link'
-              testID='loginButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.login_url);
-                onLoginClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.login_url,
-                });
-              }}
-            />
+            <LoginLink />
           }
           { data?.config?.alternative_widget !== 'none'
             ? <NoThanksLink />

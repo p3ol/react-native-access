@@ -5,15 +5,12 @@ import PropTypes from 'prop-types';
 
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
+import LoginLink from './LoginLink';
 
 import { texts, layouts } from '../styles';
 
 const LinkWidget = ({ data, widget }) => {
-  const {
-    onDiscoveryLinkClick,
-    onLoginClick,
-    config = {},
-  } = useContext(AppContext);
+  const { onDiscoveryLinkClick, config = {} } = useContext(AppContext);
 
   return (
     <View
@@ -52,20 +49,7 @@ const LinkWidget = ({ data, widget }) => {
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config.login_button_enabled &&
-          <Translate
-            textKey="login_link"
-            testID="loginButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={e => {
-              Linking.openURL(data?.config?.login_url);
-              onLoginClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config?.login_url,
-              });
-            }}
-          />
+          <LoginLink />
         }
         <NoThanksLink />
       </View>

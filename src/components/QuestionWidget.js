@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
+import LoginLink from './LoginLink';
 
 import { texts, layouts } from '../styles';
 
@@ -18,7 +19,6 @@ const QuestionWidget = ({ data, release, widget }) => {
   }, []);
 
   const {
-    onLoginClick,
     onError,
     onRelease,
     onSubscribeClick,
@@ -87,20 +87,7 @@ const QuestionWidget = ({ data, release, widget }) => {
       </View>
       <View style={layouts.subactions[data?.styles?.layout]}>
         {data?.config?.login_button_enabled &&
-          <Translate
-            textKey="login_link"
-            testID="loginButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={e => {
-              Linking.openURL(data?.config?.login_url);
-              onLoginClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config?.login_url,
-              });
-            }}
-          />
+          <LoginLink />
         }
         <Translate
           textKey="subscribe_link"

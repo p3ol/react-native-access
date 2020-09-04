@@ -6,15 +6,13 @@ import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
+import LoginLink from './LoginLink';
 
 import { texts, layouts } from '../styles';
 
 const RestrictionWidget = ({ data, widget }) => {
 
-  const {
-    onSubscribeClick,
-    onLoginClick,
-  } = useContext(AppContext);
+  const { onSubscribeClick } = useContext(AppContext);
 
   return (
     <View
@@ -49,21 +47,7 @@ const RestrictionWidget = ({ data, widget }) => {
         )}
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout || 'portrait']}>
-        <Translate
-          testID="loginButton"
-          style={texts.subaction[data?.styles?.layout || 'portrait']}
-          textKey="login_link"
-          replace={{ app_name: true }}
-          onPress={e => {
-            Linking.openURL(data?.config?.login_url);
-            onLoginClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.login_url,
-            });
-          }}
-        />
+        <LoginLink />
         { data &&
           data?.action === 'subscription' &&
           data?.config?.alternative_widget !== 'none' && (

@@ -4,11 +4,12 @@ import { Button, Linking, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
+import LoginLink from './LoginLink';
 
 import { texts, layouts } from '../styles';
 
 const GiftWidget = ({ data, release, widget }) => {
-  const { onSubscribeClick, onLoginClick, onRelease } = useContext(AppContext);
+  const { onSubscribeClick, onRelease } = useContext(AppContext);
 
   return (
     <View
@@ -42,20 +43,7 @@ const GiftWidget = ({ data, release, widget }) => {
         )}
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
-        <Translate
-          textKey="login_link"
-          testID="loginButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={e => {
-            Linking.openURL(data?.config?.login_url);
-            onLoginClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.login_url,
-            });
-          }}
-        />
+        <LoginLink />
         <Translate
           textKey="subscribe_link"
           testID="subscribeButton"

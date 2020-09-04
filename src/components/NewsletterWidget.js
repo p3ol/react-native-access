@@ -12,6 +12,7 @@ import { mockState } from '../services/reducers';
 
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
+import LoginLink from './LoginLink';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
@@ -25,7 +26,6 @@ const NewsletterWidget = forwardRef(({
 
   const {
     onDataPolicyClick,
-    onLoginClick,
     onRegister,
     onRelease,
     onSubscribeClick,
@@ -142,20 +142,7 @@ const NewsletterWidget = forwardRef(({
 
         <View style={layouts.subactions[data?.styles?.layout]}>
           {data?.config?.login_button_enabled &&
-            <Translate
-              textKey="login_link"
-              testID="loginButton"
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.login_url);
-                onLoginClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.login_url,
-                });
-              }}
-            />
+            <LoginLink />
           }
           { data?.config?.alternative_widget !== 'none'
             ? <NoThanksLink />

@@ -39,6 +39,7 @@ describe('<NewsletterWidget />', () => {
     const context = {
       setAlternative: alternative => { context.alternative = alternative; },
       alternative: false,
+      onAlternativeClick: () => {},
     };
     const component = render(
       <AppContext.Provider value={context}>

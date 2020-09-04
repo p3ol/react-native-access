@@ -1,35 +1,35 @@
 import React, { useContext } from 'react';
+import { Linking } from 'react-native';
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
 import { texts } from '../styles';
 
-const NoThanksLink = () => {
+const LoginLink = () => {
 
   const {
-    setAlternative,
     trackData,
-    onAlternativeClick,
+    onLoginClick,
   } = useContext(AppContext);
 
   const onPress = e => {
-    setAlternative(true);
-    onAlternativeClick({
-      widget: trackData?.widget,
+    Linking.openURL(trackData?.config?.login_url);
+    onLoginClick({
+      widget: trackData?.action,
       button: e?.target,
       originalEvent: e,
-      alternativeWidget: trackData?.config.alternative_widget,
+      url: trackData?.config?.login_url,
     });
   };
 
   return (
     <Translate
-      textKey="no_thanks"
-      testID="rejectButton"
+      textKey="login_link"
+      testID="loginButton"
       style={texts.subaction[trackData?.styles?.layout]}
       onPress={e => onPress(e)}
     />
   );
 };
 
-export default NoThanksLink;
+export default LoginLink;
