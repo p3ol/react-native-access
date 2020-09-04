@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import { Button, Linking, View } from 'react-native';
+import { Button, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 
@@ -8,19 +8,15 @@ import { mockState } from '../services/reducers';
 
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
 import Translate from './Translate';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
 
-const FormWidget = ({ data, release, widget }) => {
+const FormWidget = ({ data, release }) => {
 
-  const {
-    onDataPolicyClick,
-    onRelease,
-    onSubscribeClick,
-    onFormSubmit,
-  } = useContext(AppContext);
+  const { onDataPolicyClick, onRelease, onFormSubmit } = useContext(AppContext);
 
   /* eslint-disable max-len */
 
@@ -266,19 +262,7 @@ const FormWidget = ({ data, release, widget }) => {
           }
           { data?.config?.alternative_widget !== 'none'
             ? <NoThanksLink />
-            : <Translate
-              textKey='subscribe_link'
-              testID='subscribeButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.subscription_url);
-                onSubscribeClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.subscription_url,
-                });
-              }}/>
+            : <SubscribeLink />
           }
         </View>
 

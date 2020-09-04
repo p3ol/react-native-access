@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { getQuestion, postAnswer } from '@poool/sdk';
 import PropTypes from 'prop-types';
 
@@ -7,10 +7,11 @@ import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
 import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
 
 import { texts, layouts } from '../styles';
 
-const QuestionWidget = ({ data, release, widget }) => {
+const QuestionWidget = ({ data, release }) => {
 
   const [question, setQuestion] = useState();
 
@@ -18,11 +19,7 @@ const QuestionWidget = ({ data, release, widget }) => {
     retrieveQuestion();
   }, []);
 
-  const {
-    onError,
-    onRelease,
-    onSubscribeClick,
-  } = useContext(AppContext);
+  const { onError, onRelease } = useContext(AppContext);
 
   const retrieveQuestion = async () => {
     try {
@@ -89,20 +86,7 @@ const QuestionWidget = ({ data, release, widget }) => {
         {data?.config?.login_button_enabled &&
           <LoginLink />
         }
-        <Translate
-          textKey="subscribe_link"
-          testID="subscribeButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={e => {
-            Linking.openURL(data?.config?.subscription_url);
-            onSubscribeClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.subscription_url,
-            });
-          }}
-        />
+        <SubscribeLink />
       </View>
 
     </View>

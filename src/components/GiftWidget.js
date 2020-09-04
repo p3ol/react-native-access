@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../services/contexts';
-import { Button, Linking, View } from 'react-native';
+import { Button, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
 import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
 
 import { texts, layouts } from '../styles';
 
-const GiftWidget = ({ data, release, widget }) => {
-  const { onSubscribeClick, onRelease } = useContext(AppContext);
+const GiftWidget = ({ data, release }) => {
+  const { onRelease } = useContext(AppContext);
 
   return (
     <View
@@ -44,20 +45,7 @@ const GiftWidget = ({ data, release, widget }) => {
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
         <LoginLink />
-        <Translate
-          textKey="subscribe_link"
-          testID="subscribeButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={e => {
-            Linking.openURL(data?.config?.subscription_url);
-            onSubscribeClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.subscription_url,
-            });
-          }}
-        />
+        <SubscribeLink />
       </View>
     </View>
   );

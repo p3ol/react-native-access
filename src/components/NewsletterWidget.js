@@ -3,7 +3,7 @@ import React, {
   useReducer,
   forwardRef,
   useImperativeHandle } from 'react';
-import { Button, Linking, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 import PropTypes from 'prop-types';
 
@@ -13,22 +13,17 @@ import { mockState } from '../services/reducers';
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
 
-const NewsletterWidget = forwardRef(({
-  data,
-  release,
-  register,
-  widget,
-}, ref) => {
+const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
 
   const {
     onDataPolicyClick,
     onRegister,
     onRelease,
-    onSubscribeClick,
   } = useContext(AppContext);
 
   const [state, dispatch] = useReducer(mockState, {
@@ -146,19 +141,7 @@ const NewsletterWidget = forwardRef(({
           }
           { data?.config?.alternative_widget !== 'none'
             ? <NoThanksLink />
-            : <Translate
-              textKey="subscribe_link"
-              testID="subscribeButton"
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.subscription_url);
-                onSubscribeClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.subscription_url,
-                });
-              }}/>
+            : <SubscribeLink />
           }
         </View>
 
