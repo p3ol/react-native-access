@@ -74,6 +74,32 @@ const FormWidget = ({ data, release }) => {
     dispatch({ fields: state.fields });
   };
 
+  const onPress = (e, button) => {
+    switch (button) {
+      case 'dataPolicy':
+        dispatch({ optin: 'open' });
+        onDataPolicyClick({
+          widget: data?.action,
+          button: e?.target,
+          originalEvent: e,
+          url: data?.config?.data_policy_url,
+        });
+        break;
+      case 'submit':
+        onFormSubmit({
+          name: data?.form?.name,
+          fields: data?.form?.fields,
+          valid: getValidFields(),
+        });
+        onRelease({
+          widget: data?.action,
+          actionName: data?.actionName,
+        });
+        release();
+        break;
+    }
+  };
+
   const onChange = (field, event) => {
     state.fields[field.key].value = event.value;
     if (!field.value) {
@@ -205,9 +231,7 @@ const FormWidget = ({ data, release }) => {
 
         <View style={layouts.largeSpacing} >
           <CheckboxField
-            onChange={() => {
-              dispatch({ approve: !state.approve });
-            }}
+            onChange={() => dispatch({ approve: !state.approve })}
             children={
               <Translate
                 textKey='newsletter_optin_label'
@@ -221,15 +245,7 @@ const FormWidget = ({ data, release }) => {
           textKey='form_optin_link'
           testID='dataButton'
           style={texts.link}
-          onPress={ e => {
-            dispatch({ optin: 'open' });
-            onDataPolicyClick({
-              widget: data?.action,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.data_policy_url,
-            });
-          }}
+          onPress={ e => onPress(e, 'dataPolicy')}
         />
 
         <Translate textKey='form_button' asString={true}>
@@ -240,18 +256,7 @@ const FormWidget = ({ data, release }) => {
               style={layouts.mediumSpacing}
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
-              onPress={() => {
-                onFormSubmit({
-                  name: data?.form?.name,
-                  fields: data?.form?.fields,
-                  valid: getValidFields(),
-                });
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-                release();
-              }}
+              onPress={e => onPress(e, 'submit')}
             />
           )}
         </Translate>

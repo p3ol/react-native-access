@@ -38,6 +38,19 @@ const QuestionWidget = ({ data, release }) => {
     }
   };
 
+  const onPress = answer => {
+    onRelease({
+      widget: data?.action,
+      actionName: data?.actionName,
+    });
+    release();
+    answering(
+      question?.question._id,
+      answer,
+      { body: { cookiesEnabled: true } }
+    );
+  };
+
   return (
     <View
       style={layouts.widget}
@@ -64,18 +77,7 @@ const QuestionWidget = ({ data, release }) => {
               key={index}
               testID={answer}
               style={layouts.answer}
-              onPress={() => {
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-                release();
-                answering(
-                  question?.question._id,
-                  answer,
-                  { body: { cookiesEnabled: true } }
-                );
-              }}
+              onPress={() => onPress(answer)}
             >
               <Text>{answer}</Text>
             </TouchableOpacity>

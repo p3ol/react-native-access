@@ -12,6 +12,16 @@ import { texts, layouts } from '../styles';
 const LinkWidget = ({ data, widget }) => {
   const { onDiscoveryLinkClick, config = {} } = useContext(AppContext);
 
+  const onPress = e => {
+    onDiscoveryLinkClick({
+      widget: widget,
+      button: e?.target,
+      originalEvent: e,
+      url: config.login_url || data?.config?.link_url,
+    });
+    Linking.openURL(data?.config?.link_url);
+  };
+
   return (
     <View
       style={layouts.widget}
@@ -35,15 +45,7 @@ const LinkWidget = ({ data, widget }) => {
             testID="linkButton"
             title={text}
             color={data?.styles?.button_color}
-            onPress={e => {
-              onDiscoveryLinkClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: config.login_url || data?.config?.link_url,
-              });
-              Linking.openURL(data?.config?.link_url);
-            }}
+            onPress={e => onPress(e)}
           />
         )}
       </Translate>

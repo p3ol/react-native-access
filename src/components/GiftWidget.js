@@ -12,6 +12,14 @@ import { texts, layouts } from '../styles';
 const GiftWidget = ({ data, release }) => {
   const { onRelease } = useContext(AppContext);
 
+  const onPress = () => {
+    onRelease({
+      widget: data?.action,
+      actionName: data?.actionName,
+    });
+    release();
+  };
+
   return (
     <View
       style={layouts.widget}
@@ -33,13 +41,7 @@ const GiftWidget = ({ data, release }) => {
             testID="releaseButton"
             title={text}
             color={data?.styles.button_color}
-            onPress={() => {
-              onRelease({
-                widget: data?.action,
-                actionName: data?.actionName,
-              });
-              release();
-            }}
+            onPress={() => onPress()}
           />
         )}
       </Translate>

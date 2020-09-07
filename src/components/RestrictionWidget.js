@@ -14,6 +14,16 @@ const RestrictionWidget = ({ data, widget }) => {
 
   const { onSubscribeClick } = useContext(AppContext);
 
+  const onPress = e => {
+    Linking.openURL(data?.config?.subscription_url);
+    onSubscribeClick({
+      widget: widget,
+      button: e?.target,
+      originalEvent: e,
+      url: data?.config?.subscription_url,
+    });
+  };
+
   return (
     <View
       style={layouts.widget}
@@ -34,15 +44,7 @@ const RestrictionWidget = ({ data, widget }) => {
             testID="subscribeButton"
             title={text}
             color={data?.styles?.button_color || '#000A24'}
-            onPress={e => {
-              Linking.openURL(data?.config?.subscription_url);
-              onSubscribeClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config?.subscription_url,
-              });
-            }}
+            onPress={e => onPress(e)}
           />
         )}
       </Translate>

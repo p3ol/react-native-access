@@ -37,6 +37,34 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
     mail: state.mail,
   }));
 
+  const onPress = (e, button) => {
+    switch (button) {
+      case 'dataPolicy':
+        dispatch({ optin: 'open' });
+        onDataPolicyClick({
+          widget: data?.action,
+          button: e?.target,
+          originalEvent: e,
+          url: data?.config?.data_policy_url,
+        });
+        break;
+      case 'register':
+        onRegister({
+          email: state.mail,
+          newsletter_id: data?.config?.newsletter_id,
+        });
+        release();
+        register(state.mail);
+        onRelease({
+          widget: data?.action,
+          actionName: data?.actionName,
+        });
+        break;
+      default:
+
+    }
+  };
+
   /* eslint-disable-next-line */
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -101,15 +129,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
           textKey="newsletter_optin_link"
           testID="dataButton"
           style={[texts.link, layouts.mediumSpacing]}
-          onPress={ e => {
-            dispatch({ optin: 'open' });
-            onDataPolicyClick({
-              widget: data?.action,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.data_policy_url,
-            });
-          }}
+          onPress={ e => onPress(e, 'dataPolicy')}
         />
 
         <Translate textKey="newsletter_button" asString={true}>
@@ -119,18 +139,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
               title={text}
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
-              onPress={() => {
-                onRegister({
-                  email: state.mail,
-                  newsletter_id: data?.config?.newsletter_id,
-                });
-                release();
-                register(state.mail);
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-              }}
+              onPress={e => onPress(e, 'register')}
             />
           )}
         </Translate>
