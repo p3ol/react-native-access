@@ -42,6 +42,7 @@ const Paywall = () => {
                 </React.Fragment>
               )}
               <Widget />
+              {trackData?.plan === 'welcome' &&
               <View style={layouts.pooolLogo}>
                 <TouchableWithoutFeedback
                   onPress={() => Linking.openURL('https://poool.fr/')}
@@ -55,6 +56,7 @@ const Paywall = () => {
                   />
                 </TouchableWithoutFeedback>
               </View>
+              }
             </View>
           </View>
         </ImageBackground>
