@@ -1237,15 +1237,7 @@
     "@poool/junipero-utils" "^2.0.0-alpha.8"
     prop-types "15.7.2"
 
-"@poool/junipero-utils@2.0.0-alpha.7":
-  version "2.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0-alpha.7.tgz#07b4499f8d6bf1936c842139dcc07c3598e87ec1"
-  integrity sha512-MlRDz9CVKBp7pBhf5QBkvWl19m199ca/EeViPWSibH2yXxL5mXNbUR3ibrOTsc0AmLA+9Vu/Qou2FFGWwFNAGg==
-  dependencies:
-    "@babel/runtime-corejs3" "7.10.2"
-    core-js "3.6.5"
-
-"@poool/junipero-utils@^2.0.0-alpha.8":
+"@poool/junipero-utils@2.0.0-alpha.8", "@poool/junipero-utils@^2.0.0-alpha.8":
   version "2.0.0-alpha.8"
   resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0-alpha.8.tgz#e1a892f9b92a2e8fd92660f0708becfe5566050e"
   integrity sha512-V7ghM7XotdwajJk/KOi3in3+tnbfC7L3Lfqeq8O34vUT73Kx/gIwPv+jG4uQfy32/LkZBTvqHQb2iTCTA9TRsA==
@@ -1253,13 +1245,13 @@
     "@babel/runtime-corejs3" "7.10.2"
     core-js "3.6.5"
 
-"@poool/sdk@0.0.1-beta.4":
-  version "0.0.1-beta.4"
-  resolved "https://registry.yarnpkg.com/@poool/sdk/-/sdk-0.0.1-beta.4.tgz#e390a28da0a39d37b680a9a7bea65228912a2a41"
-  integrity sha512-vXa7gGEiieG8z3alGjGlu/1yMDIlpbgrMIfXrUnWBq1zKkLmghl6X4YRCMS1mkz+tJQ48x5Vbm+4CDrqK3/jSw==
+"@poool/sdk@0.0.1-beta.5":
+  version "0.0.1-beta.5"
+  resolved "https://registry.yarnpkg.com/@poool/sdk/-/sdk-0.0.1-beta.5.tgz#ec9aa03ceefb301f6d598757f710a2cf4feda134"
+  integrity sha512-hbFp5yga0QHj+lH20dwJeogDAVI8J2I1rAzwds/hhZDteLYUgnd//vI3oyVCAtUgqMrgoj/c5Xk8b3LJBP9Szw==
   dependencies:
     "@babel/runtime-corejs3" "7.11.2"
-    "@poool/junipero-utils" "2.0.0-alpha.7"
+    "@poool/junipero-utils" "2.0.0-alpha.8"
     asn1.js "5.4.1"
     buffer "5.6.0"
     core-js "3.6.5"
@@ -7933,7 +7925,7 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-uuid@8.3.0:
+uuid@8.3.0, uuid@^8.3.0:
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
   integrity sha512-fX6Z5o4m6XsXBdli9g7DtWgAx+osMsRRZFKma1mIUsLCz6vRvv+pz5VNbyu9UEDzpMWulZfvpgb/cmDXVulYFQ==
@@ -7942,11 +7934,6 @@ uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^8.3.0:
-  version "8.3.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.0.tgz#ab738085ca22dc9a8c92725e459b1d507df5d6ea"
-  integrity sha512-fX6Z5o4m6XsXBdli9g7DtWgAx+osMsRRZFKma1mIUsLCz6vRvv+pz5VNbyu9UEDzpMWulZfvpgb/cmDXVulYFQ==
 
 v8-compile-cache@^2.0.3:
   version "2.1.1"
