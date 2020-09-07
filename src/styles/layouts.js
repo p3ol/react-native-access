@@ -43,7 +43,7 @@ export const paywall = {
     top: -50,
     borderLeftWidth: 6,
     margin: 'auto',
-    marginHorizontal: 30,
+    marginHorizontal: 15,
   },
   landscape: {
     top: -50,
@@ -61,7 +61,6 @@ export const wrapper = {
 };
 
 export const widget = {
-  paddingHorizontal: 30,
   paddingVertical: 40,
 };
 

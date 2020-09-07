@@ -6,8 +6,6 @@ import React, {
 import {
   View,
   Button,
-  Text,
-  TextInput,
   Linking,
 } from 'react-native';
 import Stripe from 'stripe-client';
@@ -65,13 +63,6 @@ const FormWidget = ({
     approve: false,
     optin: 'closed',
     fields: {},
-    card: {
-      number: '',
-      exp_month: '',
-      exp_year: '',
-      cvc: '',
-      name: '',
-    },
     cardKey: null,
   });
 
@@ -108,25 +99,15 @@ const FormWidget = ({
 
   const onChange = (field, event) => {
     state.fields[field.key].value = event.value;
-    if (field.value === '') {
-      if (field.required) {
-        state.fields[field.key].valid = false;
-      } else {
-        state.fields[field.key].valid = true;
-      }
+    if (!field.value) {
+      state.fields[field.key].valid = !field.required;
     } else {
       if (field.type === 'email') {
-        if (!mailRegex.test(field.value)) {
-          state.fields[field.key].valid = false;
-        } else {
-          state.fields[field.key].valid = true;
-        }
+        state.fields[field.key].valid = mailRegex.test(field.value);
       } else if (field.type === 'date') {
-        if (!getDateRegex().test(field.value)) {
-          state.fields[field.key].valid = false;
-        } else {
-          state.fields[field.key].valid = true;
-        }
+        state.fields[field.key].valid = getDateRegex().test(field.value);
+      } else if (field.type === 'creditCard') {
+        state.fields[field.key].valid = field.valid;
       } else {
         state.fields[field.key].valid = true;
       }
@@ -134,18 +115,10 @@ const FormWidget = ({
     dispatch({ fields: state.fields });
   };
 
-  const onCardChange = (info, value) => {
-    state.card[info] = value;
-    dispatch({ card: state.card });
-    if (state.card.number !== '' && state.card.exp_month !== '' &&
-    state.card.exp_year !== '' && state.card.cvc !== '') {
-      state.fields[state.cardKey].valid = true;
-      dispatch({ fields: state.fields });
-    }
-  };
-
   const generateToken = async () => {
-    const card = await stripeClient.createToken({ card: state.card });
+    console.log(state.fields[state.cardKey].value);
+    const card = await stripeClient
+      .createToken({ card: state.fields[state.cardKey].value });
     const token = await card.json();
     state.fields[state.cardKey].value = token.id;
     dispatch({ card: state.card });
@@ -217,16 +190,31 @@ const FormWidget = ({
 
   };
 
+  const submitForm = async () => {
+    state.cardKey && await generateToken();
+    onFormSubmit({
+      name: data?.form?.name,
+      fields: state?.fields,
+      valid: getValidFields(),
+    });
+    onRelease({
+      widget: data?.action,
+      actionName: data?.actionName,
+    });
+    //release();
+  };
+
   const getFormItem = field => {
 
     switch (field.type) {
 
       case 'creditCard':
+        !state.cardKey && dispatch({ cardKey: field.key });
         return (
           <CardField
-            key={field.key}
-            card={state.card}
-            onCardChange={onCardChange}
+            key={state.cardKey}
+            cardKey={state.cardKey}
+            onChange={onChange}
           />
         );
 
@@ -260,20 +248,6 @@ const FormWidget = ({
     }
   };
 
-  const submitForm = async () => {
-    await generateToken();
-    onFormSubmit({
-      name: data?.form?.name,
-      fields: state?.fields,
-      valid: getValidFields(),
-    });
-    onRelease({
-      widget: data?.action,
-      actionName: data?.actionName,
-    });
-    //release();
-  };
-
   if (state.optin === 'closed') {
     return (
       <View
@@ -304,7 +278,7 @@ const FormWidget = ({
             }}
             children={
               <Translate
-                textKey='newsletter_optin_label'
+                textKey='form_optin_label'
                 replace={{
                   app_name: true,
                 }}
