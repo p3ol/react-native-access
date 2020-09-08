@@ -106,8 +106,8 @@ const FormWidget = ({ data, release }) => {
 
   const onBackClick = () => dispatch({ optin: 'closed' });
 
-  const onChange = field => {
-    state.fields[field.key].value = field.value;
+  const onChange = (field, event) => {
+    state.fields[field.key].value = event.value;
     if (!field.value) {
       state.fields[field.key].valid = !field.required;
     } else {

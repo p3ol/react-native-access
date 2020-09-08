@@ -37,7 +37,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
     mail: state.mail,
   }));
 
-  const onPress = (e, button) => {
+  const onPress = (button, e) => {
     switch (button) {
       case 'dataPolicy':
         dispatch({ optin: 'open' });
@@ -48,7 +48,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
           url: data?.config?.data_policy_url,
         });
         break;
-      case 'register':
+      default:
         onRegister({
           email: state.mail,
           newsletter_id: data?.config?.newsletter_id,
@@ -60,8 +60,6 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
           actionName: data?.actionName,
         });
         break;
-      default:
-
     }
   };
 
