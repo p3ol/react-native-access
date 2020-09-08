@@ -4,7 +4,7 @@ import { AppContext } from '../services/contexts';
 import { ImageBackground, Image, View } from 'react-native';
 
 import { layouts } from '../styles';
-import CopyrightLink from '../CopyrightLink';
+import CopyrightLink from './CopyrightLink';
 
 const Paywall = () => {
   const { active, trackData } = useContext(AppContext);
@@ -37,10 +37,8 @@ const Paywall = () => {
                 </React.Fragment>
               )}
               <Widget />
-              {typeof trackData?.hasLogo !== 'undefined'
-                ? trackData.hasLogo &&
+              {trackData?.hasLogo !== false &&
                   <CopyrightLink />
-                : <CopyrightLink />
               }
             </View>
           </View>

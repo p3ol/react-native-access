@@ -15,12 +15,14 @@ const CopyrightLink = () => {
         onPress={() => Linking.openURL('https://poool.fr/')}
         testID="pooolButton"
       >
-        <ImageBackground
-          source={{
-            uri: 'https://cdn.poool.fr/assets/poool-square.svg',
-          }}
-          style={layouts.pooolLogoBackground}
-        />
+        <View>
+          <ImageBackground
+            source={{
+              uri: 'https://cdn.poool.fr/assets/poool-square.svg',
+            }}
+            style={layouts.pooolLogoBackground}
+          />
+        </View>
       </TouchableWithoutFeedback>
     </View>
   );
