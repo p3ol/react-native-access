@@ -78,7 +78,7 @@ describe('<Paywall />', () => {
       .post('/access/track')
       .reply(200, {
         action: 'gift',
-        plan: 'welcome',
+        hasLogo: true,
         styles: { layout: 'portrait' },
         texts: {},
         config: {},
