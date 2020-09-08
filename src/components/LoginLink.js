@@ -27,7 +27,7 @@ const LoginLink = () => {
       textKey="login_link"
       testID="loginButton"
       style={texts.subaction[trackData?.styles?.layout]}
-      onPress={e => onPress(e)}
+      onPress={onPress}
     />
   );
 };

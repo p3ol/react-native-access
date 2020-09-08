@@ -27,7 +27,7 @@ const NoThanksLink = () => {
       textKey="no_thanks"
       testID="rejectButton"
       style={texts.subaction[trackData?.styles?.layout]}
-      onPress={e => onPress(e)}
+      onPress={onPress}
     />
   );
 };

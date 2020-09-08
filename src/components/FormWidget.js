@@ -74,7 +74,7 @@ const FormWidget = ({ data, release }) => {
     dispatch({ fields: state.fields });
   };
 
-  const onPress = (e, button) => {
+  const onPress = (button, e) => {
     switch (button) {
       case 'dataPolicy':
         dispatch({ optin: 'open' });
@@ -100,8 +100,14 @@ const FormWidget = ({ data, release }) => {
     }
   };
 
-  const onChange = (field, event) => {
-    state.fields[field.key].value = event.value;
+  const onOptin = () => {
+    dispatch({ approve: !state.approve });
+  };
+
+  const onBackClick = () => dispatch({ optin: 'closed' });
+
+  const onChange = field => {
+    state.fields[field.key].value = field.value;
     if (!field.value) {
       state.fields[field.key].valid = !field.required;
     } else {
@@ -231,7 +237,7 @@ const FormWidget = ({ data, release }) => {
 
         <View style={layouts.largeSpacing} >
           <CheckboxField
-            onChange={() => dispatch({ approve: !state.approve })}
+            onChange={onOptin}
             children={
               <Translate
                 textKey='newsletter_optin_label'
@@ -245,7 +251,7 @@ const FormWidget = ({ data, release }) => {
           textKey='form_optin_link'
           testID='dataButton'
           style={texts.link}
-          onPress={ e => onPress(e, 'dataPolicy')}
+          onPress={onPress.bind(null, 'dataPolicy')}
         />
 
         <Translate textKey='form_button' asString={true}>
@@ -256,7 +262,7 @@ const FormWidget = ({ data, release }) => {
               style={layouts.mediumSpacing}
               disabled={ !(state.approve && isFormValid()) }
               color={data?.styles?.button_color}
-              onPress={e => onPress(e, 'submit')}
+              onPress={onPress.bind(null, 'submit')}
             />
           )}
         </Translate>
@@ -275,7 +281,7 @@ const FormWidget = ({ data, release }) => {
     );
   } else {
     return (
-      <GDPR onBackClick={() => dispatch({ optin: 'closed' })}/>
+      <GDPR onBackClick={onBackClick}/>
     );
   }
 };

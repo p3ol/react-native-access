@@ -77,7 +77,7 @@ const QuestionWidget = ({ data, release }) => {
               key={index}
               testID={answer}
               style={layouts.answer}
-              onPress={() => onPress(answer)}
+              onPress={onPress.bind(null, answer)}
             >
               <Text>{answer}</Text>
             </TouchableOpacity>

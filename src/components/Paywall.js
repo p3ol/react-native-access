@@ -14,6 +14,8 @@ import { layouts } from '../styles';
 const Paywall = () => {
   const { active, trackData } = useContext(AppContext);
 
+  const onPress = () => Linking.openURL('https://poool.fr/');
+
   if (active) {
     return (
       <View testID="paywallView">
@@ -44,7 +46,7 @@ const Paywall = () => {
               <Widget />
               <View style={layouts.pooolLogo}>
                 <TouchableWithoutFeedback
-                  onPress={() => Linking.openURL('https://poool.fr/')}
+                  onPress={onPress}
                   testID="pooolButton"
                 >
                   <ImageBackground

@@ -45,7 +45,7 @@ const LinkWidget = ({ data, widget }) => {
             testID="linkButton"
             title={text}
             color={data?.styles?.button_color}
-            onPress={e => onPress(e)}
+            onPress={onPress}
           />
         )}
       </Translate>

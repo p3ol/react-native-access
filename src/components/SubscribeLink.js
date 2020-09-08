@@ -27,7 +27,7 @@ const SubscribeLink = () => {
       textKey='subscribe_link'
       testID='subscribeButton'
       style={texts.subaction[trackData?.styles?.layout]}
-      onPress={e => onPress(e)}/>
+      onPress={onPress}/>
   );
 };
 

@@ -41,7 +41,7 @@ const GiftWidget = ({ data, release }) => {
             testID="releaseButton"
             title={text}
             color={data?.styles.button_color}
-            onPress={() => onPress()}
+            onPress={onPress}
           />
         )}
       </Translate>

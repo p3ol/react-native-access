@@ -34,7 +34,7 @@ const Signature = () => {
           textKey="signature_button"
           testID="signatureButton"
           tag={TouchableWithoutFeedback}
-          onPress={e => onPress(e)}
+          onPress={onPress}
         />
       </Text>
     </View>

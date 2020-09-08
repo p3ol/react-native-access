@@ -65,6 +65,16 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
     }
   };
 
+  const onChange = event => dispatch({ mail: event.value });
+
+  const onFocus = () => dispatch({ inputFocused: true });
+
+  const onBlur = () => dispatch({ inputFocused: false });
+
+  const onBackClick = () => dispatch({ optin: 'closed' });
+
+  const onOptin = () => dispatch({ approve: !state.approve });
+
   /* eslint-disable-next-line */
   const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
@@ -90,9 +100,9 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
           value={state.mail}
           testID="mailInput"
           valid={state.inputFocused ? true : !!emailRegex.test(state.mail)}
-          onChange={e => dispatch({ mail: e.value })}
-          onFocus={() => dispatch({ inputFocused: true })}
-          onBlur={() => dispatch({ inputFocused: false })}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
         />
 
         { !state.inputFocused && !emailRegex.test(state.mail)
@@ -111,9 +121,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
         }
         <View style={ layouts.mediumSpacing } >
           <CheckboxField
-            onChange={() => {
-              dispatch({ approve: !state.approve });
-            }}
+            onChange={onOptin}
             children={
               <Translate
                 textKey="newsletter_optin_label"
@@ -129,7 +137,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
           textKey="newsletter_optin_link"
           testID="dataButton"
           style={[texts.link, layouts.mediumSpacing]}
-          onPress={ e => onPress(e, 'dataPolicy')}
+          onPress={onPress.bind(null, 'dataPolicy')}
         />
 
         <Translate textKey="newsletter_button" asString={true}>
@@ -139,7 +147,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
               title={text}
               disabled={ !(state.approve && emailRegex.test(state.mail))}
               color={data?.styles?.button_color}
-              onPress={e => onPress(e, 'register')}
+              onPress={onPress.bind(null, 'register')}
             />
           )}
         </Translate>
@@ -158,7 +166,7 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
     );
   } else {
     return (
-      <GDPR onBackClick={() => dispatch({ optin: 'closed' })}/>
+      <GDPR onBackClick={onBackClick}/>
     );
   }
 });

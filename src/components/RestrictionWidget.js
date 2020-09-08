@@ -44,7 +44,7 @@ const RestrictionWidget = ({ data, widget }) => {
             testID="subscribeButton"
             title={text}
             color={data?.styles?.button_color || '#000A24'}
-            onPress={e => onPress(e)}
+            onPress={onPress}
           />
         )}
       </Translate>
