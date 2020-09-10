@@ -151,13 +151,12 @@ const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
         </Translate>
 
         <View style={layouts.subactions[data?.styles?.layout]}>
-          {data?.config?.login_button_enabled &&
-            <LoginLink />
-          }
-          { data?.config?.alternative_widget !== 'none'
-            ? <NoThanksLink />
-            : <SubscribeLink />
-          }
+          { data?.config?.login_button_enabled && <LoginLink /> }
+          { data?.config?.alternative_widget !== 'none' ? (
+            <NoThanksLink />
+          ) : (
+            <SubscribeLink />
+          )}
         </View>
 
       </View>

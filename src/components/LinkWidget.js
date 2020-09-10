@@ -50,9 +50,7 @@ const LinkWidget = ({ data, widget }) => {
         )}
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout]}>
-        {data?.config.login_button_enabled &&
-          <LoginLink />
-        }
+        { data?.config.login_button_enabled && <LoginLink /> }
         <NoThanksLink />
       </View>
     </View>

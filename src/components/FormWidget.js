@@ -268,13 +268,12 @@ const FormWidget = ({ data, release }) => {
         </Translate>
 
         <View style={layouts.subactions[data?.styles?.layout]}>
-          {data?.config?.login_button_enabled &&
-            <LoginLink />
-          }
-          { data?.config?.alternative_widget !== 'none'
-            ? <NoThanksLink />
-            : <SubscribeLink />
-          }
+          { data?.config?.login_button_enabled && <LoginLink /> }
+          { data?.config?.alternative_widget !== 'none' ? (
+            <NoThanksLink />
+          ) : (
+            <SubscribeLink />
+          )}
         </View>
 
       </View>

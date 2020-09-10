@@ -85,9 +85,7 @@ const QuestionWidget = ({ data, release }) => {
         }
       </View>
       <View style={layouts.subactions[data?.styles?.layout]}>
-        {data?.config?.login_button_enabled &&
-          <LoginLink />
-        }
+        { data?.config?.login_button_enabled && <LoginLink /> }
         <SubscribeLink />
       </View>
 
