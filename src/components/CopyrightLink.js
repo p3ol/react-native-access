@@ -9,10 +9,13 @@ import {
 import { layouts } from '../styles';
 
 const CopyrightLink = () => {
+
+  const onPress = () => Linking.openURL('https://poool.fr/');
+
   return (
     <View style={layouts.pooolLogo}>
       <TouchableWithoutFeedback
-        onPress={() => Linking.openURL('https://poool.fr/')}
+        onPress={onPress}
         testID="pooolButton"
       >
         <View>

@@ -37,9 +37,7 @@ const Paywall = () => {
                 </React.Fragment>
               )}
               <Widget />
-              {trackData?.hasLogo !== false &&
-                  <CopyrightLink />
-              }
+              { trackData?.hasLogo && <CopyrightLink /> }
             </View>
           </View>
         </ImageBackground>
