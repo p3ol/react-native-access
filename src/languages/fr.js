@@ -117,6 +117,8 @@ export default {
   form_fields_error: 'Certains champs sont incorrects : {fields}',
   form_email_error: 'Le format de l\'adresse email est incorrect',
   form_card_number: 'Numéro de carte',
+  form_card_number_error: 'Numéro de carte non valide',
+  form_card_date_error: 'Date non valide',
   form_card_date: 'MM/AA',
   form_date_dmy_error: 'La date doit être au format JJ/MM/AAAA',
   form_date_mdy_error: 'La date doit être au format MM/JJ/AAAA',

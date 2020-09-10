@@ -64,6 +64,7 @@ const FormWidget = ({
     optin: 'closed',
     fields: {},
     cardKey: null,
+    cardError: '',
   });
 
   const init = () => {
@@ -98,7 +99,7 @@ const FormWidget = ({
   };
 
   const onChange = (field, event) => {
-    state.fields[field.key].value = event.value;
+    state.fields[field.key].value = event?.value || field.value;
     if (!field.value) {
       state.fields[field.key].valid = !field.required;
     } else {
@@ -107,7 +108,12 @@ const FormWidget = ({
       } else if (field.type === 'date') {
         state.fields[field.key].valid = getDateRegex().test(field.value);
       } else if (field.type === 'creditCard') {
+        console.log(field.error);
         state.fields[field.key].valid = field.valid;
+        state.cardError = field.error;
+        if (field.valid) {
+          state.cardError = '';
+        }
       } else {
         state.fields[field.key].valid = true;
       }
@@ -116,7 +122,6 @@ const FormWidget = ({
   };
 
   const generateToken = async () => {
-    console.log(state.fields[state.cardKey].value);
     const card = await stripeClient
       .createToken({ card: state.fields[state.cardKey].value });
     const token = await card.json();
@@ -125,29 +130,17 @@ const FormWidget = ({
   };
 
   const getFieldError = field => {
-
     let error;
-
-    if (!field.focused && field.value !== '') {
-      if (field.type === 'email') {
-        if (field.valid === false) {
+    if (!field.focused && field.value !== '' && !field.valid) {
+      switch (field.type) {
+        case 'creditCard':
+          error = state.cardError;
+          break;
+        case 'email':
           error = 'form_email_error';
-        }
-      }
-      if (field.type === 'date') {
-        if (field.valid === false) {
-          switch (data?.form?.config?.date_format) {
-            case 'mm/dd/yyyy':
-              error = 'form_date_mdy_error';
-              break;
-            case 'yyyy/mm/dd':
-              error = 'form_date_ymd_error';
-              break;
-            default:
-              error = 'form_date_dmy_error';
-              break;
-          }
-        }
+          break;
+        default:
+          error = getDateFormatError(data?.form?.config?.date_format);
       }
     } else if (!field.focused && field.value === '' && field.required) {
       error = 'form_empty_error';
@@ -159,6 +152,17 @@ const FormWidget = ({
         testID={error}
       />
     );
+  };
+
+  const getDateFormatError = format => {
+    switch (format) {
+      case 'mm/dd/yyyy':
+        return 'form_date_mdy_error';
+      case 'yyyy/mm/dd':
+        return 'form_date_ymd_error';
+      default:
+        return 'form_date_dmy_error';
+    }
   };
 
   const getValidFields = () => {
@@ -201,21 +205,25 @@ const FormWidget = ({
       widget: data?.action,
       actionName: data?.actionName,
     });
-    //release();
+    release();
   };
 
   const getFormItem = field => {
-
     switch (field.type) {
 
       case 'creditCard':
         !state.cardKey && dispatch({ cardKey: field.key });
         return (
-          <CardField
-            key={state.cardKey}
-            cardKey={state.cardKey}
-            onChange={onChange}
-          />
+          <View key={field.key} style={layouts.mediumSpacing}>
+            <CardField
+              field={field}
+              cardKey={state.cardKey}
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+            />
+            { getFieldError(field) }
+          </View>
         );
 
       default:
@@ -275,6 +283,7 @@ const FormWidget = ({
           <CheckboxField
             onChange={() => {
               dispatch({ approve: !state.approve });
+              console.log(state.fields);
             }}
             children={
               <Translate

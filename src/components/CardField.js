@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 import { mockState } from '../services/reducers';
 import Translate from './Translate';
 
-const CardField = ({ cardKey, onChange }) => {
+const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
 
   const [state, dispatch] = useReducer(mockState, {
+    error: '',
     expDate: '',
     card: {
       number: {},
@@ -19,8 +20,8 @@ const CardField = ({ cardKey, onChange }) => {
     },
   });
 
-  const formatDate = value => {
-    var v = value.replace(/\D/g, '');
+  const formatDate = e => {
+    var v = e.target.value.replace(/\D/g, '');
     var matches = v.match(/\d{2,4}/g);
     var match = matches ? matches[0] : '';
     var parts = [];
@@ -29,8 +30,8 @@ const CardField = ({ cardKey, onChange }) => {
     }
     if (parts.length) {
       dispatch({ expDate: parts.join('/') });
-      _onChange('exp_month', parts[0]);
-      _onChange('exp_year', parts[1]);
+      _onChange('exp_month', null, parts[0]);
+      _onChange('exp_year', null, parts[1]);
     } else {
       dispatch({ expDate: v });
     }
@@ -52,46 +53,102 @@ const CardField = ({ cardKey, onChange }) => {
 
   };
 
+  const setValid = (info, valid) => {
+    state.card[info].valid = valid;
+    dispatch({ card: state.card });
+  };
+
   const isFieldValid = (info, value) => {
+    const date = new Date();
     switch (info) {
+
       case 'number':
-        state.card.number.valid = !!value;
+        if (getCardType(value) === 'credit-card') {
+          dispatch({ error: 'form_card_number_error' });
+          setValid('number', false);
+        } else if (getCardMask(value)[1] > value.length) {
+          setValid('number', false);
+          dispatch({ error: 'form_card_number_error' });
+        } else {
+          setValid('number', true);
+          if (state.error === 'form_card_number_error') {
+            dispatch({ error: '' });
+          }
+        }
         break;
+
       case 'exp_month':
-        state.card.exp_month.valid = !!value &&
-        parseInt(value, 10) <= 12;
+        if ((date.getMonth() + 1) < parseInt(value, 10) &&
+          parseInt(value, 10) <= 12) {
+          setValid('exp_month', true);
+          if (state.error === 'form_card_date_error') {
+            dispatch({ error: '' });
+          }
+        } else {
+          setValid('exp_month', false);
+          dispatch({ error: 'form_card_date_error' });
+        }
         break;
+
       case 'exp_year':
-        state.card.exp_year.valid = !!value;
+        if ((date.getYear() - 100) < parseInt(value, 10)) {
+          setValid('exp_year', true);
+          if (state.error === 'form_card_date_error') {
+            dispatch({ error: '' });
+          }
+          setValid('exp_month', true);
+        } else if ((date.getYear() - 100) === parseInt(value, 10)) {
+          setValid('exp_year', true);
+          if (state.error === 'form_card_date_error') {
+            dispatch({ error: '' });
+          }
+        } else {
+          setValid('exp_year', false);
+          dispatch({ error: 'form_card_date_error' });
+        }
         break;
+
       default:
-        state.card.cvc.valid = value.length === 3;
-        break;
+        if (value?.length === 3) {
+          setValid('cvc', true);
+          if (state.error === 'form_empty_error') {
+            dispatch({ error: '' });
+          }
+        } else {
+          setValid('cvc', false);
+          dispatch({ error: 'form_empty_error' });
+        }
     }
+    const isValid = state.card.number.valid && state.card.exp_month.valid &&
+      state.card.exp_year.valid && state.card.cvc.valid;
+    return isValid;
 
   };
 
-  const _onChange = (info, value) => {
-    state.card[info].value = value?.replace(/\s/g, '');
-    isFieldValid(info, value);
-    dispatch({ card: state.card });
-    state.card.number.valid && state.card.exp_year.valid &&
-    state.card.exp_month.valid && state.card.cvc.valid &&
-    onChange(
-      { key: cardKey,
-        type: 'creditCard',
-        valid: state.card.number.valid && state.card.exp_month.valid &&
-        state.card.exp_year.valid && state.card.cvc.valid,
-      },
-      { value: {
+  const _onChange = (info, e, date) => {
+    if (e || date) {
+      const value = e?.target?.value || date;
+      state.card[info].value = value?.replace(/\s/g, '');
+      dispatch({ card: state.card });
+    }
+    const field = {
+      key: cardKey,
+      type: 'creditCard',
+      error: state.error,
+      valid: isFieldValid(info, state.card[info].value),
+      value: {
         number: state.card.number.value,
         exp_month: state.card.exp_month.value,
         exp_year: state.card.exp_year.value,
         cvc: state.card.cvc.value,
       },
-      }
-    );
+    };
+    onChange(field, null);
   };
+
+  const _onFocus = () => onFocus(field);
+
+  const _onBlur = () => onBlur(field);
 
   const getCardMask = cardNumber => {
     switch (getCardType(cardNumber)) {
@@ -143,7 +200,9 @@ const CardField = ({ cardKey, onChange }) => {
                   getCardMask(state.card.number.value)[0],
                   true,
                 )}
-                onChange={ e => _onChange('number', e.target.value)}
+                onChange={_onChange.bind(null, 'number')}
+                onFocus={_onFocus}
+                onBlur={_onBlur}
                 placeholder={text}
               />
             )}
@@ -156,7 +215,9 @@ const CardField = ({ cardKey, onChange }) => {
               <TextInput
                 style={styles.input}
                 value={state.expDate}
-                onChange={ e => formatDate(e.target.value)}
+                onChange={formatDate}
+                onFocus={_onFocus}
+                onBlur={_onBlur}
                 placeholder={text}
               />
             )}
@@ -166,7 +227,9 @@ const CardField = ({ cardKey, onChange }) => {
         <TextInput
           style={styles.input}
           maxLength={3}
-          onChange={ e => _onChange('cvc', e.target.value)}
+          onChange={_onChange.bind(null, 'cvc')}
+          onFocus={_onFocus}
+          onBlur={_onBlur}
           placeholder="CVC"
         />
       </View>
@@ -176,6 +239,9 @@ const CardField = ({ cardKey, onChange }) => {
 
 CardField.propTypes = {
   onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  field: PropTypes.object,
   cardKey: PropTypes.string,
 };
 
@@ -186,22 +252,24 @@ export default CardField;
 const styles = StyleSheet.create({
   cardPicture: {
     flex: 1,
-    resizeMode: 'cover',
+    marginVertical: -7,
+    resizeMode: 'contain',
+
   },
   cvc: {
     flex: 2,
-    paddingLeft: 8,
+    paddingLeft: 6,
   },
   date: {
     flex: 2,
-    paddingLeft: 8,
+    paddingLeft: 6,
   },
   input: {
     outlineWidth: 0,
   },
   number: {
     flex: 6,
-    paddingLeft: 8,
+    paddingLeft: 6,
   },
   wrapper: {
     overflow: 'hidden',
