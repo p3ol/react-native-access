@@ -9,8 +9,6 @@ import CopyrightLink from './CopyrightLink';
 const Paywall = () => {
   const { active, trackData } = useContext(AppContext);
 
-  const onPress = () => Linking.openURL('https://poool.fr/');
-
   if (active) {
     return (
       <View testID="paywallView">
