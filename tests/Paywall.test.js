@@ -77,8 +77,9 @@ describe('<Paywall />', () => {
     nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
-        action: 'unlock',
-        styles: {},
+        action: 'gift',
+        hasLogo: true,
+        styles: { layout: 'portrait' },
         texts: {},
         config: {},
       });

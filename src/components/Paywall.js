@@ -1,15 +1,10 @@
 import React, { useContext } from 'react';
 import Widget from './Widget';
 import { AppContext } from '../services/contexts';
-import {
-  ImageBackground,
-  TouchableWithoutFeedback,
-  Image,
-  View,
-  Linking,
-} from 'react-native';
+import { ImageBackground, Image, View } from 'react-native';
 
 import { layouts } from '../styles';
+import CopyrightLink from './CopyrightLink';
 
 const Paywall = () => {
   const { active, trackData } = useContext(AppContext);
@@ -44,19 +39,7 @@ const Paywall = () => {
                 </React.Fragment>
               )}
               <Widget />
-              <View style={layouts.pooolLogo}>
-                <TouchableWithoutFeedback
-                  onPress={onPress}
-                  testID="pooolButton"
-                >
-                  <ImageBackground
-                    source={{
-                      uri: 'https://cdn.poool.fr/assets/poool-square.svg',
-                    }}
-                    style={layouts.pooolLogoBackground}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
+              { trackData?.hasLogo && <CopyrightLink /> }
             </View>
           </View>
         </ImageBackground>
