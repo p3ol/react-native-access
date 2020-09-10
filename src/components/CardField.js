@@ -9,7 +9,6 @@ import Translate from './Translate';
 const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
 
   const [state, dispatch] = useReducer(mockState, {
-    error: '',
     expDate: '',
     card: {
       number: {},
@@ -64,16 +63,11 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
 
       case 'number':
         if (getCardType(value) === 'credit-card') {
-          dispatch({ error: 'form_card_number_error' });
           setValid('number', false);
         } else if (getCardMask(value)[1] > value.length) {
           setValid('number', false);
-          dispatch({ error: 'form_card_number_error' });
         } else {
           setValid('number', true);
-          if (state.error === 'form_card_number_error') {
-            dispatch({ error: '' });
-          }
         }
         break;
 
@@ -81,61 +75,51 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
         if ((date.getMonth() + 1) < parseInt(value, 10) &&
           parseInt(value, 10) <= 12) {
           setValid('exp_month', true);
-          if (state.error === 'form_card_date_error') {
-            dispatch({ error: '' });
-          }
         } else {
           setValid('exp_month', false);
-          dispatch({ error: 'form_card_date_error' });
         }
         break;
 
       case 'exp_year':
         if ((date.getYear() - 100) < parseInt(value, 10)) {
           setValid('exp_year', true);
-          if (state.error === 'form_card_date_error') {
-            dispatch({ error: '' });
-          }
           setValid('exp_month', true);
         } else if ((date.getYear() - 100) === parseInt(value, 10)) {
           setValid('exp_year', true);
-          if (state.error === 'form_card_date_error') {
-            dispatch({ error: '' });
-          }
         } else {
           setValid('exp_year', false);
-          dispatch({ error: 'form_card_date_error' });
         }
         break;
 
       default:
         if (value?.length === 3) {
           setValid('cvc', true);
-          if (state.error === 'form_empty_error') {
-            dispatch({ error: '' });
-          }
         } else {
           setValid('cvc', false);
-          dispatch({ error: 'form_empty_error' });
         }
     }
+    dispatch({ error: state.error });
     const isValid = state.card.number.valid && state.card.exp_month.valid &&
       state.card.exp_year.valid && state.card.cvc.valid;
-    return isValid;
+    const fieldsState = {
+      number: state.card.number.valid,
+      exp_date: state.card.exp_year.valid && state.card.exp_month.valid,
+      cvc: state.card.cvc.valid,
+    };
+    return { valid: isValid, fieldsState: fieldsState };
 
   };
 
   const _onChange = (info, e, date) => {
-    if (e || date) {
-      const value = e?.target?.value || date;
-      state.card[info].value = value?.replace(/\s/g, '');
-      dispatch({ card: state.card });
-    }
+    const value = e?.target?.value || date;
+    state.card[info].value = value?.replace(/\s/g, '');
+    dispatch({ card: state.card });
+    const valid = isFieldValid(info, value);
     const field = {
       key: cardKey,
       type: 'creditCard',
-      error: state.error,
-      valid: isFieldValid(info, state.card[info].value),
+      valid: valid.isValid,
+      fieldsState: valid.fieldsState,
       value: {
         number: state.card.number.value,
         exp_month: state.card.exp_month.value,

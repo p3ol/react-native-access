@@ -64,7 +64,7 @@ const FormWidget = ({
     optin: 'closed',
     fields: {},
     cardKey: null,
-    cardError: '',
+    cardError: null,
   });
 
   const init = () => {
@@ -108,11 +108,10 @@ const FormWidget = ({
       } else if (field.type === 'date') {
         state.fields[field.key].valid = getDateRegex().test(field.value);
       } else if (field.type === 'creditCard') {
-        console.log(field.error);
         state.fields[field.key].valid = field.valid;
-        state.cardError = field.error;
+        dispatch({ cardError: field.fieldsState });
         if (field.valid) {
-          state.cardError = '';
+          state.cardError = null;
         }
       } else {
         state.fields[field.key].valid = true;
@@ -134,7 +133,13 @@ const FormWidget = ({
     if (!field.focused && field.value !== '' && !field.valid) {
       switch (field.type) {
         case 'creditCard':
-          error = state.cardError;
+          if (!state.cardError.number) {
+            error = 'form_card_number_error';
+          } else if (!state.cardError.exp_date) {
+            error = 'form_card_date_error';
+          } else if (!state.cardError.cvc) {
+            error = 'form_empty_error';
+          }
           break;
         case 'email':
           error = 'form_email_error';
