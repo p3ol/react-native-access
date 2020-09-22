@@ -6,6 +6,7 @@ import { mockState } from '../services/reducers';
 
 const PaywallContext = forwardRef(({
   children,
+  onAlternativeClick = () => {},
   onDisabled = () => {},
   onDataPolicyClick = () => {},
   onDiscoveryLinkClick = () => {},
@@ -58,6 +59,7 @@ const PaywallContext = forwardRef(({
         alternative: state.alternative,
         onLock,
         onDisabled,
+        onAlternativeClick,
         onDataPolicyClick,
         onDiscoveryLinkClick,
         onError,
@@ -78,6 +80,7 @@ const PaywallContext = forwardRef(({
 PaywallContext.propTypes = {
   children: PropTypes.array,
   onDisabled: PropTypes.func,
+  onAlternativeClick: PropTypes.func,
   onDataPolicyClick: PropTypes.func,
   onDiscoveryLinkClick: PropTypes.func,
   onError: PropTypes.func,

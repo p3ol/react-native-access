@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Linking, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { getQuestion, postAnswer } from '@poool/sdk';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
+import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
 
 import { texts, layouts } from '../styles';
 
-const QuestionWidget = ({ data, release, widget }) => {
+const QuestionWidget = ({ data, release }) => {
 
   const [question, setQuestion] = useState();
 
@@ -17,12 +19,7 @@ const QuestionWidget = ({ data, release, widget }) => {
     retrieveQuestion();
   }, []);
 
-  const {
-    onLoginClick,
-    onError,
-    onRelease,
-    onSubscribeClick,
-  } = useContext(AppContext);
+  const { onError, onRelease } = useContext(AppContext);
 
   const retrieveQuestion = async () => {
     try {
@@ -39,6 +36,19 @@ const QuestionWidget = ({ data, release, widget }) => {
     } catch (e) {
       onError(e);
     }
+  };
+
+  const onPress = answer => {
+    onRelease({
+      widget: data?.action,
+      actionName: data?.actionName,
+    });
+    release();
+    answering(
+      question?.question._id,
+      answer,
+      { body: { cookiesEnabled: true } }
+    );
   };
 
   return (
@@ -67,18 +77,7 @@ const QuestionWidget = ({ data, release, widget }) => {
               key={index}
               testID={answer}
               style={layouts.answer}
-              onPress={() => {
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-                release();
-                answering(
-                  question?.question._id,
-                  answer,
-                  { body: { cookiesEnabled: true } }
-                );
-              }}
+              onPress={onPress.bind(null, answer)}
             >
               <Text>{answer}</Text>
             </TouchableOpacity>
@@ -86,36 +85,8 @@ const QuestionWidget = ({ data, release, widget }) => {
         }
       </View>
       <View style={layouts.subactions[data?.styles?.layout]}>
-        {data?.config?.login_button_enabled &&
-          <Translate
-            textKey="login_link"
-            testID="loginButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={e => {
-              Linking.openURL(data?.config?.login_url);
-              onLoginClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config?.login_url,
-              });
-            }}
-          />
-        }
-        <Translate
-          textKey="subscribe_link"
-          testID="subscribeButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={e => {
-            Linking.openURL(data?.config?.subscription_url);
-            onSubscribeClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.subscription_url,
-            });
-          }}
-        />
+        { data?.config?.login_button_enabled && <LoginLink /> }
+        <SubscribeLink />
       </View>
 
     </View>

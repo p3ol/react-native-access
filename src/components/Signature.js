@@ -11,6 +11,16 @@ const Signature = () => {
 
   const { trackData, onSubscribeClick } = useContext(AppContext);
 
+  const onPress = e => {
+    Linking.openURL(trackData?.config?.subscription_url || '');
+    onSubscribeClick({
+      widget: trackData?.action,
+      button: e?.target,
+      originalEvent: e,
+      url: trackData?.config?.subscription_url,
+    });
+  };
+
   return (
     <View style={ layouts.largeSpacing } testID="signature">
       <Text >
@@ -24,15 +34,7 @@ const Signature = () => {
           textKey="signature_button"
           testID="signatureButton"
           tag={TouchableWithoutFeedback}
-          onPress={e => {
-            Linking.openURL(trackData?.config?.subscription_url || '');
-            onSubscribeClick({
-              widget: trackData?.action,
-              button: e?.target,
-              originalEvent: e,
-              url: trackData?.config?.subscription_url,
-            });
-          }}
+          onPress={onPress}
         />
       </Text>
     </View>

@@ -5,16 +5,24 @@ import PropTypes from 'prop-types';
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
+import NoThanksLink from './NoThanksLink';
+import LoginLink from './LoginLink';
 
 import { texts, layouts } from '../styles';
 
 const RestrictionWidget = ({ data, widget }) => {
 
-  const {
-    onSubscribeClick,
-    onLoginClick,
-    setAlternative,
-  } = useContext(AppContext);
+  const { onSubscribeClick } = useContext(AppContext);
+
+  const onPress = e => {
+    Linking.openURL(data?.config?.subscription_url);
+    onSubscribeClick({
+      widget: widget,
+      button: e?.target,
+      originalEvent: e,
+      url: data?.config?.subscription_url,
+    });
+  };
 
   return (
     <View
@@ -36,43 +44,16 @@ const RestrictionWidget = ({ data, widget }) => {
             testID="subscribeButton"
             title={text}
             color={data?.styles?.button_color || '#000A24'}
-            onPress={e => {
-              Linking.openURL(data?.config?.subscription_url);
-              onSubscribeClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config?.subscription_url,
-              });
-            }}
+            onPress={onPress}
           />
         )}
       </Translate>
       <View style={layouts.subactions[data?.styles?.layout || 'portrait']}>
-        <Translate
-          testID="loginButton"
-          style={texts.subaction[data?.styles?.layout || 'portrait']}
-          textKey="login_link"
-          replace={{ app_name: true }}
-          onPress={e => {
-            Linking.openURL(data?.config?.login_url);
-            onLoginClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.login_url,
-            });
-          }}
-        />
+        <LoginLink />
         { data &&
           data?.action === 'subscription' &&
           data?.config?.alternative_widget !== 'none' && (
-          <Translate
-            textKey="no_thanks"
-            testID="rejectButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={() => setAlternative(true)}
-          />
+          <NoThanksLink />
         )}
       </View>
     </View>
