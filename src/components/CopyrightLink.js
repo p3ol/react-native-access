@@ -3,32 +3,41 @@ import {
   View,
   TouchableWithoutFeedback,
   Linking,
-  ImageBackground,
+  Image,
 } from 'react-native';
 
-import { layouts } from '../styles';
-
 const CopyrightLink = () => {
-
-  const onPress = () => Linking.openURL('https://poool.fr/');
+  const onPress = () =>
+    Linking.openURL('https://poool.fr/');
 
   return (
-    <View style={layouts.pooolLogo}>
-      <TouchableWithoutFeedback
-        onPress={onPress}
-        testID="pooolButton"
-      >
-        <View>
-          <ImageBackground
-            source={{
-              uri: 'https://cdn.poool.fr/assets/poool-square.svg',
-            }}
-            style={layouts.pooolLogoBackground}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={onPress}
+      testID="CopyrightLink"
+    >
+      <View style={styles.wrapper}>
+        <Image
+          resizeMode="contain"
+          source={{ uri: 'https://cdn.poool.fr/assets/poool-square.svg' }}
+          style={styles.logo}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
+
+const styles = {
+  wrapper: {
+    position: 'absolute',
+    bottom: 5,
+    right: 10,
+  },
+  logo: {
+    width: 50,
+    height: 20,
+  },
+};
+
+CopyrightLink.displayName = 'CopyrightLink';
 
 export default CopyrightLink;

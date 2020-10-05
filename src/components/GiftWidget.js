@@ -1,63 +1,78 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../services/contexts';
-import { Button, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { Button } from '@poool/junipero-native';
 
+import { AppContext } from '../services/contexts';
+import BrandCover from './BrandCover';
+import BrandLogo from './BrandLogo';
 import Translate from './Translate';
+import WidgetContent from './WidgetContent';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
 
-import { texts, layouts } from '../styles';
+import { commons, overrides, applyStyles } from '../styles';
 
-const GiftWidget = ({ data, release }) => {
-  const { onRelease } = useContext(AppContext);
+const GiftWidget = () => {
+  const { doRelease, getStyle } = useContext(AppContext);
 
   const onPress = () => {
-    onRelease({
-      widget: data?.action,
-      actionName: data?.actionName,
-    });
-    release();
+    doRelease();
   };
 
   return (
-    <View
-      style={layouts.widget}
-      testID="giftWidget"
-    >
-      <Translate
-        textKey="gift_title"
-        style={texts.title}
-      />
-      <Translate
-        testID="description"
-        textKey="gift_desc"
-        style={texts.desc}
-        replace={{ app_name: true }}
-      />
-      <Translate textKey="gift_button" asString={true}>
-        {({ text }) => (
-          <Button
-            testID="releaseButton"
-            title={text}
-            color={data?.styles.button_color}
-            onPress={onPress}
-          />
-        )}
-      </Translate>
-      <View style={layouts.subactions[data?.styles?.layout]}>
-        <LoginLink />
-        <SubscribeLink />
-      </View>
+    <View testID="giftWidget">
+      <BrandCover />
+      <BrandLogo />
+
+      <WidgetContent>
+        <Translate textKey="gift_title" style={commons.title} />
+        <Translate
+          textKey="gift_desc"
+          style={commons.description}
+          replace={{ app_name: true }}
+        />
+        <Translate textKey="gift_button" asString={true}>
+          { ({ text }) => (
+            <Button
+              testID="releaseButton"
+              theme="primary"
+              onPress={onPress}
+              customStyle={{
+                button: [
+                  styles.button,
+                  applyStyles(!!getStyle('button_color'), [
+                    overrides.backgroundColor(getStyle('button_color')),
+                  ]),
+                ],
+              }}
+            >
+              { text }
+            </Button>
+          ) }
+        </Translate>
+        <View
+          style={[
+            commons.subActions,
+            applyStyles(getStyle('layout') === 'landscape', [
+              commons.subActions__landscape,
+            ]),
+          ]}
+        >
+          <LoginLink />
+          <SubscribeLink />
+        </View>
+      </WidgetContent>
     </View>
   );
 };
 
-GiftWidget.propTypes = {
-  data: PropTypes.object,
-  release: PropTypes.func,
-  widget: PropTypes.string,
+const styles = {
+  button: {
+    textAlign: 'center',
+  },
 };
+
+GiftWidget.propTypes = {};
 
 GiftWidget.displayName = 'GiftWidget';
 
