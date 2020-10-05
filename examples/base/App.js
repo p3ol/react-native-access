@@ -52,19 +52,8 @@ const App = () => {
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View>
             <PaywallContext
-              onDisabled={onDisabled}
-              onError={onError}
-              onFormSubmit={onFormSubmit}
-              onIdentityAvailable={onIdentityAvailable}
-              onLock={onLock}
-              onReady={onReady}
-              onRegister={onRegister}
-              onRelease={onRelease}
-              onSubscribeClick={onSubscribeClick}
-              onLoginClick={onLoginClick}
-              onDiscoveryLinkClick={onDiscoveryLinkClick}
-              onDataPolicyClick={onDataPolicyClick}
-              onAlternativeClick={onAlternativeClick}
+              appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
+              config={{ force_widget: 'gift' }}
             >
               <PreviewContent>
                 <Text>
