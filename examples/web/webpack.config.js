@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './index.js',
+  devtool: 'source-map',
   resolve: {
     alias: {
       react: path.resolve('../../node_modules/react'),
