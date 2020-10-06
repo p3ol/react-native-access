@@ -12,6 +12,10 @@ export default {
     marginBottom: 25,
     textAlign: 'center',
   },
+  text: {
+    fontSize: 16,
+    lineHeight: 24,
+  },
   subActions: {
     marginTop: 30,
     flexDirection: 'row',
@@ -19,5 +23,16 @@ export default {
   },
   subActions__landscape: {
     justifyContent: 'space-between',
+  },
+  link: {
+    fontSize: 16,
+    textDecorationLine: 'underline',
+  },
+  link__landscape: {
+    textAlign: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: 'black',
   },
 };

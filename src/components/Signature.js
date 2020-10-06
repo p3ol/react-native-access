@@ -5,41 +5,54 @@ import Translate from './Translate';
 
 import { AppContext } from '../services/contexts';
 
-import { texts, layouts } from '../styles';
+import { commons } from '../styles';
 
 const Signature = () => {
-
-  const { trackData, onSubscribeClick } = useContext(AppContext);
+  const { getConfig, action, fireEvent } = useContext(AppContext);
 
   const onPress = e => {
-    Linking.openURL(trackData?.config?.subscription_url || '');
-    onSubscribeClick({
-      widget: trackData?.action,
-      button: e?.target,
+    Linking.openURL(getConfig('subscription_url'));
+    fireEvent('onSubscribeClick', {
+      widget: action,
+      button: 'subscribe_link',
       originalEvent: e,
-      url: trackData?.config?.subscription_url,
+      url: getConfig('subscription_url'),
     });
   };
 
   return (
-    <View style={ layouts.largeSpacing } testID="signature">
-      <Text >
-        <Translate
-          style={texts.text}
-          textKey="signature"
-          replace={{ app_name: true }}
-        />
-        <Translate
-          style={texts.signatureLink}
-          textKey="signature_button"
-          testID="signatureButton"
-          tag={TouchableWithoutFeedback}
-          onPress={onPress}
-        />
+    <View
+      style={styles.signature}
+      testID="Signature"
+    >
+      <Text>
+        <Text style={commons.text}>
+          <Translate
+            textKey="signature"
+            replace={{ app_name: true }}
+          />
+        </Text>
+        { ' ' }
+        <Text style={[commons.text, commons.link]}>
+          <Translate
+            textKey="signature_button"
+            testID="signatureButton"
+            tag={TouchableWithoutFeedback}
+            onPress={onPress}
+          />
+        </Text>
       </Text>
     </View>
   );
 };
+
+const styles = {
+  signature: {
+    marginVertical: 20,
+  },
+};
+
+Signature.propTypes = {};
 
 Signature.displayName = 'Signature';
 
