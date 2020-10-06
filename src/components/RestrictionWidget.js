@@ -54,7 +54,7 @@ const RestrictionWidget = () => {
             ]),
           ]}
         >
-          <LoginLink />
+          { getConfig('login_button_enabled') !== false && <LoginLink /> }
           { action === 'subscription' &&
             getConfig('alternative_widget') !== 'none' && (
             <NoThanksLink />

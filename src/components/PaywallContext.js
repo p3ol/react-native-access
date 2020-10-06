@@ -48,6 +48,7 @@ const PaywallContext = forwardRef(({
     events,
     flush,
     doRelease,
+    setAlternative,
   });
 
   const getStyle = (key, def) =>
@@ -75,6 +76,10 @@ const PaywallContext = forwardRef(({
       widget: state.action,
       actionName: state.trackData?.actionName,
     });
+  };
+
+  const setAlternative = () => {
+    dispatch({ action: getConfig('alternative_widget') || state.action });
   };
 
   return (

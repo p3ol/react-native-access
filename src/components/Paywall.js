@@ -10,6 +10,7 @@ import CopyrightLink from './CopyrightLink';
 import Switch from './Switch';
 import GiftWidget from './GiftWidget';
 import RestrictionWidget from './RestrictionWidget';
+import LinkWidget from './LinkWidget';
 
 import { applyStyles, colors, overrides } from '../styles';
 
@@ -158,6 +159,7 @@ const Paywall = ({
           <View style={styles.wrapper}>
             <Switch action={action}>
               <Widget name="gift" component={GiftWidget} />
+              <Widget name="link" component={LinkWidget} />
               <Widget component={RestrictionWidget} />
             </Switch>
 

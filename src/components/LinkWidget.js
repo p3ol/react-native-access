@@ -1,66 +1,66 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../services/contexts';
-import { Button, Linking, View } from 'react-native';
-import PropTypes from 'prop-types';
+import { Linking, View } from 'react-native';
 
+import { AppContext } from '../services/contexts';
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
+import BrandCover from './BrandCover';
+import BrandLogo from './BrandLogo';
+import WidgetContent from './WidgetContent';
+import MainButton from './MainButton';
 
-import { texts, layouts } from '../styles';
+import { commons, applyStyles } from '../styles';
 
-const LinkWidget = ({ data, widget }) => {
-  const { onDiscoveryLinkClick, config = {} } = useContext(AppContext);
+const LinkWidget = () => {
+  const { fireEvent, action, getConfig, getStyle } = useContext(AppContext);
 
   const onPress = e => {
-    onDiscoveryLinkClick({
-      widget: widget,
-      button: e?.target,
+    fireEvent('onDiscoveryLinkClick', {
+      widget: action,
+      button: 'link_button',
       originalEvent: e,
-      url: config.login_url || data?.config?.link_url,
+      url: getConfig('link_url'),
     });
-    Linking.openURL(data?.config?.link_url);
+    Linking.openURL(getConfig('link_url'));
   };
 
   return (
-    <View
-      style={layouts.widget}
-      testID="linkWidget"
-    >
-      <Translate
-        textKey="link_title"
-        style={texts.title}
-      />
-      <Translate
-        textKey="link_desc"
-        style={texts.desc}
-        replace={{ app_name: true }}
-      />
-      <Translate
-        textKey="link_button"
-        asString={true}
-      >
-        {({ text }) => (
-          <Button
-            testID="linkButton"
-            title={text}
-            color={data?.styles?.button_color}
-            onPress={onPress}
-          />
-        )}
-      </Translate>
-      <View style={layouts.subactions[data?.styles?.layout]}>
-        { data?.config.login_button_enabled && <LoginLink /> }
-        <NoThanksLink />
-      </View>
+    <View testID="LinkWidget">
+      <BrandCover />
+      <BrandLogo />
+
+      <WidgetContent>
+        <Translate
+          textKey="link_title"
+          style={commons.title}
+        />
+        <Translate
+          textKey="link_desc"
+          style={commons.description}
+          replace={{ app_name: true }}
+        />
+        <MainButton
+          text="link_button"
+          onPress={onPress}
+        />
+        <View
+          style={[
+            commons.subActions,
+            applyStyles(getStyle('layout') === 'landscape', [
+              commons.subActions__landscape,
+            ]),
+          ]}
+        >
+          { getConfig('login_button_enabled') !== false && <LoginLink /> }
+          { getConfig('alternative_widget') !== 'none' && <NoThanksLink /> }
+        </View>
+      </WidgetContent>
     </View>
   );
 };
 
-LinkWidget.propTypes = {
-  data: PropTypes.object,
-  widget: PropTypes.string,
-};
+LinkWidget.propTypes = {};
 
 LinkWidget.displayName = 'LinkWidget';
 
