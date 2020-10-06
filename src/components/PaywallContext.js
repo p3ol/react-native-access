@@ -40,6 +40,7 @@ const PaywallContext = forwardRef(({
     fireEvent,
     getStyle,
     getConfig,
+    getText,
     appId,
     config,
     styles,
@@ -50,10 +51,13 @@ const PaywallContext = forwardRef(({
   });
 
   const getStyle = (key, def) =>
-    get(state.trackData?.styles, key, get(styles, key, def));
+    get(state.trackData?.styles, key) || get(styles, key, def);
 
   const getConfig = (key, def) =>
-    get(state.trackData?.config, key, get(config, key, def));
+    get(state.trackData?.config, key) || get(config, key, def);
+
+  const getText = (key, def) =>
+    get(state.trackData?.texts, key) || get(texts, key, def);
 
   const flush = () => {
     dispatch({
