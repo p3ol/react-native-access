@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
-import { Button } from '@poool/junipero-native';
 
 import { AppContext } from '../services/contexts';
 import BrandCover from './BrandCover';
@@ -9,15 +8,12 @@ import Translate from './Translate';
 import WidgetContent from './WidgetContent';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
+import MainButton from './MainButton';
 
-import { commons, overrides, applyStyles } from '../styles';
+import { commons, applyStyles } from '../styles';
 
 const GiftWidget = () => {
   const { doRelease, getStyle } = useContext(AppContext);
-
-  const onPress = () => {
-    doRelease();
-  };
 
   return (
     <View testID="giftWidget">
@@ -31,25 +27,10 @@ const GiftWidget = () => {
           style={commons.description}
           replace={{ app_name: true }}
         />
-        <Translate textKey="gift_button" asString={true}>
-          { ({ text }) => (
-            <Button
-              testID="releaseButton"
-              theme="primary"
-              onPress={onPress}
-              customStyle={{
-                button: [
-                  styles.button,
-                  applyStyles(!!getStyle('button_color'), [
-                    overrides.backgroundColor(getStyle('button_color')),
-                  ]),
-                ],
-              }}
-            >
-              { text }
-            </Button>
-          ) }
-        </Translate>
+        <MainButton
+          text="gift_button"
+          onPress={doRelease}
+        />
         <View
           style={[
             commons.subActions,
@@ -64,12 +45,6 @@ const GiftWidget = () => {
       </WidgetContent>
     </View>
   );
-};
-
-const styles = {
-  button: {
-    textAlign: 'center',
-  },
 };
 
 GiftWidget.propTypes = {};

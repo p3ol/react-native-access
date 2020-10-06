@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
-import { Linking, View, Text } from 'react-native';
-import { Button } from '@poool/junipero-native';
+import { Linking, View } from 'react-native';
 
 import { AppContext } from '../services/contexts';
-
 import WidgetContent from './WidgetContent';
 import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
+import MainButton from './MainButton';
 
-import { texts, layouts } from '../styles';
+import { commons, applyStyles } from '../styles';
 
 const RestrictionWidget = () => {
   const {
@@ -25,7 +24,7 @@ const RestrictionWidget = () => {
     Linking.openURL(getConfig('subscription_url'));
     fireEvent('onSubscribeClick', {
       widget: action,
-      button: e?.target,
+      button: 'subscribe_link',
       originalEvent: e,
       url: getConfig('subscription_url'),
     });
@@ -37,25 +36,24 @@ const RestrictionWidget = () => {
       <BrandLogo />
 
       <WidgetContent>
-        <Translate textKey='subscription_title' style={texts.title}/>
+        <Translate textKey='subscription_title' style={commons.title}/>
         <Translate
           textKey="subscription_desc"
-          style={texts.desc}
+          style={commons.description}
           replace={{ app_name: true }}
         />
-        <Translate textKey="subscription_button" asString={true}>
-          { ({ text }) => (
-            <Button
-              testID="subscribeButton"
-              theme="primary"
-              // color={getStyle('button_color', '#000A24')}
-              onPress={onPress}
-            >
-              <Text>{ text }</Text>
-            </Button>
-          ) }
-        </Translate>
-        <View style={layouts.subactions[getStyle('layout', 'portrait')]}>
+        <MainButton
+          text="subscription_button"
+          onPress={onPress}
+        />
+        <View
+          style={[
+            commons.subActions,
+            applyStyles(getStyle('layout') === 'landscape', [
+              commons.subActions__landscape,
+            ]),
+          ]}
+        >
           <LoginLink />
           { action === 'subscription' &&
             getConfig('alternative_widget') !== 'none' && (
