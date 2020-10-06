@@ -20,6 +20,8 @@ const styles = {
   },
 };
 
+BrandCover.propTypes = {};
+
 BrandCover.displayName = 'BrandCover';
 
 export default BrandCover;

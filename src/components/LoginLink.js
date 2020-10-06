@@ -1,24 +1,21 @@
 import React, { useContext } from 'react';
 import { Linking } from 'react-native';
+
 import { AppContext } from '../services/contexts';
 
 import Translate from './Translate';
-import { texts } from '../styles';
+import { commons, applyStyles } from '../styles';
 
 const LoginLink = () => {
-
-  const {
-    trackData,
-    onLoginClick,
-  } = useContext(AppContext);
+  const { getConfig, action, fireEvent, getStyle } = useContext(AppContext);
 
   const onPress = e => {
-    Linking.openURL(trackData?.config?.login_url);
-    onLoginClick({
-      widget: trackData?.action,
-      button: e?.target,
+    Linking.openURL(getConfig('login_url'));
+    fireEvent('onLoginClick', {
+      widget: action,
+      button: 'login_button',
       originalEvent: e,
-      url: trackData?.config?.login_url,
+      url: getConfig('login_url'),
     });
   };
 
@@ -26,10 +23,28 @@ const LoginLink = () => {
     <Translate
       textKey="login_link"
       testID="loginButton"
-      style={texts.subaction[trackData?.styles?.layout]}
+      style={[
+        commons.link,
+        styles.link,
+        applyStyles(getStyle('layout') === 'landscape', [
+          commons.link__landscape,
+          styles.link__landscape,
+        ]),
+      ]}
       onPress={onPress}
     />
   );
 };
+
+const styles = {
+  link: {},
+  link__landscape: {
+    flex: 0.5,
+  },
+};
+
+LoginLink.propTypes = {};
+
+LoginLink.displayName = 'LoginLink';
 
 export default LoginLink;

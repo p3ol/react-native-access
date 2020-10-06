@@ -3,6 +3,8 @@ import { Image } from 'react-native';
 
 import { AppContext } from '../services/contexts';
 
+import { applyStyles } from '../styles';
+
 const BrandLogo = () => {
   const { getStyle } = useContext(AppContext);
 
@@ -11,7 +13,9 @@ const BrandLogo = () => {
       resizeMode="contain"
       style={[
         styles.logo,
-        getStyle('layout') === 'landscape' && styles.logo__landscape,
+        applyStyles(getStyle('layout') === 'landscape', [
+          styles.logo__landscape,
+        ]),
       ]}
       source={{ uri: getStyle('brand_logo') }}
     />
@@ -29,7 +33,8 @@ const styles = {
   },
 };
 
-BrandLogo.displayName = 'BrandLogo';
 BrandLogo.propTypes = {};
+
+BrandLogo.displayName = 'BrandLogo';
 
 export default BrandLogo;

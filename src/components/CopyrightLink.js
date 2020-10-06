@@ -29,12 +29,13 @@ const CopyrightLink = () => {
 const styles = {
   wrapper: {
     position: 'absolute',
-    bottom: 5,
+    bottom: 10,
     right: 10,
   },
   logo: {
     width: 50,
-    height: 20,
+    height: 15,
+    opacity: 0.5,
   },
 };
 
