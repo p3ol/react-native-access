@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
-import { Locales } from '../utils/Locales';
+import { AVAILABLE_LOCALES } from '../services/translations';
 
 const Translate = ({
   textKey,
@@ -13,23 +13,23 @@ const Translate = ({
   tag: Tag = Text,
   ...rest
 }) => {
-
-  const {
-    trackData,
-  } = useContext(AppContext);
+  const { getText, trackData, getConfig } = useContext(AppContext);
 
   const finalReplacers = {
     ...replace,
     ...(replace.app_name
-      ? { app_name: trackData?.config?.app_name }
+      ? { app_name: getConfig('app_name') }
+      : {}
+    ),
+    ...(replace.count
+      ? { count: trackData?.remaining || 0 }
       : {}
     ),
   };
 
-  var text = trackData?.texts?.[textKey] ||
-    (Locales.availableLocales[trackData?.config?.locale?.toLowerCase() || 'fr']
-      ?.[textKey] || '') ||
-    children;
+  let text = getText(textKey) ||
+    (AVAILABLE_LOCALES[getConfig('locale', 'fr').toLowerCase()]
+      ?.[textKey] || '') || children;
 
   Object.entries(finalReplacers).map(([k, v]) => {
     text = text?.replace(`{${k}}`, v);
@@ -44,8 +44,7 @@ const Translate = ({
 
 Translate.propTypes = {
   textKey: PropTypes.string,
-  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
-  children: PropTypes.func,
+  tag: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.node]),
   replace: PropTypes.object,
   asString: PropTypes.bool,
 };
