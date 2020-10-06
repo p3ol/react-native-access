@@ -3,7 +3,7 @@ import { AppContext } from '../services/contexts';
 import Signature from './Signature';
 
 const RestrictedContent = ({ children }) => {
-  const { released, trackData } = useContext(AppContext);
+  const { released, getConfig } = useContext(AppContext);
 
   if (!released) {
     return null;
@@ -12,7 +12,7 @@ const RestrictedContent = ({ children }) => {
   return (
     <>
       { children }
-      { trackData?.config?.signature_enabled && <Signature /> }
+      { getConfig('signature_enabled') !== false && <Signature /> }
     </>
   );
 
