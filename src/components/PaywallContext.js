@@ -1,6 +1,7 @@
 import React, { useReducer, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { get } from '@poool/junipero-utils';
+import { track } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
@@ -70,8 +71,14 @@ const PaywallContext = forwardRef(({
     });
   };
 
-  const doRelease = () => {
+  const doRelease = async () => {
     dispatch({ released: true });
+
+    await track('premium-read', {
+      widget: state.action,
+      hit: state.trackData?.hit,
+    });
+
     fireEvent('onRelease', {
       widget: state.action,
       actionName: state.trackData?.actionName,

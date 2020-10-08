@@ -22,7 +22,7 @@ const LinkWidget = () => {
       originalEvent: e,
       url: getConfig('link_url'),
     });
-    Linking.openURL(getConfig('link_url'));
+    Linking.openURL(getConfig('link_url') || '');
   };
 
   return (
