@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { Text, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 import { mockState, cloneDeep } from '@poool/junipero-utils';
 
@@ -52,45 +51,31 @@ const FormWidget = () => {
       state.values[field.fieldKey]);
 
     dispatch({ focused: state.focused, valid: state.valid });
-    // state.fields[field.key].focused = false;
-    // if (!field.value) {
-    //   state.fields[field.key].valid = false;
-    // }
-    // dispatch({ fields: state.fields });
   };
 
   const onFocus = field => {
     state.focused[field.fieldKey] = true;
     dispatch({ focused: state.focused });
-    // state.fields[field.key].focused = true;
-    // dispatch({ fields: state.fields });
   };
 
-  const onPress = () => {
+  const onDataPolicyPress = e => {
     dispatch({ step: STEPS.GDPR });
-    // switch (button) {
-    //   case 'dataPolicy':
-    //     dispatch({ optin: 'open' });
-    //     onDataPolicyClick({
-    //       widget: data?.action,
-    //       button: e?.target,
-    //       originalEvent: e,
-    //       url: data?.config?.data_policy_url,
-    //     });
-    //     break;
-    //   case 'submit':
-    //     onFormSubmit({
-    //       name: data?.form?.name,
-    //       fields: data?.form?.fields,
-    //       valid: getValidFields(),
-    //     });
-    //     onRelease({
-    //       widget: data?.action,
-    //       actionName: data?.actionName,
-    //     });
-    //     release();
-    //     break;
-    // }
+    fireEvent('onDataPolicyClick', {
+      widget: trackData?.action,
+      button: 'link_button',
+      originalEvent: e,
+      url: getConfig('link_url'),
+    });
+  };
+
+  const onSubmitPress = e => {
+    fireEvent('onFormSubmit', {
+      widget: trackData?.action,
+      button: 'link_button',
+      originalEvent: e,
+      url: getConfig('link_url'),
+    });
+    doRelease();
   };
 
   const onOptin = () => {
@@ -268,12 +253,12 @@ const FormWidget = () => {
             style={[styles.field, styles.gdprLink]}
             textKey="form_optin_link"
             testID="GDPRLink"
-            onPress={onPress}
+            onPress={onDataPolicyPress}
           />
           <MainButton
             text="form_button"
             disabled={!isFormValid()}
-            onPress={doRelease}
+            onPress={onSubmitPress}
           />
           <View
             style={[
@@ -284,9 +269,10 @@ const FormWidget = () => {
             ]}
           >
             { getConfig('login_button_enabled') !== false && <LoginLink /> }
-            { getConfig('alternative_widget') !== 'none' && (
-              <NoThanksLink />
-            )}
+            { getConfig('alternative_widget') !== 'none'
+              ? <NoThanksLink />
+              : <SubscribeLink />
+            }
           </View>
         </WidgetContent>
       }{state.step === 'gdpr' &&
