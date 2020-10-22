@@ -217,18 +217,29 @@ const FormWidget = () => {
 
   return (
     <View testID="formWidget">
-      {state.step === 'gdpr' &&
-      <Text
-        testID='returnButton'
-        onPress={onBackClick}
-        style={styles.backLink}
-      >
-        {'\u{e901}'}
-      </Text>
-      }
+
+      { state.step === 'gdpr' && (
+        <Text
+          testID="returnButton"
+          onPress={onBackClick}
+          style={[
+            styles.backLink,
+            applyStyles(
+              getStyle('button_color'),
+              { color: getStyle('button_color').toString() },
+            ),
+          ]}
+        >
+          {'\u{e901}'}
+        </Text>
+      ) }
+
       <BrandCover />
       <BrandLogo />
-      {state.step === 'form' &&
+
+      {state.step === 'gdpr' ? (
+        <GDPR />
+      ) : (
         <WidgetContent>
           <Translate textKey="form_title" style={commons.title} />
           <Translate textKey="form_desc" style={commons.description} />
@@ -275,9 +286,7 @@ const FormWidget = () => {
             }
           </View>
         </WidgetContent>
-      }{state.step === 'gdpr' &&
-        <GDPR/>
-      }
+      ) }
     </View>
   );
 };

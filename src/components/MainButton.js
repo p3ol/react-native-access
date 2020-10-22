@@ -29,6 +29,13 @@ const MainButton = ({
                 overrides.backgroundColor(getStyle('button_color')),
               ]),
             ],
+            button__disabled: [
+              styles.button,
+              applyStyles(!!getStyle('button_color'), [
+                overrides.backgroundColor(getStyle('button_color')),
+                { opacity: 0.5 },
+              ]),
+            ],
           }}
         >
           { text_ }
