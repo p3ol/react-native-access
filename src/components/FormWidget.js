@@ -42,15 +42,21 @@ const FormWidget = () => {
     step: STEPS.FORM,
     values: {},
     valid: {},
+    errors: {},
     focused: {},
   });
 
   const onBlur = field => {
     state.focused[field.fieldKey] = false;
-    state.valid[field.fieldKey] = validateField(field,
+    state.valid[field.fieldKey] = (!field.fieldRequired &&
+      !state.values[field.fieldKey]) || validateField(field,
       state.values[field.fieldKey]);
+    state.errors[field.fieldKey] = getError(field.fieldType);
 
-    dispatch({ focused: state.focused, valid: state.valid });
+    dispatch({
+      focused: state.focused,
+      valid: state.valid,
+      errors: state.errors });
   };
 
   const onFocus = field => {
@@ -68,14 +74,15 @@ const FormWidget = () => {
     });
   };
 
-  const onSubmitPress = e => {
-    fireEvent('onFormSubmit', {
+  const onSubmitPress = async e => {
+    const eventResult = await fireEvent('onFormSubmit', {
       widget: trackData?.action,
       button: 'link_button',
       originalEvent: e,
       url: getConfig('link_url'),
     });
-    doRelease();
+    console.log(eventResult);
+    //doRelease();
   };
 
   const onOptin = () => {
@@ -121,30 +128,32 @@ const FormWidget = () => {
     }
   };
 
+  const getError = fieldType => {
+    switch (fieldType) {
+      case 'date':
+        return getDateError();
+      case 'email':
+        return 'form_email_error';
+      default:
+        return 'form_empty_error';
+    }
+  };
+
   const validateField = (field, value) => {
     switch (field.fieldType) {
       case 'date':
-        return {
-          valid: validateDate(value, form.config?.date_format),
-          type: getDateError(),
-        };
+        return validateDate(value, form.config?.date_format);
       case 'email':
-        return {
-          valid: validateEmail(value),
-          type: 'form_email_error',
-        };
+        return validateEmail(value);
       default:
-        return {
-          valid: field.fieldRequired === false || !!value,
-          type: 'form_empty_error',
-        };
+        return field.fieldRequired === false || !!value;
     }
   };
 
   const getFieldError = field => {
     let error;
-    if (!state.valid[field.fieldKey]?.valid) {
-      error = state.valid[field.fieldKey]?.type;
+    if (!state.valid[field.fieldKey]) {
+      error = state.errors[field.fieldKey];
     }
     return (
       <Translate
@@ -156,8 +165,7 @@ const FormWidget = () => {
   };
 
   const isFormValid = () => {
-    return Object.keys(state.valid).length === fields.length &&
-    Object.keys(state.valid).every(k => state.valid[k]?.valid) &&
+    return Object.keys(state.valid).every(k => state.valid[k]) &&
     state.optin;
   };
 
@@ -185,7 +193,7 @@ const FormWidget = () => {
                     )}
                     testID={field.fieldKey}
                     valid={state.focused[field.fieldKey] ||
-                      state.valid[field.fieldKey]?.valid}
+                      state.valid[field.fieldKey]}
                     onChange={onChange.bind(null, field)}
                     onFocus={onFocus.bind(null, field)}
                     onBlur={onBlur.bind(null, field)}
@@ -196,7 +204,7 @@ const FormWidget = () => {
                           styles.input__focused,
                         ]),
                         applyStyles(
-                          state.valid[field.fieldKey]?.valid === false, [
+                          state.valid[field.fieldKey] === false, [
                             styles.input__invalid,
                           ]),
                       ],
