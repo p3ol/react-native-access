@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import { Button, View } from 'react-native';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 import { mockState, cloneDeep } from '@poool/junipero-utils';
@@ -29,7 +29,13 @@ const DEFAULT_FIELD = {
 const STEPS = { FORM: 'form', GDPR: 'gdpr' };
 
 const FormWidget = () => {
-  const { trackData, fireEvent, getStyle, getConfig } = useContext(AppContext);
+  const {
+    trackData,
+    fireEvent,
+    getStyle,
+    getConfig,
+    doRelease,
+  } = useContext(AppContext);
   const form = trackData?.form || {};
   const fields = cloneDeep(form.fields || [DEFAULT_FIELD]);
   const [state, dispatch] = useReducer(mockState, {
@@ -60,7 +66,8 @@ const FormWidget = () => {
     // dispatch({ fields: state.fields });
   };
 
-  const onPress = (button, e) => {
+  const onPress = () => {
+    dispatch({ step: STEPS.GDPR });
     // switch (button) {
     //   case 'dataPolicy':
     //     dispatch({ optin: 'open' });
@@ -104,20 +111,6 @@ const FormWidget = () => {
     }
 
     dispatch({ values: state.values, valid: state.valid });
-
-    // state.fields[field.key].value = event.value;
-    // if (!field.value) {
-    //   state.fields[field.key].valid = !field.required;
-    // } else {
-    //   if (field.type === 'email') {
-    //     state.fields[field.key].valid = mailRegex.test(field.value);
-    //   } else if (field.type === 'date') {
-    //     state.fields[field.key].valid = getDateRegex().test(field.value);
-    //   } else {
-    //     state.fields[field.key].valid = true;
-    //   }
-    // }
-    // dispatch({ fields: state.fields });
   };
 
   const formatDate = date => {
@@ -132,70 +125,55 @@ const FormWidget = () => {
     return date;
   };
 
+  const getDateError = () => {
+    switch (form.config?.date_format) {
+      case 'mm/dd/yyyy':
+        return 'form_date_mdy_error';
+      case 'yyyy/mm/dd':
+        return 'form_date_ymd_error';
+      default:
+        return 'form_date_dmy_error';
+    }
+  };
+
   const validateField = (field, value) => {
     switch (field.fieldType) {
       case 'date':
-        return validateDate(value, form.config?.date_format);
+        return {
+          valid: validateDate(value, form.config?.date_format),
+          type: getDateError(),
+        };
       case 'email':
-        return validateEmail(value);
+        return {
+          valid: validateEmail(value),
+          type: 'form_email_error',
+        };
       default:
-        return field.fieldRequired === false || !!value;
+        return {
+          valid: field.fieldRequired === false || !!value,
+          type: 'form_empty_error',
+        };
     }
   };
 
   const getFieldError = field => {
-    //
-    // let error;
-    //
-    // if (!field.focused && field.value) {
-    //   if (field.type === 'email' && !field.valid) {
-    //     error = 'form_email_error';
-    //   }
-    //   if (field.type === 'date' && !field.valid) {
-    //     switch (data?.form?.config?.date_format) {
-    //       case 'mm/dd/yyyy':
-    //         error = 'form_date_mdy_error';
-    //         break;
-    //       case 'yyyy/mm/dd':
-    //         error = 'form_date_ymd_error';
-    //         break;
-    //       default:
-    //         error = 'form_date_dmy_error';
-    //         break;
-    //     }
-    //   }
-    // } else if (!field.focused && !field.value && field.required) {
-    //   error = 'form_empty_error';
-    // }
-    // return (
-    //   <Translate
-    //     textKey={error}
-    //     style={texts.warning}
-    //     testID={error}
-    //   />
-    // );
-    return null;
-  };
-
-  const getValidFields = () => {
-    // const validFields = [];
-    //
-    // Object.values(state.fields).map(field => {
-    //   validFields.push({ [field.key]: field.valid });
-    // });
-    // return validFields;
+    let error;
+    if (!state.valid[field.fieldKey]?.valid) {
+      error = state.valid[field.fieldKey]?.type;
+    }
+    return (
+      <Translate
+        style={styles.error}
+        textKey={error}
+        testID={error}
+      />
+    );
   };
 
   const isFormValid = () => {
-    // let count = 0;
-    // let isValid = 0;
-    //
-    // Object.values(state.fields).map(field => {
-    //   field.valid && (isValid += 1);
-    //   count += 1;
-    // });
-    //
-    // return isValid === count;
+    return Object.keys(state.valid).length === fields.length &&
+    Object.keys(state.valid).every(k => state.valid[k]?.valid) &&
+    state.optin;
   };
 
   const renderField = field => {
@@ -222,7 +200,7 @@ const FormWidget = () => {
                     )}
                     testID={field.fieldKey}
                     valid={state.focused[field.fieldKey] ||
-                      state.valid[field.fieldKey]}
+                      state.valid[field.fieldKey]?.valid}
                     onChange={onChange.bind(null, field)}
                     onFocus={onFocus.bind(null, field)}
                     onBlur={onBlur.bind(null, field)}
@@ -232,9 +210,10 @@ const FormWidget = () => {
                         applyStyles(state.focused[field.fieldKey], [
                           styles.input__focused,
                         ]),
-                        applyStyles(state.valid[field.fieldKey] === false, [
-                          styles.input__invalid,
-                        ]),
+                        applyStyles(
+                          state.valid[field.fieldKey]?.valid === false, [
+                            styles.input__invalid,
+                          ]),
                       ],
                       inputBackground: styles.inputBackground,
                     }}
@@ -253,54 +232,66 @@ const FormWidget = () => {
 
   return (
     <View testID="formWidget">
+      {state.step === 'gdpr' &&
+      <Text
+        testID='returnButton'
+        onPress={onBackClick}
+        style={styles.backLink}
+      >
+        {'\u{e901}'}
+      </Text>
+      }
       <BrandCover />
       <BrandLogo />
+      {state.step === 'form' &&
+        <WidgetContent>
+          <Translate textKey="form_title" style={commons.title} />
+          <Translate textKey="form_desc" style={commons.description} />
 
-      <WidgetContent>
-        <Translate textKey="form_title" style={commons.title} />
-        <Translate textKey="form_desc" style={commons.description} />
+          <View>
+            { fields.map(field => renderField(field)) }
+          </View>
 
-        <View>
-          { fields.map(field => renderField(field)) }
-        </View>
+          <View style={styles.field}>
+            <CheckboxField
+              checked={state.optin}
+              onChange={onOptin}
+            >
+              <Translate
+                textKey="newsletter_optin_label"
+                replace={{ app_name: true }}
+              />
+            </CheckboxField>
+          </View>
 
-        <View style={styles.field}>
-          <CheckboxField
-            checked={state.optin}
-            onChange={onOptin}
+          <Translate
+            style={[styles.field, styles.gdprLink]}
+            textKey="form_optin_link"
+            testID="GDPRLink"
+            onPress={onPress}
+          />
+          <MainButton
+            text="form_button"
+            disabled={!isFormValid()}
+            onPress={doRelease}
+          />
+          <View
+            style={[
+              commons.subActions,
+              applyStyles(getStyle('layout') === 'landscape', [
+                commons.subActions__landscape,
+              ]),
+            ]}
           >
-            <Translate
-              textKey="newsletter_optin_label"
-              replace={{ app_name: true }}
-            />
-          </CheckboxField>
-        </View>
-
-        <Translate
-          style={[styles.field, styles.gdprLink]}
-          textKey="form_optin_link"
-          testID="GDPRLink"
-          onPress={onPress.bind(null, 'dataPolicy')}
-        />
-        <MainButton
-          text="form_button"
-          disabled={!isFormValid()}
-          onPress={onPress}
-        />
-        <View
-          style={[
-            commons.subActions,
-            applyStyles(getStyle('layout') === 'landscape', [
-              commons.subActions__landscape,
-            ]),
-          ]}
-        >
-          { getConfig('login_button_enabled') !== false && <LoginLink /> }
-          { getConfig('alternative_widget') !== 'none' && (
-            <NoThanksLink />
-          )}
-        </View>
-      </WidgetContent>
+            { getConfig('login_button_enabled') !== false && <LoginLink /> }
+            { getConfig('alternative_widget') !== 'none' && (
+              <NoThanksLink />
+            )}
+          </View>
+        </WidgetContent>
+      }{state.step === 'gdpr' &&
+        <GDPR/>
+      }
     </View>
   );
 };
@@ -313,6 +304,11 @@ const styles = {
     paddingVertical: 10,
     marginLeft: 25,
     textDecoration: 'underline',
+  },
+  backLink: {
+    fontFamily: 'Poool-Ico-2',
+    position: 'absolute',
+    zIndex: 1000,
   },
   input: {
     paddingVertical: 15,
@@ -327,6 +323,9 @@ const styles = {
   inputBackground: {
     background: colors.shuttleGray,
     opacity: 1,
+  },
+  error: {
+    color: colors.monza,
   },
 };
 
