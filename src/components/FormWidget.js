@@ -74,15 +74,15 @@ const FormWidget = () => {
     });
   };
 
-  const onSubmitPress = async e => {
+  const onSubmitPress = async () => {
     const eventResult = await fireEvent('onFormSubmit', {
       widget: trackData?.action,
-      button: 'link_button',
-      originalEvent: e,
-      url: getConfig('link_url'),
+      fields: fields,
+      valid: state.valid,
     });
-    console.log(eventResult);
-    //doRelease();
+    eventResult === []
+      ? doRelease()
+      : applyCustomError(eventResult);
   };
 
   const onOptin = () => {
@@ -160,8 +160,16 @@ const FormWidget = () => {
         style={styles.error}
         textKey={error}
         testID={error}
-      />
+      >{error}</Translate>
     );
+  };
+
+  const applyCustomError = customError => {
+    customError.forEach(error => {
+      state.errors[error.fieldKey] = error.message;
+      state.valid[error.fieldKey] = false;
+    });
+    dispatch({ errors: state.errors, valid: state.valid });
   };
 
   const isFormValid = () => {
