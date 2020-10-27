@@ -80,9 +80,9 @@ const FormWidget = () => {
       fields: fields,
       valid: state.valid,
     });
-    eventResult === []
-      ? doRelease()
-      : applyCustomError(eventResult);
+    eventResult !== null && eventResult.length
+      ? applyCustomError(eventResult)
+      : doRelease();
   };
 
   const onOptin = () => {
@@ -236,13 +236,13 @@ const FormWidget = () => {
 
       { state.step === 'gdpr' && (
         <Text
-          testID="returnButton"
+          testID="backButton"
           onPress={onBackClick}
           style={[
             styles.backLink,
             applyStyles(
               getStyle('button_color'),
-              { color: getStyle('button_color').toString() },
+              { color: getStyle('button_color')?.toString() },
             ),
           ]}
         >
@@ -267,10 +267,12 @@ const FormWidget = () => {
           <View style={styles.field}>
             <CheckboxField
               checked={state.optin}
+              testID="optin"
               onChange={onOptin}
             >
               <Translate
                 textKey="newsletter_optin_label"
+                style={styles.optinLabel}
                 replace={{ app_name: true }}
               />
             </CheckboxField>
@@ -314,7 +316,8 @@ const styles = {
   gdprLink: {
     paddingVertical: 10,
     marginLeft: 25,
-    textDecoration: 'underline',
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
   backLink: {
     fontFamily: 'Poool-Ico-2',
@@ -323,20 +326,23 @@ const styles = {
   },
   input: {
     paddingVertical: 15,
-    background: colors.gallery,
+    backgroundColor: colors.gallery,
   },
   input__focused: {
-    background: colors.alto,
+    backgroundColor: colors.alto,
   },
   input__invalid: {
-    background: colors.lavenderBlush,
+    backgroundColor: colors.lavenderBlush,
   },
   inputBackground: {
-    background: colors.shuttleGray,
+    backgroundColor: colors.shuttleGray,
     opacity: 1,
   },
   error: {
     color: colors.monza,
+  },
+  optinLabel: {
+    marginLeft: 10,
   },
 };
 
