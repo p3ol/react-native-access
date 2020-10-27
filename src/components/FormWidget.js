@@ -174,6 +174,9 @@ const FormWidget = () => {
 
   const isFormValid = () => {
     return Object.keys(state.valid).every(k => state.valid[k]) &&
+    fields.filter(field => field.fieldRequired &&
+    state.valid[field.fieldKey]).length >=
+    fields.filter(field => field.fieldRequired).length &&
     state.optin;
   };
 
