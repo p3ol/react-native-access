@@ -10,6 +10,7 @@ import { applyStyles, overrides } from '../styles';
 const MainButton = ({
   text = '',
   onPress = () => {},
+  disabled = false,
 }) => {
   const { getStyle } = useContext(AppContext);
 
@@ -19,12 +20,20 @@ const MainButton = ({
         <Button
           testID="releaseButton"
           theme="primary"
+          disabled={disabled}
           onPress={onPress}
           customStyle={{
             button: [
               styles.button,
               applyStyles(!!getStyle('button_color'), [
                 overrides.backgroundColor(getStyle('button_color')),
+              ]),
+            ],
+            button__disabled: [
+              styles.button,
+              applyStyles(!!getStyle('button_color'), [
+                overrides.backgroundColor(getStyle('button_color')),
+                { opacity: 0.5 },
               ]),
             ],
           }}
@@ -45,6 +54,7 @@ const styles = {
 MainButton.propTypes = {
   text: PropTypes.string,
   onPress: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 MainButton.displayName = 'MainButton';

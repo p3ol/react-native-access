@@ -91,17 +91,17 @@ const NewsletterWidget = () => {
   };
 
   return (
-    <View testID="formWidget">
+    <View testID="newsletterWidget">
 
       { state.step === 'gdpr' && (
         <Text
-          testID="returnButton"
+          testID="backButton"
           onPress={onBackClick}
           style={[
             styles.backLink,
             applyStyles(
               getStyle('button_color'),
-              { color: getStyle('button_color').toString() },
+              { color: getStyle('button_color')?.toString() },
             ),
           ]}
         >
@@ -194,7 +194,7 @@ const styles = {
   gdprLink: {
     paddingVertical: 10,
     marginLeft: 25,
-    textDecoration: 'underline',
+    textDecorationLine: 'underline',
     fontWeight: 'bold',
   },
   backLink: {
@@ -204,16 +204,16 @@ const styles = {
   },
   input: {
     paddingVertical: 15,
-    background: colors.gallery,
+    backgroundColor: colors.gallery,
   },
   input__focused: {
-    background: colors.alto,
+    backgroundColor: colors.alto,
   },
   input__invalid: {
-    background: colors.lavenderBlush,
+    backgroundColor: colors.lavenderBlush,
   },
   inputBackground: {
-    background: colors.shuttleGray,
+    backgroundColor: colors.shuttleGray,
     opacity: 1,
   },
   error: {
