@@ -957,10 +957,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@eslint/eslintrc@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.1.3.tgz#7d1a2b2358552cc04834c0979bd4275362e37085"
-  integrity sha512-4YVwPkANLeNtRjMekzux1ci8hIaH5eGKktGqR0d3LWsKNn5B2X/1Z6Trxy7jQXl9EBGE6Yj02O+t09FMeRllaA==
+"@eslint/eslintrc@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.2.1.tgz#f72069c330461a06684d119384435e12a5d76e3c"
+  integrity sha512-XRUeBZ5zBWLYgSANMpThFddrZZkEbGHgUdt5UJjZfnlN9BGCiUBrf+nvbRupSjMvqzwnQN0qwCmOxITt1cfywA==
   dependencies:
     ajv "^6.12.4"
     debug "^4.1.1"
@@ -1258,25 +1258,25 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@poool/eslint-config-react-native@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.2.3.tgz#e058152e2a8db04a6aaf43794ddee564e1ba7daf"
-  integrity sha512-UsSFRp6nXKkm2zSOq5aZuV7gGd4VR3yioZbjx1pnUgPWMT8QGFwzrgMmME21YjSOswSefXBiyhWENa9mvtlxAg==
+"@poool/eslint-config-react-native@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.2.5.tgz#9278a0dd78505395b3a8360f8b354d62ce1892a1"
+  integrity sha512-KuSgiyoDbFtrvs9J/ZvelQmK0dmdJa2ND2xxXuGFoSITAcYwI48JygTUnF4ct83AAVctI1t+Uiv1bo7HyNG51Q==
 
-"@poool/eslint-config-react@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react/-/eslint-config-react-1.2.3.tgz#289b38bc2828d9bff6bd11d031d5b6b32ed8123f"
-  integrity sha512-K6MiL7mjlQ2+diDiMYYd281veag/N62BAKNvEPRaHoz0XNgfqmlIGGKU/Zv3jq8kPTxSr8eC+a7gEKqqJInmnw==
+"@poool/eslint-config-react@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react/-/eslint-config-react-1.2.5.tgz#d65c0160607220cae0676fefbbd15cd1d6e3c719"
+  integrity sha512-8J/RvY46E9Cu6n02ReFHQGnNo5T6mFrQQ7vVcZ7q4HnRTywIa868X77P1H3FqhxyuKaPpbdP8O7LDbzB4zgpKw==
 
-"@poool/eslint-config@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.2.3.tgz#721d1df18d128555e0d6d0b62415feb9a036e181"
-  integrity sha512-VRzL1LKGZiju1oN41oVAOLzUaI71sBUIBT1Ieu2iNXXNfiDg3mV0cLlqMKNzzQHQjwZAozdt/orkBKDx7Ds+2Q==
+"@poool/eslint-config@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config/-/eslint-config-1.2.5.tgz#0442d00a2415848a7c3c349d5389eda43b2b7f1d"
+  integrity sha512-UxNcIlI0MVS8/JDv4Rrdd9n8YsxVMhC6yJVRuVwSv+MGY4wg9iKATEYfzlbw+pDsRQtLPALJ0ew+UoH0c0A6Xw==
 
-"@poool/eslint-plugin@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-plugin/-/eslint-plugin-1.2.3.tgz#4fbd3b97a23025217fb0115ce623f0d8ccdb262f"
-  integrity sha512-HJx0D4YSGDeKOQ+rsR+RxN0vAsaGjqywB9w8m7+x/4dE/Ry1BwN/rgCcxAHQuslSaZcGyM7DAbgrciPq2KMmvg==
+"@poool/eslint-plugin@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-plugin/-/eslint-plugin-1.2.4.tgz#46fcba9c44c0b7105d6c129a633b8ab1193569f0"
+  integrity sha512-9e25esjc1F2NahqIJDV9VpHTawo0hmrmVggPIcM2gO3L/lh5/lESmZfIexSX2+DO2v0Jb3KDx5BMriVbdujYnA==
   dependencies:
     eslint-rule-composer "0.3.0"
 
@@ -2138,7 +2138,7 @@ balanced-match@^1.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
   integrity sha1-ibTRmasr7kneFk6gK4nORi1xt2c=
 
-base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3:
+base64-js@^1.0.2, base64-js@^1.1.2, base64-js@^1.2.3, base64-js@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
   integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
@@ -2284,6 +2284,14 @@ buffer@5.6.0:
   dependencies:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
+
+buffer@5.7.0:
+  version "5.7.0"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.7.0.tgz#88afbd29fc89fa7b58e82b39206f31f2cf34feed"
+  integrity sha512-cd+5r1VLBwUqTrmnzW+D7ABkJUM6mr7uv1dv+6jRw4Rcl7tFIFHDqHPL98LhpGFn3dbAt3gtLxtrWp4m1kFrqg==
+  dependencies:
+    base64-js "^1.3.1"
+    ieee754 "^1.1.13"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -3210,10 +3218,10 @@ escodegen@^1.14.1:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-standard@15.0.0:
-  version "15.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-15.0.0.tgz#459f823b47ac0541b0a22b1d0a161a9da543f687"
-  integrity sha512-MZ8KRhUJLtMbjQo9PsEzFG29vqbQJfLoLBHrTaAaFMtDx9PIm1GZgyUanOLgf1xOE1aWrtZZSbxBYCy8dJCCBg==
+eslint-config-standard@15.0.1:
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-15.0.1.tgz#1262eafaba66f4f03fdf3cf655a28aa8b40868b7"
+  integrity sha512-UGorkix49kBium7Y124o2U9Qy7Lpa+nO0FsaqQSIPeno5hGNxZtSBJbqJX6gtpYfDFWCtqCAN9wyK+oDd9jT7Q==
 
 eslint-import-resolver-node@^0.3.4:
   version "0.3.4"
@@ -3346,13 +3354,13 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.0.0.tgz#21fdc8fbcd9c795cc0321f0563702095751511a8"
   integrity sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
 
-eslint@7.11.0:
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.11.0.tgz#aaf2d23a0b5f1d652a08edacea0c19f7fadc0b3b"
-  integrity sha512-G9+qtYVCHaDi1ZuWzBsOWo2wSwd70TXnU6UHA3cTYHp7gCTXZcpggWFoUVAMRarg68qtPoNfFbzPh+VdOgmwmw==
+eslint@7.12.1:
+  version "7.12.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.12.1.tgz#bd9a81fa67a6cfd51656cdb88812ce49ccec5801"
+  integrity sha512-HlMTEdr/LicJfN08LB3nM1rRYliDXOmfoO4vj39xN6BLpFzF00hbwBoqHk8UcJ2M/3nlARZWy/mslvGEuZFvsg==
   dependencies:
     "@babel/code-frame" "^7.0.0"
-    "@eslint/eslintrc" "^0.1.3"
+    "@eslint/eslintrc" "^0.2.1"
     ajv "^6.10.0"
     chalk "^4.0.0"
     cross-spawn "^7.0.2"
@@ -4101,6 +4109,11 @@ iconv-lite@^0.6.2:
   integrity sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
+
+ieee754@^1.1.13:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
+  integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
 
 ieee754@^1.1.4:
   version "1.1.13"
@@ -6777,10 +6790,10 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-native-web@0.14.2:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.14.2.tgz#18957b0c72f5200f2b97a0bd73b3657d5e2401bb"
-  integrity sha512-cjgqWhFLZoveJx8Upu6PH+1tq4ZbW6zvkQ8ChOWfQ8BdoYY0o4jhlBZJTgQVLNP6s7BkpMAb87er/T7Zhd8qJw==
+react-native-web@0.14.5:
+  version "0.14.5"
+  resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.14.5.tgz#3a6a4e69ec9eee6db585e63fdefa3c6a253d2017"
+  integrity sha512-Pax8OsI+mBzN7ftuoqY5GJ5liIvrSNXiigqsDFa2/8Rh2InO9A3t25DOQEniQ+bTbxuBz+iSU8OCVfJU6Flemw==
   dependencies:
     array-find-index "^1.0.2"
     create-react-class "^15.6.2"

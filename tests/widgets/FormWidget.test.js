@@ -1,31 +1,187 @@
+import nock from 'nock';
 import React from 'react';
-import { Text, Linking } from 'react-native';
+import { Text } from 'react-native';
 import {
   render,
   waitFor,
   fireEvent,
 } from '@testing-library/react-native';
 
-import { AppContext } from '../../src/services/contexts';
 import PaywallContext from '../../src/components/PaywallContext';
 import FormWidget from '../../src/components/FormWidget';
+import Paywall from '../../src/components/paywall';
 
 describe('<FormWidget />', () => {
 
   jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
 
-  const onSubscribeClick = jest.fn();
-  const onLoginClick = jest.fn();
-
-  it('should fire onLoginClick event by clicking on login', async () => {
+  it('should display GDPR by clicking the GDPR button', async () => {
     const component = render(
-      <PaywallContext
-        onLoginClick={onLoginClick}
-        onSubscribeClick={onSubscribeClick}
-      >
+      <PaywallContext>
         <Text>Test text</Text>
-        <FormWidget data={{
-          config: { login_button_enabled: true },
+        <FormWidget />
+      </PaywallContext>
+    );
+    const gdprlink = component.getByTestId('GDPRLink');
+    fireEvent.press(gdprlink);
+    await waitFor(() => {
+      expect(component.queryByTestId('GDPR')).toBeTruthy();
+    });
+  });
+
+  it('should close GDPR by clicking the back button', async () => {
+    const component = render(
+      <PaywallContext>
+        <Text>Test text</Text>
+        <FormWidget />
+      </PaywallContext>
+    );
+    const gdprlink = component.getByTestId('GDPRLink');
+    fireEvent.press(gdprlink);
+    const backButton = component.getByTestId('backButton');
+    fireEvent.press(backButton);
+    await waitFor(() => {
+      expect(component.queryByTestId('GDPR')).toBeNull();
+    });
+  });
+
+  it('should be able to submit the form', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'form',
+        styles: {},
+        texts: {},
+        config: { alternative_widget: 'none' },
+        form: {
+          config: {},
+          fields: [
+            {
+              fieldName: 'text',
+              fieldType: 'multiline',
+              fieldKey: 'textTest',
+              fieldRequired: true,
+            },
+            {
+              fieldName: 'cb',
+              fieldType: 'creditCard',
+              fieldKey: 'cardTest',
+              fieldRequired: false,
+            },
+            {
+              fieldName: 'date',
+              fieldType: 'date',
+              fieldKey: 'dateTest',
+              fieldRequired: false,
+            },
+            {
+              fieldName: 'mail',
+              fieldType: 'email',
+              fieldKey: 'mailTest',
+              fieldRequired: true,
+            },
+          ],
+          name: 'test',
+        },
+      });
+
+    const onFormSubmit = jest
+      .fn()
+      .mockImplementationOnce(() => []);
+
+    const { getByTestId } = render(
+      <PaywallContext events={{ onformsubmit: onFormSubmit }}>
+        <Text>Test text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    await waitFor(() => {
+      getByTestId('formWidget');
+    });
+
+    const textField = getByTestId('textTest');
+    fireEvent(textField, 'focus');
+    fireEvent.changeText(textField, 'test');
+    fireEvent(textField, 'blur');
+
+    const mailField = getByTestId('mailTest');
+    fireEvent(mailField, 'focus');
+    fireEvent.changeText(mailField, 'test@test.com');
+    fireEvent(mailField, 'blur');
+
+    const dateField = getByTestId('dateTest');
+    fireEvent(dateField, 'focus');
+    fireEvent.changeText(dateField, '27');
+    fireEvent(dateField, 'blur');
+
+    fireEvent(dateField, 'focus');
+    fireEvent.changeText(dateField, '27/10/2020');
+    fireEvent(dateField, 'blur');
+
+    const optin = getByTestId('CheckboxField/Main');
+    fireEvent.press(optin);
+    const releaseButton = getByTestId('releaseButton');
+    fireEvent.press(releaseButton);
+    await waitFor(() => {
+      expect(onFormSubmit.mock.calls.length).toBe(1);
+    });
+  });
+
+  it('should return the form_date_mdy_error & keep submit button disabled',
+    async () => {
+      nock('https://api.poool.develop:8443/api/v3')
+        .post('/access/track')
+        .reply(200, {
+          action: 'form',
+          styles: {},
+          texts: {},
+          config: { alternative_widget: 'none' },
+          form: {
+            config: { date_format: 'mm/dd/yyyy' },
+            fields: [
+              {
+                fieldName: 'date',
+                fieldType: 'date',
+                fieldKey: 'dateTest',
+                fieldRequired: true,
+              },
+            ],
+            name: 'test',
+          },
+        });
+      const { getByTestId } = render(
+        <PaywallContext>
+          <Text>Test text</Text>
+          <Paywall />
+        </PaywallContext>
+      );
+      await waitFor(() => {
+        getByTestId('formWidget');
+      });
+
+      const dateField = getByTestId('dateTest');
+      fireEvent(dateField, 'focus');
+      fireEvent.changeText(dateField, '27/10/2020');
+      fireEvent(dateField, 'blur');
+
+      const releaseButton = getByTestId('releaseButton');
+
+      await waitFor(() => {
+        expect(getByTestId('form_date_mdy_error')).toBeTruthy();
+        expect(releaseButton).toBeDisabled();
+      });
+
+    });
+
+  it('should return the form_date_ymd_error & keep submit button disabled',
+    async () => {
+      nock('https://api.poool.develop:8443/api/v3')
+        .post('/access/track')
+        .reply(200, {
+          action: 'form',
+          styles: {},
+          texts: {},
+          config: { alternative_widget: 'none' },
           form: {
             config: { date_format: 'yyyy/mm/dd' },
             fields: [
@@ -35,377 +191,83 @@ describe('<FormWidget />', () => {
                 fieldKey: 'dateTest',
                 fieldRequired: true,
               },
-              {
-                fieldName: 'mail',
-                fieldType: 'email',
-                fieldKey: 'mailTest',
-                fieldRequired: false,
-              },
             ],
             name: 'test',
           },
-        }}/>
-      </PaywallContext>
-    );
+        });
+      const { getByTestId } = render(
+        <PaywallContext>
+          <Text>Test text</Text>
+          <Paywall />
+        </PaywallContext>
+      );
+      await waitFor(() => {
+        getByTestId('formWidget');
+      });
 
-    const loginButton = component.getByTestId('loginButton');
-    fireEvent.press(loginButton);
-    await waitFor(() => {
-      expect(onLoginClick.mock.calls.length).toBe(1);
+      const dateField = getByTestId('dateTest');
+      fireEvent(dateField, 'focus');
+      fireEvent.changeText(dateField, '27/10/2020');
+      fireEvent(dateField, 'blur');
+
+      const releaseButton = getByTestId('releaseButton');
+
+      await waitFor(() => {
+        expect(getByTestId('form_date_ymd_error')).toBeTruthy();
+        expect(releaseButton).toBeDisabled();
+      });
+
     });
-  });
 
-  it('should set Alternative to true by clicking on no thanks', async () => {
-    const context = {
-      setAlternative: alternative => { context.alternative = alternative; },
-      alternative: false,
-      onAlternativeClick: () => {},
+  it('should diplay a custom error returned by the publisher', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'form',
+        styles: {},
+        texts: {},
+        config: { alternative_widget: 'none' },
+        form: {
+          config: { date_format: 'dd/mm/yyyy' },
+          fields: [
+            {
+              fieldName: 'text',
+              fieldType: 'text',
+              fieldKey: 'textTest',
+              fieldRequired: true,
+            },
+          ],
+          name: 'test',
+        },
+      });
+    const onFormSubmit = () => {
+      return [{ fieldKey: 'textTest', message: 'custom_error_message' }];
     };
-    const component = render(
-      <AppContext.Provider value={context}>
-        <FormWidget />
-      </AppContext.Provider>
-    );
-    const rejectButton = component.getByTestId('rejectButton');
-    fireEvent.press(rejectButton);
-    await waitFor(() => {
-      expect(context.alternative).toBe(true);
-    });
-  });
 
-  it('should open data processing infos by clicking on dataInfos button',
-    async () => {
-      const component = render(
-        <PaywallContext>
-          <Text>Test text</Text>
-          <FormWidget />
-        </PaywallContext>
-      );
-      const dataButton = component.getByTestId('dataButton');
-      fireEvent.press(dataButton);
-      await waitFor(() => {
-        expect(component.getByTestId('dataInfos')).toBeTruthy();
-      });
-    });
-
-  it('should be able to click on poool link in data processing infos',
-    async () => {
-      const component = render(
-        <PaywallContext>
-          <Text>Test text</Text>
-          <FormWidget />
-        </PaywallContext>
-      );
-      Linking.openUrl = jest.fn();
-      const dataButton = component.getByTestId('dataButton');
-      fireEvent.press(dataButton);
-      const pooolData = component.getByTestId('pooolData');
-      fireEvent.press(pooolData);
-      await waitFor(() => {
-        expect(Linking.openURL.mock.calls.length).toBe(1);
-      });
-    });
-
-  it('should close data processing infos by clicking on return', async () => {
-    const component = render(
-      <PaywallContext>
+    const { getByTestId } = render(
+      <PaywallContext events={{ onformsubmit: onFormSubmit }}>
         <Text>Test text</Text>
-        <FormWidget />
+        <Paywall />
       </PaywallContext>
     );
-    const dataButton = component.getByTestId('dataButton');
-    fireEvent.press(dataButton);
-    const returnButton = component.getByTestId('returnButton');
-    fireEvent.press(returnButton);
+
     await waitFor(() => {
-      expect(component.getByTestId('formWidget')).toBeTruthy();
+      getByTestId('formWidget');
+    });
+
+    const textField = getByTestId('textTest');
+    fireEvent(textField, 'focus');
+    fireEvent.changeText(textField, 'test');
+    fireEvent(textField, 'blur');
+
+    const optin = getByTestId('CheckboxField/Main');
+    fireEvent.press(optin);
+    const releaseButton = getByTestId('releaseButton');
+    fireEvent.press(releaseButton);
+
+    await waitFor(() => {
+      const error = getByTestId('custom_error_message');
+      expect(error).toBeTruthy();
     });
   });
-
-  it('should display a subscribe button that fire onSubscribeClick',
-    async () => {
-      const component = render(
-        <PaywallContext onSubscribeClick={onSubscribeClick} >
-          <Text>Test text</Text>
-          <FormWidget data={{ config: { alternative_widget: 'none' } }}/>
-        </PaywallContext>
-      );
-      const subscribeButton = component.getByTestId('subscribeButton');
-      fireEvent.press(subscribeButton);
-      await waitFor(() => {
-        expect(onSubscribeClick.mock.calls.length).toBe(1);
-      });
-    });
-
-  it('should display a date and an email field',
-    async () => {
-
-      const component = render(
-        <PaywallContext
-          onLoginClick={onLoginClick}
-          onSubscribeClick={onSubscribeClick}
-        >
-          <Text>Test text</Text>
-          <FormWidget data={{
-            config: { login_button_enabled: true },
-            form: {
-              config: { date_format: 'yyyy/mm/dd' },
-              fields: [
-                {
-                  fieldName: 'date',
-                  fieldType: 'date',
-                  fieldKey: 'dateTest',
-                  fieldRequired: true,
-                },
-                {
-                  fieldName: 'mail',
-                  fieldType: 'email',
-                  fieldKey: 'mailTest',
-                  fieldRequired: false,
-                },
-              ],
-              name: 'test',
-            },
-          }}/>
-        </PaywallContext>
-      );
-
-      await waitFor(() => {
-        expect(component.getByTestId('mailTest')).toBeTruthy();
-        expect(component.getByTestId('dateTest')).toBeTruthy();
-      });
-    });
-
-  it('should display the "form_date_ymd_error" error message',
-    async () => {
-
-      const component = render(
-        <PaywallContext
-          onLoginClick={onLoginClick}
-          onSubscribeClick={onSubscribeClick}
-        >
-          <Text>Test text</Text>
-          <FormWidget data={{
-            config: { login_button_enabled: true },
-            form: {
-              config: { date_format: 'yyyy/mm/dd' },
-              fields: [
-                {
-                  fieldName: 'date',
-                  fieldType: 'date',
-                  fieldKey: 'dateTest',
-                  fieldRequired: true,
-                },
-                {
-                  fieldName: 'mail',
-                  fieldType: 'email',
-                  fieldKey: 'mailTest',
-                  fieldRequired: false,
-                },
-              ],
-              name: 'test',
-            },
-          }}/>
-        </PaywallContext>
-      );
-
-      const dateInput = component.getByTestId('dateTest');
-      fireEvent(dateInput, 'focus');
-      fireEvent.changeText(dateInput, '10/03/1998');
-      fireEvent(dateInput, 'blur');
-      const mailInput = component.getByTestId('mailTest');
-      fireEvent.changeText(mailInput, '');
-      await waitFor(() => {
-        expect(component.getByTestId('form_date_ymd_error')).toBeTruthy();
-      });
-    });
-
-  it('should display the "form_date_mdy_error" error message',
-    async () => {
-      const component = render(
-        <PaywallContext
-          onLoginClick={onLoginClick}
-          onSubscribeClick={onSubscribeClick}
-        >
-          <Text>Test text</Text>
-          <FormWidget data={{
-            config: { login_button_enabled: true },
-            form: {
-              config: { date_format: 'mm/dd/yyyy' },
-              fields: [
-                {
-                  fieldName: 'date',
-                  fieldType: 'date',
-                  fieldKey: 'dateTest',
-                  fieldRequired: true,
-                },
-                {
-                  fieldName: 'mail',
-                  fieldType: 'email',
-                  fieldKey: 'mailTest',
-                  fieldRequired: true,
-                },
-              ],
-              name: 'test',
-            },
-          }}/>
-        </PaywallContext>
-      );
-      const dateInput = component.getByTestId('dateTest');
-      fireEvent(dateInput, 'focus');
-      fireEvent.changeText(dateInput, '1998/10/28');
-      fireEvent(dateInput, 'blur');
-      const mailInput = component.getByTestId('mailTest');
-      fireEvent.changeText(mailInput, '');
-      await waitFor(() => {
-        expect(component.getByTestId('form_date_mdy_error')).toBeTruthy();
-      });
-
-    });
-
-  it('should display the "form_date_dmy_error" error message',
-    async () => {
-      const component = render(
-        <PaywallContext
-          onLoginClick={onLoginClick}
-          onSubscribeClick={onSubscribeClick}
-        >
-          <Text>Test text</Text>
-          <FormWidget data={{
-            config: { login_button_enabled: true },
-            form: {
-              config: { date_format: 'dd/mm/yyyy' },
-              fields: [
-                {
-                  fieldName: 'date',
-                  fieldType: 'date',
-                  fieldKey: 'dateTest',
-                  fieldRequired: true,
-                },
-                {
-                  fieldName: 'CB',
-                  fieldType: 'creditCard',
-                  fieldKey: 'cbTest',
-                  fieldRequired: false,
-                },
-              ],
-              name: 'test',
-            },
-          }}/>
-        </PaywallContext>
-      );
-      const dateInput = component.getByTestId('dateTest');
-      fireEvent(dateInput, 'focus');
-      fireEvent.changeText(dateInput, '1998/10/28');
-      fireEvent(dateInput, 'blur');
-      await waitFor(() => {
-        expect(component.getByTestId('form_date_dmy_error')).toBeTruthy();
-      });
-    });
-
-  it('should display email and form empty error message & hide submitButton',
-    async () => {
-
-      const component = render(
-        <PaywallContext>
-          <Text>Test text</Text>
-          <FormWidget data={{
-            config: { login_button_enabled: true },
-            form: {
-              config: { date_format: 'dd/mm/yyyy' },
-              fields: [
-                {
-                  fieldName: 'date',
-                  fieldType: 'date',
-                  fieldKey: 'dateTest',
-                  fieldRequired: true,
-                },
-                {
-                  fieldName: 'mail',
-                  fieldType: 'email',
-                  fieldKey: 'mailTest',
-                  fieldRequired: false,
-                },
-              ],
-              name: 'test',
-            },
-          }}/>
-        </PaywallContext>
-      );
-      const dateInput = component.getByTestId('dateTest');
-      fireEvent(dateInput, 'focus');
-      fireEvent(dateInput, 'blur');
-      const mailInput = component.getByTestId('mailTest');
-      fireEvent(mailInput, 'focus');
-      fireEvent.changeText(mailInput, 'wrong mail format');
-      fireEvent(mailInput, 'blur');
-      const acceptDataButton = component.getByTestId('CheckboxField/Main');
-      fireEvent.press(acceptDataButton);
-      const submitButton = component.getByTestId('submitButton');
-      fireEvent.press(submitButton);
-      await waitFor(() => {
-        expect(component.getByTestId('form_email_error')).toBeTruthy();
-        expect(component.getByTestId('form_empty_error')).toBeTruthy();
-      });
-
-    });
-
-  it('should be able to click on submit and send the form',
-    async () => {
-      const onRelease = jest.fn();
-      const component = render(
-        <PaywallContext onRelease={onRelease}>
-          <Text>Test text</Text>
-          <FormWidget
-            data={{
-              config: { login_button_enabled: true },
-              form: {
-                config: { date_format: 'dd/mm/yyyy' },
-                fields: [
-                  {
-                    fieldName: 'text',
-                    fieldType: 'multiline',
-                    fieldKey: 'textTest',
-                    fieldRequired: true,
-                  },
-                  {
-                    fieldName: 'mail',
-                    fieldType: 'email',
-                    fieldKey: 'mailTest',
-                    fieldRequired: true,
-                  },
-                  {
-                    fieldName: 'date',
-                    fieldType: 'date',
-                    fieldKey: 'dateTest',
-                    fieldRequired: true,
-                  },
-                ],
-                name: 'test',
-              },
-            }}
-            release={() => {}}
-          />
-        </PaywallContext>
-      );
-      const textInput = component.getByTestId('textTest');
-      fireEvent(textInput, 'focus');
-      fireEvent.changeText(textInput, 'test');
-      fireEvent(textInput, 'blur');
-      const dateInput = component.getByTestId('dateTest');
-      fireEvent(dateInput, 'focus');
-      fireEvent.changeText(dateInput, '10/03/1998');
-      fireEvent(dateInput, 'blur');
-      const mailInput = component.getByTestId('mailTest');
-      fireEvent(mailInput, 'focus');
-      fireEvent.changeText(mailInput, 'test@test.fr');
-      fireEvent(mailInput, 'blur');
-      const acceptDataButton = component.getByTestId('CheckboxField/Main');
-      fireEvent.press(acceptDataButton);
-      const submitButton = component.getByTestId('submitButton');
-      fireEvent.press(submitButton);
-      await waitFor(() => {
-        expect(onRelease.mock.calls.length).toBe(1);
-      });
-    });
 });
