@@ -30,7 +30,7 @@ const NewsletterWidget = () => {
   } = useContext(AppContext);
   const [state, dispatch] = useReducer(mockState, {
     optin: false,
-    step: STEPS.FORM,
+    step: STEPS.NEWSLETTER,
     value: '',
     valid: false,
     focused: true,
