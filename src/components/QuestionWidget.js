@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { getQuestion, postAnswer } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
@@ -13,7 +13,7 @@ import SubscribeLink from './SubscribeLink';
 import { commons, applyStyles, colors } from '../styles';
 
 const QuestionWidget = () => {
-  const { getStyle, doRelease } = useContext(AppContext);
+  const { getStyle, doRelease, fireEvent } = useContext(AppContext);
 
   const [question, setQuestion] = useState();
 
@@ -33,6 +33,10 @@ const QuestionWidget = () => {
   const sendResponse = async (questionId, answer, options) => {
     try {
       await postAnswer(questionId, answer, options);
+      fireEvent('onAnswer', {
+        questionId: question?.question._id,
+        answer: answer,
+      });
     } catch (e) {
       console.warn('Cannot post the answer', e);
     }
@@ -65,14 +69,13 @@ const QuestionWidget = () => {
         <View style={styles.answers}>
           {
             question?.question.answers.map((answer, index) => (
-              <TouchableOpacity
+              <TouchableWithoutFeedback
                 key={index}
                 testID={answer}
-                style={styles.answer}
                 onPress={onPress.bind(null, answer)}
               >
-                <Text>{answer}</Text>
-              </TouchableOpacity>
+                <View style={styles.answer} >{answer}</View>
+              </TouchableWithoutFeedback>
             ))
           }
         </View>
