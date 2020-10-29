@@ -12,7 +12,7 @@ module.exports = {
   register: () => ({}),
   getQuestion: async () => {
     const response = await fetch(
-      'https://api.poool.develop:8443/api/v3/access/question/roll',
+      'https://api.poool.develop:8443/api/v3/access/question',
       { method: 'get' }
     );
     return response.json();

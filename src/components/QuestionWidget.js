@@ -26,7 +26,7 @@ const QuestionWidget = () => {
       const question = await getQuestion();
       setQuestion(question);
     } catch (e) {
-      console.warn('Cannot retrieve oroginal question', e);
+      console.warn('Cannot retrieve original question', e);
     }
   };
 
