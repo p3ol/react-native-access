@@ -99,10 +99,9 @@ const NewsletterWidget = () => {
           onPress={onBackClick}
           style={[
             styles.backLink,
-            applyStyles(
-              getStyle('button_color'),
-              { color: getStyle('button_color')?.toString() },
-            ),
+            applyStyles(!!getStyle('button_color'), {
+              color: getStyle('button_color')?.toString(),
+            }),
           ]}
         >
           {'\u{e901}'}
@@ -133,10 +132,9 @@ const NewsletterWidget = () => {
               customStyle={{
                 input: [
                   styles.input,
-                  applyStyles(
-                    !state.valid, [
-                      styles.input__invalid,
-                    ]),
+                  applyStyles(!state.valid, [
+                    styles.input__invalid,
+                  ]),
                   applyStyles(state.focused, [
                     styles.input__focused,
                   ]),
