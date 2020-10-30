@@ -31,9 +31,9 @@ const Translate = ({
     (AVAILABLE_LOCALES[getConfig('locale', 'fr').toLowerCase()]
       ?.[textKey] || '') || children;
 
-  Object.entries(finalReplacers).map(([k, v]) => {
-    text = text?.replace(`{${k}}`, v);
-  });
+  text = Object.entries(finalReplacers).reduce((res, [k, v]) =>
+    res?.replace(`{${k}}`, v)
+  , text);
 
   return asString
     ? children({ text })

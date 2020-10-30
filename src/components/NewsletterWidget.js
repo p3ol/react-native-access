@@ -1,179 +1,228 @@
-import React, {
-  useContext,
-  useReducer,
-  forwardRef,
-  useImperativeHandle } from 'react';
-import { Button, View } from 'react-native';
+import React, { useContext, useReducer } from 'react';
+import { Text, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
-import PropTypes from 'prop-types';
+import { mockState } from '@poool/junipero-utils';
 
 import { AppContext } from '../services/contexts';
-import { mockState } from '../services/reducers';
+import { validateEmail } from '../services/validate';
 
-import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
+import Translate from './Translate';
+import MainButton from './MainButton';
+import BrandCover from './BrandCover';
+import BrandLogo from './BrandLogo';
+import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
 
-import { texts, layouts } from '../styles';
+import { applyStyles, commons, colors } from '../styles';
 
-const NewsletterWidget = forwardRef(({ data, release, register }, ref) => {
+const STEPS = { NEWSLETTER: 'newsletter', GDPR: 'gdpr' };
 
+const NewsletterWidget = () => {
   const {
-    onDataPolicyClick,
-    onRegister,
-    onRelease,
+    trackData,
+    fireEvent,
+    getStyle,
+    getConfig,
+    doRelease,
   } = useContext(AppContext);
-
   const [state, dispatch] = useReducer(mockState, {
-    approve: false,
-    mail: '',
-    optin: 'closed',
-    inputFocused: true,
+    optin: false,
+    step: STEPS.NEWSLETTER,
+    value: '',
+    valid: false,
+    focused: true,
   });
 
-  useImperativeHandle(ref, () => ({
-    mail: state.mail,
-  }));
-
-  const onPress = (button, e) => {
-    switch (button) {
-      case 'dataPolicy':
-        dispatch({ optin: 'open' });
-        onDataPolicyClick({
-          widget: data?.action,
-          button: e?.target,
-          originalEvent: e,
-          url: data?.config?.data_policy_url,
-        });
-        break;
-      default:
-        onRegister({
-          email: state.mail,
-          newsletter_id: data?.config?.newsletter_id,
-        });
-        release();
-        register(state.mail);
-        onRelease({
-          widget: data?.action,
-          actionName: data?.actionName,
-        });
-        break;
-    }
+  const onBlur = () => {
+    state.focused = false;
+    state.valid = validateEmail(state.value);
+    dispatch({ focused: state.focused, valid: state.valid });
   };
 
-  const onChange = event => dispatch({ mail: event.value });
+  const onFocus = () => {
+    dispatch({ focused: true });
+  };
 
-  const onFocus = () => dispatch({ inputFocused: true });
+  const onDataPolicyPress = e => {
+    dispatch({ step: STEPS.GDPR });
+    fireEvent('onDataPolicyClick', {
+      widget: trackData?.action,
+      button: 'link_button',
+      originalEvent: e,
+      url: getConfig('link_url'),
+    });
+  };
 
-  const onBlur = () => dispatch({ inputFocused: false });
+  const onSubmitPress = () => {
+    fireEvent('onRegister', {
+      email: state.value,
+      newsletter_id: getConfig('newsletter_id'),
+    });
+    doRelease();
+  };
 
-  const onBackClick = () => dispatch({ optin: 'closed' });
+  const onOptin = () => {
+    dispatch({ optin: !state.optin });
+  };
 
-  const onOptin = () => dispatch({ approve: !state.approve });
+  const onBackClick = () => {
+    dispatch({ step: STEPS.NEWSLETTER });
+  };
 
-  /* eslint-disable-next-line */
-  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const onChange = input => {
+    dispatch({ value: input.value });
+  };
 
-  if (state.optin === 'closed') {
+  const getError = () => {
+    let error;
+    if (!state.focused && state.value === '') {
+      error = 'form_empty_error';
+    } else if (!state.focused && !state.valid) {
+      error = 'newsletter_error';
+    }
     return (
-      <View
-        style={layouts.widget}
-        testID="newsletterWidget"
-      >
-        <Translate
-          textKey="newsletter_title"
-          style={texts.title}
-        />
+      <Translate style={styles.error} textKey={error} testID={error}>
+        {error}
+      </Translate>
+    );
+  };
 
-        <Translate
-          textKey="newsletter_desc"
-          style={texts.desc}
-          replace={{
-            newsletter_name: data?.config.newsletter_name,
-          }}/>
+  return (
+    <View testID="newsletterWidget">
 
-        <TextField
-          value={state.mail}
-          testID="mailInput"
-          valid={state.inputFocused ? true : !!emailRegex.test(state.mail)}
-          onChange={onChange}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
+      { state.step === 'gdpr' && (
+        <Text
+          testID="backButton"
+          onPress={onBackClick}
+          style={[
+            styles.backLink,
+            applyStyles(!!getStyle('button_color'), {
+              color: getStyle('button_color')?.toString(),
+            }),
+          ]}
+        >
+          {'\u{e901}'}
+        </Text>
+      ) }
 
-        { !state.inputFocused && !emailRegex.test(state.mail)
-          ? state.mail === ''
-            ? <Translate
-              textKey="form_empty_error"
-              style={texts.warning}
-              testID="warningMessage"
-            />
-            : <Translate
-              textKey="form_email_error"
-              style={texts.warning}
-              testID="warningMessage"
-            />
-          : null
-        }
-        <View style={ layouts.mediumSpacing } >
-          <CheckboxField
-            onChange={onOptin}
-            children={
-              <Translate
-                textKey="newsletter_optin_label"
-                replace={{
-                  app_name: true,
-                }}
-              />
-            }
+      <BrandCover />
+      <BrandLogo />
+
+      {state.step === 'gdpr' ? (
+        <GDPR />
+      ) : (
+        <WidgetContent>
+          <Translate textKey="newsletter_title" style={commons.title} />
+          <Translate
+            textKey="newsletter_desc"
+            style={commons.description}
+            replace={{ newsletter_name: getConfig('newsletter_name') }}
           />
-        </View>
-
-        <Translate
-          textKey="newsletter_optin_link"
-          testID="dataButton"
-          style={[texts.link, layouts.mediumSpacing]}
-          onPress={onPress.bind(null, 'dataPolicy')}
-        />
-
-        <Translate textKey="newsletter_button" asString={true}>
-          {({ text }) => (
-            <Button
-              testID="registerButton"
-              title={text}
-              disabled={ !(state.approve && emailRegex.test(state.mail))}
-              color={data?.styles?.button_color}
-              onPress={onPress.bind(null, 'register')}
+          <View style={styles.field}>
+            <TextField
+              value={state.value}
+              testID="mailInput"
+              valid={state.focused || state.valid}
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              customStyle={{
+                input: [
+                  styles.input,
+                  applyStyles(!state.valid, [
+                    styles.input__invalid,
+                  ]),
+                  applyStyles(state.focused, [
+                    styles.input__focused,
+                  ]),
+                ],
+                inputBackground: styles.inputBackground,
+              }}
             />
-          )}
-        </Translate>
+            { getError() }
+          </View>
+          <View style={styles.field}>
+            <CheckboxField checked={state.optin} onChange={onOptin}>
+              <Translate
+                style={styles.optinLabel}
+                textKey="newsletter_optin_label"
+                replace={{ app_name: true }}
+              />
+            </CheckboxField>
+          </View>
 
-        <View style={layouts.subactions[data?.styles?.layout]}>
-          { data?.config?.login_button_enabled && <LoginLink /> }
-          { data?.config?.alternative_widget !== 'none' ? (
-            <NoThanksLink />
-          ) : (
-            <SubscribeLink />
-          )}
-        </View>
-
-      </View>
-    );
-  } else {
-    return (
-      <GDPR onBackClick={onBackClick}/>
-    );
-  }
-});
-
-NewsletterWidget.propTypes = {
-  data: PropTypes.object,
-  register: PropTypes.func,
-  release: PropTypes.func,
-  widget: PropTypes.string,
+          <Translate
+            style={[styles.field, styles.gdprLink]}
+            textKey="newsletter_optin_link"
+            testID="GDPRLink"
+            onPress={onDataPolicyPress}
+          />
+          <MainButton
+            text="newsletter_button"
+            disabled={!state.valid || !state.optin}
+            onPress={onSubmitPress}
+          />
+          <View
+            style={[
+              commons.subActions,
+              applyStyles(getStyle('layout') === 'landscape', [
+                commons.subActions__landscape,
+              ]),
+            ]}
+          >
+            { getConfig('login_button_enabled') !== false && <LoginLink /> }
+            { getConfig('alternative_widget') !== 'none'
+              ? <NoThanksLink />
+              : <SubscribeLink />
+            }
+          </View>
+        </WidgetContent>
+      ) }
+    </View>
+  );
 };
+
+const styles = {
+  field: {
+    marginBottom: 20,
+  },
+  gdprLink: {
+    paddingVertical: 10,
+    marginLeft: 25,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
+  backLink: {
+    fontFamily: 'Poool-Ico-2',
+    position: 'absolute',
+    zIndex: 1000,
+  },
+  input: {
+    paddingVertical: 15,
+    backgroundColor: colors.gallery,
+  },
+  input__focused: {
+    backgroundColor: colors.alto,
+  },
+  input__invalid: {
+    backgroundColor: colors.lavenderBlush,
+  },
+  inputBackground: {
+    backgroundColor: colors.shuttleGray,
+    opacity: 1,
+  },
+  error: {
+    color: colors.monza,
+  },
+  optinLabel: {
+    marginLeft: 10,
+  },
+};
+
+NewsletterWidget.propTypes = {};
 
 NewsletterWidget.displayName = 'NewsletterWidget';
 

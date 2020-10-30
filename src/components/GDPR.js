@@ -8,7 +8,7 @@ import { commons } from '../styles';
 
 const GDPR = () => {
 
-  const onLongPress = (type, e) => {
+  const onLongPress = () => {
 
   };
 
