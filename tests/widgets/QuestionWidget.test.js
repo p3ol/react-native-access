@@ -41,6 +41,52 @@ describe('<QuestionWidget />', () => {
 
   });
 
+  it('should throw a warning when there is no question', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/question/answer')
+      .reply(200, { success: true });
+
+    global.console = { warn: jest.fn() };
+
+    const { findByTestId } = render(
+      <PaywallContext>
+        <Text>Test text</Text>
+        <QuestionWidget/>
+      </PaywallContext>
+    );
+
+    await findByTestId('questionWidget');
+
+    await waitFor(() => expect(console.warn.mock.calls.length).toBe(1));
+
+  });
+
+  it('should throw a warning when the answer cannot be posted', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .get('/access/question')
+      .reply(200, {
+        question: {
+          answers: ['answer0', 'answer1'],
+        },
+      });
+
+    global.console = { warn: jest.fn() };
+
+    const { findByTestId } = render(
+      <PaywallContext>
+        <Text>Test text</Text>
+        <QuestionWidget/>
+      </PaywallContext>
+    );
+
+    const answer = await findByTestId('answer0');
+
+    fireEvent.press(answer);
+
+    await waitFor(() => expect(console.warn.mock.calls.length).toBe(1));
+
+  });
+
   afterEach(() => {
     nock.abortPendingRequests();
     nock.cleanAll();
