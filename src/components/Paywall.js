@@ -12,7 +12,9 @@ import GiftWidget from './GiftWidget';
 import RestrictionWidget from './RestrictionWidget';
 import LinkWidget from './LinkWidget';
 import FormWidget from './FormWidget';
+import QuestionWidget from './QuestionWidget';
 import NewsletterWidget from './NewsletterWidget';
+
 
 import { applyStyles, colors, overrides } from '../styles';
 
@@ -163,6 +165,7 @@ const Paywall = ({
               <Widget name="gift" component={GiftWidget} />
               <Widget name="link" component={LinkWidget} />
               <Widget name="form" component={FormWidget} />
+              <Widget name="question" component={QuestionWidget} />
               <Widget name="newsletter" component={NewsletterWidget} />
               <Widget component={RestrictionWidget} />
             </Switch>
