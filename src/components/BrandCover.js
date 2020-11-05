@@ -8,6 +8,7 @@ const BrandCover = () => {
 
   return getStyle('layout') !== 'portrait' && getStyle('brand_cover') && (
     <Image
+      testID="brandCover"
       style={styles.cover}
       source={{ uri: getStyle('brand_cover') }}
     />
