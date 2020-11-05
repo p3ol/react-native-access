@@ -6,10 +6,8 @@ import PaywallContext from '../../src/components/PaywallContext';
 import LinkWidget from '../../src/components/LinkWidget';
 
 describe('<LinkWidget />', () => {
-  // beforeEach(() => {
-  //   nock.disableNetConnect();
-  // });
-  it('should render link widget without isues', async () => {
+
+  it('should render LinkWidget without isues', async () => {
     const { findByTestId } = render(
       <PaywallContext>
         <Text>Test Text</Text>
@@ -36,4 +34,5 @@ describe('<LinkWidget />', () => {
     expect(linkButton).toBeTruthy();
     expect(onDiscoveryLinkClick.mock.calls.length).toBe(1);
   });
+
 });
