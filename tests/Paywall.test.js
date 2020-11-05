@@ -1,7 +1,7 @@
 import nock from 'nock';
 import React from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { render, waitFor } from '@testing-library/react-native';
 
 import Paywall from '../src/components/Paywall';
@@ -13,24 +13,22 @@ describe('<Paywall />', () => {
     nock.disableNetConnect();
   });
 
-  it('should render paywall with default widget', async () => {
+  it('should render paywall without issues', async () => {
     nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
-        action: '',
+        action: 'subscription',
         texts: {},
-        config: {},
+        config: { alternative_widget: 'gift' },
       });
-    const { getByTestId } = render(
+    const { findByTestId } = render(
       <PaywallContext>
         <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
-    await waitFor(() => {
-      expect(getByTestId('paywallView')).toBeTruthy();
-      expect(getByTestId('RestrictionWidget')).toBeTruthy();
-    });
+    const restrictionWidget = await findByTestId('RestrictionWidget');
+    expect(restrictionWidget).toBeTruthy();
   });
 
   it('should fire onRealease event', async () => {
@@ -50,9 +48,7 @@ describe('<Paywall />', () => {
         <Paywall />
       </PaywallContext>
     );
-    await waitFor(() => {
-      expect(onRelease.mock.calls.length).toBe(1);
-    });
+    await waitFor(() => expect(onRelease.mock.calls.length).toBe(1));
   });
 
   it('should fire onHidden event', async () => {
@@ -71,9 +67,7 @@ describe('<Paywall />', () => {
         <Paywall />
       </PaywallContext>
     );
-    await waitFor(() => {
-      expect(onHidden.mock.calls.length).toBe(1);
-    });
+    await waitFor(() => expect(onHidden.mock.calls.length).toBe(1));
   });
 
   it('should fire onDisabled event', async () => {
@@ -92,9 +86,7 @@ describe('<Paywall />', () => {
         <Paywall />
       </PaywallContext>
     );
-    await waitFor(() => {
-      expect(onDisabled.mock.calls.length).toBe(1);
-    });
+    await waitFor(() => expect(onDisabled.mock.calls.length).toBe(1));
   });
 
   it('should store customStyles & stylesVersion in AsyncStorage', async () => {
@@ -131,14 +123,14 @@ describe('<Paywall />', () => {
         <Paywall />
       </PaywallContext>
     );
-    await findByTestId('RestrictionWidget');
-    expect(findByTestId('RestrictionWidget')).toBeTruthy();
-    await waitFor(() => expect(onError.mock.calls.length).toBe(1));
+    const restrictionWidget = await findByTestId('RestrictionWidget');
+    expect(restrictionWidget).toBeTruthy();
+    expect(onError.mock.calls.length).toBe(1);
   });
 
   afterEach(() => {
+    nock.abortPendingRequests();
     nock.cleanAll();
     nock.enableNetConnect();
-    nock.abortPendingRequests();
   });
 });

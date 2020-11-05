@@ -15,7 +15,6 @@ import FormWidget from './FormWidget';
 import QuestionWidget from './QuestionWidget';
 import NewsletterWidget from './NewsletterWidget';
 
-
 import { applyStyles, colors, overrides } from '../styles';
 
 const WIDGETS_WITHOUT_ACTIONS = ['invisible', 'unlock'];
@@ -79,7 +78,7 @@ const Paywall = ({
       try {
         if (!result.styles) {
           result.styles = JSON
-            .parse(await getCookie('_poool:customStyles') || '');
+            .parse(await getCookie('customStyles') || '');
         } else {
           await setCookie('stylesVersion', result?.styles?.version || 0);
           await setCookie('customStyles', JSON.stringify(result?.styles));
@@ -123,7 +122,6 @@ const Paywall = ({
         originalAction: originalAction_,
       });
     }
-
     fireEvent('onReady');
   };
 
