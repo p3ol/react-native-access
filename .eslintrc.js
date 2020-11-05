@@ -6,7 +6,6 @@ module.exports = {
   },
   overrides: [{
     files: ['tests/**/*.js'],
-    parser: 'babel-eslint',
     env: {
       jest: true,
     },
