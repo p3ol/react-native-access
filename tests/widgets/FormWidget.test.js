@@ -5,7 +5,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import PaywallContext from '../../src/components/PaywallContext';
 import FormWidget from '../../src/components/FormWidget';
-import Paywall from '../../src/components/paywall';
+import Paywall from '../../src/components/Paywall';
 
 describe('<FormWidget />', () => {
 
