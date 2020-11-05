@@ -8,9 +8,7 @@ import { commons } from '../styles';
 
 const GDPR = () => {
 
-  const onLongPress = () => {
-
-  };
+  const onLongPress = () => {};
 
   const onPooolPress = () => {
     Linking.openURL('https://poool.tech/privacy-policy');
@@ -56,6 +54,7 @@ const GDPR = () => {
           <Text>Poool</Text>
           <Text
             style={styles.infoIcon}
+            testID="dataProcessor"
             onPress={onPooolPress}>
             {'\u{e904}'}
           </Text>
@@ -92,7 +91,6 @@ const GDPR = () => {
               <Translate
                 textKey="$gdpr_rights_button"
                 style={styles.link}
-                onPress={{}}
               />
               <TouchableWithoutFeedback
                 onLongPress={onLongPress.bind(null, 'mail')}>
@@ -126,6 +124,7 @@ const GDPR = () => {
               <Translate
                 style={styles.link}
                 textKey="$gdpr_conformity_ordering_institution_button"
+                testID="orderingInstitution"
                 onPress={onGDPRPress}
               />{'\u00A0'}|{'\u00A0'}
               <Translate
