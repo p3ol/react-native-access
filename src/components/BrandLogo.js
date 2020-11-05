@@ -7,9 +7,9 @@ import { applyStyles } from '../styles';
 
 const BrandLogo = () => {
   const { getStyle } = useContext(AppContext);
-
   return getStyle('brand_logo') && (
     <Image
+      testID="brandLogo"
       resizeMode="contain"
       style={[
         styles.logo,
