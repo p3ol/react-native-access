@@ -1,37 +1,34 @@
-import nock from 'nock';
 import React from 'react';
 import { Button, Text } from 'react-native';
-import { render, waitFor } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 
 import Translate from '../src/components/Translate';
-import Widget from '../src/components/Widget';
 import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Translate />', () => {
 
-  it('should return the rigth text component according to the textkey',
-    async () => {
+  it('should return the right text component', async () => {
 
-      const component = render(
+    const { getByText } = render(
+      <PaywallContext>
+        <Text>Test text</Text>
         <Translate
           testID='title'
           textKey={'question_title'}
         />
-      );
+      </PaywallContext >
+    );
 
-      const title = component.getByText(
-        'Cet article offert contre votre avis !');
+    const title = getByText('Cet article offert contre votre avis !');
+    expect(title).toBeTruthy();
 
-      await waitFor(() => {
-        expect(title).toBeTruthy();
-      });
+  });
 
-    });
+  it('should return the rigth string', async () => {
 
-  it('should return the rigth string according to the textkey',
-    async () => {
-
-      const component = render(
+    const { getByText } = render(
+      <PaywallContext>
+        <Text>Test text</Text>
         <Translate
           textKey={'link_button'}
           asString={true}
@@ -43,103 +40,46 @@ describe('<Translate />', () => {
             />
           )}
         </Translate>
-      );
+      </PaywallContext>
+    );
 
-      const linkButton = component.getByText('Visiter la page');
-      await waitFor(() => {
-        expect(linkButton).toBeTruthy();
-      });
+    const button = getByText('Visiter la page');
+    expect(button).toBeTruthy();
 
-    });
+  });
 
   it('should return the rigth text component according to specified locale',
     async () => {
-
-      nock('https://api.poool.develop:8443/api/v3')
-        .post('/access/track')
-        .reply(200, {
-          action: 'question',
-          styles: {},
-          texts: {},
-          config: {
-            locale: 'en',
-          },
-        });
-
-      const component = render(
-        <PaywallContext>
-          <Text> Test Text </Text>
-          <Widget />
+      const { getByText } = render(
+        <PaywallContext config={{ locale: 'en' }}>
+          <Text>Test text</Text>
+          <Translate
+            testID='title'
+            textKey={'question_title'}
+          />
         </PaywallContext>
       );
 
-      await waitFor(() => {
-        const title = component.getByText(
-          'This article in exchange for your opinion!');
-
-        expect(title).toBeTruthy();
-      });
-
+      const title = getByText('This article in exchange for your opinion!');
+      expect(title).toBeTruthy();
     });
 
-  it('should override the expected return Text by the data text value',
-    async () => {
-
-      nock('https://api.poool.develop:8443/api/v3')
-        .post('/access/track')
-        .reply(200, {
-          action: 'question',
-          styles: {},
-          texts: { question_title: 'test title' },
-          config: {
-            locale: 'fr',
-          },
-        });
-
-      const component = render(
-        <PaywallContext>
-          <Text> Test Text </Text>
-          <Widget />
-        </PaywallContext>
-      );
-
-      await waitFor(() => {
-        const title = component.getByText('test title');
-        expect(title).toBeTruthy();
-      });
-
-    });
-
-  it('should replace the app_name variable by its value ',
-    async () => {
-
-      nock('https://api.poool.develop:8443/api/v3')
-        .post('/access/track')
-        .reply(200, {
-          action: 'gift',
-          styles: {},
-          texts: { gift_desc: '{app_name}' },
-          config: {
-            app_name: 'Test App',
-          },
-        });
-
-      const component = render(
-        <PaywallContext>
-          <Text> Test Text </Text>
-          <Widget />
-        </PaywallContext>
-      );
-
-      await waitFor(() => {
-        const description = component.getByText('Test App');
-        expect(description).toBeTruthy();
-      });
-
-    });
-
-  afterEach(() => {
-    nock.abortPendingRequests();
-    nock.cleanAll();
+  it('should replace app_name and count in the translation', async () => {
+    const { getByText } = render(
+      <PaywallContext
+        config={{ app_name: 'test app' }}
+        texts={{ test: '{app_name}/{count}' }}
+      >
+        <Text>Test text</Text>
+        <Translate
+          testID='title'
+          textKey={'test'}
+          replace={{ app_name: true, count: true }}
+        />
+      </PaywallContext>
+    );
+    const appName = getByText('test app/0');
+    expect(appName).toBeTruthy();
   });
+
 });

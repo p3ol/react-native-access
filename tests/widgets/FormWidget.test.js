@@ -1,48 +1,40 @@
 import nock from 'nock';
 import React from 'react';
 import { Text } from 'react-native';
-import {
-  render,
-  waitFor,
-  fireEvent,
-} from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 
 import PaywallContext from '../../src/components/PaywallContext';
 import FormWidget from '../../src/components/FormWidget';
-import Paywall from '../../src/components/paywall';
+import Paywall from '../../src/components/Paywall';
 
 describe('<FormWidget />', () => {
 
-  jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
+  beforeEach(() => {
+    nock.disableNetConnect();
+  });
 
   it('should display GDPR by clicking the GDPR button', async () => {
-    const component = render(
+    const { getByTestId, queryByTestId } = render(
       <PaywallContext>
         <Text>Test text</Text>
         <FormWidget />
       </PaywallContext>
     );
-    const gdprlink = component.getByTestId('GDPRLink');
-    fireEvent.press(gdprlink);
-    await waitFor(() => {
-      expect(component.queryByTestId('GDPR')).toBeTruthy();
-    });
+    fireEvent.press(getByTestId('GDPRLink'));
+    expect(queryByTestId('GDPR')).toBeTruthy();
   });
 
   it('should close GDPR by clicking the back button', async () => {
-    const component = render(
+    const { queryByTestId, getByTestId } = render(
       <PaywallContext>
         <Text>Test text</Text>
         <FormWidget />
       </PaywallContext>
     );
-    const gdprlink = component.getByTestId('GDPRLink');
-    fireEvent.press(gdprlink);
-    const backButton = component.getByTestId('backButton');
-    fireEvent.press(backButton);
-    await waitFor(() => {
-      expect(component.queryByTestId('GDPR')).toBeNull();
-    });
+    fireEvent.press(getByTestId('GDPRLink'));
+    fireEvent.press(getByTestId('backButton'));
+    expect(queryByTestId('GDPR')).toBeNull();
+
   });
 
   it('should be able to submit the form', async () => {
@@ -50,8 +42,6 @@ describe('<FormWidget />', () => {
       .post('/access/track')
       .reply(200, {
         action: 'form',
-        styles: {},
-        texts: {},
         config: { alternative_widget: 'none' },
         form: {
           config: {},
@@ -89,15 +79,14 @@ describe('<FormWidget />', () => {
       .fn()
       .mockImplementationOnce(() => []);
 
-    const { getByTestId } = render(
+    const { getByTestId, findByTestId } = render(
       <PaywallContext events={{ onformsubmit: onFormSubmit }}>
         <Text>Test text</Text>
         <Paywall />
       </PaywallContext>
     );
-    await waitFor(() => {
-      getByTestId('formWidget');
-    });
+
+    await findByTestId('formWidget');
 
     const textField = getByTestId('textTest');
     fireEvent(textField, 'focus');
@@ -122,9 +111,8 @@ describe('<FormWidget />', () => {
     fireEvent.press(optin);
     const releaseButton = getByTestId('releaseButton');
     fireEvent.press(releaseButton);
-    await waitFor(() => {
-      expect(onFormSubmit.mock.calls.length).toBe(1);
-    });
+
+    await waitFor(() => expect(onFormSubmit.mock.calls.length).toBe(1));
   });
 
   it('should return the form_date_mdy_error & keep submit button disabled',
@@ -133,8 +121,6 @@ describe('<FormWidget />', () => {
         .post('/access/track')
         .reply(200, {
           action: 'form',
-          styles: {},
-          texts: {},
           config: { alternative_widget: 'none' },
           form: {
             config: { date_format: 'mm/dd/yyyy' },
@@ -149,27 +135,21 @@ describe('<FormWidget />', () => {
             name: 'test',
           },
         });
-      const { getByTestId } = render(
+      const { getByTestId, findByTestId } = render(
         <PaywallContext>
           <Text>Test text</Text>
           <Paywall />
         </PaywallContext>
       );
-      await waitFor(() => {
-        getByTestId('formWidget');
-      });
+      await findByTestId('formWidget');
 
       const dateField = getByTestId('dateTest');
       fireEvent(dateField, 'focus');
       fireEvent.changeText(dateField, '27/10/2020');
       fireEvent(dateField, 'blur');
 
-      const releaseButton = getByTestId('releaseButton');
-
-      await waitFor(() => {
-        expect(getByTestId('form_date_mdy_error')).toBeTruthy();
-        expect(releaseButton).toBeDisabled();
-      });
+      expect(getByTestId('form_date_mdy_error')).toBeTruthy();
+      expect(getByTestId('releaseButton')).toBeDisabled();
 
     });
 
@@ -179,8 +159,6 @@ describe('<FormWidget />', () => {
         .post('/access/track')
         .reply(200, {
           action: 'form',
-          styles: {},
-          texts: {},
           config: { alternative_widget: 'none' },
           form: {
             config: { date_format: 'yyyy/mm/dd' },
@@ -195,27 +173,21 @@ describe('<FormWidget />', () => {
             name: 'test',
           },
         });
-      const { getByTestId } = render(
+      const { getByTestId, findByTestId } = render(
         <PaywallContext>
           <Text>Test text</Text>
           <Paywall />
         </PaywallContext>
       );
-      await waitFor(() => {
-        getByTestId('formWidget');
-      });
+      await findByTestId('formWidget');
 
       const dateField = getByTestId('dateTest');
       fireEvent(dateField, 'focus');
       fireEvent.changeText(dateField, '27/10/2020');
       fireEvent(dateField, 'blur');
 
-      const releaseButton = getByTestId('releaseButton');
-
-      await waitFor(() => {
-        expect(getByTestId('form_date_ymd_error')).toBeTruthy();
-        expect(releaseButton).toBeDisabled();
-      });
+      expect(getByTestId('form_date_ymd_error')).toBeTruthy();
+      expect(getByTestId('releaseButton')).toBeDisabled();
 
     });
 
@@ -224,8 +196,6 @@ describe('<FormWidget />', () => {
       .post('/access/track')
       .reply(200, {
         action: 'form',
-        styles: {},
-        texts: {},
         config: { alternative_widget: 'none' },
         form: {
           config: { date_format: 'dd/mm/yyyy' },
@@ -244,16 +214,14 @@ describe('<FormWidget />', () => {
       return [{ fieldKey: 'textTest', message: 'custom_error_message' }];
     };
 
-    const { getByTestId } = render(
+    const { getByTestId, findByTestId } = render(
       <PaywallContext events={{ onformsubmit: onFormSubmit }}>
         <Text>Test text</Text>
         <Paywall />
       </PaywallContext>
     );
 
-    await waitFor(() => {
-      getByTestId('formWidget');
-    });
+    await findByTestId('formWidget');
 
     const textField = getByTestId('textTest');
     fireEvent(textField, 'focus');
@@ -265,9 +233,14 @@ describe('<FormWidget />', () => {
     const releaseButton = getByTestId('releaseButton');
     fireEvent.press(releaseButton);
 
-    await waitFor(() => {
-      const error = getByTestId('custom_error_message');
-      expect(error).toBeTruthy();
-    });
+    const error = await findByTestId('custom_error_message');
+    expect(error).toBeTruthy();
   });
+
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
+
 });

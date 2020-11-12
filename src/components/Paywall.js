@@ -15,7 +15,6 @@ import FormWidget from './FormWidget';
 import QuestionWidget from './QuestionWidget';
 import NewsletterWidget from './NewsletterWidget';
 
-
 import { applyStyles, colors, overrides } from '../styles';
 
 const WIDGETS_WITHOUT_ACTIONS = ['invisible', 'unlock'];
@@ -58,16 +57,14 @@ const Paywall = ({
       setCookie,
       getCookie,
     });
-
     try {
       const pageData = {
         type: 'premium',
         userIsPremium: getConfig('user_is_premium'),
         forcedWidget: getConfig('force_widget'),
         customSegment: getConfig('custom_segment'),
-        stylesVersion: parseInt(getCookie('stylesVersion') ?? -1, 10),
+        stylesVersion: parseInt(await getCookie('stylesVersion') ?? -1, 10),
       };
-
       const result = await track('page-view', pageData);
       updateContext({ trackData: result });
 
@@ -78,24 +75,24 @@ const Paywall = ({
         widget: result.action,
         widget_name: result.actionName,
       });
-
       try {
         if (!result.styles) {
           result.styles = JSON
-            .parse(await getCookie('_poool:customStyles') || '');
+            .parse(await getCookie('customStyles') || '');
         } else {
-          await setCookie('stylesVersion', trackData.styles?.version || 0);
-          await setCookie('customStyles', JSON.stringify(result?.styles || {}));
+          await setCookie('stylesVersion', result?.styles?.version || 0);
+          await setCookie('customStyles', JSON.stringify(result?.styles));
         }
       } catch (e) {
-        // Log.error('Could not apply custom styling');
-        // Log.error(e);
+        // console.error('Could not apply custom styling');
+        // console.error(e);
       }
 
       doAction(result.action, result.originalAction);
     } catch (e) {
       const styles = await getCookie('customStyles');
       updateContext({ trackData: { styles: JSON.parse(styles) } });
+      doAction();
       fireEvent('onError', e);
     }
   };
@@ -125,7 +122,6 @@ const Paywall = ({
         originalAction: originalAction_,
       });
     }
-
     fireEvent('onReady');
   };
 

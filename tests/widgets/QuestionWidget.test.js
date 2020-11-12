@@ -48,14 +48,12 @@ describe('<QuestionWidget />', () => {
 
     global.console = { warn: jest.fn() };
 
-    const { findByTestId } = render(
+    render(
       <PaywallContext>
         <Text>Test text</Text>
         <QuestionWidget/>
       </PaywallContext>
     );
-
-    await findByTestId('questionWidget');
 
     await waitFor(() => expect(console.warn.mock.calls.length).toBe(1));
 
@@ -90,5 +88,6 @@ describe('<QuestionWidget />', () => {
   afterEach(() => {
     nock.abortPendingRequests();
     nock.cleanAll();
+    nock.enableNetConnect();
   });
 });

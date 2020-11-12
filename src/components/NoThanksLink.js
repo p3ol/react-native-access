@@ -15,9 +15,9 @@ const NoThanksLink = () => {
   } = useContext(AppContext);
 
   const onPress = e => {
-    fireEvent('onAlternativeClick', {
+    fireEvent('AlternativeClick', {
       widget: getConfig('track_original_action') === true
-        ? originalAction || action
+        ? originalAction
         : action,
       button: 'no_thanks',
       originalEvent: e,
