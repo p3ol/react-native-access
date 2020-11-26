@@ -13,7 +13,13 @@ import SubscribeLink from './SubscribeLink';
 import { commons, applyStyles, colors } from '../styles';
 
 const QuestionWidget = () => {
-  const { getStyle, doRelease, fireEvent } = useContext(AppContext);
+  const {
+    getStyle,
+    getConfig,
+    trackData,
+    doRelease,
+    fireEvent,
+  } = useContext(AppContext);
 
   const [question, setQuestion] = useState();
 
@@ -22,11 +28,17 @@ const QuestionWidget = () => {
   }, []);
 
   const retrieveQuestion = async () => {
-    try {
-      const question = await getQuestion();
-      setQuestion(question);
-    } catch (e) {
-      console.warn('Cannot retrieve original question', e);
+
+    if (trackData?.question) {
+      setQuestion({ question: trackData.question });
+    } else {
+
+      try {
+        const question = await getQuestion();
+        setQuestion(question);
+      } catch (e) {
+        console.warn('Cannot retrieve original question', e);
+      }
     }
   };
 
@@ -34,7 +46,7 @@ const QuestionWidget = () => {
     try {
       await postAnswer(questionId, answer, options);
       fireEvent('onAnswer', {
-        questionId: question?.question._id,
+        questionId: questionId,
         answer: answer,
       });
     } catch (e) {
@@ -44,7 +56,7 @@ const QuestionWidget = () => {
 
   const onPress = answer => {
     sendResponse(
-      question?.question._id,
+      getConfig('question_id') || question.question._id,
       answer,
       { body: { cookiesEnabled: true } }
     );
@@ -74,7 +86,7 @@ const QuestionWidget = () => {
                 testID={answer}
                 onPress={onPress.bind(null, answer)}
               >
-                <View style={styles.answer} >{answer}</View>
+                <Text style={styles.answer} >{answer}</Text>
               </TouchableWithoutFeedback>
             ))
           }
