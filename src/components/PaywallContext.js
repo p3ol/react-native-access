@@ -28,6 +28,7 @@ const PaywallContext = forwardRef(({
 
   const fireEvent = (name, ...args) => {
     name = /^on/.test(name) ? name : `on${name}`;
+
     return events[name.toLowerCase()]?.(...args);
   };
 

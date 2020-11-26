@@ -5,7 +5,6 @@ import { mockState } from '@poool/junipero-utils';
 
 import { AppContext } from '../services/contexts';
 import { validateEmail } from '../services/validate';
-
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
@@ -15,7 +14,6 @@ import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
-
 import { applyStyles, commons, colors } from '../styles';
 
 const STEPS = { NEWSLETTER: 'newsletter', GDPR: 'gdpr' };
@@ -78,11 +76,13 @@ const NewsletterWidget = () => {
 
   const getError = () => {
     let error;
+
     if (!state.focused && state.value === '') {
       error = 'form_empty_error';
     } else if (!state.focused && !state.valid) {
       error = 'newsletter_error';
     }
+
     return (
       <Translate style={styles.error} textKey={error} testID={error}>
         {error}

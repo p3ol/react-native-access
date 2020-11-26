@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { ImageBackground, View } from 'react-native';
+import PropTypes from 'prop-types';
 import AsyncStorage from '@react-native-community/async-storage';
 import { setConfig, track } from '@poool/sdk';
 
-import Widget from './Widget';
 import { AppContext } from '../services/contexts';
+import Widget from './Widget';
 import CopyrightLink from './CopyrightLink';
 import Switch from './Switch';
 import GiftWidget from './GiftWidget';
@@ -14,7 +14,6 @@ import LinkWidget from './LinkWidget';
 import FormWidget from './FormWidget';
 import QuestionWidget from './QuestionWidget';
 import NewsletterWidget from './NewsletterWidget';
-
 import { applyStyles, colors, overrides } from '../styles';
 
 const WIDGETS_WITHOUT_ACTIONS = ['invisible', 'unlock'];
@@ -57,6 +56,7 @@ const Paywall = ({
       setCookie,
       getCookie,
     });
+
     try {
       const pageData = {
         type: 'premium',
@@ -75,6 +75,7 @@ const Paywall = ({
         widget: result.action,
         widget_name: result.actionName,
       });
+
       try {
         if (!result.styles) {
           result.styles = JSON
@@ -104,12 +105,14 @@ const Paywall = ({
     if (action_ === 'hidden' || getConfig('force_widget') === 'hidden') {
       // Log.trace('Widget hidden in settings, doing nothing');
       fireEvent('onHidden');
+
       return;
     }
 
     if (action_ === 'disabled' || getConfig('force_widget') === 'disabled') {
       fireEvent('onDisabled');
       updateContext({ action: 'disabled', ready: true });
+
       return;
     }
 
@@ -122,6 +125,7 @@ const Paywall = ({
         originalAction: originalAction_,
       });
     }
+
     fireEvent('onReady');
   };
 

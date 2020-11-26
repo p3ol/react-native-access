@@ -5,7 +5,6 @@ import { mockState, cloneDeep } from '@poool/junipero-utils';
 
 import { AppContext } from '../services/contexts';
 import { validateEmail, validateDate } from '../services/validate';
-
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
@@ -15,7 +14,6 @@ import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
-
 import { applyStyles, commons, colors } from '../styles';
 
 const DEFAULT_FIELD = {
@@ -80,9 +78,12 @@ const FormWidget = () => {
       fields: fields,
       valid: state.valid,
     });
-    eventResult !== null && eventResult.length
-      ? applyCustomError(eventResult)
-      : doRelease();
+
+    if (eventResult !== null && eventResult.length) {
+      applyCustomError(eventResult);
+    } else {
+      doRelease();
+    }
   };
 
   const onOptin = () => {
@@ -152,9 +153,11 @@ const FormWidget = () => {
 
   const getFieldError = field => {
     let error;
+
     if (!state.valid[field.fieldKey]) {
       error = state.errors[field.fieldKey];
     }
+
     return (
       <Translate
         style={styles.error}
