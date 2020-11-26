@@ -29,7 +29,7 @@
     "@babel/eslint-plugin": "7.12.1",
     "@poool/eslint-config": "1.4.2",
     "@poool/eslint-config-react": "1.4.2",
-    "@poool/eslint-config-react-native": "1.4.1",
+    "@poool/eslint-config-react-native": "1.4.2",
     "@poool/eslint-plugin": "1.4.2",
     "@poool/sdk": "0.0.1-beta.5",
     "@react-native-community/async-storage": "1.12.1",
