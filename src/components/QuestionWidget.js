@@ -9,7 +9,6 @@ import Translate from './Translate';
 import WidgetContent from './WidgetContent';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
-
 import { commons, applyStyles, colors } from '../styles';
 
 const QuestionWidget = () => {

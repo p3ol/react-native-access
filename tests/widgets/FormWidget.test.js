@@ -210,7 +210,9 @@ describe('<FormWidget />', () => {
           name: 'test',
         },
       });
+
     const onFormSubmit = () => {
+
       return [{ fieldKey: 'textTest', message: 'custom_error_message' }];
     };
 
