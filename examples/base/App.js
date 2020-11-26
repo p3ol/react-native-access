@@ -56,7 +56,7 @@ const App = () => {
           <View>
             <PaywallContext
               appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
-              //config={{ force_widget: 'gift' }}
+              config={{ force_widget: 'gift' }}
             >
               <PreviewContent>
                 <Text>
@@ -101,7 +101,7 @@ const App = () => {
                   Incongue felis quis sem porta iaculis.
                 </Text>
               </RestrictedContent>
-              <Paywall apiUrl='https://api.poool.develop:8443/api/v3'/>
+              <Paywall/>
             </PaywallContext>
           </View>
         </ScrollView>
