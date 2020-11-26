@@ -4,6 +4,7 @@ import { Button } from '@poool/junipero-native';
 
 import { AppContext } from '../services/contexts';
 import Translate from './Translate';
+
 import { applyStyles, overrides } from '../styles';
 
 const MainButton = ({

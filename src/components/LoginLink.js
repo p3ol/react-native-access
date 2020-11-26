@@ -3,6 +3,7 @@ import { Linking } from 'react-native';
 
 import { AppContext } from '../services/contexts';
 import Translate from './Translate';
+
 import { commons, applyStyles } from '../styles';
 
 const LoginLink = () => {

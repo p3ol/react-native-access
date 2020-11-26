@@ -3,6 +3,7 @@ import { Linking, Text, View, TouchableWithoutFeedback } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Translate from './Translate';
+
 import { commons } from '../styles';
 
 const GDPR = () => {

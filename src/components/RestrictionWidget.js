@@ -9,6 +9,7 @@ import Translate from './Translate';
 import NoThanksLink from './NoThanksLink';
 import LoginLink from './LoginLink';
 import MainButton from './MainButton';
+
 import { commons, applyStyles } from '../styles';
 
 const RestrictionWidget = () => {

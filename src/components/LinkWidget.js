@@ -9,6 +9,7 @@ import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import WidgetContent from './WidgetContent';
 import MainButton from './MainButton';
+
 import { commons, applyStyles } from '../styles';
 
 const LinkWidget = () => {

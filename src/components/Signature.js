@@ -3,6 +3,7 @@ import { Linking, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import { AppContext } from '../services/contexts';
 import Translate from './Translate';
+
 import { commons } from '../styles';
 
 const Signature = () => {

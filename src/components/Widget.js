@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
+
 import { applyStyles } from '../styles';
 
 const Widget = ({ name: _, component: Tag, ...rest }) => {

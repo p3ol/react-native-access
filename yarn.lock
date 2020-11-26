@@ -1040,10 +1040,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@poool/eslint-config-react-native@1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.4.1.tgz#f880c3a891970a540a272fdd89d306f62e9ca757"
-  integrity sha512-gFgy7rNH7IsgP/vvnIR9uDJM6KJHfb5A/y8FcxxkBtPUTm6ZL79QintoigTe/qKzz/RlYQcPSqD4ltevNSV5XQ==
+"@poool/eslint-config-react-native@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@poool/eslint-config-react-native/-/eslint-config-react-native-1.4.2.tgz#d81bfd27499c5d6cd2c83f850a8c7380930fcc90"
+  integrity sha512-bfiG9Jgk8g4AZdT5lqK+OlZsYtGpWFjvLhLrCt0jVs1+8G1zMLdLJ8bb7AHjxabLuatIg85ROKwZvE3UrIlMfQ==
 
 "@poool/eslint-config-react@1.4.2":
   version "1.4.2"

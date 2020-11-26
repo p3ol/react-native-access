@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Image } from 'react-native';
 
 import { AppContext } from '../services/contexts';
+
 import { applyStyles } from '../styles';
 
 const BrandLogo = () => {

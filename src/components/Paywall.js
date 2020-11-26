@@ -14,6 +14,7 @@ import LinkWidget from './LinkWidget';
 import FormWidget from './FormWidget';
 import QuestionWidget from './QuestionWidget';
 import NewsletterWidget from './NewsletterWidget';
+
 import { applyStyles, colors, overrides } from '../styles';
 
 const WIDGETS_WITHOUT_ACTIONS = ['invisible', 'unlock'];

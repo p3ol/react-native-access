@@ -9,6 +9,7 @@ import WidgetContent from './WidgetContent';
 import LoginLink from './LoginLink';
 import SubscribeLink from './SubscribeLink';
 import MainButton from './MainButton';
+
 import { commons, applyStyles } from '../styles';
 
 const GiftWidget = () => {

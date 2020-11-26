@@ -14,6 +14,7 @@ import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
+
 import { applyStyles, commons, colors } from '../styles';
 
 const STEPS = { NEWSLETTER: 'newsletter', GDPR: 'gdpr' };
