@@ -68,5 +68,5 @@ describe('<NoThanksLink />', () => {
     nock.cleanAll();
     nock.enableNetConnect();
   });
-  
+
 });
