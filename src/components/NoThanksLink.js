@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { AppContext } from '../services/contexts';
 
+import { AppContext } from '../services/contexts';
 import Translate from './Translate';
+
 import { commons, applyStyles } from '../styles';
 
 const NoThanksLink = () => {

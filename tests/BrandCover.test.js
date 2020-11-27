@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
+
 import PaywallContext from '../src/components/PaywallContext';
 import BrandCover from '../src/components/BrandCover';
 

@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import { Linking, Text, TouchableWithoutFeedback, View } from 'react-native';
 
-import Translate from './Translate';
-
 import { AppContext } from '../services/contexts';
+import Translate from './Translate';
 
 import { commons } from '../styles';
 
