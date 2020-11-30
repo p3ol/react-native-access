@@ -14,9 +14,16 @@ import { CheckboxField, TextField } from '@poool/junipero-native';
 import PropTypes from 'prop-types';
 
 import { AppContext } from '../services/contexts';
-import { mockState } from '../services/reducers';
-import Translate from './Translate';
+import { validateEmail, validateDate } from '../services/validate';
+import BrandCover from './BrandCover';
+import BrandLogo from './BrandLogo';
 import CardField from './CardField';
+import LoginLink from './LoginLink';
+import MainButton from './MainButton';
+import NoThanksLink from './NoThanksLink';
+import SubscribeLink from './SubscribeLink';
+import Translate from './Translate';
+import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
 
 import { texts, layouts } from '../styles';
@@ -53,7 +60,13 @@ const FormWidget = ({
 
   const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
 
-  /* eslint-enable max-len */
+  const onSubmitPress = async () => {
+
+    const eventResult = await fireEvent('onFormSubmit', {
+      widget: trackData?.action,
+      fields: fields,
+      valid: state.valid,
+    });
 
   useEffect(() => {
     init();
@@ -98,24 +111,17 @@ const FormWidget = ({
     dispatch({ fields: state.fields });
   };
 
-  const onChange = (field, event) => {
-    state.fields[field.key].value = event?.value || field.value;
-    if (!field.value) {
-      state.fields[field.key].valid = !field.required;
-    } else {
-      if (field.type === 'email') {
-        state.fields[field.key].valid = mailRegex.test(field.value);
-      } else if (field.type === 'date') {
-        state.fields[field.key].valid = getDateRegex().test(field.value);
-      } else if (field.type === 'creditCard') {
-        state.fields[field.key].valid = field.valid;
-        dispatch({ cardError: field.fieldsState });
-        if (field.valid) {
-          state.cardError = null;
-        }
-      } else {
-        state.fields[field.key].valid = true;
-      }
+  const onChange = (field, input) => {
+
+    switch (field.fieldType) {
+      case 'date':
+        state.values[field.fieldKey] = formatDate(input.value);
+        break;
+      case 'creditCard':
+        state.values[field.fieldKey] = input;
+        break;
+      default:
+        state.values[field.fieldKey] = input.value;
     }
     dispatch({ fields: state.fields });
   };
@@ -172,13 +178,20 @@ const FormWidget = ({
 
   const getValidFields = () => {
 
-    var validFields = [];
-
-    Object.values(state.fields).map(field => {
-      validFields.push({ [field.key]: field.valid });
-    });
-
-    return validFields;
+  const validateField = (field, value) => {
+    switch (field.fieldType) {
+      case 'date':
+        return validateDate(value, form.config?.date_format);
+      case 'email':
+        return validateEmail(value);
+      case 'creditCard':
+        return state.values[field.fieldKey]?.cvc?.valid &&
+        state.values[field.fieldKey]?.number?.valid &&
+        state.values[field.fieldKey]?.exp_month?.valid &&
+        state.values[field.fieldKey]?.exp_year?.valid;
+      default:
+        return field.fieldRequired === false || !!value;
+    }
   };
 
   const isFormValid = () => {
@@ -217,18 +230,18 @@ const FormWidget = ({
     switch (field.type) {
 
       case 'creditCard':
-        !state.cardKey && dispatch({ cardKey: field.key });
         return (
-          <View key={field.key} style={layouts.mediumSpacing}>
-            <CardField
-              field={field}
-              cardKey={state.cardKey}
-              onChange={onChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-            />
-            { getFieldError(field) }
-          </View>
+          <React.Fragment key={field.fieldKey}>
+            <View style={styles.field}>
+              <CardField
+                onBlur={onBlur}
+                onChange={onChange}
+                onFocus={onFocus}
+                field={field}
+              />
+              { getFieldError(field) }
+            </View>
+          </React.Fragment>
         );
 
       default:

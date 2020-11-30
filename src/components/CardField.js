@@ -1,12 +1,15 @@
 import React, { useReducer } from 'react';
 import { View, TextInput, StyleSheet, Image } from 'react-native';
+import PropTypes from 'prop-types';
 import creditCardType from 'credit-card-type';
 import StringMask from 'string-mask';
-import PropTypes from 'prop-types';
+
 import { mockState } from '../services/reducers';
 import Translate from './Translate';
 
-const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
+import { applyStyles, commons, colors } from '../styles';
+
+const CardField = ({ onChange, onFocus, onBlur, field }) => {
 
   const [state, dispatch] = useReducer(mockState, {
     expDate: '',
@@ -15,18 +18,19 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
       exp_month: {},
       exp_year: {},
       cvc: {},
-      name: {},
     },
   });
 
   const formatDate = e => {
-    var v = e.target.value.replace(/\D/g, '');
-    var matches = v.match(/\d{2,4}/g);
-    var match = matches ? matches[0] : '';
-    var parts = [];
-    for (var i = 0, len = match.length; i < len; i += 2) {
+    const v = e.target.value.replace(/\D/g, '');
+    const matches = v.match(/\d{2,4}/g);
+    const match = matches ? matches[0] : '';
+    const parts = [];
+
+    for (let i = 0, len = match.length; i < len; i += 2) {
       parts.push(match.substring(i, i + 2));
     }
+
     if (parts.length) {
       dispatch({ expDate: parts.join('/') });
       _onChange('exp_month', null, parts[0]);
@@ -39,8 +43,10 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
   const setMask = (value, mask, isCard = false) => {
     if (value?.slice(-1) !== ' ') {
       if (isCard && value) { value = value.replace(/\s/g, ''); }
+
       const formatter = new StringMask(mask);
       const result = formatter.apply(value);
+
       if (result.slice(-1) === ' ') {
         return result.slice(0, -1);
       } else {
@@ -59,6 +65,7 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
 
   const isFieldValid = (info, value) => {
     const date = new Date();
+
     switch (info) {
 
       case 'number':
@@ -69,6 +76,7 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
         } else {
           setValid('number', true);
         }
+
         break;
 
       case 'exp_month':
@@ -78,6 +86,7 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
         } else {
           setValid('exp_month', false);
         }
+
         break;
 
       case 'exp_year':
@@ -89,45 +98,24 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
         } else {
           setValid('exp_year', false);
         }
+
         break;
 
       default:
-        if (value?.length === 3) {
+        if (value?.length === 3 && value.match(/^[0-9]*$/gm)) {
           setValid('cvc', true);
         } else {
           setValid('cvc', false);
         }
     }
-    dispatch({ error: state.error });
-    const isValid = state.card.number.valid && state.card.exp_month.valid &&
-      state.card.exp_year.valid && state.card.cvc.valid;
-    const fieldsState = {
-      number: state.card.number.valid,
-      exp_date: state.card.exp_year.valid && state.card.exp_month.valid,
-      cvc: state.card.cvc.valid,
-    };
-    return { valid: isValid, fieldsState: fieldsState };
-
   };
 
   const _onChange = (info, e, date) => {
     const value = e?.target?.value || date;
     state.card[info].value = value?.replace(/\s/g, '');
     dispatch({ card: state.card });
-    const valid = isFieldValid(info, value);
-    const field = {
-      key: cardKey,
-      type: 'creditCard',
-      valid: valid.isValid,
-      fieldsState: valid.fieldsState,
-      value: {
-        number: state.card.number.value,
-        exp_month: state.card.exp_month.value,
-        exp_year: state.card.exp_year.value,
-        cvc: state.card.cvc.value,
-      },
-    };
-    onChange(field, null);
+    isFieldValid(info, value);
+    onChange(field, state.card);
   };
 
   const _onFocus = () => onFocus(field);
@@ -147,6 +135,7 @@ const CardField = ({ cardKey, onChange, onFocus, onBlur, field }) => {
 
   const getCardType = cardNumber => {
     const card = creditCardType(cardNumber);
+
     if (card && card.length === 1) {
       return card[0].type;
     } else {
@@ -234,6 +223,7 @@ CardField.displayName = 'FormWidget';
 export default CardField;
 
 const styles = StyleSheet.create({
+
   cardPicture: {
     flex: 1,
     marginVertical: -7,
@@ -248,22 +238,18 @@ const styles = StyleSheet.create({
     flex: 2,
     paddingLeft: 6,
   },
-  input: {
-    outlineWidth: 0,
-  },
   number: {
     flex: 6,
     paddingLeft: 6,
   },
   wrapper: {
-    overflow: 'hidden',
-    backgroundColor: '#D4D4D4',
-    borderColor: '#567',
-    borderRadius: 2,
-    borderWidth: 1,
+    backgroundColor: colors.gallery,
+    borderColor: colors.shuttleGray,
+    borderRadius: 4,
+    borderWidth: 2,
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 10,
+    overflow: 'hidden',
     paddingVertical: 14,
   },
 });

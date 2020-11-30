@@ -123,6 +123,8 @@ export default {
   form_date_mdy_error: 'The date format must be MM/DD/YYYY',
   form_date_dmy_error: 'The date format must be DD/MM/YYYY',
   form_date_ymd_error: 'The date format must be YYYY/MM/DD',
+  form_card_date: 'MM/YY',
+  form_card_number: 'Card number',
   form_unknown_error: 'An unknown error has occured. Please try again.',
   form_empty_error: 'This field is required.',
   form_format_error: 'This field is not valid.',

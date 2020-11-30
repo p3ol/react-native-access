@@ -123,6 +123,8 @@ export default {
   form_date_dmy_error: 'La date doit être au format JJ/MM/AAAA',
   form_date_mdy_error: 'La date doit être au format MM/JJ/AAAA',
   form_date_ymd_error: 'La date doit être au format AAAA/MM/JJ',
+  form_card_date: 'MM/AA',
+  form_card_number: 'Numéro de carte',
   form_unknown_error: 'Une erreur inconnue est survenue. Veuillez réessayer.',
   form_empty_error: 'Ce champ est obligatoire.',
   form_format_error: 'Ce champ est invalide.',
