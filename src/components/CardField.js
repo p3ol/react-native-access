@@ -7,7 +7,7 @@ import StringMask from 'string-mask';
 import { mockState } from '../services/reducers';
 import Translate from './Translate';
 
-import { applyStyles, commons, colors } from '../styles';
+import { colors } from '../styles';
 
 const CardField = ({ onChange, onFocus, onBlur, field }) => {
 
@@ -80,8 +80,7 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
         break;
 
       case 'exp_month':
-        if ((date.getMonth() + 1) < parseInt(value, 10) &&
-          parseInt(value, 10) <= 12) {
+        if (parseInt(value, 10) <= 12) {
           setValid('exp_month', true);
         } else {
           setValid('exp_month', false);
@@ -94,7 +93,11 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
           setValid('exp_year', true);
           setValid('exp_month', true);
         } else if ((date.getYear() - 100) === parseInt(value, 10)) {
-          setValid('exp_year', true);
+          if (date.getMonth() < parseInt(state.card.exp_month.value, 10)) {
+            setValid('exp_year', true);
+          } else {
+            setValid('exp_year', false);
+          }
         } else {
           setValid('exp_year', false);
         }

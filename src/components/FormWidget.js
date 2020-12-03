@@ -2,6 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import { Text, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 import { mockState, cloneDeep } from '@poool/junipero-utils';
+import { getStripeToken } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 import { validateEmail, validateDate } from '../services/validate';
@@ -40,6 +41,7 @@ const FormWidget = () => {
   const [state, dispatch] = useReducer(mockState, {
     optin: false,
     step: STEPS.FORM,
+    cardKey: '',
     values: {},
     valid: {},
     errors: {},
@@ -75,13 +77,22 @@ const FormWidget = () => {
   };
 
   const onSubmitPress = async () => {
+    const card = state.values[state.cardKey];
+    const token = await getStripeToken(
+      card.number.value,
+      card.exp_year.value,
+      card.exp_month.value,
+      card.cvc.value
+    );
+
+    state.values[state.cardKey] = token;
     const eventResult = await fireEvent('onFormSubmit', {
-      widget: trackData?.action,
-      fields: fields,
+      name: trackData?.action,
+      fields: state.values,
       valid: state.valid,
     });
 
-    if (eventResult !== null && eventResult.length) {
+    if (eventResult !== null && eventResult?.length) {
       applyCustomError(eventResult);
     } else {
       doRelease();
@@ -100,6 +111,10 @@ const FormWidget = () => {
     switch (field.fieldType) {
       case 'date':
         state.values[field.fieldKey] = formatDate(input.value);
+        break;
+      case 'creditCard':
+        dispatch({ cardKey: field.fieldKey });
+        state.values[field.fieldKey] = input;
         break;
       default:
         state.values[field.fieldKey] = input.value;
@@ -147,8 +162,10 @@ const FormWidget = () => {
       case 'date':
         return validateDate(value, form.config?.date_format);
       case 'creditCard':
-        state.values[field.fieldKey] = input;
-        break;
+        return state.values[field.fieldKey]?.number.valid &&
+        state.values[field.fieldKey]?.exp_month.valid &&
+        state.values[field.fieldKey]?.exp_year.valid &&
+        state.values[field.fieldKey]?.cvc.valid;
       case 'email':
         return validateEmail(value);
       default:
@@ -191,6 +208,7 @@ const FormWidget = () => {
   const renderField = field => {
     switch (field.fieldType) {
       case 'creditCard':
+
         return (
           <React.Fragment key={field.fieldKey}>
             <View style={styles.field}>
