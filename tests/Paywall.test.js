@@ -1,55 +1,39 @@
 import nock from 'nock';
 import React from 'react';
-import { Text, Linking } from 'react-native';
-import { render, wait, fireEvent } from '@testing-library/react-native';
+import { Text } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { render, waitFor } from '@testing-library/react-native';
 
 import Paywall from '../src/components/Paywall';
 import PaywallContext from '../src/components/PaywallContext';
 
 describe('<Paywall />', () => {
 
-  it('should render without issues in portrait mode', async () => {
+  beforeEach(() => {
+    nock.disableNetConnect();
+  });
+
+  it('should render paywall without issues', async () => {
     nock('https://api.poool.develop:8443/api/v3')
       .post('/access/track')
       .reply(200, {
-        action: 'gift',
-        styles: { layout: 'portrait' },
+        action: 'subscription',
         texts: {},
-        config: {},
+        config: { alternative_widget: 'gift' },
       });
-    const component = render(
+    const { findByTestId } = render(
       <PaywallContext>
         <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
-    await wait(() =>
-      expect(component.queryByTestId('paywallView')).toBeTruthy()
-    );
+    const restrictionWidget = await findByTestId('RestrictionWidget');
+    expect(restrictionWidget).toBeTruthy();
   });
 
-  it('should render without issues in landscape mode', async () => {
+  it('should fire onRealease event', async () => {
     nock('https://api.poool.develop:8443/api/v3')
-      .post('/access/track')
-      .reply(200, {
-        action: 'gift',
-        styles: { layout: 'landscape' },
-        texts: {},
-        config: {},
-      });
-    const component = render(
-      <PaywallContext>
-        <Text>Test Text</Text>
-        <Paywall />
-      </PaywallContext>
-    );
-    await wait(() =>
-      expect(component.queryByTestId('paywallView')).toBeTruthy()
-    );
-  });
-
-  it('should unlock the paywall ', async () => {
-    nock('https://api.poool.develop:8443/api/v3')
+      .persist()
       .post('/access/track')
       .reply(200, {
         action: 'unlock',
@@ -57,37 +41,96 @@ describe('<Paywall />', () => {
         texts: {},
         config: {},
       });
-    const component = render(
+    const onRelease = jest.fn();
+    render(
+      <PaywallContext events={{ onrelease: onRelease }}>
+        <Text>Test Text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    await waitFor(() => expect(onRelease.mock.calls.length).toBe(1));
+  });
+
+  it('should fire onHidden event', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'hidden',
+        styles: {},
+        texts: {},
+        config: {},
+      });
+    const onHidden = jest.fn();
+    render(
+      <PaywallContext events={{ onhidden: onHidden }}>
+        <Text>Test Text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    await waitFor(() => expect(onHidden.mock.calls.length).toBe(1));
+  });
+
+  it('should fire onDisabled event', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'disabled',
+        styles: {},
+        texts: {},
+        config: {},
+      });
+    const onDisabled = jest.fn();
+    render(
+      <PaywallContext events={{ ondisabled: onDisabled }}>
+        <Text>Test Text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    await waitFor(() => expect(onDisabled.mock.calls.length).toBe(1));
+  });
+
+  it('should store customStyles & stylesVersion in AsyncStorage', async () => {
+    const styles = { version: 10, layout: 'portrait' };
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'gift',
+        styles: { version: 10, layout: 'portrait' },
+        texts: {},
+        config: {},
+      });
+    const { findByTestId } = render(
       <PaywallContext>
         <Text>Test Text</Text>
         <Paywall />
       </PaywallContext>
     );
-    await wait(() => {
-      expect(component.queryByTestId('paywallView')).toBeNull();
-    });
+    await findByTestId('giftWidget');
+    const _version = await AsyncStorage.getItem('@stylesVersion');
+    const _styles = await AsyncStorage.getItem('@customStyles');
+    expect(JSON.parse(_version)).toBe(styles.version);
+    expect(JSON.parse(_styles)).toMatchObject(styles);
   });
-});
 
-it('should click poool without errors ', async () => {
-  nock('https://api.poool.develop:8443/api/v3')
-    .post('/access/track')
-    .reply(200, {
-      action: 'unlock',
-      styles: {},
-      texts: {},
-      config: {},
-    });
-  Linking.openUrl = jest.fn();
-  const component = render(
-    <PaywallContext>
-      <Text>Test text</Text>
-      <Paywall />
-    </PaywallContext>
-  );
-  const pooolButton = component.getByTestId('pooolButton');
-  fireEvent.press(pooolButton);
-  await wait(() => {
-    expect(Linking.openURL.mock.calls.length).toBe(1);
+  it('should display default widget & fire onError event', async () => {
+    const onError = jest.fn();
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .replyWithError('something awful happened');
+    const { findByTestId } = render(
+      <PaywallContext events={{ onerror: onError }}>
+        <Text>Test Text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    const restrictionWidget = await findByTestId('RestrictionWidget');
+    expect(restrictionWidget).toBeTruthy();
+    expect(onError.mock.calls.length).toBe(1);
+  });
+
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+    nock.enableNetConnect();
   });
 });

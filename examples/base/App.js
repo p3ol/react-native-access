@@ -16,27 +16,37 @@ import {
 
 const App = () => {
 
-  const onLock = () => console.log('Content locked');
-  const onRelease = event =>
-    console.log('Content released', event?.widget, event?.actionName);
-  const onReady = () => console.log('Paywall is ready');
-  const onSubscribeClick = event =>
-    console.log('Subscribe click', event?.widget, event?.button, event?.url);
-  const onLoginClick = event =>
-    console.log('Login click', event?.widget, event?.button, event?.url);
-  const onDiscoveryLinkClick = event =>
-    console.log('Link click', event?.widget, event?.button, event?.url);
-  const onDataPolicyClick = event =>
-    console.log('Data policy clicked' + event?.widget, event?.button, event?.url);
-  const onIdentityAvailable = event =>
-    console.log('Identity recover',
-      event?.userId, event?.segmentSlug, event?.journey, event?.widget);
-  const onDisabled = () => console.log('Paywall has been disabled');
-  const onError = error => console.log(error);
-  const onFormSubmit = event =>
-    console.log(`form ${event?.name} submitted`, event?.fields, event?.valid);
-  const onRegister = event =>
-    console.log('Register to Newsletter ' + event?.newsletter_id, event?.email);
+  // const onLock = () => console.log('Content locked');
+  // const onRelease = event =>
+  //   console.log('Content released', event?.widget, event?.actionName);
+  // const onReady = () => console.log('Paywall is ready');
+  // const onSubscribeClick = event =>
+  //   console.log('Subscribe click', event?.widget, event?.button, event?.url);
+  // const onLoginClick = event =>
+  //   console.log('Login click', event?.widget, event?.button, event?.url);
+  // const onDiscoveryLinkClick = event =>
+  //   console.log('Link click', event?.widget, event?.button, event?.url);
+  // const onDataPolicyClick = event =>
+  //   console.log(
+  //     'Data policy clicked',
+  //     event?.widget,
+  //     event?.button,
+  //     event?.url
+  //   );
+  // const onIdentityAvailable = event =>
+  //   console.log('Identity recover',
+  //     event?.userId, event?.segmentSlug, event?.journey, event?.widget);
+  // const onDisabled = () => console.log('Paywall has been disabled');
+  // const onError = error => console.log(error);
+  // const onFormSubmit = event => console.log(
+  //   `form ${event?.name} submitted`, event?.fields, event?.valid
+  // );
+  // const onRegister = event => console.log(
+  //   'Register to Newsletter ' + event?.newsletter_id, event?.email
+  // );
+  // const onAlternativeClick = event => console.log(
+  //   'Click on no_thanks, alternative: ' + event.alternativeWidget
+  // );
 
   return (
     <React.Fragment>
@@ -45,18 +55,8 @@ const App = () => {
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View>
             <PaywallContext
-              onDisabled={onDisabled}
-              onError={onError}
-              onFormSubmit={onFormSubmit}
-              onIdentityAvailable={onIdentityAvailable}
-              onLock={onLock}
-              onReady={onReady}
-              onRegister={onRegister}
-              onRelease={onRelease}
-              onSubscribeClick={onSubscribeClick}
-              onLoginClick={onLoginClick}
-              onDiscoveryLinkClick={onDiscoveryLinkClick}
-              onDataPolicyClick={onDataPolicyClick}
+              appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
+              config={{ force_widget: 'gift' }}
             >
               <PreviewContent>
                 <Text>

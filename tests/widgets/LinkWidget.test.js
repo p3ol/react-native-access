@@ -1,78 +1,38 @@
-import React, { createRef } from 'react';
-import { Text, Linking } from 'react-native';
-import { render, wait, fireEvent } from '@testing-library/react-native';
-import { shallow } from 'enzyme';
+import React from 'react';
+import { Text } from 'react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 
 import PaywallContext from '../../src/components/PaywallContext';
 import LinkWidget from '../../src/components/LinkWidget';
 
 describe('<LinkWidget />', () => {
 
-  const onLoginClick = jest.fn();
-  const onRejectClick = jest.fn();
-  Linking.openUrl = jest.fn();
-
-  const component = render(
-    <PaywallContext
-      onLoginClick={onLoginClick}
-      onRejectClick={onRejectClick}
-    >
-      <Text>Test text</Text>
-      <LinkWidget
-        data={{
-          config: { login_button_enabled: true, link_url: 'url.fr' },
-        }}
-      />
-    </PaywallContext>
-  );
-
-  it('should render without issues', async () => {
-    const component = shallow(<LinkWidget />);
-
-    expect(component.length).toBe(1);
-
-  });
-
-  it('should fire onDiscoveryLinkClick event by clicking on link', async () => {
-
-    const linkButton = await component.getByTestId('linkButton');
-    fireEvent.press(linkButton);
-
-    await wait(() => {
-      expect(Linking.openURL.mock.calls.length).toBe(1);
-    });
-
-  });
-
-  it('should fire onLoginClick event by clicking on login', async () => {
-
-    const loginButton = component.getByTestId('loginButton');
-    fireEvent.press(loginButton);
-
-    await wait(() => {
-      expect(onLoginClick.mock.calls.length).toBe(1);
-    });
-
-  });
-
-  it('should set Alternative to true by clicking on no thanks', async () => {
-
-    const ref = createRef();
-
-    const component = render(
-      <PaywallContext ref={ref}>
-        <Text>Test text</Text>
+  it('should render LinkWidget without isues', async () => {
+    const { findByTestId } = render(
+      <PaywallContext>
+        <Text>Test Text</Text>
         <LinkWidget />
       </PaywallContext>
     );
+    const linkWidget = await findByTestId('LinkWidget');
+    expect(linkWidget).toBeTruthy();
+  });
 
-    const rejectButton = component.getByTestId('rejectButton');
-    fireEvent.press(rejectButton);
-
-    await wait(() => {
-      expect(ref.current.alternative).toBe(true);
-    });
-
+  it('should release the widget by clicking the link_button', async () => {
+    const onDiscoveryLinkClick = jest.fn();
+    const { findByTestId, getByTestId } = render(
+      <PaywallContext events={{
+        ondiscoverylinkclick: onDiscoveryLinkClick,
+      }}>
+        <Text>Test Text</Text>
+        <LinkWidget />
+      </PaywallContext>
+    );
+    await findByTestId('LinkWidget');
+    const linkButton = getByTestId('releaseButton');
+    fireEvent.press(linkButton);
+    expect(linkButton).toBeTruthy();
+    expect(onDiscoveryLinkClick.mock.calls.length).toBe(1);
   });
 
 });

@@ -1,10 +1,7 @@
 import nock from 'nock';
 import React from 'react';
 import { Text } from 'react-native';
-import {
-  render,
-  wait,
-} from '@testing-library/react-native';
+import { render, waitFor } from '@testing-library/react-native';
 
 import Paywall from '../src/components/Paywall';
 import PaywallContext from '../src/components/PaywallContext';
@@ -12,33 +9,37 @@ import RestrictedContent from '../src/components/RestrictedContent';
 
 describe('<RestrictedContent />', () => {
 
-  it('should render the restricted content and signature on invisibe',
-    async () => {
-      nock('https://api.poool.develop:8443/api/v3')
-        .post('/access/track')
-        .reply(200, {
-          action: 'invisible',
-          styles: {},
-          texts: {},
-          config: { signature_enabled: true },
-        });
+  beforeEach(() => {
+    nock.disableNetConnect();
+  });
 
-      const component = render(
-        <PaywallContext>
-          <Text> Test Text </Text>
-          <RestrictedContent>
-            <Text testID="restrictedTest" > Restricted text </Text>
-          </RestrictedContent>
-          <Paywall />
-        </PaywallContext>
-      );
+  it('should render the restricted content and the signature', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'invisible',
+        styles: {},
+        texts: {},
+        config: { signature_enabled: true },
+      });
 
-      await wait(() =>
-        expect(component.queryByTestId('restrictedTest')).toBeTruthy()
-      );
-    });
+    const { findByText, getByTestId } = render(
+      <PaywallContext>
+        <Text> Test Text </Text>
+        <RestrictedContent>
+          <Text>Restricted text</Text>
+        </RestrictedContent>
+        <Paywall />
+      </PaywallContext>
+    );
 
-  it('should\'nt render the signature on invisibe',
+    const restrictedcontent = await findByText('Restricted text');
+    const signature = getByTestId('Signature');
+    expect(restrictedcontent).toBeTruthy();
+    expect(signature).toBeTruthy();
+  });
+
+  it('should render the restricted content without the signature',
     async () => {
       nock('https://api.poool.develop:8443/api/v3')
         .post('/access/track')
@@ -49,44 +50,49 @@ describe('<RestrictedContent />', () => {
           config: { signature_enabled: false },
         });
 
-      const component = render(
+      const { findByText, queryByTestId } = render(
         <PaywallContext>
           <Text> Test Text </Text>
           <RestrictedContent>
-            <Text testID="restrictedTest" > Restricted text </Text>
+            <Text>Restricted text</Text>
           </RestrictedContent>
           <Paywall />
         </PaywallContext>
       );
 
-      await wait(() =>
-        expect(component.queryByTestId('signature')).toBeNull()
-      );
+      const restrictedcontent = await findByText('Restricted text');
+      expect(restrictedcontent).toBeTruthy();
+      expect(queryByTestId('Signature')).toBeNull();
     });
 
-  it('should render the restricted content and the signature on unlock',
+  it('should return nothing',
     async () => {
       nock('https://api.poool.develop:8443/api/v3')
         .post('/access/track')
         .reply(200, {
-          action: 'unlock',
+          action: 'restriction',
           styles: {},
           texts: {},
           config: {},
         });
 
-      const component = render(
+      const { queryByText } = render(
         <PaywallContext>
           <Text> Test Text </Text>
           <RestrictedContent>
-            <Text testID="restrictedTest" > Restricted text </Text>
+            <Text>Restricted text</Text>
           </RestrictedContent>
           <Paywall />
         </PaywallContext>
       );
 
-      await wait(() =>
-        expect(component.queryByTestId('signature')).toBeTruthy()
-      );
+      await waitFor(() => expect(queryByText('Restricted text')).toBeNull());
+
     });
+
+  afterEach(() => {
+    nock.abortPendingRequests();
+    nock.cleanAll();
+    nock.enableNetConnect();
+  });
 });

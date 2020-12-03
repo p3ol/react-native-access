@@ -1,148 +1,120 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
-import {
-  getQuestion,
-  postAnswer,
-} from '@poool/sdk';
-
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import { getQuestion, postAnswer } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
+import BrandCover from './BrandCover';
+import BrandLogo from './BrandLogo';
 import Translate from './Translate';
+import WidgetContent from './WidgetContent';
+import LoginLink from './LoginLink';
+import SubscribeLink from './SubscribeLink';
+import { commons, applyStyles, colors } from '../styles';
 
-import { texts, layouts } from '../styles';
-
-const QuestionWidget = ({ data, release, widget }) => {
+const QuestionWidget = () => {
+  const { getStyle, doRelease, fireEvent } = useContext(AppContext);
 
   const [question, setQuestion] = useState();
 
   useEffect(() => {
-    init();
+    retrieveQuestion();
   }, []);
 
-  const {
-    onLoginClick,
-    onError,
-    onRelease,
-    onSubscribeClick,
-  } = useContext(AppContext);
-
-  const init = async () => {
-    setQuestion(await getaQuestion());
-  };
-
-  const getaQuestion = async () => {
+  const retrieveQuestion = async () => {
     try {
       const question = await getQuestion();
-      return question;
+      setQuestion(question);
     } catch (e) {
-      onError(e);
+      console.warn('Cannot retrieve original question', e);
     }
   };
 
-  const answering = async (questionId, answer, options) => {
+  const sendResponse = async (questionId, answer, options) => {
     try {
       await postAnswer(questionId, answer, options);
+      fireEvent('onAnswer', {
+        questionId: question?.question._id,
+        answer: answer,
+      });
     } catch (e) {
-      onError(e);
+      console.warn('Cannot post the answer', e);
     }
+  };
+
+  const onPress = answer => {
+    sendResponse(
+      question?.question._id,
+      answer,
+      { body: { cookiesEnabled: true } }
+    );
+    doRelease();
   };
 
   return (
-    <View
-      style={layouts.widget}
-      testID="questionWidget"
-    >
-      <Translate
-        testID="title"
-        textKey="question_title"
-        style={texts.title}
-      />
+    <View testID="questionWidget">
+      <BrandCover />
+      <BrandLogo />
 
-      <Translate
-        textKey="question_desc"
-        style={texts.desc}
-      />
-
-      <Text style={texts.question}>
-        {question?.question.text}
-      </Text>
-      <View>
-        {
-          question?.question.answers.map((answer, index) => (
-            <TouchableOpacity
-              key={index}
-              testID={answer}
-              style={layouts.answer}
-              onPress={() => {
-                onRelease({
-                  widget: data?.action,
-                  actionName: data?.actionName,
-                });
-                release();
-                answering(
-                  question?.question._id,
-                  answer,
-                  { body: { cookiesEnabled: true } }
-                );
-              }}
-            >
-              <Text>{answer}</Text>
-            </TouchableOpacity>
-          ))
-        }
-      </View>
-      <View style={layouts.subactions[data?.styles?.layout]}>
-        {data?.config?.login_button_enabled &&
-          <Translate
-            textKey="login_link"
-            testID="loginButton"
-            style={texts.subaction[data?.styles?.layout]}
-            onPress={e => {
-              Linking.openURL(data?.config?.login_url);
-              onLoginClick({
-                widget: widget,
-                button: e?.target,
-                originalEvent: e,
-                url: data?.config.login_url,
-              });
-            }}
-          />
-        }
+      <WidgetContent>
+        <Translate textKey="question_title" style={commons.title} />
         <Translate
-          textKey="subscribe_link"
-          testID="subscribeButton"
-          style={texts.subaction[data?.styles?.layout]}
-          onPress={e => {
-            Linking.openURL(data?.config.subscription_url);
-            onSubscribeClick({
-              widget: widget,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config.login_url,
-            });
-          }}
+          textKey="question_desc"
+          style={commons.description}
+          replace={{ app_name: true }}
         />
-      </View>
-
+        <Text style={styles.question}>
+          {question?.question.text}
+        </Text>
+        <View style={styles.answers}>
+          {
+            question?.question.answers.map((answer, index) => (
+              <TouchableWithoutFeedback
+                key={index}
+                testID={answer}
+                onPress={onPress.bind(null, answer)}
+              >
+                <View style={styles.answer} >{answer}</View>
+              </TouchableWithoutFeedback>
+            ))
+          }
+        </View>
+        <View
+          style={[
+            commons.subActions,
+            applyStyles(getStyle('layout') === 'landscape', [
+              commons.subActions__landscape,
+            ]),
+          ]}
+        >
+          <LoginLink />
+          <SubscribeLink />
+        </View>
+      </WidgetContent>
     </View>
   );
 };
 
-QuestionWidget.propTypes = {
-  data: PropTypes.object,
-  release: PropTypes.func,
-  widget: PropTypes.string,
+const styles = {
+  question: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    lineHeight: 28,
+  },
+  answers: {
+    marginTop: 20,
+  },
+  answer: {
+    backgroundColor: colors.gallery,
+    borderColor: colors.shuttleGray,
+    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 4,
+    marginBottom: 15,
+  },
 };
+
+QuestionWidget.propTypes = {};
 
 QuestionWidget.displayName = 'QuestionWidget';
 

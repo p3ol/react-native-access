@@ -1,17 +1,7 @@
-import React, {
-  useContext,
-  useReducer,
-  useEffect,
-} from 'react';
-import {
-  View,
-  Button,
-  Linking,
-} from 'react-native';
-import Stripe from 'stripe-client';
+import React, { useContext, useReducer } from 'react';
+import { Text, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
-
-import PropTypes from 'prop-types';
+import { mockState, cloneDeep } from '@poool/junipero-utils';
 
 import { AppContext } from '../services/contexts';
 import { validateEmail, validateDate } from '../services/validate';
@@ -26,147 +16,112 @@ import Translate from './Translate';
 import WidgetContent from './WidgetContent';
 import GDPR from './GDPR';
 
-import { texts, layouts } from '../styles';
+import { applyStyles, commons, colors } from '../styles';
 
-const FormWidget = ({
-  data,
-  release,
-  widget,
-}) => {
+const DEFAULT_FIELD = {
+  fieldType: 'email',
+  fieldName: 'jane@gmail.com',
+  fieldKey: 'email',
+  fieldRequired: true,
+};
 
-  const stripeClient = Stripe('pk_test_80Ib5ct89zl7w9FJsBvQZxIs');
+const STEPS = { FORM: 'form', GDPR: 'gdpr' };
 
+const FormWidget = () => {
   const {
-    onDataPolicyClick,
-    setAlternative,
-    onLoginClick,
-    onRelease,
-    onSubscribeClick,
-    onFormSubmit,
+    trackData,
+    fireEvent,
+    getStyle,
+    getConfig,
+    doRelease,
   } = useContext(AppContext);
+  const form = trackData?.form || {};
+  const fields = cloneDeep(form.fields || [DEFAULT_FIELD]);
+  const [state, dispatch] = useReducer(mockState, {
+    optin: false,
+    step: STEPS.FORM,
+    values: {},
+    valid: {},
+    errors: {},
+    focused: {},
+  });
 
-  /* eslint-disable max-len */
+  const onBlur = field => {
+    state.focused[field.fieldKey] = false;
+    state.valid[field.fieldKey] = (!field.fieldRequired &&
+      !state.values[field.fieldKey]) || validateField(field,
+      state.values[field.fieldKey]);
+    state.errors[field.fieldKey] = getError(field.fieldType);
 
-  const getDateRegex = () => {
-    switch (data?.form?.config?.date_format) {
-      case 'mm/dd/yyyy':
-        return /^(0[1-9]|[1][0-2])[- /.](0[1-9]|[12][0-9]|3[01])[- /.]((19|20)\d\d)$/g;
-      case 'yyyy/mm/dd':
-        return /^((19|20)\d\d)[- /.](0[1-9]|[1][0-2])[- /.](0[1-9]|[12][0-9]|3[01])$/g;
-      default:
-        return /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|[1][0-2])[- /.]((19|20)\d\d)$/g;
-    }
+    dispatch({
+      focused: state.focused,
+      valid: state.valid,
+      errors: state.errors });
   };
 
-  const mailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+  const onFocus = field => {
+    state.focused[field.fieldKey] = true;
+    dispatch({ focused: state.focused });
+  };
+
+  const onDataPolicyPress = e => {
+    dispatch({ step: STEPS.GDPR });
+    fireEvent('onDataPolicyClick', {
+      widget: trackData?.action,
+      button: 'link_button',
+      originalEvent: e,
+      url: getConfig('link_url'),
+    });
+  };
 
   const onSubmitPress = async () => {
-
     const eventResult = await fireEvent('onFormSubmit', {
       widget: trackData?.action,
       fields: fields,
       valid: state.valid,
     });
 
-  useEffect(() => {
-    init();
-  }, []);
-
-  const [state, dispatch] = useReducer(mockState, {
-    approve: false,
-    optin: 'closed',
-    fields: {},
-    cardKey: null,
-    cardError: null,
-  });
-
-  const init = () => {
-    data?.form?.fields.map(formItem => {
-      formItem.fieldType === 'creditCard' &&
-        dispatch({ cardKey: formItem.fieldKey });
-      state.fields[formItem.fieldKey] =
-      {
-        key: formItem.fieldKey,
-        name: formItem.fieldName,
-        required: formItem.fieldRequired,
-        type: formItem.fieldType,
-        value: '',
-        focused: true,
-        valid: !formItem.fieldRequired,
-      };
-    });
-    dispatch({ fields: state.fields });
-  };
-
-  const onBlur = field => {
-    state.fields[field.key].focused = false;
-    if (field.value === '') {
-      state.fields[field.key].valid = false;
+    if (eventResult !== null && eventResult.length) {
+      applyCustomError(eventResult);
+    } else {
+      doRelease();
     }
-    dispatch({ fields: state.fields });
   };
 
-  const onFocus = field => {
-    state.fields[field.key].focused = true;
-    dispatch({ fields: state.fields });
+  const onOptin = () => {
+    dispatch({ optin: !state.optin });
+  };
+
+  const onBackClick = () => {
+    dispatch({ step: STEPS.FORM });
   };
 
   const onChange = (field, input) => {
-
     switch (field.fieldType) {
       case 'date':
         state.values[field.fieldKey] = formatDate(input.value);
         break;
-      case 'creditCard':
-        state.values[field.fieldKey] = input;
-        break;
       default:
         state.values[field.fieldKey] = input.value;
     }
-    dispatch({ fields: state.fields });
+
+    dispatch({ values: state.values, valid: state.valid });
   };
 
-  const generateToken = async () => {
-    const card = await stripeClient
-      .createToken({ card: state.fields[state.cardKey].value });
-    const token = await card.json();
-    state.fields[state.cardKey].value = token.id;
-    dispatch({ card: state.card });
-  };
+  const formatDate = date => {
+    const format = form.config?.date_format || 'DD/MM/YYYY';
+    const firstSlash = format.indexOf('/');
+    const secondSlash = format.indexOf('/', firstSlash + 1);
 
-  const getFieldError = field => {
-    let error;
-    if (!field.focused && field.value !== '' && !field.valid) {
-      switch (field.type) {
-        case 'creditCard':
-          if (!state.cardError.number) {
-            error = 'form_card_number_error';
-          } else if (!state.cardError.exp_date) {
-            error = 'form_card_date_error';
-          } else if (!state.cardError.cvc) {
-            error = 'form_empty_error';
-          }
-          break;
-        case 'email':
-          error = 'form_email_error';
-          break;
-        default:
-          error = getDateFormatError(data?.form?.config?.date_format);
-      }
-    } else if (!field.focused && field.value === '' && field.required) {
-      error = 'form_empty_error';
+    if ([firstSlash, secondSlash].includes(date.length)) {
+      date += '/';
     }
-    return (
-      <Translate
-        textKey={error}
-        style={texts.warning}
-        testID={error}
-      />
-    );
+
+    return date;
   };
 
-  const getDateFormatError = format => {
-    switch (format) {
+  const getDateError = () => {
+    switch (form.config?.date_format) {
       case 'mm/dd/yyyy':
         return 'form_date_mdy_error';
       case 'yyyy/mm/dd':
@@ -176,59 +131,65 @@ const FormWidget = ({
     }
   };
 
-  const getValidFields = () => {
+  const getError = fieldType => {
+    switch (fieldType) {
+      case 'date':
+        return getDateError();
+      case 'email':
+        return 'form_email_error';
+      default:
+        return 'form_empty_error';
+    }
+  };
 
   const validateField = (field, value) => {
     switch (field.fieldType) {
       case 'date':
         return validateDate(value, form.config?.date_format);
+      case 'creditCard':
+        state.values[field.fieldKey] = input;
+        break;
       case 'email':
         return validateEmail(value);
-      case 'creditCard':
-        return state.values[field.fieldKey]?.cvc?.valid &&
-        state.values[field.fieldKey]?.number?.valid &&
-        state.values[field.fieldKey]?.exp_month?.valid &&
-        state.values[field.fieldKey]?.exp_year?.valid;
       default:
         return field.fieldRequired === false || !!value;
     }
   };
 
-  const isFormValid = () => {
+  const getFieldError = field => {
+    let error;
 
-    let count = 0;
-    let isValid = 0;
-
-    Object.values(state.fields).map(field => {
-      field.valid && (isValid += 1);
-      count += 1;
-    });
-
-    if (isValid === count) {
-      return true;
-    } else {
-      return false;
+    if (!state.valid[field.fieldKey]) {
+      error = state.errors[field.fieldKey];
     }
 
+    return (
+      <Translate
+        style={styles.error}
+        textKey={error}
+        testID={error}
+      >{error}</Translate>
+    );
   };
 
-  const submitForm = async () => {
-    state.cardKey && await generateToken();
-    onFormSubmit({
-      name: data?.form?.name,
-      fields: state?.fields,
-      valid: getValidFields(),
+  const applyCustomError = customError => {
+    customError.forEach(error => {
+      state.errors[error.fieldKey] = error.message;
+      state.valid[error.fieldKey] = false;
     });
-    onRelease({
-      widget: data?.action,
-      actionName: data?.actionName,
-    });
-    release();
+    dispatch({ errors: state.errors, valid: state.valid });
   };
 
-  const getFormItem = field => {
-    switch (field.type) {
+  const isFormValid = () => {
+    return Object.keys(state.valid).every(k => state.valid[k]) &&
+    fields.filter(field => field.fieldRequired &&
+    state.valid[field.fieldKey]).length >=
+    fields.filter(field => field.fieldRequired).length &&
+    state.optin;
+  };
 
+  const renderField = field => {
+    switch (field.fieldType) {
       case 'creditCard':
         return (
           <React.Fragment key={field.fieldKey}>
@@ -244,159 +205,171 @@ const FormWidget = ({
           </React.Fragment>
         );
 
-      default:
-        return (
-          <React.Fragment key={field.key}>
-            <View style={layouts.mediumSpacing}>
+      default: {
+        const renderedField = (
+          <React.Fragment key={field.fieldKey}>
+            <View style={styles.field}>
               <Translate
-                textKey='form_optional'
-                asString
+                textKey="form_optional"
+                asString={true}
                 replace={{ app_name: true }}
               >
-                {({ text }) => (
+                { ({ text }) => (
                   <TextField
-                    value={field.value}
-                    rows={field.type === 'multiline' ? 5 : 1}
-                    secureTextEntry={field.type === 'password'}
-                    placeholder={field.name + (field.required ? '' : text)}
-                    testID={field.key}
-                    valid={field.focused ? true : !!field.valid}
+                    value={state.values[field.fieldKey]}
+                    rows={field.fieldType === 'multiline' ? 5 : null}
+                    secureTextEntry={field.fieldType === 'password'}
+                    placeholder={field.fieldName + (
+                      field.fieldRequired === false ? text : ''
+                    )}
+                    testID={field.fieldKey}
+                    valid={state.focused[field.fieldKey] ||
+                      state.valid[field.fieldKey]}
                     onChange={onChange.bind(null, field)}
                     onFocus={onFocus.bind(null, field)}
                     onBlur={onBlur.bind(null, field)}
+                    customStyle={{
+                      input: [
+                        styles.input,
+                        applyStyles(state.focused[field.fieldKey], [
+                          styles.input__focused,
+                        ]),
+                        applyStyles(
+                          state.valid[field.fieldKey] === false, [
+                            styles.input__invalid,
+                          ]),
+                      ],
+                      inputBackground: styles.inputBackground,
+                    }}
                   />
-                )}
+                ) }
               </Translate>
               { getFieldError(field) }
             </View>
           </React.Fragment>
         );
+
+        return renderedField;
+      }
     }
   };
 
-  if (state.optin === 'closed') {
-    return (
-      <View
-        style={layouts.widget}
-        testID='formWidget'
-      >
+  return (
+    <View testID="formWidget">
 
-        <Translate
-          textKey='form_title'
-          style={texts.title}
-        />
+      { state.step === 'gdpr' && (
+        <Text
+          testID="backButton"
+          onPress={onBackClick}
+          style={[
+            styles.backLink,
+            applyStyles(
+              getStyle('button_color'),
+              { color: getStyle('button_color')?.toString() },
+            ),
+          ]}
+        >
+          {'\u{e901}'}
+        </Text>
+      ) }
 
-        <Translate
-          textKey='form_desc'
-          style={texts.desc}
-        />
+      <BrandCover />
+      <BrandLogo />
 
-        <View>
-          {
-            Object.values(state.fields).map(field => getFormItem(field))
-          }
-        </View>
+      {state.step === 'gdpr' ? (
+        <GDPR />
+      ) : (
+        <WidgetContent>
+          <Translate textKey="form_title" style={commons.title} />
+          <Translate textKey="form_desc" style={commons.description} />
 
-        <View style={layouts.largeSpacing} >
-          <CheckboxField
-            onChange={() => {
-              dispatch({ approve: !state.approve });
-              console.log(state.fields);
-            }}
-            children={
+          <View>
+            { fields.map(field => renderField(field)) }
+          </View>
+
+          <View style={styles.field}>
+            <CheckboxField
+              checked={state.optin}
+              testID="optin"
+              onChange={onOptin}
+            >
               <Translate
-                textKey='form_optin_label'
-                replace={{
-                  app_name: true,
-                }}
+                textKey="newsletter_optin_label"
+                style={styles.optinLabel}
+                replace={{ app_name: true }}
               />
-            }
+            </CheckboxField>
+          </View>
+
+          <Translate
+            style={[styles.field, styles.gdprLink]}
+            textKey="form_optin_link"
+            testID="GDPRLink"
+            onPress={onDataPolicyPress}
           />
-        </View>
-
-        <Translate
-          textKey='form_optin_link'
-          testID='dataButton'
-          style={texts.link}
-          onPress={ e => {
-            dispatch({ optin: 'open' });
-            onDataPolicyClick({
-              widget: data?.action,
-              button: e?.target,
-              originalEvent: e,
-              url: data?.config?.data_policy_url,
-            });
-          }}
-        />
-
-        <Translate textKey='form_button' asString={true}>
-          {({ text }) => (
-            <Button
-              testID='submitButton'
-              title={text}
-              style={layouts.mediumSpacing}
-              disabled={ !(state.approve && isFormValid()) }
-              color={data?.styles?.button_color}
-              onPress={() => submitForm()}
-            />
-          )}
-        </Translate>
-
-        <View style={layouts.subactions[data?.styles?.layout]}>
-          {data?.config?.login_button_enabled &&
-            <Translate
-              textKey='login_link'
-              testID='loginButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.login_url);
-                onLoginClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.login_url,
-                });
-              }}
-            />
-          }
-          { data?.config?.alternative_widget !== 'none'
-            ? <Translate
-              textKey='no_thanks'
-              testID='rejectButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={() => setAlternative(true)}
-            />
-            : <Translate
-              textKey='subscribe_link'
-              testID='subscribeButton'
-              style={texts.subaction[data?.styles?.layout]}
-              onPress={e => {
-                Linking.openURL(data?.config?.subscription_url);
-                onSubscribeClick({
-                  widget: widget,
-                  button: e?.target,
-                  originalEvent: e,
-                  url: data?.config?.login_url,
-                });
-              }}/>
-          }
-        </View>
-
-      </View>
-    );
-  } else {
-    return (
-      <GDPR onBackClick={() => dispatch({ optin: 'closed' })}/>
-    );
-  }
+          <MainButton
+            text="form_button"
+            disabled={!isFormValid()}
+            onPress={onSubmitPress}
+          />
+          <View
+            style={[
+              commons.subActions,
+              applyStyles(getStyle('layout') === 'landscape', [
+                commons.subActions__landscape,
+              ]),
+            ]}
+          >
+            { getConfig('login_button_enabled') !== false && <LoginLink /> }
+            { getConfig('alternative_widget') !== 'none'
+              ? <NoThanksLink />
+              : <SubscribeLink />
+            }
+          </View>
+        </WidgetContent>
+      ) }
+    </View>
+  );
 };
 
-FormWidget.propTypes = {
-  data: PropTypes.object,
-  register: PropTypes.func,
-  release: PropTypes.func,
-  widget: PropTypes.string,
+const styles = {
+  field: {
+    marginBottom: 20,
+  },
+  gdprLink: {
+    paddingVertical: 10,
+    marginLeft: 25,
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
+  backLink: {
+    fontFamily: 'Poool-Ico-2',
+    position: 'absolute',
+    zIndex: 1000,
+  },
+  input: {
+    paddingVertical: 15,
+    backgroundColor: colors.gallery,
+  },
+  input__focused: {
+    backgroundColor: colors.alto,
+  },
+  input__invalid: {
+    backgroundColor: colors.lavenderBlush,
+  },
+  inputBackground: {
+    backgroundColor: colors.shuttleGray,
+    opacity: 1,
+  },
+  error: {
+    color: colors.monza,
+  },
+  optinLabel: {
+    marginLeft: 10,
+  },
 };
+
+FormWidget.propTypes = {};
 
 FormWidget.displayName = 'FormWidget';
 

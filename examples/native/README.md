@@ -54,7 +54,7 @@ Reinstall pods using `yarn install-pods`
 open `~/.zprofile` and add your android SDK path:
 
 ```
-export ANDROID_HOME=$HOME/android
+export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin

@@ -1,75 +1,96 @@
 import React, { useReducer, forwardRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
+import { get } from '@poool/junipero-utils';
+import { track } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 import { mockState } from '../services/reducers';
 
 const PaywallContext = forwardRef(({
+  appId,
+  config = {},
+  styles = {},
+  texts = {},
+  events = {},
   children,
-  onDisabled = () => {},
-  onDataPolicyClick = () => {},
-  onDiscoveryLinkClick = () => {},
-  onError = () => {},
-  onFormSubmit = () => {},
-  onIdentityAvailable = () => {},
-  onLock = () => {},
-  onReady = () => {},
-  onRegister = () => {},
-  onRelease = () => {},
-  onSubscribeClick = () => {},
-  onLoginClick = () => {},
 }, ref) => {
-
   const [state, dispatch] = useReducer(mockState, {
-    active: true,
-    alternative: false,
+    released: false,
+    ready: false,
     trackData: null,
-    config: {
-      available_widgets: [
-        'restriction',
-        'form',
-        'gift',
-        'link',
-        'newsletter',
-        'question',
-      ],
-      login_button_enabled: true,
-      alternative_enabled: true,
-      alternative_widget: 'gift',
-      signature_enabled: true,
-      locale: 'fr',
-    },
+    action: 'disabled',
+    originalAction: 'restriction',
   });
 
   useImperativeHandle(ref, () => ({
-    alternative: state.alternative,
-    active: state.active,
+    released: state.released,
   }));
 
+  const fireEvent = (name, ...args) => {
+    name = /^on/.test(name) ? name : `on${name}`;
+
+    return events[name.toLowerCase()]?.(...args);
+  };
+
+  const getContext = () => ({
+    released: state.released,
+    trackData: state.trackData,
+    ready: state.ready,
+    update: dispatch,
+    action: state.action,
+    originalAction: state.action,
+    fireEvent,
+    getStyle,
+    getConfig,
+    getText,
+    appId,
+    config,
+    styles,
+    texts,
+    events,
+    flush,
+    doRelease,
+    setAlternative,
+  });
+
+  const getStyle = (key, def) =>
+    get(state.trackData?.styles, key, get(styles, key, def));
+
+  const getConfig = (key, def) =>
+    get(state.trackData?.config, key, get(config, key, def));
+
+  const getText = (key, def) =>
+    get(state.trackData?.texts, key, get(texts, key, def));
+
+  const flush = () => {
+    dispatch({
+      trackData: null,
+      ready: false,
+      released: false,
+      action: 'disabled',
+      originalAction: 'restriction',
+    });
+  };
+
+  const doRelease = async () => {
+    dispatch({ released: true });
+
+    await track('premium-read', {
+      widget: state.action,
+      hit: state.trackData?.hit,
+    });
+    fireEvent('onRelease', {
+      widget: state.action,
+      actionName: state.trackData?.actionName,
+    });
+  };
+
+  const setAlternative = () => {
+    dispatch({ action: getConfig('alternative_widget') || state.action });
+  };
+
   return (
-    <AppContext.Provider
-      value={{
-        setActive: active => dispatch({ active }),
-        setAlternative: alternative => dispatch({ alternative }),
-        updateContext: dispatch,
-        trackData: state.trackData,
-        active: state.active,
-        config: state.config,
-        alternative: state.alternative,
-        onLock,
-        onDisabled,
-        onDataPolicyClick,
-        onDiscoveryLinkClick,
-        onError,
-        onFormSubmit,
-        onIdentityAvailable,
-        onReady,
-        onRegister,
-        onRelease,
-        onSubscribeClick,
-        onLoginClick,
-      }}
-    >
+    <AppContext.Provider value={getContext()}>
       { children }
     </AppContext.Provider>
   );
@@ -77,18 +98,11 @@ const PaywallContext = forwardRef(({
 
 PaywallContext.propTypes = {
   children: PropTypes.array,
-  onDisabled: PropTypes.func,
-  onDataPolicyClick: PropTypes.func,
-  onDiscoveryLinkClick: PropTypes.func,
-  onError: PropTypes.func,
-  onFormSubmit: PropTypes.func,
-  onIdentityAvailable: PropTypes.func,
-  onLock: PropTypes.func,
-  onReady: PropTypes.func,
-  onRegister: PropTypes.func,
-  onRelease: PropTypes.func,
-  onSubscribeClick: PropTypes.func,
-  onLoginClick: PropTypes.func,
+  appId: PropTypes.string,
+  config: PropTypes.object,
+  styles: PropTypes.object,
+  texts: PropTypes.object,
+  events: PropTypes.object,
 };
 
 PaywallContext.displayName = 'PaywallContext';
