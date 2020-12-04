@@ -5,7 +5,11 @@ import { mockState, cloneDeep } from '@poool/junipero-utils';
 import { getStripeToken } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
-import { validateEmail, validateDate } from '../services/validate';
+import {
+  validateEmail,
+  validateDate,
+  validateCreditCard,
+} from '../services/validate';
 import BrandCover from './BrandCover';
 import BrandLogo from './BrandLogo';
 import CardField from './CardField';
@@ -50,15 +54,24 @@ const FormWidget = () => {
 
   const onBlur = field => {
     state.focused[field.fieldKey] = false;
-    state.valid[field.fieldKey] = (!field.fieldRequired &&
-      !state.values[field.fieldKey]) || validateField(field,
-      state.values[field.fieldKey]);
+
+    if (!field.fieldRequired) {
+      if (!state.values[field.fieldKey] ||
+        validateField(field, state.values[field.fieldKey])) {
+        state.valid[field.fieldKey] = true;
+      }
+    } else {
+      state.valid[field.fieldKey] =
+        validateField(field, state.values[field.fieldKey]);
+    }
+
     state.errors[field.fieldKey] = getError(field.fieldType);
 
     dispatch({
       focused: state.focused,
       valid: state.valid,
       errors: state.errors });
+
   };
 
   const onFocus = field => {
@@ -77,15 +90,24 @@ const FormWidget = () => {
   };
 
   const onSubmitPress = async () => {
-    const card = state.values[state.cardKey];
-    const token = await getStripeToken(
-      card.number.value,
-      card.exp_year.value,
-      card.exp_month.value,
-      card.cvc.value
-    );
 
-    state.values[state.cardKey] = token;
+    if (state.cardKey && state.values[state.cardKey].number.value &&
+    state.values[state.cardKey].exp_month.value &&
+    state.values[state.cardKey].exp_year.value &&
+    state.values[state.cardKey].cvc.value) {
+      try {
+        const token = await getStripeToken(
+          state.values[state.cardKey].number.value,
+          state.values[state.cardKey].exp_year.value,
+          state.values[state.cardKey].exp_month.value,
+          state.values[state.cardKey].cvc.value
+        );
+        state.values[state.cardKey] = token;
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
     const eventResult = await fireEvent('onFormSubmit', {
       name: trackData?.action,
       fields: state.values,
@@ -162,14 +184,11 @@ const FormWidget = () => {
       case 'date':
         return validateDate(value, form.config?.date_format);
       case 'creditCard':
-        return state.values[field.fieldKey]?.number.valid &&
-        state.values[field.fieldKey]?.exp_month.valid &&
-        state.values[field.fieldKey]?.exp_year.valid &&
-        state.values[field.fieldKey]?.cvc.valid;
+        return validateCreditCard(value);
       case 'email':
         return validateEmail(value);
       default:
-        return field.fieldRequired === false || !!value;
+        return !!value;
     }
   };
 

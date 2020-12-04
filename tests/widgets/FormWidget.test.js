@@ -100,10 +100,6 @@ describe('<FormWidget />', () => {
 
     const dateField = getByTestId('dateTest');
     fireEvent(dateField, 'focus');
-    fireEvent.changeText(dateField, '27');
-    fireEvent(dateField, 'blur');
-
-    fireEvent(dateField, 'focus');
     fireEvent.changeText(dateField, '27/10/2020');
     fireEvent(dateField, 'blur');
 
