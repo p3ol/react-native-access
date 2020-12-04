@@ -21,8 +21,8 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
     },
   });
 
-  const formatDate = e => {
-    const v = e.target.value.replace(/\D/g, '');
+  const formatDate = value => {
+    const v = value.replace(/\D/g, '');
     const matches = v.match(/\d{2,4}/g);
     const match = matches ? matches[0] : '';
     const parts = [];
@@ -33,8 +33,8 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
 
     if (parts.length) {
       dispatch({ expDate: parts.join('/') });
-      _onChange('exp_month', null, parts[0]);
-      _onChange('exp_year', null, parts[1]);
+      _onChange('exp_month', parts[0]);
+      _onChange('exp_year', parts[1]);
     } else {
       dispatch({ expDate: v });
     }
@@ -71,7 +71,7 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
       case 'number':
         if (getCardType(value) === 'credit-card') {
           setValid('number', false);
-        } else if (getCardMask(value)[1] > value.length) {
+        } else if (getCardMask(value)[0].replace(/\s/g, '').length > value.length) {
           setValid('number', false);
         } else {
           setValid('number', true);
@@ -113,11 +113,10 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
     }
   };
 
-  const _onChange = (info, e, date) => {
-    const value = e?.target?.value || date;
+  const _onChange = (info, value) => {
+    isFieldValid(info, value);
     state.card[info].value = value?.replace(/\s/g, '');
     dispatch({ card: state.card });
-    isFieldValid(info, value);
     onChange(field, state.card);
   };
 
@@ -169,6 +168,7 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
           {
             ({ text }) => (
               <TextInput
+                testID="cardNumber"
                 style={styles.input}
                 maxLength={getCardMask(state.card.number.value)[1]}
                 value={setMask(
@@ -176,7 +176,7 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
                   getCardMask(state.card.number.value)[0],
                   true,
                 )}
-                onChange={_onChange.bind(null, 'number')}
+                onChangeText={_onChange.bind(null, 'number')}
                 onFocus={_onFocus}
                 onBlur={_onBlur}
                 placeholder={text}
@@ -189,9 +189,10 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
           {
             ({ text }) => (
               <TextInput
+                testID="cardDate"
                 style={styles.input}
                 value={state.expDate}
-                onChange={formatDate}
+                onChangeText={formatDate}
                 onFocus={_onFocus}
                 onBlur={_onBlur}
                 placeholder={text}
@@ -201,9 +202,10 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
       </View>
       <View style={styles.cvc}>
         <TextInput
+          testID="cardCvc"
           style={styles.input}
           maxLength={3}
-          onChange={_onChange.bind(null, 'cvc')}
+          onChangeText={_onChange.bind(null, 'cvc')}
           onFocus={_onFocus}
           onBlur={_onBlur}
           placeholder="CVC"

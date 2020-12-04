@@ -95,17 +95,13 @@ const FormWidget = () => {
     state.values[state.cardKey].exp_month.value &&
     state.values[state.cardKey].exp_year.value &&
     state.values[state.cardKey].cvc.value) {
-      try {
-        const token = await getStripeToken(
-          state.values[state.cardKey].number.value,
-          state.values[state.cardKey].exp_year.value,
-          state.values[state.cardKey].exp_month.value,
-          state.values[state.cardKey].cvc.value
-        );
-        state.values[state.cardKey] = token;
-      } catch (e) {
-        console.warn(e);
-      }
+      const token = await getStripeToken(
+        state.values[state.cardKey].number.value,
+        state.values[state.cardKey].exp_year.value,
+        state.values[state.cardKey].exp_month.value,
+        state.values[state.cardKey].cvc.value
+      );
+      state.values[state.cardKey] = token;
     }
 
     const eventResult = await fireEvent('onFormSubmit', {
