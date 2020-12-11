@@ -58,6 +58,6 @@
     "react-native": "0.63.4",
     "react-native-web": "0.14.9",
     "react-test-renderer": "16.14.0",
-    "sinon": "9.2.1"
+    "sinon": "9.2.2"
   }
 }
