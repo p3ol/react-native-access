@@ -41,19 +41,16 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
   };
 
   const setMask = (value, mask, isCard = false) => {
-    if (value?.slice(-1) !== ' ') {
-      if (isCard && value) { value = value.replace(/\s/g, ''); }
 
-      const formatter = new StringMask(mask);
-      const result = formatter.apply(value);
+    if (isCard && value) { value = value.replace(/\s/g, ''); }
 
-      if (result.slice(-1) === ' ') {
-        return result.slice(0, -1);
-      } else {
-        return result;
-      }
+    const formatter = new StringMask(mask);
+    const result = formatter.apply(value);
+
+    if (result.slice(-1) === ' ') {
+      return result.slice(0, -1);
     } else {
-      return value?.slice(0, -1);
+      return result;
     }
 
   };
@@ -93,7 +90,7 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
           setValid('exp_year', true);
           setValid('exp_month', true);
         } else if ((date.getYear() - 100) === parseInt(value, 10)) {
-          if (date.getMonth() < parseInt(state.card.exp_month.value, 10)) {
+          if (date.getMonth() <= parseInt(state.card.exp_month.value, 10)) {
             setValid('exp_year', true);
           } else {
             setValid('exp_year', false);
