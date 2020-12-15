@@ -25,7 +25,7 @@
     "stream-browserify": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.12.9",
+    "@babel/core": "7.12.10",
     "@babel/eslint-parser": "7.12.1",
     "@babel/eslint-plugin": "7.12.1",
     "@poool/eslint-config": "1.4.2",
@@ -40,7 +40,7 @@
     "babel-jest": "26.6.3",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.5",
-    "eslint": "7.14.0",
+    "eslint": "7.15.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-babel": "5.3.1",
     "eslint-plugin-import": "2.22.1",
@@ -56,9 +56,9 @@
     "nock": "13.0.5",
     "react": "16.14.0",
     "react-dom": "16.14.0",
-    "react-native": "0.63.3",
-    "react-native-web": "0.14.8",
+    "react-native": "0.63.4",
+    "react-native-web": "0.14.9",
     "react-test-renderer": "16.14.0",
-    "sinon": "9.2.1"
+    "sinon": "9.2.2"
   }
 }
