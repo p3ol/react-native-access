@@ -16,6 +16,7 @@
     "serve": "cd ./examples/web && ./node_modules/.bin/webpack-dev-server --config webpack.config.js"
   },
   "dependencies": {
+    "@babel/runtime": "7.12.5",
     "@poool/junipero-native": "2.0.0-alpha.9",
     "@poool/junipero-utils": "2.0.0-alpha.8",
     "buffer": "6.0.3",
