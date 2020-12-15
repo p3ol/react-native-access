@@ -46,8 +46,8 @@ const QuestionWidget = () => {
     try {
       await postAnswer(questionId, answer, options);
       fireEvent('onAnswer', {
-        questionId: questionId,
-        answer: answer,
+        questionId,
+        answer,
       });
     } catch (e) {
       console.warn('Cannot post the answer', e);
@@ -86,7 +86,7 @@ const QuestionWidget = () => {
                 testID={answer}
                 onPress={onPress.bind(null, answer)}
               >
-                <Text style={styles.answer} >{answer}</Text>
+                <Text style={styles.answer}>{ answer }</Text>
               </TouchableWithoutFeedback>
             ))
           }
