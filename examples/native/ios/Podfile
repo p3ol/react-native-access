@@ -7,7 +7,6 @@ target 'default' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
-
   target 'defaultTests' do
     inherit! :complete
     # Pods for testing
@@ -20,14 +19,11 @@ target 'default' do
   use_flipper!
   post_install do |installer|
     flipper_post_install(installer)
-  end
-end
 
-target 'default-tvOS' do
-  # Pods for latest-tvOS
-
-  target 'default-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
+    installer.pods_project.targets.each do |t|
+      t.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+      end
+    end
   end
 end

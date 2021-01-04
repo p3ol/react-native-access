@@ -38,7 +38,7 @@ const MainButton = ({
             ],
           }}
         >
-          { text_ }
+          { text_.toString() }
         </Button>
       ) }
     </Translate>
