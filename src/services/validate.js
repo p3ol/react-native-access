@@ -17,12 +17,12 @@ export const validateDate = (val = '', format = 'dd/mm/yyyy') => {
 };
 
 export const validateCreditCard = (val = {}) => {
-  return (!val?.number.value &&
-  !val.exp_month.value &&
-  !val.exp_year.value &&
-  !val.cvc.value) ||
-  (val?.number.valid &&
-  val.exp_month.valid &&
-  val.exp_year.valid &&
-  val.cvc.valid);
+  return (!!val.number?.value &&
+  !!val.exp_month?.value &&
+  !!val.exp_year?.value &&
+  !!val.cvc?.value) &&
+  (val.number?.valid &&
+  val.exp_month?.valid &&
+  val.exp_year?.valid &&
+  val.cvc?.valid);
 };

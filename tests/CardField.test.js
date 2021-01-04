@@ -140,7 +140,9 @@ describe('<CardField />', () => {
 
   it('should return all field as valid for DC cards', async () => {
 
-    const date = `${today.getMonth()}/${today.getYear() - 100}`;
+    const date = `${
+      today.getMonth().length === 2 ? today.getMonth() : '0' + today.getMonth()
+    }/${today.getYear() - 100}`;
 
     const { getByTestId } = render(
       <PaywallContext>
