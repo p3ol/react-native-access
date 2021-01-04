@@ -28,7 +28,7 @@ module.exports = {
 
     return response.json();
   },
-  getStripeToken: async () => {
+  generatePaymentIntent: async () => {
     const response = await fetch(
       'https://api.poool.develop:8443/api/v3/access/form/pay',
       { method: 'post' }

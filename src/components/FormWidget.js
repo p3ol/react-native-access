@@ -2,7 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import { Text, View } from 'react-native';
 import { CheckboxField, TextField } from '@poool/junipero-native';
 import { mockState, cloneDeep } from '@poool/junipero-utils';
-import { getStripeToken } from '@poool/sdk';
+import { generatePaymentIntent } from '@poool/sdk';
 
 import { AppContext } from '../services/contexts';
 import {
@@ -91,15 +91,17 @@ const FormWidget = () => {
 
   const onSubmitPress = async () => {
 
-    if (state.cardKey && state.values[state.cardKey].number.value &&
-    state.values[state.cardKey].exp_month.value &&
-    state.values[state.cardKey].exp_year.value &&
-    state.values[state.cardKey].cvc.value) {
-      const token = await getStripeToken(
-        state.values[state.cardKey].number.value,
-        state.values[state.cardKey].exp_year.value,
-        state.values[state.cardKey].exp_month.value,
-        state.values[state.cardKey].cvc.value
+    const card = state.values[state.cardKey];
+
+    if (state.cardKey && card.number.value &&
+    card.exp_month.value &&
+    card.exp_year.value &&
+    card.cvc.value) {
+      const token = await generatePaymentIntent(
+        card.number.value,
+        card.exp_year.value,
+        card.exp_month.value,
+        card.cvc.value
       );
       state.values[state.cardKey] = token;
     }
