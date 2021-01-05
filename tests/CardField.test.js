@@ -86,8 +86,6 @@ describe('<CardField />', () => {
           : '0' + today.getMonth()
       }/${today.getYear() - 100}`;
 
-      console.log(date);
-
       const { getByTestId } = render(
         <PaywallContext>
           <CardField

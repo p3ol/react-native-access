@@ -88,8 +88,6 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
         break;
 
       case 'exp_year':
-        console.log('this month:', month);
-        console.log('exp month:', parseInt(state.card.exp_month.value, 10));
 
         if (year < parseInt(value, 10)) {
           setValid('exp_year', true);
