@@ -178,6 +178,43 @@ describe('<FormWidget />', () => {
 
   });
 
+  it('should correctly formate the date field', async () => {
+    nock('https://api.poool.develop:8443/api/v3')
+      .post('/access/track')
+      .reply(200, {
+        action: 'form',
+        config: { alternative_widget: 'none' },
+        form: {
+          config: { date_format: 'dd/mm/yyyy' },
+          fields: [
+            {
+              fieldName: 'date',
+              fieldType: 'date',
+              fieldKey: 'dateTest',
+              fieldRequired: false,
+            },
+          ],
+          name: 'test',
+        },
+      });
+    const { findByDisplayValue, findByTestId } = render(
+      <PaywallContext>
+        <Text>Test text</Text>
+        <Paywall />
+      </PaywallContext>
+    );
+    await findByTestId('formWidget');
+
+    const dateField = await findByTestId('dateTest');
+    fireEvent(dateField, 'focus');
+    fireEvent.changeText(dateField, '27');
+    fireEvent(dateField, 'blur');
+
+    const formatedDateField = await findByDisplayValue('27/');
+
+    expect(formatedDateField).toBeTruthy();
+  });
+
   it('should return the form_date_mdy_error & keep submit button disabled',
     async () => {
       nock('https://api.poool.develop:8443/api/v3')
@@ -192,7 +229,7 @@ describe('<FormWidget />', () => {
                 fieldName: 'date',
                 fieldType: 'date',
                 fieldKey: 'dateTest',
-                fieldRequired: true,
+                fieldRequired: false,
               },
             ],
             name: 'test',

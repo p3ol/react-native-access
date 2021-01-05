@@ -56,8 +56,9 @@ const FormWidget = () => {
     state.focused[field.fieldKey] = false;
 
     if (!field.fieldRequired) {
-      if (!state.values[field.fieldKey] ||
-        validateField(field, state.values[field.fieldKey])) {
+      if (!validateField(field, state.values[field.fieldKey])) {
+        state.valid[field.fieldKey] = false;
+      } else {
         state.valid[field.fieldKey] = true;
       }
     } else {
