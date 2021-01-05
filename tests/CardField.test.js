@@ -80,7 +80,13 @@ describe('<CardField />', () => {
   it('should return date field as invalid for an earlier month of the year',
     async () => {
 
-      const date = `${today.getMonth() - 1}}/${today.getYear() - 100}`;
+      const date = `${
+        today.getMonth().length === 2
+          ? today.getMonth()
+          : '0' + today.getMonth()
+      }/${today.getYear() - 100}`;
+
+      console.log(date);
 
       const { getByTestId } = render(
         <PaywallContext>
@@ -104,7 +110,7 @@ describe('<CardField />', () => {
 
   it('should return all field as valid for AE cards', async () => {
 
-    const date = '10/' + (today.getYear() - 99);
+    const date = '12/' + (today.getYear() - 99);
 
     const { getByTestId } = render(
       <PaywallContext>
@@ -141,7 +147,9 @@ describe('<CardField />', () => {
   it('should return all field as valid for DC cards', async () => {
 
     const date = `${
-      today.getMonth().length === 2 ? today.getMonth() : '0' + today.getMonth()
+      today.getMonth().length === 2
+        ? today.getMonth() + 1
+        : '0' + (today.getMonth() + 1)
     }/${today.getYear() - 100}`;
 
     const { getByTestId } = render(

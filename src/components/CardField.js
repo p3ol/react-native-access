@@ -62,6 +62,8 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
 
   const isFieldValid = (info, value) => {
     const date = new Date();
+    const year = date.getYear() - 100;
+    const month = date.getMonth() + 1;
 
     switch (info) {
 
@@ -86,11 +88,14 @@ const CardField = ({ onChange, onFocus, onBlur, field }) => {
         break;
 
       case 'exp_year':
-        if ((date.getYear() - 100) < parseInt(value, 10)) {
+        console.log('this month:', month);
+        console.log('exp month:', parseInt(state.card.exp_month.value, 10));
+
+        if (year < parseInt(value, 10)) {
           setValid('exp_year', true);
           setValid('exp_month', true);
-        } else if ((date.getYear() - 100) === parseInt(value, 10)) {
-          if (date.getMonth() <= parseInt(state.card.exp_month.value, 10)) {
+        } else if (year === parseInt(value, 10)) {
+          if (month <= parseInt(state.card.exp_month.value, 10)) {
             setValid('exp_year', true);
           } else {
             setValid('exp_year', false);
