@@ -51,7 +51,7 @@
     "eslint-plugin-standard": "4.1.0",
     "isomorphic-fetch": "3.0.0",
     "jest": "26.6.3",
-    "jest-canvas-mock": "2.3.0",
+    "jest-canvas-mock": "2.3.1",
     "metro-react-native-babel-preset": "0.65.2",
     "nock": "13.0.7",
     "react": "16.14.0",
