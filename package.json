@@ -16,7 +16,7 @@
     "serve": "cd ./examples/web && ./node_modules/.bin/webpack-dev-server --config webpack.config.js"
   },
   "dependencies": {
-    "@babel/runtime": "7.13.9",
+    "@babel/runtime": "7.13.10",
     "@poool/junipero-native": "2.0.0-alpha.9",
     "@poool/junipero-utils": "2.0.0-alpha.8",
     "buffer": "6.0.3",
@@ -25,9 +25,9 @@
     "stream-browserify": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.13.8",
-    "@babel/eslint-parser": "7.13.8",
-    "@babel/eslint-plugin": "7.13.0",
+    "@babel/core": "7.13.10",
+    "@babel/eslint-parser": "7.13.10",
+    "@babel/eslint-plugin": "7.13.10",
     "@poool/eslint-config": "1.4.2",
     "@poool/eslint-config-react": "1.4.2",
     "@poool/eslint-config-react-native": "1.4.2",
