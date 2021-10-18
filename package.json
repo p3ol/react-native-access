@@ -32,7 +32,7 @@
     "@poool/eslint-config-react": "1.4.2",
     "@poool/eslint-config-react-native": "1.4.2",
     "@poool/eslint-plugin": "1.4.2",
-    "@poool/sdk": "0.0.1-beta.5",
+    "@poool/sdk": "0.0.1-rc.0",
     "@react-native-community/async-storage": "1.12.1",
     "@testing-library/jest-native": "4.0.1",
     "@testing-library/react-native": "7.2.0",
