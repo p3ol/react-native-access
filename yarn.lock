@@ -869,6 +869,14 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime-corejs3@7.19.1":
+  version "7.19.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.19.1.tgz#f0cbbe7edda7c4109cd253bb1dee99aba4594ad9"
+  integrity sha512-j2vJGnkopRzH+ykJ8h68wrHnEUmtK//E723jjixiAl/PPf6FhqY/vYRcMVlNydRKQjQsTsYEjpx+DZMIvnGk/g==
+  dependencies:
+    core-js-pure "^3.25.1"
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@7.13.10":
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
@@ -1305,30 +1313,38 @@
   dependencies:
     eslint-rule-composer "0.3.0"
 
-"@poool/junipero-hooks@^2.0.0-alpha.8":
-  version "2.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-hooks/-/junipero-hooks-2.0.0-alpha.8.tgz#b215aa69f3758758b87bd71d82d2054e393a009c"
-  integrity sha512-Ys6kdxAF47AAWKq5/+lGGtO/vqGNTryXxmpC/wdIZVelicXoGKnBbZqVk5zv0wslyZst+YREPqYA07h1QIR12g==
+"@poool/junipero-hooks@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-hooks/-/junipero-hooks-2.0.0.tgz#92940492fe54d1eee6d9b74802ade60f3af4951c"
+  integrity sha512-4VtstSgj3zqwgG/7DzZIIbph/mBVQU6Pz6A/h97qdKrPt1Q6qRQC/mkgEWVTka+GmJQwqcIZdQzA0qX9GElY4g==
   dependencies:
-    "@babel/runtime-corejs3" "7.10.2"
-    core-js "3.6.5"
+    "@babel/runtime-corejs3" "7.19.1"
+    core-js "3.25.5"
 
-"@poool/junipero-native@2.0.0-alpha.9":
-  version "2.0.0-alpha.9"
-  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0-alpha.9.tgz#3fef64355a308ffe8c37fb5361207ff0e128b765"
-  integrity sha512-/zpOomrKpL1zeA3Va3s6iDshlGL1cC1FIzjrmazntPj5yq5FQj8ciHCarHCRsQLJ7QG1bISRQ4ZuemMMenyBiQ==
+"@poool/junipero-native@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-native/-/junipero-native-2.0.0.tgz#b6cd5986464172f6e0b4f4b0b8973318885c7d2c"
+  integrity sha512-afrOqbDVkJao6i6Zr+BeB0x2rJ1FXzQ1K3FwY4eo7pMGfxv/qj5XCYiA3e/ItkkgXRcNLaw4FLMUoicup3Uk1A==
   dependencies:
-    "@poool/junipero-hooks" "^2.0.0-alpha.8"
-    "@poool/junipero-utils" "^2.0.0-alpha.8"
-    prop-types "15.7.2"
+    "@poool/junipero-hooks" "^2.0.0"
+    "@poool/junipero-utils" "^2.0.0"
+    prop-types "15.8.1"
 
-"@poool/junipero-utils@2.0.0-alpha.8", "@poool/junipero-utils@^2.0.0-alpha.8":
+"@poool/junipero-utils@2.0.0-alpha.8":
   version "2.0.0-alpha.8"
   resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0-alpha.8.tgz#e1a892f9b92a2e8fd92660f0708becfe5566050e"
   integrity sha512-V7ghM7XotdwajJk/KOi3in3+tnbfC7L3Lfqeq8O34vUT73Kx/gIwPv+jG4uQfy32/LkZBTvqHQb2iTCTA9TRsA==
   dependencies:
     "@babel/runtime-corejs3" "7.10.2"
     core-js "3.6.5"
+
+"@poool/junipero-utils@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0.tgz#20fc8d302d8551bb2e4165e6b51a2ff862054a0a"
+  integrity sha512-yaF64A9fndPgRaL1F9DWLRsgu+Dw+9P6tDpBDWdHpihdhCp9nIeP7GbLSknczIBLhxqzO8/XjqkUuSrpF9w9kA==
+  dependencies:
+    "@babel/runtime-corejs3" "7.19.1"
+    core-js "3.25.5"
 
 "@poool/sdk@0.0.1-beta.5":
   version "0.0.1-beta.5"
@@ -2647,6 +2663,16 @@ core-js-pure@^3.0.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.8.0.tgz#4cdd2eca37d49cda206b66e26204818dba77884a"
   integrity sha512-fRjhg3NeouotRoIV0L1FdchA6CK7ZD+lyINyMoz19SyV+ROpC4noS1xItWHFtwZdlqfMfVPJEyEGdfri2bD1pA==
+
+core-js-pure@^3.25.1:
+  version "3.30.2"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.30.2.tgz#005a82551f4af3250dcfb46ed360fad32ced114e"
+  integrity sha512-p/npFUJXXBkCCTIlEGBdghofn00jWG6ZOtdoIXSJmAu2QBvN0IqpZXWweOytcwE6cfx8ZvVUy1vw8zxhe4Y2vg==
+
+core-js@3.25.5:
+  version "3.25.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.5.tgz#e86f651a2ca8a0237a5f064c2fe56cef89646e27"
+  integrity sha512-nbm6eZSjm+ZuBQxCUPQKQCoUEfFOXjUZ8dTTyikyKaWrTYmAVbykQfwsKE5dBK88u3QCkCrzsx/PPlKfhsvgpw==
 
 core-js@3.6.5:
   version "3.6.5"
@@ -6834,6 +6860,15 @@ prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.8.1"
+
+prop-types@15.8.1:
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
 
 propagate@^2.0.0:
   version "2.0.1"
