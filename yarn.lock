@@ -869,6 +869,14 @@
     core-js-pure "^3.0.0"
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime-corejs3@7.19.1":
+  version "7.19.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime-corejs3/-/runtime-corejs3-7.19.1.tgz#f0cbbe7edda7c4109cd253bb1dee99aba4594ad9"
+  integrity sha512-j2vJGnkopRzH+ykJ8h68wrHnEUmtK//E723jjixiAl/PPf6FhqY/vYRcMVlNydRKQjQsTsYEjpx+DZMIvnGk/g==
+  dependencies:
+    core-js-pure "^3.25.1"
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@7.13.10":
   version "7.13.10"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.13.10.tgz#47d42a57b6095f4468da440388fdbad8bebf0d7d"
@@ -1321,6 +1329,14 @@
     "@poool/junipero-hooks" "^2.0.0-alpha.8"
     "@poool/junipero-utils" "^2.0.0-alpha.8"
     prop-types "15.7.2"
+
+"@poool/junipero-utils@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@poool/junipero-utils/-/junipero-utils-2.0.0.tgz#20fc8d302d8551bb2e4165e6b51a2ff862054a0a"
+  integrity sha512-yaF64A9fndPgRaL1F9DWLRsgu+Dw+9P6tDpBDWdHpihdhCp9nIeP7GbLSknczIBLhxqzO8/XjqkUuSrpF9w9kA==
+  dependencies:
+    "@babel/runtime-corejs3" "7.19.1"
+    core-js "3.25.5"
 
 "@poool/junipero-utils@2.0.0-alpha.8", "@poool/junipero-utils@^2.0.0-alpha.8":
   version "2.0.0-alpha.8"
@@ -2647,6 +2663,16 @@ core-js-pure@^3.0.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.8.0.tgz#4cdd2eca37d49cda206b66e26204818dba77884a"
   integrity sha512-fRjhg3NeouotRoIV0L1FdchA6CK7ZD+lyINyMoz19SyV+ROpC4noS1xItWHFtwZdlqfMfVPJEyEGdfri2bD1pA==
+
+core-js-pure@^3.25.1:
+  version "3.30.2"
+  resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.30.2.tgz#005a82551f4af3250dcfb46ed360fad32ced114e"
+  integrity sha512-p/npFUJXXBkCCTIlEGBdghofn00jWG6ZOtdoIXSJmAu2QBvN0IqpZXWweOytcwE6cfx8ZvVUy1vw8zxhe4Y2vg==
+
+core-js@3.25.5:
+  version "3.25.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.25.5.tgz#e86f651a2ca8a0237a5f064c2fe56cef89646e27"
+  integrity sha512-nbm6eZSjm+ZuBQxCUPQKQCoUEfFOXjUZ8dTTyikyKaWrTYmAVbykQfwsKE5dBK88u3QCkCrzsx/PPlKfhsvgpw==
 
 core-js@3.6.5:
   version "3.6.5"
