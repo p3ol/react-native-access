@@ -4,7 +4,13 @@ const { ReactNativeAccess } = NativeModules;
 
 class Access {
   init(appId) {
-    return ReactNativeAccess.instanciate(appId);
+    ReactNativeAccess.instanciate(appId);
+
+    return this;
+  }
+
+  createPaywall () {
+    ReactNativeAccess.createPaywall();
   }
 }
 

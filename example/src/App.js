@@ -4,12 +4,10 @@ import Access from '@poool/react-native-access';
 
 export default function App() {
   useEffect(() => {
-    try {
-      console.log(Access.init('YOUR_APP_ID'));
-    } catch (e) {
-      console.log(e);
-    }
-  });
+    Access
+      .init('LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8')
+      .createPaywall();
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -8,4 +8,13 @@ class ReactNativeAccess: NSObject {
     try? Access.instanciate(key: appId)
   }
 
+  @objc
+  func createPaywall() -> Void {
+    DispatchQueue.main.async {
+      Access.createPaywall(pageType: "free") {
+        print("complete")
+      }
+    }
+  }
+
 }
