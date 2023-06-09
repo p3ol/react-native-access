@@ -1,6 +1,5 @@
 import { AppRegistry } from 'react-native';
 
-import './global.js';
-import App from '../base/App';
+import App from './src/App';
 
 AppRegistry.registerComponent('default', () => App);

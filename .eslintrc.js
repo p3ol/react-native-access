@@ -10,7 +10,7 @@ module.exports = {
       jest: true,
     },
   }, {
-    files: ['examples/base/**/*.js'],
+    files: ['example/**/*.js'],
     rules: {
       'no-console': 0,
     },
