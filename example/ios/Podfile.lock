@@ -592,7 +592,7 @@ SPEC CHECKSUMS:
   hermes-engine: d27603b55a48402501ad1928c05411dae9cd6b85
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  poool-react-native-access: 50c4a79a93f0b785c6a55fbf8100e65af65f5a76
+  poool-react-native-access: a18907c6e3b75958e1b9f7d10e8874547bf98c8b
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 8ef706f91e2b643cd32c26a57700b5f24fab0585
   RCTTypeSafety: 5fbddd8eb9242b91ac0d901c01da3673f358b1b7

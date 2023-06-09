@@ -1,14 +1,15 @@
+import { useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-// import Access from '@poool/react-native-access';
+import Access from '@poool/react-native-access';
 
 export default function App() {
-  // React.useEffect(() => {
-  //   try {
-  //     console.log(Access.init('YOUR_APP_ID'));
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // });
+  useEffect(() => {
+    try {
+      console.log(Access.init('YOUR_APP_ID'));
+    } catch (e) {
+      console.log(e);
+    }
+  });
 
   return (
     <View style={styles.container}>
