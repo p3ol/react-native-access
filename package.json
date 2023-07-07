@@ -42,7 +42,8 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
+    "postinstall": "node scripts/download-ios.js"
   },
   "peerDependencies": {
     "react": "*",
@@ -52,9 +53,15 @@
     "node": ">= 16",
     "yarn": "1"
   },
+  "poool": {
+    "ios": {
+      "url": "https://assets.poool.fr/ios/access-ios-06072023.xcframework.zip",
+      "sha256": "da640684577f992c67adb66ea0d5a2e304f189444352c52799296ffeaf13aa63"
+    }
+  },
   "devDependencies": {
-    "@evilmartians/lefthook": "1.2.2",
     "@commitlint/config-conventional": "17.0.2",
+    "@evilmartians/lefthook": "1.2.2",
     "@react-native-community/eslint-config": "3.0.2",
     "@release-it/conventional-changelog": "5.0.0",
     "commitlint": "17.0.2",
@@ -70,5 +77,8 @@
     "react-native-builder-bob": "0.20.4",
     "release-it": "15.0.0",
     "typescript": "4.5.2"
+  },
+  "dependencies": {
+    "unzipper": "0.10.14"
   }
 }
