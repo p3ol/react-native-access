@@ -33,5 +33,6 @@ Pod::Spec.new do |s|
     s.dependency "ReactCommon/turbomodule/core"
   end
 
+  s.preserve_paths = 'ios/AccessIOS.xcframework/*'
   s.vendored_frameworks = "ios/AccessIOS.xcframework"
 end
