@@ -1,7 +1,7 @@
 import AccessIOS
 
 @objc(RNAccess)
-class RNAccess: NSObject {
+class RNAccess: RCTViewManager {
 
   @objc
   func instanciate(_ appId: String) -> Void {
@@ -9,42 +9,48 @@ class RNAccess: NSObject {
   }
 
   @objc
-  func createPaywall(_ pageType: String?) -> Void {
+  func createPaywall(
+    _ pageType: String?,
+    reactTag: NSNumber?,
+    percent: NSNumber?,
+    resolve: @escaping RCTPromiseResolveBlock,
+    reject: @escaping RCTPromiseRejectBlock
+  ) -> Void {
     DispatchQueue.main.async {
-      Access.createPaywall(pageType: pageType ?? "page'")
-    }
-  }
+      // No view found, creating bottom sheet paywall
+      if reactTag == -1 {
+        Access.createPaywall(pageType: pageType ?? "page", percent: percent?.intValue) {
+          print("createPaywall")
+          resolve(true)
+        }
+        return
+      }
 
-  @objc
-  func createPaywall(_ pageType: String?, _ view: UIView?) -> Void {
-    DispatchQueue.main.async {
-      Access.createPaywall(pageType: pageType ?? "page'", view: view)
-    }
-  }
+      let view = self.bridge!.uiManager.view(forReactTag: reactTag!)!
 
-  @objc
-  func createPaywall(_ pageType: String?, _ view: UIView?, _ percent: NSNumber?) -> Void {
-    DispatchQueue.main.async {
-      Access.createPaywall(pageType: pageType ?? "page'", view: view, percent: percent?.intValue)
-    }
-  }
-
-  @objc
-  func createPaywall(_ pageType: String?, _ view: UIView?, _ percent: NSNumber?, _ complete: @escaping RCTResponseSenderBlock) -> Void {
-    DispatchQueue.main.async {
-      Access.createPaywall(pageType: pageType ?? "page'", view: view, percent: percent?.intValue) {
-        complete([true])
+      do {
+        try Access.createPaywall(pageType: pageType ?? "page", view: view, percent: percent?.intValue) {
+          print("createPaywall")
+          resolve(true)
+        }
+      } catch {
+        print("createPaywall error")
+        reject("createPaywall error", error.localizedDescription, error)
       }
     }
   }
 
   @objc
-  func config(_ config: [String: Any], _ readOnly: Bool = false) -> Void {
+  func config(_ config: [String: Any], readOnly: Bool = false) -> Void {
     Access.config(config, readOnly)
   }
 
   @objc
-  static func requiresMainQueueSetup() -> Bool {
+  func texts(_ texts: [String: String], readOnly: Bool = false) -> Void {
+    Access.texts(texts, readOnly)
+  }
+
+  override static func requiresMainQueueSetup() -> Bool {
     return true
   }
 

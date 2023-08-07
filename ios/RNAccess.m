@@ -1,31 +1,28 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
+#import <React/RCTUIManager.h>
 
 // RNAccess class
-@interface RCT_EXTERN_MODULE(RNAccess, NSObject)
+@interface RCT_EXTERN_MODULE(RNAccess, RCTViewManager)
 
 RCT_EXTERN_METHOD(instanciate:(NSString *)appId)
 
 RCT_EXTERN_METHOD(
-  createPaywall: (NSString *)pageType
-  (UIView *)view
-  (NSNumber *)percent
-  (RCTResponseSenderBlock *)complete
+  createPaywall: (NSString)pageType
+  reactTag: (nonnull NSNumber)reactTag
+  percent: (nonnull NSNumber)percent
+  resolve:(RCTPromiseResolveBlock)resolve
+  reject:(RCTPromiseRejectBlock)reject
 )
 
-@end
+RCT_EXTERN_METHOD(
+  config: (NSDictionary *)config
+  readOnly: (BOOL *)readOnly
+)
 
-// RNAccessContent UI component
-@interface RNAccessViewManager : RCTViewManager
-@end
-
-@implementation RNAccessViewManager
-
-RCT_EXPORT_MODULE(RNAccessContent)
-
-- (UIView *)view
-{
-  return [[UIView alloc] init];
-}
+RCT_EXTERN_METHOD(
+  texts: (NSDictionary *)texts
+  readOnly: (BOOL *)readOnly
+)
 
 @end

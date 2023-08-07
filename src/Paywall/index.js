@@ -32,7 +32,7 @@ const Paywall = ({
       events,
     });
 
-    factory?.createPaywall?.(pageType, contentRef.current, 80);
+    factory?.createPaywall?.(pageType, contentRef?.current, 80);
 
     return factory;
   };

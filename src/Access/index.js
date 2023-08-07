@@ -1,4 +1,4 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, findNodeHandle } from 'react-native';
 
 const { RNAccess } = NativeModules;
 
@@ -9,14 +9,14 @@ export default class Access {
     return this;
   }
 
-  config (config, readOnly) {
-    // RNAccess.config(config, readOnly);
+  config (config, readOnly = false) {
+    RNAccess.config(config, readOnly);
 
     return this;
   }
 
-  texts (texts, readOnly) {
-    // RNAccess.texts(texts, readOnly);
+  texts (texts, readOnly = false) {
+    RNAccess.texts(texts, readOnly);
 
     return this;
   }
@@ -51,8 +51,9 @@ export default class Access {
     return this;
   }
 
-  createPaywall (pageType, view, percent) {
-    return RNAccess.createPaywall(pageType);
+  async createPaywall (pageType, view, percent) {
+    return await RNAccess
+      .createPaywall(pageType, findNodeHandle(view) || -1, percent);
   }
 
   destroy () {
