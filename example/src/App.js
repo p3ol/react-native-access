@@ -1,17 +1,25 @@
-import { useEffect } from 'react';
+import { useRef } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import Access from '@poool/react-native-access';
+import { AccessContext, Paywall } from '@poool/react-native-access';
+import RestrictedContent from '../../src/RestrictedContent';
 
 export default function App() {
-  useEffect(() => {
-    Access
-      .init('LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8')
-      .createPaywall();
-  }, []);
+  const contentRef = useRef();
 
   return (
     <View style={styles.container}>
-      <Text>It works</Text>
+      <AccessContext appId="LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8">
+        <RestrictedContent ref={contentRef}>
+          <Text>Lorem ipsum bla bla bla bla</Text>
+        </RestrictedContent>
+        <Paywall
+          contentRef={contentRef}
+          config={{ debug: true }}
+          pageType="premium"
+        >
+          <Text>It works</Text>
+        </Paywall>
+      </AccessContext>
     </View>
   );
 }
