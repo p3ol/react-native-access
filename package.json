@@ -58,7 +58,6 @@
     "@babel/eslint-parser": "7.22.9",
     "@babel/eslint-plugin": "7.22.5",
     "@commitlint/config-conventional": "17.0.2",
-    "@evilmartians/lefthook": "1.2.2",
     "@poool/eslint-config": "3.0.1",
     "@poool/eslint-config-react": "3.0.1",
     "@poool/eslint-config-react-native": "3.0.1",
