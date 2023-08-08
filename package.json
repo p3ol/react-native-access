@@ -53,12 +53,6 @@
     "node": ">= 16",
     "yarn": "1"
   },
-  "poool": {
-    "ios": {
-      "url": "https://assets.poool.fr/ios/access-ios-06072023.xcframework.zip",
-      "sha256": "da640684577f992c67adb66ea0d5a2e304f189444352c52799296ffeaf13aa63"
-    }
-  },
   "devDependencies": {
     "@babel/core": "7.22.9",
     "@babel/eslint-parser": "7.22.9",
