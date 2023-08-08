@@ -1,9 +1,16 @@
-import { NativeModules, findNodeHandle } from 'react-native';
+import {
+  NativeModules,
+  NativeEventEmitter,
+  findNodeHandle,
+} from 'react-native';
 
-const { RNAccess } = NativeModules;
+const { RNAccess, RNAccessEventManager } = NativeModules;
 
 export default class Access {
-  init(appId) {
+  eventManager = null;
+
+  init (appId) {
+    this.eventManager = new NativeEventEmitter(RNAccessEventManager);
     RNAccess.instanciate(appId);
 
     return this;
@@ -21,32 +28,31 @@ export default class Access {
     return this;
   }
 
-  styles (styles, readOnly) {
-    // RNAccess.styles(styles, readOnly);
+  styles (styles, readOnly = false) {
+    RNAccess.styles(styles, readOnly);
 
     return this;
   }
 
-  variables (variables, readOnly) {
-    // RNAccess.variables(variables, readOnly);
+  variables (variables) {
+    RNAccess.variables(variables);
 
     return this;
   }
 
   on (event, callback) {
-    // RNAccess.on(event, callback);
+    this.eventManager.addListener(
+      this._normalizeEventName(event),
+      callback,
+    );
 
     return this;
   }
 
-  once (event, callback) {
-    // RNAccess.once(event, callback);
-
-    return this;
-  }
-
-  off (event, callback) {
-    // RNAccess.off(event, callback);
+  off (event) {
+    this.eventManager.removeAllListeners(
+      this._normalizeEventName(event),
+    );
 
     return this;
   }
@@ -60,5 +66,10 @@ export default class Access {
     // RNAccess.destroy();
 
     return this;
+  }
+
+  _normalizeEventName (name) {
+    return /^on[A-Z]/.test(name)
+      ? name.replace(/^on/, '').toLowerCase() : name;
   }
 }

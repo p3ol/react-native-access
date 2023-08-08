@@ -50,6 +50,16 @@ class RNAccess: RCTViewManager {
     Access.texts(texts, readOnly)
   }
 
+  @objc
+  func styles(_ styles: [String: Any], readOnly: Bool = false) -> Void {
+    Access.styles(styles, readOnly)
+  }
+
+  @objc
+  func variables(_ variables: [String: String]) -> Void {
+    Access.variables(variables)
+  }
+
   override static func requiresMainQueueSetup() -> Bool {
     return true
   }

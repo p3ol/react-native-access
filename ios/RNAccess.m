@@ -25,4 +25,13 @@ RCT_EXTERN_METHOD(
   readOnly: (BOOL *)readOnly
 )
 
+RCT_EXTERN_METHOD(
+  styles: (NSDictionary *)styles
+  readOnly: (BOOL *)readOnly
+)
+
+RCT_EXTERN_METHOD(
+  variables: (NSDictionary *)variables
+)
+
 @end

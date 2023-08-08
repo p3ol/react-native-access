@@ -16,7 +16,7 @@ const Paywall = ({
   const { lib, createFactory } = useAccess();
 
   useEffect(() => {
-    const factory = createPaywall()
+    const factory = createPaywall();
 
     return () => {
       factory?.destroy?.();
