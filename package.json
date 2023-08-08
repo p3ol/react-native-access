@@ -52,7 +52,7 @@
     "isomorphic-fetch": "3.0.0",
     "jest": "26.6.3",
     "jest-canvas-mock": "2.3.1",
-    "metro-react-native-babel-preset": "0.65.2",
+    "metro-react-native-babel-preset": "0.77.0",
     "nock": "13.0.11",
     "react": "16.14.0",
     "react-dom": "16.14.0",
