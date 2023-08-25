@@ -1,4 +1,5 @@
 PODS:
+  - AccessIOS (1.0.0)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -79,6 +80,7 @@ PODS:
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - poool-react-native-access (0.1.0):
+    - AccessIOS
     - React-Core
   - RCT-Folly (2021.07.22.00):
     - boost
@@ -421,6 +423,7 @@ PODS:
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
+  - AccessIOS (from `https://github.com/p3ol/access-package-ios.git`, branch `feature/podspec`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -501,6 +504,9 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
+  AccessIOS:
+    :branch: feature/podspec
+    :git: https://github.com/p3ol/access-package-ios.git
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -572,7 +578,13 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  AccessIOS:
+    :commit: a0384b2ff0117820dbb7058897bb6187355f0bfe
+    :git: https://github.com/p3ol/access-package-ios.git
+
 SPEC CHECKSUMS:
+  AccessIOS: 7d689f71d317ea4ce6b6776baf784e9666966774
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -592,7 +604,7 @@ SPEC CHECKSUMS:
   hermes-engine: d27603b55a48402501ad1928c05411dae9cd6b85
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  poool-react-native-access: 0fd781c83626db2beb770ab1a7291fab4063bc76
+  poool-react-native-access: 0ec09bb369774f9862532307890d29d80c9f980a
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
   RCTRequired: 8ef706f91e2b643cd32c26a57700b5f24fab0585
   RCTTypeSafety: 5fbddd8eb9242b91ac0d901c01da3673f358b1b7
@@ -624,6 +636,6 @@ SPEC CHECKSUMS:
   Yoga: e7ea9e590e27460d28911403b894722354d73479
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 20a8092140957872f314c971d43eb60505d036f0
+PODFILE CHECKSUM: db6d0ea8248b48b6a10fb5a7e4f9df4cc0c60154
 
 COCOAPODS: 1.12.1
