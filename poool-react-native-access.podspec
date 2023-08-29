@@ -34,7 +34,4 @@ Pod::Spec.new do |s|
   end
 
   s.dependency "AccessIOS"
-
-  # s.preserve_paths = 'ios/AccessIOS.xcframework/*'
-  # s.vendored_frameworks = "ios/AccessIOS.xcframework"
 end

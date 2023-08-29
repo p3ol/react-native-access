@@ -1,5 +1,5 @@
 PODS:
-  - AccessIOS (1.0.0)
+  - AccessIOS (0.0.1)
   - boost (1.76.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
@@ -417,13 +417,12 @@ PODS:
     - React-jsi (= 0.71.10)
     - React-logger (= 0.71.10)
     - React-perflogger (= 0.71.10)
-  - SocketRocket (0.6.0)
+  - SocketRocket (0.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
-  - AccessIOS (from `https://github.com/p3ol/access-package-ios.git`, branch `feature/podspec`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -487,6 +486,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AccessIOS
     - CocoaAsyncSocket
     - Flipper
     - Flipper-Boost-iOSX
@@ -504,9 +504,6 @@ SPEC REPOS:
     - YogaKit
 
 EXTERNAL SOURCES:
-  AccessIOS:
-    :branch: feature/podspec
-    :git: https://github.com/p3ol/access-package-ios.git
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
@@ -578,13 +575,8 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
-CHECKOUT OPTIONS:
-  AccessIOS:
-    :commit: a0384b2ff0117820dbb7058897bb6187355f0bfe
-    :git: https://github.com/p3ol/access-package-ios.git
-
 SPEC CHECKSUMS:
-  AccessIOS: 7d689f71d317ea4ce6b6776baf784e9666966774
+  AccessIOS: 4372aa27d69fca8f120149ce89b68135db6d5571
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -632,10 +624,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: d13cc2d63286c633393d3a7f6f607cc2a09ec011
   React-runtimeexecutor: a9a1cd79996c9a0846e3232ecb25c64e1cc0172e
   ReactCommon: 65718685d4095d06b4b1af8042e12f1df2925c31
-  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: e7ea9e590e27460d28911403b894722354d73479
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: db6d0ea8248b48b6a10fb5a7e4f9df4cc0c60154
+PODFILE CHECKSUM: 99fc20b03317e55ce78bf38ca9928172cdc779c7
 
 COCOAPODS: 1.12.1

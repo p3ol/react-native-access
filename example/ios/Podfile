@@ -5,7 +5,6 @@ platform :ios, 13.0
 prepare_react_native_project!
 
 
-pod 'AccessIOS', :git => 'https://github.com/p3ol/access-package-ios.git', :branch => 'feature/podspec'
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
@@ -25,6 +24,8 @@ if linkage != nil
 end
 
 target 'default' do
+  #pod 'AccessIOS' #, :git => 'https://github.com/p3ol/access-package-ios.git', :branch => 'feature/podspec'
+
   config = use_native_modules!
 
   # Flags change depending on the env values.
