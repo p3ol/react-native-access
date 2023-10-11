@@ -10,7 +10,7 @@ export default function App () {
       <AccessContext
         appId="LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8"
       >
-        <View style={{ width: 600 }} ref={contentRef}><Text>Lorem ipsum bla bla bla bla</Text></View>
+        <View ref={contentRef}><Text>Lorem ipsum bla bla bla bla</Text></View>
         <Paywall
           contentRef={contentRef}
           config={{ debug: true }}
