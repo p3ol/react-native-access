@@ -20,7 +20,6 @@ class RNAccess: RCTViewManager {
       // No view found, creating bottom sheet paywall
       if reactTag == -1 {
         Access.createPaywall(pageType: pageType ?? "page", percent: percent?.intValue) {
-          print("createPaywall")
           resolve(true)
         }
         return
@@ -30,7 +29,6 @@ class RNAccess: RCTViewManager {
 
       do {
         try Access.createPaywall(pageType: pageType ?? "page", view: view, percent: percent?.intValue) {
-          print("createPaywall")
           resolve(true)
         }
       } catch {

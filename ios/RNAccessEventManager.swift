@@ -19,6 +19,36 @@ class RNAccessEventManager: RCTEventEmitter {
         ]
       ])
     }
+
+    Access.onLock {
+      if self.hasListeners == false {
+        return
+      }
+
+      self.sendEvent(withName: "lock", body: nil)
+    }
+
+    Access.onIdentityAvailable { identityEvent in
+      if self.hasListeners == false {
+        return
+      }
+
+      self.sendEvent(withName: "identityAvailable", body: [
+        "identityEvent": [
+          "userId": identityEvent?.userId,
+          "contextName": identityEvent?.contextName,
+          "contextType": identityEvent?.contextType,
+          "contextValue": identityEvent?.contextValue,
+          "groupSlug": identityEvent?.groupSlug,
+          "scenarioName": identityEvent?.scenarioName,
+          "widget": identityEvent?.widget,
+          "actionName": identityEvent?.actionName,
+          // "trigger": identityEvent?.trigger,
+          // "triggerType": identityEvent?.triggerType,
+          // "triggerValue": identityEvent?.triggerValue,
+        ]
+      ])
+    }
   }
 
   @objc
@@ -33,7 +63,7 @@ class RNAccessEventManager: RCTEventEmitter {
 
   @objc
   override func supportedEvents() -> [String]! {
-    return ["ready"]
+    return ["ready", "lock", "identityAvailable"]
   }
 
   @objc

@@ -16,7 +16,10 @@ export default function App () {
           config={{ debug: true }}
           styles={{ button_color: '#1896B4' }}
           events={{
+            onLock: event => console.log('onLock', event),
             onReady: event => console.log('onReady', event),
+            onIdentityAvailable: event =>
+              console.log('onIdentityAvailable', event),
           }}
           pageType="premium"
         />

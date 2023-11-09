@@ -10,8 +10,8 @@ export default class Access {
   eventManager = null;
 
   init (appId) {
-    this.eventManager = new NativeEventEmitter(RNAccessEventManager);
     RNAccess.instanciate(appId);
+    this.eventManager = new NativeEventEmitter(RNAccessEventManager);
 
     return this;
   }
@@ -49,6 +49,15 @@ export default class Access {
     return this;
   }
 
+  once (event, callback) {
+    this.eventManager.addListener(
+      this._normalizeEventName(event),
+      callback,
+    );
+
+    return this;
+  }
+
   off (event) {
     this.eventManager.removeAllListeners(
       this._normalizeEventName(event),
@@ -69,7 +78,9 @@ export default class Access {
   }
 
   _normalizeEventName (name) {
-    return /^on[A-Z]/.test(name)
-      ? name.replace(/^on/, '').toLowerCase() : name;
+    name = /^on[A-Z]/.test(name)
+      ? name.replace(/^on/, '') : name;
+
+    return name[0].toLowerCase() + name.slice(1);
   }
 }
