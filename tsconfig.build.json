@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false
+  },
+  "exclude": [
+    "example",
+    "dist",
+    "ios",
+    "scripts",
+    "*.config.js",
+  ]
+}
