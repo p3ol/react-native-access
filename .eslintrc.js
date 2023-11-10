@@ -1,9 +1,13 @@
 module.exports = {
-  extends: ['@poool/eslint-config-react-native'],
+  extends: ['@poool/eslint-config-react-native',
+    'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
   rules: {
     'react/prop-types': [2, { ignore: ['className', 'children'] }],
     'max-len': [2, { code: 80, tabWidth: 2, ignoreRegExpLiterals: true }],
     'react/react-in-jsx-scope': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@poool/no-extra-parens': 0,
   },
   overrides: [{
     files: ['tests/**/*.js'],

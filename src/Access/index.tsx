@@ -1,47 +1,50 @@
+import type { Poool } from 'poool-access';
 import {
   NativeModules,
   NativeEventEmitter,
   findNodeHandle,
 } from 'react-native';
 
+import type { PageType } from '../types';
+
 const { RNAccess, RNAccessEventManager } = NativeModules;
 
 export default class Access {
-  eventManager = null;
+  eventManager: NativeEventEmitter | null = null;
 
-  init (appId) {
+  init (appId: string) {
     RNAccess.instanciate(appId);
     this.eventManager = new NativeEventEmitter(RNAccessEventManager);
 
     return this;
   }
 
-  config (config, readOnly = false) {
+  config (config: Poool.AccessConfigOptions, readOnly = false) {
     RNAccess.config(config, readOnly);
 
     return this;
   }
 
-  texts (texts, readOnly = false) {
+  texts (texts: { [key: string]: string }, readOnly = false) {
     RNAccess.texts(texts, readOnly);
 
     return this;
   }
 
-  styles (styles, readOnly = false) {
+  styles (styles: Poool.styles, readOnly = false) {
     RNAccess.styles(styles, readOnly);
 
     return this;
   }
 
-  variables (variables) {
+  variables (variables: { [key: string]: any }) {
     RNAccess.variables(variables);
 
     return this;
   }
 
-  on (event, callback) {
-    this.eventManager.addListener(
+  on (event: Poool.EventsList, callback: (...props: any) => any) {
+    this.eventManager?.addListener(
       this._normalizeEventName(event),
       callback,
     );
@@ -49,8 +52,8 @@ export default class Access {
     return this;
   }
 
-  once (event, callback) {
-    this.eventManager.addListener(
+  once (event: Poool.EventsList, callback: (...props: any) => any) {
+    this.eventManager?.addListener(
       this._normalizeEventName(event),
       callback,
     );
@@ -58,15 +61,15 @@ export default class Access {
     return this;
   }
 
-  off (event) {
-    this.eventManager.removeAllListeners(
+  off (event: Poool.EventsList) {
+    this.eventManager?.removeAllListeners(
       this._normalizeEventName(event),
     );
 
     return this;
   }
 
-  async createPaywall (pageType, view, percent) {
+  async createPaywall (pageType: PageType, view: number, percent: number) {
     return await RNAccess
       .createPaywall(pageType, findNodeHandle(view) || -1, percent);
   }
@@ -77,7 +80,7 @@ export default class Access {
     return this;
   }
 
-  _normalizeEventName (name) {
+  _normalizeEventName (name: string) {
     name = /^on[A-Z]/.test(name)
       ? name.replace(/^on/, '') : name;
 

@@ -1,7 +1,20 @@
+import type { Poool } from 'poool-access';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import type{ PageType } from '../types';
 import { useAccess } from '../hooks';
+
+export interface PaywallProps {
+  contentRef?: React.RefObject<any>;
+  children?: React.ReactElement;
+  config?: Poool.AccessConfigOptions;
+  texts?: { [key: string]: string };
+  styles?: Poool.styles;
+  events?: { [key: string]: (...props: any) => any };
+  variables?: { [key: string]: any };
+  pageType?: PageType
+}
 
 const Paywall = ({
   events,
@@ -12,7 +25,7 @@ const Paywall = ({
   styles,
   variables,
   pageType = 'premium',
-}) => {
+}: PaywallProps) => {
   const { lib, createFactory } = useAccess();
 
   useEffect(() => {
