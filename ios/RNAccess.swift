@@ -2,10 +2,11 @@ import AccessIOS
 
 @objc(RNAccess)
 class RNAccess: RCTViewManager {
+  var access: Access?
 
   @objc
   func instanciate(_ appId: String) -> Void {
-    try? Access.instanciate(key: appId)
+    self.access = Access(key: appId)
   }
 
   @objc
@@ -19,7 +20,7 @@ class RNAccess: RCTViewManager {
     DispatchQueue.main.async {
       // No view found, creating bottom sheet paywall
       if reactTag == -1 {
-        Access.createPaywall(pageType: pageType ?? "page", percent: percent?.intValue) {
+        self.access?.createPaywall(pageType: pageType ?? "page", percent: percent?.intValue) {
           resolve(true)
         }
         return
@@ -27,35 +28,35 @@ class RNAccess: RCTViewManager {
 
       let view = self.bridge!.uiManager.view(forReactTag: reactTag!)!
 
-      do {
-        try Access.createPaywall(pageType: pageType ?? "page", view: view, percent: percent?.intValue) {
-          resolve(true)
-        }
-      } catch {
-        print("createPaywall error")
-        reject("createPaywall error", error.localizedDescription, error)
+      self.access?.createPaywall(pageType: pageType ?? "page", view: view, percent: percent?.intValue) {
+        resolve(true)
       }
     }
   }
 
   @objc
   func config(_ config: [String: Any], readOnly: Bool = false) -> Void {
-    Access.config(config, readOnly)
+    self.access?.config(config, readOnly)
   }
 
   @objc
   func texts(_ texts: [String: String], readOnly: Bool = false) -> Void {
-    Access.texts(texts, readOnly)
+    self.access?.texts(texts, readOnly)
   }
 
   @objc
   func styles(_ styles: [String: Any], readOnly: Bool = false) -> Void {
-    Access.styles(styles, readOnly)
+    self.access?.styles(styles, readOnly)
   }
 
   @objc
   func variables(_ variables: [String: String]) -> Void {
-    Access.variables(variables)
+    self.access?.variables(variables)
+  }
+
+  @objc
+  func destroy() -> Void {
+    self.access?.destroy()
   }
 
   override static func requiresMainQueueSetup() -> Bool {

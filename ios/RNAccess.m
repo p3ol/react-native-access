@@ -34,4 +34,6 @@ RCT_EXTERN_METHOD(
   variables: (NSDictionary *)variables
 )
 
+RCT_EXTERN_METHOD(destroy)
+
 @end

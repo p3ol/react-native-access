@@ -3,11 +3,12 @@ import AccessIOS
 @objc(RNAccessEventManager)
 class RNAccessEventManager: RCTEventEmitter {
   var hasListeners = true
+  var access: Access = Access(key: "test")
 
   override init () {
     super.init()
 
-    Access.onReady { widgetEvent in
+    self.access.onReady { widgetEvent in
       if self.hasListeners == false {
         return
       }
@@ -20,7 +21,7 @@ class RNAccessEventManager: RCTEventEmitter {
       ])
     }
 
-    Access.onLock {
+    self.access.onLock {
       if self.hasListeners == false {
         return
       }
@@ -28,7 +29,7 @@ class RNAccessEventManager: RCTEventEmitter {
       self.sendEvent(withName: "lock", body: nil)
     }
 
-    Access.onIdentityAvailable { identityEvent in
+    self.access.onIdentityAvailable { identityEvent in
       if self.hasListeners == false {
         return
       }

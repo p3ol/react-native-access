@@ -75,9 +75,7 @@ export default class Access {
   }
 
   destroy () {
-    // RNAccess.destroy();
-
-    return this;
+    RNAccess.destroy();
   }
 
   _normalizeEventName (name: string) {
