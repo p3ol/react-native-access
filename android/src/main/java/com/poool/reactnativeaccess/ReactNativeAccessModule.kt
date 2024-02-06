@@ -1,5 +1,6 @@
 package com.poool.reactnativeaccess
 
+import android.util.Log
 import android.view.ViewGroup
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
@@ -27,15 +28,20 @@ class ReactNativeAccessModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun createPaywall(pageType: String, reactTag: Int, percent: Int = 80, promise: Promise) {
     UiThreadUtil.runOnUiThread {
-      if (reactTag != -1) {
-        val view = UIManagerHelper.getUIManager(reactApplicationContext, reactTag)?.resolveView(reactTag)
-        access?.createPaywall(pageType, percent, view as ViewGroup)
-      } else {
-        val rootView = currentActivity?.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
-        access?.createBottomSheetPaywall(pageType, rootView!!)
-      }
+      try {
+        if (reactTag != -1) {
+          val view = reactApplicationContext?.currentActivity?.findViewById<ViewGroup>(reactTag)
+          access?.createPaywall(pageType, percent, view!!)
+        } else {
+          val rootView = currentActivity?.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
+          access?.createBottomSheetPaywall(pageType, rootView!!)
+        }
 
-      promise.resolve(true)
+        promise.resolve(true)
+      } catch (e: Exception) {
+        Log.e("RNAccess", "Error creating paywall", e)
+        promise.reject(e)
+      }
     }
   }
 
@@ -57,6 +63,10 @@ class ReactNativeAccessModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun variables(variables: ReadableMap) {
     access?.variables(variables.toHashMap())
+  }
+
+  @ReactMethod
+  fun destroy() {
   }
 
   companion object {
