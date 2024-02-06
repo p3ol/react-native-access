@@ -12,7 +12,7 @@ export default function App () {
       >
         <View ref={contentRef}><Text>Lorem ipsum bla bla bla bla</Text></View>
         <Paywall
-          contentRef={contentRef}
+          // contentRef={contentRef}
           config={{ debug: true }}
           styles={{ button_color: '#1896B4' }}
           events={{

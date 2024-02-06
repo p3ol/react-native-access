@@ -13,36 +13,34 @@
   "main": "dist/commonjs/index.js",
   "module": "dist/module/index.js",
   "types": "dist/typescript/index.d.ts",
-  "react-native": "src/index.js",
+  "react-native": "src/index",
   "source": "src/index",
   "files": [
     "src",
-    "dist",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
+    "lib",
     "android",
     "ios",
     "cpp",
     "*.podspec",
-    "!dist/typescript/example",
     "!ios/build",
     "!android/build",
     "!android/gradle",
     "!android/gradlew",
     "!android/gradlew.bat",
     "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
     "!**/.*"
   ],
   "scripts": {
+    "example": "yarn workspace react-native-access-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "release": "release-it"
   },
   "peerDependencies": {
     "prop-types": "^15.0.0",
@@ -50,8 +48,7 @@
     "react-native": "^0.71.0"
   },
   "engines": {
-    "node": ">= 16",
-    "yarn": "1"
+    "node": ">=18"
   },
   "devDependencies": {
     "@babel/core": "7.22.9",
@@ -83,19 +80,23 @@
     "eslint-plugin-react": "7.33.1",
     "eslint-plugin-react-native": "4.0.0",
     "jest": "28.1.1",
-    "metro-react-native-babel-preset": "0.77.0",
-    "pod-install": "0.1.0",
+    "pod-install": "0.2.0",
     "prettier": "2.0.5",
     "prop-types": "15.8.1",
     "react": "18.2.0",
-    "react-native": "0.72.6",
+    "react-native": "0.73.4",
     "react-native-builder-bob": "0.23.1",
     "release-it": "15.0.0",
     "tslib": "2.6.2",
+    "turbo": "1.12.2",
     "typescript": "5.2.2"
   },
   "dependencies": {
     "@junipero/core": "3.2.1",
     "unzipper": "0.10.14"
-  }
+  },
+  "workspaces": [
+    "example"
+  ],
+  "packageManager": "yarn@4.1.0"
 }
