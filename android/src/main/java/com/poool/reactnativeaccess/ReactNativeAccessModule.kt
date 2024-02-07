@@ -7,11 +7,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.uimanager.UIManagerHelper
 import com.poool.access.Access
 
-class ReactNativeAccessModule(reactContext: ReactApplicationContext) :
+class ReactNativeAccessModule(private val reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
   private var access: Access? = null
 
@@ -27,21 +26,18 @@ class ReactNativeAccessModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun createPaywall(pageType: String, reactTag: Int, percent: Int = 80, promise: Promise) {
-    UiThreadUtil.runOnUiThread {
+    reactContext.runOnUiQueueThread {
       try {
-        if (reactTag != -1) {
-          val view = reactApplicationContext?.currentActivity?.findViewById<ViewGroup>(reactTag)
-          access?.createPaywall(pageType, percent, view!!)
-        } else {
-          val rootView = currentActivity?.window?.decorView?.findViewById<ViewGroup>(android.R.id.content)
-          access?.createBottomSheetPaywall(pageType, rootView!!)
-        }
-
-        promise.resolve(true)
+        val uiManager = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag)
+        val view = uiManager?.resolveView(reactTag)
+        access?.createPaywall(pageType, percent, view as ViewGroup)
       } catch (e: Exception) {
         Log.e("RNAccess", "Error creating paywall", e)
-        promise.reject(e)
+        val rootView = currentActivity?.findViewById<ViewGroup>(android.R.id.content)
+        access?.createBottomSheetPaywall(pageType, rootView!!)
       }
+
+      promise.resolve(true)
     }
   }
 
