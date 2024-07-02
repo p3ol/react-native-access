@@ -10,17 +10,16 @@
     "build:ios": "cd ios && xcodebuild -workspace default.xcworkspace -scheme default -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO"
   },
   "dependencies": {
+    "@babel/runtime": "7.24.7",
     "react": "18.2.0",
     "react-native": "0.74.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@babel/preset-env": "^7.20.0",
-    "@babel/runtime": "^7.20.0",
     "@react-native/babel-preset": "0.74.85",
     "@react-native/metro-config": "0.74.85",
     "@react-native/typescript-config": "0.74.85",
-    "pod-install": "^0.1.0"
+    "babel-plugin-module-resolver": "5.0.2",
+    "pod-install": "0.2.2"
   },
   "engines": {
     "node": ">=18"

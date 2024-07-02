@@ -82,6 +82,6 @@ export default class Access {
     name = /^on[A-Z]/.test(name)
       ? name.replace(/^on/, '') : name;
 
-    return name[0].toLowerCase() + name.slice(1);
+    return name[0]?.toLowerCase() + name.slice(1);
   }
 }

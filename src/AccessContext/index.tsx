@@ -5,7 +5,6 @@ import {
   useEffect,
   useReducer,
 } from 'react';
-import PropTypes from 'prop-types';
 import { mockState, mergeDeep } from '@junipero/core';
 
 import type {
@@ -122,13 +121,5 @@ const AccessContext = ({
 };
 
 AccessContext.displayName = 'AccessContext';
-AccessContext.propTypes = {
-  appId: PropTypes.string.isRequired,
-  config: PropTypes.object,
-  texts: PropTypes.object,
-  styles: PropTypes.object,
-  events: PropTypes.object,
-  variables: PropTypes.object,
-};
 
 export default AccessContext;

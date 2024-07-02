@@ -51,9 +51,11 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@babel/core": "7.22.9",
-    "@babel/eslint-parser": "7.22.9",
-    "@babel/eslint-plugin": "7.22.5",
+    "@babel/core": "7.24.7",
+    "@babel/eslint-parser": "7.24.7",
+    "@babel/eslint-plugin": "7.24.7",
+    "@babel/helper-compilation-targets": "^7.24.7",
+    "@babel/preset-env": "7.24.7",
     "@commitlint/config-conventional": "17.0.2",
     "@poool/eslint-config": "3.0.1",
     "@poool/eslint-config-react": "3.0.1",
@@ -97,5 +99,5 @@
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@4.3.1"
+  "packageManager": "yarn@3.6.4"
 }

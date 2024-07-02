@@ -1,6 +1,5 @@
 import type { Poool } from 'poool-access';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import type{ PageType } from '../types';
 import { useAccess } from '../hooks';
@@ -54,21 +53,5 @@ const Paywall = ({
 };
 
 Paywall.displayName = 'Paywall';
-Paywall.propTypes = {
-  contentRef: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.object }),
-  ]),
-  children: PropTypes.element,
-  config: PropTypes.object,
-  texts: PropTypes.object,
-  styles: PropTypes.object,
-  events: PropTypes.object,
-  variables: PropTypes.object,
-  id: PropTypes.string,
-  pageType: PropTypes.oneOf([
-    'premium', 'free', 'page', 'subscription', 'registration',
-  ]),
-};
 
 export default Paywall;
