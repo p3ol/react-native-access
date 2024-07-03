@@ -1,16 +1,21 @@
 package com.poool.reactnativeaccess
 
+import android.R
+import android.graphics.Color
 import android.util.Log
 import android.view.ViewGroup
+import android.widget.TextView
+import com.facebook.react.ReactRootView
+import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.Promise
 import com.facebook.react.uimanager.UIManagerHelper
+import com.facebook.react.views.view.ReactViewGroup
 import com.poool.access.Access
 
-class ReactNativeAccessModule(private val reactContext: ReactApplicationContext) :
+class ReactNativeAccessModule(private val reactContext: ReactApplicationContext):
   ReactContextBaseJavaModule(reactContext) {
   private var access: Access? = null
 
@@ -25,19 +30,41 @@ class ReactNativeAccessModule(private val reactContext: ReactApplicationContext)
   }
 
   @ReactMethod
-  fun createPaywall(pageType: String, reactTag: Int, percent: Int = 80, promise: Promise) {
+  fun createPaywall(pageType: String, reactTag: Int, percent: Int = 80, mode: String = "hide", promise: Promise) {
+    Log.d("RNAccess", "mode: $mode, viewId: $reactTag, pageType: $pageType")
     reactContext.runOnUiQueueThread {
       try {
+        val rootLayout = currentActivity?.findViewById<ViewGroup>(R.id.content);
         val uiManager = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag)
-        val view = uiManager?.resolveView(reactTag)
-        access?.createPaywall(pageType, percent, view as ViewGroup)
+        val container = uiManager?.resolveView(reactTag) as ReactViewGroup
+
+        when (mode) {
+          "bottom-sheet" -> {
+            access?.createBottomSheetPaywall(pageType, container) {
+              println("Paywall dismissed")
+            }
+          }
+          "custom" -> {
+            val subView = access?.returnPaywallView(pageType, reactContext)
+            Log.d("RNAccess", "subView: $subView, container: $container")
+
+            subView?.layoutParams = ViewGroup.LayoutParams(
+              ViewGroup.LayoutParams.MATCH_PARENT,
+              ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            container?.addView(subView)
+          }
+          else -> {
+            access?.createPaywall(pageType, percent, container)
+          }
+        }
+
+        promise.resolve(true)
       } catch (e: Exception) {
         Log.e("RNAccess", "Error creating paywall", e)
-        val rootView = currentActivity?.findViewById<ViewGroup>(android.R.id.content)
-        access?.createBottomSheetPaywall(pageType, rootView!!)
+        promise.reject("Error creating paywall", e)
       }
-
-      promise.resolve(true)
     }
   }
 

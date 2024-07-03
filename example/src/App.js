@@ -14,8 +14,8 @@ export default function App () {
           <Text>Lorem ipsum bla bla bla bla</Text>
         </View>
         <Paywall
-          contentRef={contentRef}
-          config={{ debug: true }}
+          // contentRef={contentRef}
+          config={{ debug: true, cookies_enabled: true, force_widget: 'gift' }}
           styles={{ button_color: '#1896B4' }}
           events={{
             onLock: event => console.log('onLock', event),

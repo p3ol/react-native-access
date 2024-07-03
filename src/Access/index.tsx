@@ -69,9 +69,14 @@ export default class Access {
     return this;
   }
 
-  async createPaywall (pageType: PageType, view: number, percent: number) {
+  async createPaywall (
+    pageType: PageType,
+    view: number,
+    percent: number,
+    mode: 'bottom-sheet' | 'hide' | 'custom' = 'custom',
+  ) {
     return await RNAccess
-      .createPaywall(pageType, findNodeHandle(view) || -1, percent);
+      .createPaywall(pageType, findNodeHandle(view) || -1, percent, mode);
   }
 
   destroy () {
