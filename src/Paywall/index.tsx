@@ -1,9 +1,10 @@
 import type { Poool } from 'poool-access';
 import { useContext, useEffect, useRef } from 'react';
-import { RootTagContext, Text, View } from 'react-native';
+import { RootTagContext, View } from 'react-native';
 
 import type{ PageType } from '../types';
 import { useAccess } from '../hooks';
+import PaywallView from '../PaywallView';
 
 export interface PaywallProps {
   contentRef?: React.RefObject<any>;
@@ -28,7 +29,7 @@ const Paywall = ({
   bottomSheet = false,
 }: PaywallProps) => {
   const { lib, createFactory } = useAccess();
-  const innerRef = useRef<View>();
+  const innerRef = useRef();
   const rootTag = useContext(RootTagContext);
 
   useEffect(() => {
@@ -58,9 +59,14 @@ const Paywall = ({
   };
 
   return (
-    <View ref={innerRef}>
-      <Text>Test</Text>
-    </View>
+    // <View ref={innerRef} style={{ flex: 1 }} collapsable={false} />
+    <PaywallView
+      ref={innerRef}
+      collapsable={false}
+      style={{ flex: 1, backgroundColor: 'red' }}
+      // pageType={pageType}
+      // appId={appId}
+    />
   );
 };
 

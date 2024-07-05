@@ -1,10 +1,7 @@
 package com.poool.reactnativeaccess
 
-import android.R
-import android.graphics.Color
 import android.util.Log
-import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.LinearLayout
 import com.facebook.react.ReactRootView
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
@@ -34,28 +31,23 @@ class ReactNativeAccessModule(private val reactContext: ReactApplicationContext)
     Log.d("RNAccess", "mode: $mode, viewId: $reactTag, pageType: $pageType")
     reactContext.runOnUiQueueThread {
       try {
-        val rootLayout = currentActivity?.findViewById<ViewGroup>(R.id.content);
+        //val rootLayout = currentActivity?.findViewById<ViewGroup>(R.id.content);
         val uiManager = UIManagerHelper.getUIManagerForReactTag(reactContext, reactTag)
-        val container = uiManager?.resolveView(reactTag) as ReactViewGroup
 
         when (mode) {
           "bottom-sheet" -> {
+            val container = uiManager?.resolveView(reactTag) as ReactRootView
             access?.createBottomSheetPaywall(pageType, container) {
               println("Paywall dismissed")
             }
           }
           "custom" -> {
+            val container = uiManager?.resolveView(reactTag) as LinearLayout
             val subView = access?.returnPaywallView(pageType, reactContext)
-            Log.d("RNAccess", "subView: $subView, container: $container")
-
-            subView?.layoutParams = ViewGroup.LayoutParams(
-              ViewGroup.LayoutParams.MATCH_PARENT,
-              ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            container?.addView(subView)
+            container.addView(subView)
           }
           else -> {
+            val container = uiManager?.resolveView(reactTag) as ReactViewGroup
             access?.createPaywall(pageType, percent, container)
           }
         }
