@@ -29,6 +29,7 @@ class PaywallView(context: Context) : FrameLayout(context) {
 
     if (access !== null) {
       access?.destroy()
+      access = null
     }
 
     access = Access(appId!!)

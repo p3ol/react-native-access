@@ -9,6 +9,7 @@ export interface AccessContextProps extends
 
 export interface AccessContextState {
   lib?: Access;
+  released?: (string | boolean)[];
 }
 
 const AccessContext = ({
@@ -24,10 +25,15 @@ const AccessContext = ({
     StateReducer<AccessContextState>
   >(mockState, {
     lib: undefined,
+    released: [],
   });
 
   useEffect(() => {
     dispatch({ lib: new Access() });
+  }, []);
+
+  const releaseContent = useCallback((id: string) => {
+    dispatch(s => ({ released: [...(s.released || []), id] }));
   }, []);
 
   const getContext = useCallback(() => ({
@@ -38,8 +44,12 @@ const AccessContext = ({
     events,
     variables,
     lib: state.lib,
+    released: state.released,
+    releaseContent,
   }), [
-    state.lib, appId, config, texts, styles, events, variables,
+    appId, config, texts, styles, events, variables,
+    state.lib, state.released,
+    releaseContent,
   ]);
 
   return (

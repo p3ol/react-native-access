@@ -10,14 +10,16 @@ import AccessIOS
 
 class PaywallView: UIView {
     private var access: Access!
-    
+    @objc var onRelease: RCTDirectEventBlock?
+
     func reinit () {
         if (
-            appId == nil || pageType == nil || config == nil || styles == nil || texts == nil || variables == nil
+            appId == nil || pageType == nil || config == nil || styles == nil ||
+            texts == nil || variables == nil
         ) {
             return
         }
-        
+
         if (access != nil) {
             access.destroy()
             access = nil
@@ -29,7 +31,7 @@ class PaywallView: UIView {
         access.styles(styles!)
         access.texts(texts!)
         access.variables(variables!)
-        
+
         var subView: UIView? = access.createPaywall(pageType: pageType!)
         subView?.frame = self.frame
 
@@ -55,20 +57,26 @@ class PaywallView: UIView {
             reinit()
         }
     }
-    
+
     @objc var styles: [String: Any]? = nil {
         didSet {
             reinit()
         }
     }
-    
+
     @objc var texts: [String: String]? = nil {
         didSet {
             reinit()
         }
     }
-    
+
     @objc var variables: [String: Any]? = nil {
+        didSet {
+            reinit()
+        }
+    }
+
+    @objc var events: [String: RCTDirectEventBlock]? = nil {
         didSet {
             reinit()
         }

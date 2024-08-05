@@ -57,6 +57,10 @@ export interface AccessContextValue {
    */
   lib?: Access;
   /**
+   * The released paywalls
+   */
+  released?: (string | boolean)[]
+  /**
    * Function to trigger a new access init, returns the created access instance,
    * with passed options
    *
@@ -74,6 +78,11 @@ export interface AccessContextValue {
    * More infos: https://www.poool.dev/docs/access/react
    */
   destroyFactory?: (factory: Access) => void;
+  /**
+   * Function to release content for a given paywall (or every paywalls)
+   * @param id The paywall ID
+   */
+  releaseContent?(id: string | boolean): void;
 }
 
 export const AccessContext = createContext<AccessContextValue>({});
