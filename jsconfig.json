@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "paths": {
-      "@poool/react-native-access": ["./src"]
-    }
-  }
-}
