@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Platform, Text } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, Text, View } from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import {
   AccessContext,
@@ -25,15 +25,19 @@ export default function App() {
       config={{ cookies_enabled: true }}
     >
       <SafeAreaView style={styles.container}>
-        <Snippet><Text>Synopsis</Text></Snippet>
-        <RestrictedContent><Text>Full content</Text></RestrictedContent>
-        <Paywall
-          config={{ debug: true }}
-          styles={{
-            skin_color: '#FF0000',
-          }}
-          onReady={() => console.log('Paywall ready')}
-        />
+        <View style={styles.wrapper}>
+          <Snippet>
+            <Text>Synopsis</Text>
+          </Snippet>
+          <RestrictedContent>
+            <Text>Full content</Text>
+          </RestrictedContent>
+          <Paywall
+            config={{ debug: true }}
+            onReady={() => console.log('Paywall ready')}
+            style={{ paddingTop: 20 }}
+          />
+        </View>
       </SafeAreaView>
     </AccessContext>
   );
@@ -42,5 +46,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  wrapper: {
+    padding: 20,
   },
 });

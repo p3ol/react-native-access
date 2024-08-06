@@ -1,15 +1,16 @@
 import type { Poool } from 'poool-access';
-import { useContext, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { useRef } from 'react';
+import { type ViewProps, View, StyleSheet } from 'react-native';
 
 import type { AccessEvents, EventCallbackFunction } from '../types';
-import { type AccessContextValue, AccessContext } from '../contexts';
+import type { AccessContextValue } from '../contexts';
 import { fromNativeEvent } from '../utils';
+import { useAccess } from '../hooks';
 import PaywallView from '../PaywallView';
 
 export interface PaywallProps extends Pick<
   AccessContextValue, 'config' | 'texts' | 'styles' | 'variables'
-> {
+>, ViewProps {
   /**
    * The current page type
    *
@@ -101,6 +102,8 @@ const Paywall = ({
   onAlternativeClick,
   onError,
   onAnswer,
+  style,
+  ...rest
 }: PaywallProps) => {
   const {
     appId,
@@ -109,41 +112,42 @@ const Paywall = ({
     styles: factoryStyles,
     variables: factoryVariables,
     releaseContent,
-  } = useContext(AccessContext);
+  } = useAccess();
   const innerRef = useRef(null);
 
   return (
-    <PaywallView
-      ref={innerRef}
-      appId={appId}
-      pageType={pageType}
-      config={{ ...config || {}, ...factoryConfig || {} }}
-      texts={{ ...texts || {}, ...factoryTexts || {} }}
-      styles={{ ...styles || {}, ...factoryStyles || {} }}
-      variables={{ ...variables || {}, ...factoryVariables || {} }}
-      style={internalStyles.container}
-      onRelease={fromNativeEvent<Extract<AccessEvents['release'], EventCallbackFunction<any>>>((
-        e: Parameters<
-          Extract<AccessEvents['release'], EventCallbackFunction<any>>
-        >[0]
-      ) => {
-        releaseContent?.(id || true);
-        onRelease?.(e);
-      })}
-      onLock={onLock}
-      onReady={onReady}
-      onPaywallSeen={onPaywallSeen}
-      onRegister={onRegister}
-      onFormSubmit={onFormSubmit}
-      onSubscribeClick={onSubscribeClick}
-      onLoginClick={onLoginClick}
-      onDiscoveryLinkClick={onDiscoveryLinkClick}
-      onCustomButtonClick={onCustomButtonClick}
-      onDataPolicyClick={onDataPolicyClick}
-      onAlternativeClick={onAlternativeClick}
-      onError={onError}
-      onAnswer={onAnswer}
-    />
+    <View { ...rest } style={[internalStyles.container, style]}>
+      <PaywallView
+        ref={innerRef}
+        appId={appId}
+        pageType={pageType}
+        config={{ ...config || {}, ...factoryConfig || {} }}
+        texts={{ ...texts || {}, ...factoryTexts || {} }}
+        styles={{ ...styles || {}, ...factoryStyles || {} }}
+        variables={{ ...variables || {}, ...factoryVariables || {} }}
+        onRelease={fromNativeEvent<Extract<AccessEvents['release'], EventCallbackFunction<any>>>((
+          e: Parameters<
+            Extract<AccessEvents['release'], EventCallbackFunction<any>>
+          >[0]
+        ) => {
+          releaseContent?.(id || true);
+          onRelease?.(e);
+        })}
+        onLock={onLock}
+        onReady={onReady}
+        onPaywallSeen={onPaywallSeen}
+        onRegister={onRegister}
+        onFormSubmit={onFormSubmit}
+        onSubscribeClick={onSubscribeClick}
+        onLoginClick={onLoginClick}
+        onDiscoveryLinkClick={onDiscoveryLinkClick}
+        onCustomButtonClick={onCustomButtonClick}
+        onDataPolicyClick={onDataPolicyClick}
+        onAlternativeClick={onAlternativeClick}
+        onError={onError}
+        onAnswer={onAnswer}
+      />
+    </View>
   );
 };
 

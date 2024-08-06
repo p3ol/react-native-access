@@ -50,7 +50,7 @@ class PaywallView: UIView {
 
         let subView: UIView? = access.createPaywall(pageType: pageType!)
         subView?.frame = self.frame
-
+        
         if (subView != nil) {
             self.addSubview(subView!)
         }
