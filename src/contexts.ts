@@ -1,9 +1,6 @@
 import type { Poool } from 'poool-access';
 import { createContext } from 'react';
 
-import type { AccessEvents } from './types';
-import type Access from './Access';
-
 export interface AccessContextValue {
   /**
    * Your poool app ID
@@ -32,12 +29,6 @@ export interface AccessContextValue {
    */
   styles?: Poool.styles;
   /**
-   * Your poool access events
-   *
-   * More infos: https://www.poool.dev/docs/access/javascript/access/events
-   */
-  events?: { [key in Poool.EventsList]?: AccessEvents[key] };
-  /**
    * Your pool access variables
    *
    * More infos: https://www.poool.dev/docs/access/javascript/access/variables
@@ -51,33 +42,9 @@ export interface AccessContextValue {
    */
   scriptUrl?: string;
   /**
-   * The poool access sdk
-   *
-   * More infos: https://www.poool.dev/docs/access/react
-   */
-  lib?: Access;
-  /**
    * The released paywalls
    */
   released?: (string | boolean)[]
-  /**
-   * Function to trigger a new access init, returns the created access instance,
-   * with passed options
-   *
-   * More infos: https://www.poool.dev/docs/access/react
-   */
-  createFactory?: (
-    opts?: Pick<
-      AccessContextValue,
-      'config' | 'texts' | 'styles' | 'variables' | 'events'
-    >
-  ) => Access | undefined;
-  /**
-   * Function to delete a factory
-   *
-   * More infos: https://www.poool.dev/docs/access/react
-   */
-  destroyFactory?: (factory: Access) => void;
   /**
    * Function to release content for a given paywall (or every paywalls)
    * @param id The paywall ID

@@ -3,13 +3,20 @@ import { type ComponentPropsWithoutRef, useContext } from 'react';
 import { AccessContext } from '../contexts'
 
 export interface SnippetProps extends ComponentPropsWithoutRef<any> {
-  id: string;
+  /**
+   * Optional unique paywall id. When released, the snippet with the
+   * corresponding id will be hidden.
+   */
+  id?: string;
 }
 
 const Snippet = ({ id, children }: SnippetProps) => {
   const { released } = useContext(AccessContext);
 
-  if (released?.includes(true) || released?.includes(id)) {
+  if (
+    (!id && released?.includes(true)) ||
+    released?.includes(id || 'unknown')
+  ) {
     return null;
   }
 

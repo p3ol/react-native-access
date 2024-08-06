@@ -3,13 +3,20 @@ import { type ComponentPropsWithoutRef, useContext } from 'react';
 import { AccessContext } from '../contexts'
 
 export interface RestrictedContentProps extends ComponentPropsWithoutRef<any> {
-  id: string;
+  /**
+   * Optional unique paywall id. When released, the restricted content with the
+   * corresponding id will be displayed.
+   */
+  id?: string;
 }
 
 const RestrictedContent = ({ id, children }: RestrictedContentProps) => {
   const { released } = useContext(AccessContext);
 
-  if (released?.includes(true) || released?.includes(id)) {
+  if (
+    (!id && released?.includes(true)) ||
+    released?.includes(id || 'unknown')
+  ) {
     return children;
   }
 }

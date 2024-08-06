@@ -5,6 +5,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.facebook.react.uimanager.events.RCTModernEventEmitter
 
 class PaywallViewManager(
   private val reactContext: ReactApplicationContext
@@ -51,5 +52,17 @@ class PaywallViewManager(
   @ReactProp(name = "texts")
   fun setTexts(view: PaywallView, texts: ReadableMap) {
     view.setTexts(texts)
+  }
+
+  override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any> {
+    val events = listOf(
+      "onLock", "onRelease", "onPaywallSeen", "onReady", "onRegister", "onSubscribeClick",
+      "onAlternativeClick", "onAnswer", "onCustomButtonClick", "onDataPolicyClick",
+      "onDiscoveryLinkClick", "onError", "onFormSubmit", "onLoginClick"
+    )
+
+    return events.associateWith {
+      mapOf("phasedRegistrationNames" to mapOf("bubbled" to it))
+    }
   }
 }

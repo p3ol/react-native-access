@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
-import { Text, SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, Text } from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import { AccessContext, Paywall } from '@poool/react-native-access';
+import {
+  AccessContext,
+  Paywall,
+  Snippet,
+  RestrictedContent,
+} from '@poool/react-native-access';
 
 export default function App() {
   useEffect(() => {
@@ -15,14 +20,19 @@ export default function App() {
   };
 
   return (
-    <AccessContext appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH" config={{ cookies_enabled: true }}>
+    <AccessContext
+      appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
+      config={{ cookies_enabled: true }}
+    >
       <SafeAreaView style={styles.container}>
-        <Text>Result</Text>
+        <Snippet><Text>Synopsis</Text></Snippet>
+        <RestrictedContent><Text>Full content</Text></RestrictedContent>
         <Paywall
           config={{ debug: true }}
           styles={{
             skin_color: '#FF0000',
           }}
+          onReady={() => console.log('Paywall ready')}
         />
       </SafeAreaView>
     </AccessContext>
