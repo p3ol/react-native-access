@@ -24,3 +24,18 @@ node_require('react-native-permissions/scripts/setup.rb')
 setup_permissions([
   'AppTrackingTransparency',
 ])
+
+def add_tracking_description!()
+  infoplist_src = File.join(__dir__, '../node_modules/.generated/ios/Info.plist')
+  infoplist_dst = File.join(__dir__, '../node_modules/.generated/ios/Info.plist')
+
+  plist = CFPropertyList::List.new(file: infoplist_src)
+  info = CFPropertyList.native_types(plist.value)
+
+  info['NSUserTrackingUsageDescription'] = 'We use tracking to provide you with a better experience'
+
+  plist.value = CFPropertyList.guess(info)
+  plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
+end
+
+add_tracking_description!()
