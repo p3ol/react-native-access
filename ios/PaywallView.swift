@@ -10,7 +10,21 @@ import AccessIOS
 
 class PaywallView: UIView {
     private var access: Access!
+    
+    @objc var onLock: RCTDirectEventBlock?
+    @objc var onReady: RCTDirectEventBlock?
     @objc var onRelease: RCTDirectEventBlock?
+    @objc var onPaywallSeen: RCTDirectEventBlock?
+    @objc var onRegister: RCTDirectEventBlock?
+    @objc var onFormSubmit: RCTDirectEventBlock?
+    @objc var onSubscribeTapped: RCTDirectEventBlock?
+    @objc var onLoginTapped: RCTDirectEventBlock?
+    @objc var onDiscoveryLinkTapped: RCTDirectEventBlock?
+    @objc var onCustomButtonTapped: RCTDirectEventBlock?
+    @objc var onDataPolicyTapped: RCTDirectEventBlock?
+    @objc var onAlternativeTapEvent: RCTDirectEventBlock?
+    @objc var onError: RCTDirectEventBlock?
+    @objc var onAnswer: RCTDirectEventBlock?
 
     func reinit () {
         if (
@@ -31,13 +45,36 @@ class PaywallView: UIView {
         access.styles(styles!)
         access.texts(texts!)
         access.variables(variables!)
+        
+        initEvents()
 
-        var subView: UIView? = access.createPaywall(pageType: pageType!)
+        let subView: UIView? = access.createPaywall(pageType: pageType!)
         subView?.frame = self.frame
 
         if (subView != nil) {
             self.addSubview(subView!)
         }
+    }
+    
+    private func initEvents () {
+        access.onLock { self.onLock?([:]) }
+        access.onReady { readyEvent in self.onReady?(readyEvent?.toMap()) }
+        access.onRelease { releaseEvent in self.onRelease?(releaseEvent?.toMap()) }
+        access.onPaywallSeen { seenEvent in self.onPaywallSeen?(seenEvent?.toMap()) }
+        access.onRegister { registerEvent in self.onRegister?(registerEvent?.toMap()) }
+        access.onFormSubmit { submitEvent in
+            self.onFormSubmit?(submitEvent?.toMap())
+            
+            return nil
+        }
+        access.onSubscribeTapped { tapEvent in self.onSubscribeTapped?(tapEvent?.toMap()) }
+        access.onLoginTapped { tapEvent in self.onLoginTapped?(tapEvent?.toMap()) }
+        access.onDiscoveryLinkTapped { tapEvent in self.onDiscoveryLinkTapped?(tapEvent?.toMap()) }
+        access.onCustomButtonTapped { tapEvent in self.onCustomButtonTapped?(tapEvent?.toMap()) }
+        access.onDataPolicyTapped { tapEvent in self.onDataPolicyTapped?(tapEvent?.toMap()) }
+        access.onAlternativeTapEvent { tapEvent in self.onAlternativeTapEvent?(tapEvent?.toMap()) }
+        access.onError { error in self.onError?(error?.toMap()) }
+        access.onAnswer { answerEvent in self.onAnswer?(answerEvent?.toMap()) }
     }
 
     @objc var appId: String? = nil {
@@ -71,12 +108,6 @@ class PaywallView: UIView {
     }
 
     @objc var variables: [String: Any]? = nil {
-        didSet {
-            reinit()
-        }
-    }
-
-    @objc var events: [String: RCTDirectEventBlock]? = nil {
         didSet {
             reinit()
         }
