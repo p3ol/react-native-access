@@ -116,7 +116,11 @@ const Paywall = ({
   const innerRef = useRef(null);
 
   return (
-    <View { ...rest } style={[internalStyles.container, style]}>
+    <View
+      collapsable={false}
+      { ...rest }
+      style={[internalStyles.container, style]}
+    >
       <PaywallView
         ref={innerRef}
         appId={appId}
@@ -125,6 +129,7 @@ const Paywall = ({
         texts={{ ...texts || {}, ...factoryTexts || {} }}
         styles={{ ...styles || {}, ...factoryStyles || {} }}
         variables={{ ...variables || {}, ...factoryVariables || {} }}
+        style={internalStyles.wrapper}
         onRelease={fromNativeEvent<Extract<AccessEvents['release'], EventCallbackFunction<any>>>((
           e: Parameters<
             Extract<AccessEvents['release'], EventCallbackFunction<any>>
@@ -157,6 +162,9 @@ export default Paywall;
 
 const internalStyles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  wrapper: {
     flex: 1,
   },
 });

@@ -25,7 +25,7 @@ export default function App() {
       config={{ cookies_enabled: true }}
     >
       <SafeAreaView style={styles.container}>
-        <View style={styles.wrapper}>
+        <View collapsable={false} style={styles.wrapper}>
           <Snippet>
             <Text>Synopsis</Text>
           </Snippet>
@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   wrapper: {
+    flex: 1,
     padding: 20,
   },
 });
