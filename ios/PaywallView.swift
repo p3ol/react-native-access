@@ -25,11 +25,12 @@ class PaywallView: UIView {
     @objc var onAlternativeClick: RCTDirectEventBlock?
     @objc var onError: RCTDirectEventBlock?
     @objc var onAnswer: RCTDirectEventBlock?
+    @objc var onDismissBottomSheet: RCTDirectEventBlock?
 
     func reinit () {
         if (
             appId == nil || pageType == nil || config == nil || styles == nil ||
-            texts == nil || variables == nil
+            texts == nil || variables == nil || displayMode == nil
         ) {
             return
         }
@@ -48,11 +49,18 @@ class PaywallView: UIView {
 
         initEvents()
 
-        let subView: UIView? = access.createPaywall(pageType: pageType!)
-        subView?.frame = self.frame
-        
-        if (subView != nil) {
-            self.addSubview(subView!)
+        switch displayMode {
+            case "bottom-sheet":
+                access.createPaywall(pageType: pageType!, percent: 0) {
+                    self.onDismissBottomSheet?([:])
+                }
+            default:
+                let subView: UIView? = access.createPaywall(pageType: pageType!)
+                subView?.frame = self.frame
+                
+                if (subView != nil) {
+                    self.addSubview(subView!)
+                }
         }
     }
 
@@ -84,6 +92,12 @@ class PaywallView: UIView {
     }
 
     @objc var pageType: String? = nil {
+        didSet {
+            reinit()
+        }
+    }
+    
+    @objc var displayMode: String? = nil {
         didSet {
             reinit()
         }

@@ -19,6 +19,10 @@ export interface PaywallProps extends Pick<
    */
   pageType?: Parameters<Poool.AccessFactory['createPaywall']>[0]['pageType'];
   /**
+   * The paywall display style
+   */
+  displayMode?: 'default' | 'bottom-sheet',
+  /**
    * Optional unique paywall id. When released, the snippet with the same id
    * will be hidden, and the corresponding restricted content will be displayed.
    */
@@ -79,6 +83,10 @@ export interface PaywallProps extends Pick<
    * See https://www.poool.dev/docs/access/javascript/access/events#answer
    */
   onAnswer?: Extract<AccessEvents['answer'], EventCallbackFunction<any>>;
+  /**
+   * Callback triggered when the bottom sheet is dismissed
+   */
+  onDismissBottomSheet?: () => void;
 }
 
 const Paywall = ({
@@ -87,6 +95,7 @@ const Paywall = ({
   texts,
   styles,
   variables,
+  displayMode = 'default',
   pageType = 'premium',
   onLock,
   onRelease,
@@ -102,6 +111,7 @@ const Paywall = ({
   onAlternativeClick,
   onError,
   onAnswer,
+  onDismissBottomSheet,
   style,
   ...rest
 }: PaywallProps) => {
@@ -125,6 +135,7 @@ const Paywall = ({
         ref={innerRef}
         appId={appId}
         pageType={pageType}
+        displayMode={displayMode}
         config={{ ...config || {}, ...factoryConfig || {} }}
         texts={{ ...texts || {}, ...factoryTexts || {} }}
         styles={{ ...styles || {}, ...factoryStyles || {} }}
@@ -151,6 +162,7 @@ const Paywall = ({
         onAlternativeClick={onAlternativeClick}
         onError={onError}
         onAnswer={onAnswer}
+        onDismissBottomSheet={onDismissBottomSheet}
       />
     </View>
   );

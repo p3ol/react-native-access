@@ -5,7 +5,6 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.uimanager.events.RCTModernEventEmitter
 
 class PaywallViewManager(
   private val reactContext: ReactApplicationContext
@@ -34,6 +33,12 @@ class PaywallViewManager(
     view.setPageType(pageType)
   }
 
+  @ReactProp(name = "displayMode")
+  fun setDisplayMode(view: PaywallView, displayMode: String) {
+    view.setDisplayMode(displayMode)
+  }
+
+
   @ReactProp(name = "config")
   fun setConfig(view: PaywallView, config: ReadableMap) {
     view.setConfig(config)
@@ -58,7 +63,7 @@ class PaywallViewManager(
     val events = listOf(
       "onLock", "onRelease", "onPaywallSeen", "onReady", "onRegister", "onSubscribeClick",
       "onAlternativeClick", "onAnswer", "onCustomButtonClick", "onDataPolicyClick",
-      "onDiscoveryLinkClick", "onError", "onFormSubmit", "onLoginClick"
+      "onDiscoveryLinkClick", "onError", "onFormSubmit", "onLoginClick", "onDismissBottomSheet",
     )
 
     return events.associateWith {

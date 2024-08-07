@@ -1,13 +1,12 @@
 package com.poool.reactnativeaccess
 
 import android.content.Context
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.events.RCTEventEmitter
-import com.facebook.react.uimanager.events.RCTModernEventEmitter
 import com.poool.access.Access
 import com.poool.access.onAlternativeClick
 import com.poool.access.onAnswer
@@ -25,9 +24,11 @@ import com.poool.access.onRelease
 import com.poool.access.onSubscribeClick
 
 class PaywallView(context: Context) : FrameLayout(context) {
+  private var access: Access? = null
+
   private var appId: String? = null
   private var pageType: String? = null
-  private var access: Access? = null
+  private var displayMode: String? = null
   private var config: Map<String, Any>? = null
   private var styles: Map<String, Any>? = null
   private var variables: Map<String, Any>? = null
@@ -40,7 +41,7 @@ class PaywallView(context: Context) : FrameLayout(context) {
   private fun reinit () {
     if (
       appId == null || pageType == null || config == null || styles == null ||
-      variables == null || texts == null
+      variables == null || texts == null || displayMode == null
     ) {
       return
     }
@@ -58,10 +59,26 @@ class PaywallView(context: Context) : FrameLayout(context) {
 
     initEvents()
 
-    val subView = access?.returnPaywallView(pageType!!, context as ThemedReactContext)
-    subView?.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-    addView(subView)
-    viewTreeObserver.dispatchOnGlobalLayout()
+    when (displayMode) {
+      "bottom-sheet" -> {
+        val ctx = context as ReactContext
+        val rootView = ctx.currentActivity?.findViewById<ViewGroup>(android.R.id.content)
+        val eventEmitter = ctx.getJSModule(RCTEventEmitter::class.java)
+
+        if (rootView != null) {
+          access?.createBottomSheetPaywall(pageType!!, rootView) {
+            eventEmitter.receiveEvent(id, "onDismissBottomSheet", null)
+          }
+        }
+      }
+
+      else -> {
+        val subView = access?.returnPaywallView(pageType!!, context as ThemedReactContext)
+        subView?.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        addView(subView)
+        viewTreeObserver.dispatchOnGlobalLayout()
+      }
+    }
   }
 
   fun setAppId(appId: String) {
@@ -71,6 +88,11 @@ class PaywallView(context: Context) : FrameLayout(context) {
 
   fun setPageType(pageType: String) {
     this.pageType = pageType
+    reinit()
+  }
+
+  fun setDisplayMode(displayMode: String) {
+    this.displayMode = displayMode
     reinit()
   }
 
