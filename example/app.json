@@ -1,0 +1,42 @@
+{
+  "name": "ReactNativeAccessExample",
+  "displayName": "ReactNativeAccessExample",
+  "components": [
+    {
+      "appKey": "ReactNativeAccessExample",
+      "displayName": "ReactNativeAccessExample"
+    }
+  ],
+  "resources": {
+    "android": [
+      "dist/res",
+      "dist/main.android.jsbundle"
+    ],
+    "ios": [
+      "dist/assets",
+      "dist/main.ios.jsbundle"
+    ],
+    "macos": [
+      "dist/assets",
+      "dist/main.macos.jsbundle"
+    ],
+    "visionos": [
+      "dist/assets",
+      "dist/main.visionos.jsbundle"
+    ],
+    "windows": [
+      "dist/assets",
+      "dist/main.windows.bundle"
+    ]
+  },
+  "android": {
+    "package": "poool.reactnativeaccess.example"
+  },
+  "ios": {
+    "bundleIdentifier": "poool.reactnativeaccess.example",
+    "developmentTeam": "NONE",
+    "infoPlist": {
+      "NSUserTrackingUsageDescription": "We use tracking to provide you with a better experience"
+    }
+  }
+}

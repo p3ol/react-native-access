@@ -1,0 +1,41 @@
+ws_dir = Pathname.new(__dir__)
+ws_dir = ws_dir.parent until
+  File.exist?("#{ws_dir}/node_modules/react-native-test-app/test_app.rb") ||
+  ws_dir.expand_path.to_s == '/'
+require "#{ws_dir}/node_modules/react-native-test-app/test_app.rb"
+
+workspace 'ReactNativeAccessExample.xcworkspace'
+
+use_test_app!
+
+def node_require(script)
+  # Resolve script with node to allow for hoisting
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+# Use it to require both react-native's and this package's scripts:
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
+setup_permissions([
+  'AppTrackingTransparency',
+])
+
+def add_tracking_description!()
+  infoplist_src = File.join(__dir__, '../node_modules/.generated/ios/Info.plist')
+  infoplist_dst = File.join(__dir__, '../node_modules/.generated/ios/Info.plist')
+
+  plist = CFPropertyList::List.new(file: infoplist_src)
+  info = CFPropertyList.native_types(plist.value)
+
+  info['NSUserTrackingUsageDescription'] = 'We use tracking to provide you with a better experience'
+
+  plist.value = CFPropertyList.guess(info)
+  plist.save(infoplist_dst, CFPropertyList::List::FORMAT_XML, { :formatted => true })
+end
+
+add_tracking_description!()

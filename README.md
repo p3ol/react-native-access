@@ -1,29 +1,112 @@
+[![CI](https://github.com/p3ol/react-native-access/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/p3ol/react-native-access/actions/workflows/ci.yml)
+
 # Poool Access - React Native SDK
 
 > The easiest way to add Poool Access to your React Native app ✨
 
 ## Installation
 
-```
+```bash
 yarn add @poool/react-native-access
 ```
+
+⚠ **Important**: This package is a wrapper that requires native Poool SDKs to be linked to your project. React Native does it automatically for you, but if you encounter any issues, please refer to the [React Native documentation](https://reactnative.dev/docs/linking-libraries-ios) about linking native libraries.
 
 ## Usage
 
 ```jsx
-import React from 'react';
-import { Paywall } from '@poool/react-access';
+import { Text } from 'react-native';
+import {
+  AccessContext,
+  Snippet,
+  RestrictedContent,
+  Paywall,
+} from '@poool/react-native-access';
 
-export default () => (
-  <Paywall />
+export default = () => (
+  <>
+    { /*
+      Wrap everything with our AccessContext component
+    */ }
+    <AccessContext
+      appId="insert_your_app_id"
+      config={{ cookies_enabled: true }}
+    >
+      { /*
+        Place your snippet & restricted content where you want them to be
+        */ }
+      <Snippet>
+        <Text>Synopsis</Text>
+      </Snippet>
+      <RestrictedContent>
+        <Text>Full content</Text>
+      </RestrictedContent>
+
+      { /*
+        Place our <Paywall /> component where you want your paywall to be
+        displayed
+      */ }
+      <Paywall />
+    </AccessContext>
+  </>
 );
 ```
 
 ## Documentation
 
-TODO
+### `<AccessContext />`
+
+#### Props
+
+- `appId` {`String`} Your Poool App ID
+- `config` {`Object`} (optional) Default paywall config (see the [configuration](https://poool.dev/docs/react-native/access/configuration) documentation).
+- `styles` {`Object`} (optional) Default paywall styles (see the [styles](https://poool.dev//docs/react-native/access/appearances) documentation).
+- `texts` {`Object`} (optional) Default paywall texts (see the [texts](https://poool.dev/docs/react-native/access/texts) documentation).
+- `variables` {`Object`} (optional) Paywall variables (see the [variables](https://poool.dev/docs/react-native/access/variables) documentation).
+
+### `<RestrictedContent />`
+
+#### Props
+
+- `id` {`String`} (optional, default: null) Paywall id
+
+### `<Snippet />`
+
+- `id` {`String`} (optional, default: null) Paywall id
+
+### `<Paywall />`
+
+#### Props
+
+- `id` {`String`} (optional, default: null) Paywall id: used to link the paywall release event to the corresponding snippet/restricted content
+- `pageType` {`String`} (optional, default: `'premium'`) Current page type (supported types: `page`, `premium`, `free`)
+- `config` {`Object`} (optional) Paywall config (see the [configuration](https://poool.dev/docs/javascript/access/configuration) documentation).
+- `styles` {`Object`} (optional) Paywall styles (see the [styles](https://poool.dev//docs/javascript/access/appearances) documentation).
+- `texts` {`Object`} (optional) Paywall texts (see the [texts](https://poool.dev/docs/javascript/access/texts) documentation).
+- `variables` {`Object`} (optional) Paywall variables (see the [variables](https://poool.dev/docs/javascript/access/variables) documentation).
+- `on*` {`Function`} (optional) Event listeners (see the [events](https://poool.dev/docs/react-native/access/events) documentation).
+
+### useAccess()
+
+Can be used to retrieve some properties from the current access context, as well as the Access SDK itself.
+
+#### Returns
+
+- `appId` {`String`} Current app ID
+- `config` {`Object`} Current access context config
+- `texts` {`Object`} Current access context texts
+- `styles` {`Object`} Current access context styles
+- `variables` {`Object`} Current access context variables
+
+#### Example
+
+```js
+const { appId } = useAccess();
+```
 
 ## Contributing
+
+[![](https://contrib.rocks/image?repo=p3ol/react-native-access)](https://github.com/p3ol/react-native-access/graphs/contributors)
 
 Please check the [CONTRIBUTING.md](https://github.com/p3ol/react-native-access/blob/master/CONTRIBUTING.md) doc for contribution guidelines.
 
@@ -36,33 +119,24 @@ Install dependencies:
 yarn install
 ```
 
-Run the basic web example at http://localhost:8080 with webpack-dev-server:
-
-- Go to `examples/web`, install dependencies with `yarn install`
+(Optional-iOS Only) Install pods:
 
 ```bash
-yarn serve
+yarn example ios:install
 ```
 
-And test your code:
+Run examples:
 
 ```bash
-yarn test
+yarn example ios
+```
+
+or
+
+```bash
+yarn example android
 ```
 
 ## License
 
 This software is licensed under [MIT](https://github.com/p3ol/react-native-access/blob/master/LICENSE).
-
-## Contributors
-
-<!-- Contributors START
-Ugo_Stephant dackmin https://ugostephant.io code doc tools
-Simon_Deflesschouwer defless https://github.com/defless code
-Nicolas_Auger NicolasAuger https://github.com/NicolasAuger code
-Tyler_Escolano tyesc https://github.com/tyesc code
-Contributors END -->
-<!-- Contributors table START -->
-| <img src="https://avatars.githubusercontent.com/dackmin?s=100" width="100" alt="Ugo Stephant" /><br />[<sub>Ugo Stephant</sub>](https://github.com/dackmin)<br />[💻](https://github.com/p3ol/react-native-access/commits?author=dackmin) [📖](https://github.com/p3ol/react-native-access/commits?author=dackmin) 🔧 | <img src="https://avatars.githubusercontent.com/defless?s=100" width="100" alt="Simon Deflesschouwer" /><br />[<sub>Simon Deflesschouwer</sub>](https://github.com/defless)<br />[💻](https://github.com/p3ol/react-native-access/commits?author=defless) | <img src="https://avatars.githubusercontent.com/NicolasAuger?s=100" width="100" alt="Nicolas Auger" /><br />[<sub>Nicolas Auger</sub>](https://github.com/NicolasAuger)<br />[💻](https://github.com/p3ol/react-native-access/commits?author=NicolasAuger) | <img src="https://avatars.githubusercontent.com/tyesc?s=100" width="100" alt="Tyler Escolano" /><br />[<sub>Tyler Escolano</sub>](https://github.com/tyesc)<br />[💻](https://github.com/p3ol/react-native-access/commits?author=tyesc) | 
-| :---: | :---: | :---: | :---: |
-<!-- Contributors table END -->
