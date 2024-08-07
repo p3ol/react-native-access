@@ -15,45 +15,41 @@ yarn add @poool/react-native-access
 ## Usage
 
 ```jsx
-import { useRef } from 'react';
+import { Text } from 'react-native';
 import {
   AccessContext,
+  Snippet,
   RestrictedContent,
   Paywall,
-  Pixel,
-} from '@poool/react-access';
+} from '@poool/react-native-access';
 
-export default = () => {
-  const contentRef = useRef();
-
-  return (
-    <>
+export default = () => (
+  <>
+    { /*
+      Wrap everything with our AccessContext component
+    */ }
+    <AccessContext
+      appId="insert_your_app_id"
+      config={{ cookies_enabled: true }}
+    >
       { /*
-        Wrap everything with our AccessContext component
-      */ }
-      <AccessContext
-        appId="insert_your_app_id"
-        config={{ cookies_enabled: true }}
-      >
-        { /*
-          Place your snippet & restricted content where you want them to be
-          */ }
-        <Snippet>
-          <Text>Synopsis</Text>
-        </Snippet>
-        <RestrictedContent>
-          <Text>Full content</Text>
-        </RestrictedContent>
-
-        { /*
-          Place our <Paywall /> component where you want your paywall to be
-          displayed
+        Place your snippet & restricted content where you want them to be
         */ }
-        <Paywall />
-      </AccessContext>
-    </>
-  );
-};
+      <Snippet>
+        <Text>Synopsis</Text>
+      </Snippet>
+      <RestrictedContent>
+        <Text>Full content</Text>
+      </RestrictedContent>
+
+      { /*
+        Place our <Paywall /> component where you want your paywall to be
+        displayed
+      */ }
+      <Paywall />
+    </AccessContext>
+  </>
+);
 ```
 
 ## Documentation
