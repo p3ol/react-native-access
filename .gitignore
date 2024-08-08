@@ -79,3 +79,4 @@ lib/
 
 ios/*.xcframework
 example/ios/*.env
+example/dist

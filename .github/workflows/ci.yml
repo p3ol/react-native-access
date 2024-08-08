@@ -51,7 +51,9 @@ jobs:
         run: yarn prepare
 
   build-android:
+    if: ${{ !contains(github.ref, 'renovate/') && !contains(github.ref, 'dependabot/') }}
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       TURBO_CACHE_DIR: .turbo/android
     steps:
@@ -105,9 +107,17 @@ jobs:
           JAVA_OPTS: "-XX:MaxHeapSize=6g"
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+      - name: Upload APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ReactNativeAccessExample.apk
+          path: ./example/android/app/build/outputs/apk/debug/app-debug.apk
 
   build-ios:
+    if: ${{ !contains(github.ref, 'renovate/') && !contains(github.ref, 'dependabot/') }}
     runs-on: macos-14
+    timeout-minutes: 30
     env:
       TURBO_CACHE_DIR: .turbo/ios
     steps:
