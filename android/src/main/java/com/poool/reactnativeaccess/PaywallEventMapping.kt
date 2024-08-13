@@ -2,14 +2,14 @@ package com.poool.reactnativeaccess
 
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
-import com.poool.access.AlternativeClickEvent
-import com.poool.access.AnswerEvent
-import com.poool.access.ClickEvent
-import com.poool.access.CustomButtonClickEvent
-import com.poool.access.ErrorEvent
-import com.poool.access.FormEvent
-import com.poool.access.RegisterEvent
-import com.poool.access.WidgetEvent
+import tech.poool.access.AlternativeClickEvent
+import tech.poool.access.AnswerEvent
+import tech.poool.access.ClickEvent
+import tech.poool.access.CustomButtonClickEvent
+import tech.poool.access.ErrorEvent
+import tech.poool.access.FormEvent
+import tech.poool.access.RegisterEvent
+import tech.poool.access.WidgetEvent
 
 class PaywallEventMapping {
   companion object {

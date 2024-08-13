@@ -7,21 +7,21 @@ import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.events.RCTEventEmitter
-import com.poool.access.Access
-import com.poool.access.onAlternativeClick
-import com.poool.access.onAnswer
-import com.poool.access.onCustomButtonClick
-import com.poool.access.onDataPolicyClick
-import com.poool.access.onDiscoveryLinkClick
-import com.poool.access.onError
-import com.poool.access.onFormSubmit
-import com.poool.access.onLock
-import com.poool.access.onLoginClick
-import com.poool.access.onPaywallSeen
-import com.poool.access.onReady
-import com.poool.access.onRegister
-import com.poool.access.onRelease
-import com.poool.access.onSubscribeClick
+import tech.poool.access.Access
+import tech.poool.access.onAlternativeClick
+import tech.poool.access.onAnswer
+import tech.poool.access.onCustomButtonClick
+import tech.poool.access.onDataPolicyClick
+import tech.poool.access.onDiscoveryLinkClick
+import tech.poool.access.onError
+import tech.poool.access.onFormSubmit
+import tech.poool.access.onLock
+import tech.poool.access.onLoginClick
+import tech.poool.access.onPaywallSeen
+import tech.poool.access.onReady
+import tech.poool.access.onRegister
+import tech.poool.access.onRelease
+import tech.poool.access.onSubscribeClick
 
 class PaywallView(context: Context) : FrameLayout(context) {
   private var access: Access? = null
