@@ -3222,12 +3222,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rnx-kit/react-native-host@npm:^0.4.11":
-  version: 0.4.11
-  resolution: "@rnx-kit/react-native-host@npm:0.4.11"
+"@rnx-kit/react-native-host@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@rnx-kit/react-native-host@npm:0.5.0"
   peerDependencies:
     react-native: ">=0.66"
-  checksum: 75a399324476ffce51bd0b77fea3a8ec21ac823137b019045118aff4cf56630dfbefde18f6b1212b0e6bb3b829c5ed39fdf1d15013c34c2e33163bf29b3ef44b
+  checksum: 5d8477169dc215b838c1ee47e2f7905e5decc86759a8ab245d9a99ee46cb35794a1442b597653223924288698126a1912e898bdd51dbe9043f296f63f3aeb3f2
   languageName: node
   linkType: hard
 
@@ -11095,10 +11095,10 @@ __metadata:
   linkType: hard
 
 "react-native-test-app@npm:^3.8.14":
-  version: 3.8.14
-  resolution: "react-native-test-app@npm:3.8.14"
+  version: 3.10.22
+  resolution: "react-native-test-app@npm:3.10.22"
   dependencies:
-    "@rnx-kit/react-native-host": ^0.4.11
+    "@rnx-kit/react-native-host": ^0.5.0
     ajv: ^8.0.0
     cliui: ^8.0.0
     fast-xml-parser: ^4.0.0
@@ -11106,12 +11106,12 @@ __metadata:
     semver: ^7.3.5
     uuid: ^10.0.0
   peerDependencies:
-    "@callstack/react-native-visionos": 0.73 - 0.74
+    "@callstack/react-native-visionos": 0.73 - 0.76
     "@expo/config-plugins": ">=5.0"
-    react: 17.0.1 - 18.3
-    react-native: 0.66 - 0.74 || >=0.75.0-0 <0.75.0
-    react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.73
-    react-native-windows: ^0.0.0-0 || 0.66 - 0.74
+    react: 17.0.1 - 19.0
+    react-native: 0.66 - 0.76 || >=0.77.0-0 <0.77.0
+    react-native-macos: ^0.0.0-0 || 0.66 || 0.68 || 0.71 - 0.76
+    react-native-windows: ^0.0.0-0 || 0.66 - 0.76
   peerDependenciesMeta:
     "@callstack/react-native-visionos":
       optional: true
@@ -11126,7 +11126,7 @@ __metadata:
     init: scripts/init.mjs
     init-test-app: scripts/init.mjs
     install-windows-test-app: windows/test-app.mjs
-  checksum: efa411a8106e05b06967cf32a79e9e15b3b3633b2fb0878d6c5f825d184bc3a65f711d0de90ff0225cdb5f886e4f332aabc907e2b6dc70d42a1243c3b68a14d1
+  checksum: 138985b4aa0bac75d4d7de0b94cfacd26119be7dbbf12fa747e9723a7d31214fbb88817bf4167bda3a96732157ec093a44a4982518988a434fc71b6fdf8c0391
   languageName: node
   linkType: hard
 
