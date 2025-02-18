@@ -28,34 +28,33 @@ class PaywallView: UIView {
     @objc var onDismissBottomSheet: RCTDirectEventBlock?
 
     func reinit () {
-        if (
-            appId == nil || pageType == nil || config == nil || styles == nil ||
-            texts == nil || variables == nil || displayMode == nil
-        ) {
-            return
-        }
+        guard let appId = appId,
+              let pageType = pageType,
+              let config = config,
+              let styles = styles,
+              let texts = texts,
+              let variables = variables,
+              let displayMode = displayMode else { return }
 
         if (access != nil) {
             access.destroy()
             access = nil
         }
 
-        Access.setDebug(config?["debug"] as? Bool ?? false)
-        access = Access(key: appId!)
-        access.config(config!)
-        access.styles(styles!)
-        access.texts(texts!)
-        access.variables(variables!)
+        Access.setDebug(config["debug"] as? Bool ?? false)
+        access = Access(key: appId)
+        access.config(config)
+        access.styles(styles)
+        access.texts(texts)
+        access.variables(variables)
 
         initEvents()
 
         switch displayMode {
             case "bottom-sheet":
-                access.createPaywall(pageType: pageType!, percent: 0) {
-                    self.onDismissBottomSheet?([:])
-                }
+            access.createPaywall(pageType: pageType, view: nil)
             default:
-                let subView: UIView? = access.createPaywall(pageType: pageType!)
+                let subView: UIView? = access.createPaywall(pageType: pageType)
                 subView?.frame = self.frame
                 
                 if (subView != nil) {
@@ -69,11 +68,14 @@ class PaywallView: UIView {
         access.onReady { readyEvent in self.onReady?(readyEvent?.toMap()) }
         access.onRelease { releaseEvent in self.onRelease?(releaseEvent?.toMap()) }
         access.onPaywallSeen { seenEvent in self.onPaywallSeen?(seenEvent?.toMap()) }
-        access.onRegister { registerEvent in self.onRegister?(registerEvent?.toMap()) }
-        access.onFormSubmit { submitEvent in
-            self.onFormSubmit?(submitEvent?.toMap())
-
-            return nil
+        
+        access.onRegister { (registerEvent, result) in
+            self.onRegister?(registerEvent.toMap())
+            result(nil)
+        }
+        access.onFormSubmit { (submitEvent, result) in
+            self.onFormSubmit?(submitEvent.toMap())
+            result([])
         }
         access.onSubscribeTapped { tapEvent in self.onSubscribeClick?(tapEvent?.toMap()) }
         access.onLoginTapped { tapEvent in self.onLoginClick?(tapEvent?.toMap()) }
@@ -83,6 +85,9 @@ class PaywallView: UIView {
         access.onAlternativeTapEvent { tapEvent in self.onAlternativeClick?(tapEvent?.toMap()) }
         access.onError { error in self.onError?(error?.toMap()) }
         access.onAnswer { answerEvent in self.onAnswer?(answerEvent?.toMap()) }
+        
+        access.userDidCloseBottomSheet { self.onDismissBottomSheet?([:]) }
+        
     }
 
     @objc var appId: String? = nil {

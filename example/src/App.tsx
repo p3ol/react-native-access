@@ -21,8 +21,7 @@ export default function App() {
 
   return (
     <AccessContext
-      appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
-      config={{ cookies_enabled: true }}
+      appId="LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8"
     >
       <SafeAreaView style={styles.container}>
         <View collapsable={false} style={styles.wrapper}>

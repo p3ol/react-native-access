@@ -1,5 +1,4 @@
 import type { Poool } from 'poool-access';
-import { useRef } from 'react';
 import { type ViewProps, View, StyleSheet } from 'react-native';
 
 import type { AccessEvents, EventCallbackFunction } from '../types';
@@ -123,7 +122,6 @@ const Paywall = ({
     variables: factoryVariables,
     releaseContent,
   } = useAccess();
-  const innerRef = useRef(null);
 
   return (
     <View
@@ -132,7 +130,6 @@ const Paywall = ({
       style={[internalStyles.container, style]}
     >
       <PaywallView
-        ref={innerRef}
         appId={appId}
         pageType={pageType}
         displayMode={displayMode}
@@ -146,7 +143,9 @@ const Paywall = ({
             Extract<AccessEvents['release'], EventCallbackFunction<any>>
           >[0]
         ) => {
-          releaseContent?.(id || true);
+          if (displayMode === 'default') {
+            releaseContent?.(id || true);
+          }
           onRelease?.(e);
         })}
         onLock={onLock}
