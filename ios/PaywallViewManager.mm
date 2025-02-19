@@ -1,8 +1,9 @@
-#import <MapKit/MapKit.h>
+#import <MapKit/MapKit.h> // ??
 
 #import <React/RCTViewManager.h>
 
 @interface RCT_EXTERN_MODULE(PaywallViewManager, RCTViewManager)
+
 RCT_EXPORT_VIEW_PROPERTY(appId, NSString)
 RCT_EXPORT_VIEW_PROPERTY(pageType, NSString)
 RCT_EXPORT_VIEW_PROPERTY(displayMode, NSString)
@@ -24,4 +25,6 @@ RCT_EXPORT_VIEW_PROPERTY(onAlternativeClick, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onError, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAnswer, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDismissBottomSheet, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onUpdateHeight, RCTDirectEventBlock)
+
 @end

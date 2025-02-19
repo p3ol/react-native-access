@@ -26,6 +26,7 @@ class PaywallView: UIView {
     @objc var onError: RCTDirectEventBlock?
     @objc var onAnswer: RCTDirectEventBlock?
     @objc var onDismissBottomSheet: RCTDirectEventBlock?
+    @objc var onUpdateHeight: RCTDirectEventBlock?
 
     func reinit () {
         guard let appId = appId,
@@ -54,11 +55,9 @@ class PaywallView: UIView {
             case "bottom-sheet":
             access.createPaywall(pageType: pageType, view: nil)
             default:
-                let subView: UIView? = access.createPaywall(pageType: pageType)
-                subView?.frame = self.frame
-                
-                if (subView != nil) {
-                    self.addSubview(subView!)
+                access.createReactNativePaywall(pageType: pageType, view: self, percent: 100) { height in
+                    guard let update = self.onUpdateHeight else { return }
+                    update(["height": height])
                 }
         }
     }
@@ -68,15 +67,7 @@ class PaywallView: UIView {
         access.onReady { readyEvent in self.onReady?(readyEvent?.toMap()) }
         access.onRelease { releaseEvent in self.onRelease?(releaseEvent?.toMap()) }
         access.onPaywallSeen { seenEvent in self.onPaywallSeen?(seenEvent?.toMap()) }
-        
-        access.onRegister { (registerEvent, result) in
-            self.onRegister?(registerEvent.toMap())
-            result(nil)
-        }
-        access.onFormSubmit { (submitEvent, result) in
-            self.onFormSubmit?(submitEvent.toMap())
-            result([])
-        }
+                
         access.onSubscribeTapped { tapEvent in self.onSubscribeClick?(tapEvent?.toMap()) }
         access.onLoginTapped { tapEvent in self.onLoginClick?(tapEvent?.toMap()) }
         access.onDiscoveryLinkTapped { tapEvent in self.onDiscoveryLinkClick?(tapEvent?.toMap()) }
@@ -88,6 +79,15 @@ class PaywallView: UIView {
         
         access.userDidCloseBottomSheet { self.onDismissBottomSheet?([:]) }
         
+        // TODO: handling those two events
+        access.onRegister { (registerEvent, result) in
+            self.onRegister?(registerEvent.toMap())
+            result(nil)
+        }
+        access.onFormSubmit { (submitEvent, result) in
+            self.onFormSubmit?(submitEvent.toMap())
+            result([])
+        }
     }
 
     @objc var appId: String? = nil {

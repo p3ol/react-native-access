@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Platform, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, Text, View, ScrollView } from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import {
   AccessContext,
@@ -19,26 +19,53 @@ export default function App() {
     }
   };
 
+  const app_id_1 = "LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8";
+  const app_id_2 = "ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH";
+
   return (
-    <AccessContext
-      appId="LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8"
-    >
-      <SafeAreaView style={styles.container}>
-        <View collapsable={false} style={styles.wrapper}>
-          <Snippet>
-            <Text>Synopsis</Text>
-          </Snippet>
-          <RestrictedContent>
-            <Text>Full content</Text>
-          </RestrictedContent>
-          <Paywall
-            config={{ debug: true }}
-            onReady={() => console.log('Paywall ready')}
-            style={{ paddingTop: 20 }}
-          />
-        </View>
-      </SafeAreaView>
-    </AccessContext>
+    <ScrollView>
+      <AccessContext
+        appId={app_id_1}
+      >
+        <SafeAreaView style={styles.container}>
+          <View collapsable={false} style={styles.wrapper}>
+            <Snippet>
+              <Text>Synopsis</Text>
+            </Snippet>
+            <RestrictedContent>
+              <Text>Full content</Text>
+            </RestrictedContent>
+            <Paywall
+              config={{ debug: true }}
+              onReady={() => console.log('Paywall ready:', app_id_1)}
+              onDismissBottomSheet={() => console.log('Paywall bottom-sheet dismissed:', app_id_1)}
+              style={{ paddingTop: 20 }}
+            />
+          </View>
+        </SafeAreaView>
+      </AccessContext>
+
+      <AccessContext
+        appId={app_id_2}
+      >
+        <SafeAreaView style={styles.container}>
+          <View collapsable={false} style={styles.wrapper}>
+            <Snippet>
+              <Text>Deuxieme article</Text>
+            </Snippet>
+            <RestrictedContent>
+              <Text>Full content</Text>
+            </RestrictedContent>
+            <Paywall
+              config={{ debug: true }}
+              onReady={() => console.log('Paywall ready:', app_id_2)}
+              style={{ paddingTop: 20 }}
+            />
+          </View>
+        </SafeAreaView>
+      </AccessContext>
+
+    </ScrollView>
   );
 }
 

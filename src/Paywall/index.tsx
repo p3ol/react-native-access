@@ -1,4 +1,5 @@
 import type { Poool } from 'poool-access';
+import { useRef, useState } from 'react';
 import { type ViewProps, View, StyleSheet } from 'react-native';
 
 import type { AccessEvents, EventCallbackFunction } from '../types';
@@ -123,6 +124,10 @@ const Paywall = ({
     releaseContent,
   } = useAccess();
 
+  const [paywallHeight, setPaywallHeight] = useState(0);
+
+  const innerRef = useRef(null);
+
   return (
     <View
       collapsable={false}
@@ -130,6 +135,7 @@ const Paywall = ({
       style={[internalStyles.container, style]}
     >
       <PaywallView
+        ref={innerRef}
         appId={appId}
         pageType={pageType}
         displayMode={displayMode}
@@ -137,7 +143,7 @@ const Paywall = ({
         texts={{ ...texts || {}, ...factoryTexts || {} }}
         styles={{ ...styles || {}, ...factoryStyles || {} }}
         variables={{ ...variables || {}, ...factoryVariables || {} }}
-        style={internalStyles.wrapper}
+        style={[internalStyles.wrapper, { minHeight: paywallHeight }]}
         onRelease={fromNativeEvent<Extract<AccessEvents['release'], EventCallbackFunction<any>>>((
           e: Parameters<
             Extract<AccessEvents['release'], EventCallbackFunction<any>>
@@ -162,6 +168,9 @@ const Paywall = ({
         onError={onError}
         onAnswer={onAnswer}
         onDismissBottomSheet={onDismissBottomSheet}
+        onUpdateHeight={ (value: any) => { 
+          setPaywallHeight(value.nativeEvent.height);
+        }}
       />
     </View>
   );
