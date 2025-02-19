@@ -1,10 +1,12 @@
 PODS:
+  - AccessIOS (2.3.0)
   - boost (1.83.0)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.74.4)
   - fmt (9.1.0)
   - glog (0.3.5)
   - poool-react-native-access (0.1.0):
+    - AccessIOS (~> 2.0)
     - DoubleConversion
     - glog
     - RCT-Folly (= 2024.01.01.00)
@@ -1234,6 +1236,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AccessIOS
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1353,12 +1356,13 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AccessIOS: b771a4c451e5b964d32d5bd612a05c3092ce87c0
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 4c674c2d53de79c145d6a723910543d7b57ed74c
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: fdfdfe5479092de0c4bdbebedd9056951f092c4f
-  poool-react-native-access: 88191c24fe3c5984c011e7759591eef804c72224
+  poool-react-native-access: 21d15724717a6ce354e1ae7e6c3b42beeb6b31e5
   RCT-Folly: 5dc73daec3476616d19e8a53f0156176f7b55461
   RCTDeprecation: d83da85890d5bb18efd2809a733865c1c5c11487
   RCTRequired: e109419eacfb10fbb79a3ecb57ebcad198593d8a
