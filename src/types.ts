@@ -250,4 +250,9 @@ export declare interface AccessEvents extends BaseEvents {
     url?: string;
     buttonId: string;
   }>
+
+  resize?: EventCallback<{
+    width: number;
+    height: number;
+  }>;
 }

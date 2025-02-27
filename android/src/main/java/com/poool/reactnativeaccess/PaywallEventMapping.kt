@@ -10,6 +10,7 @@ import tech.poool.access.ErrorEvent
 import tech.poool.access.FormEvent
 import tech.poool.access.RegisterEvent
 import tech.poool.access.WidgetEvent
+import tech.poool.access.ResizeEvent
 
 class PaywallEventMapping {
   companion object {
@@ -54,7 +55,7 @@ class PaywallEventMapping {
     fun formEvent (event: FormEvent): WritableMap {
       return Arguments.createMap().apply {
         putString("name", event.name)
-        putMap("fields", Arguments.makeNativeMap(event.fields.toMap()))
+        //putMap("fields", Arguments.makeNativeArray(event.fields.toList()))
         putMap("valid", Arguments.makeNativeMap(event.valid.toMap()))
       }
     }
@@ -70,6 +71,13 @@ class PaywallEventMapping {
       return Arguments.createMap().apply {
         putString("name", event.name)
         putString("buttonId", event.buttonId)
+      }
+    }
+
+    fun resizeEvent (event: ResizeEvent): WritableMap {
+      return Arguments.createMap().apply {
+        putInt("width", event.width)
+        putInt("height", event.height)
       }
     }
   }

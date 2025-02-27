@@ -87,6 +87,10 @@ export interface PaywallProps extends Pick<
    * Callback triggered when the bottom sheet is dismissed
    */
   onDismissBottomSheet?: () => void;
+  /**
+   * Callback triggered when the paywall is resized
+   */
+  onResize?: (event: { width: number; height: number }) => void;
 }
 
 const Paywall = ({
@@ -112,6 +116,7 @@ const Paywall = ({
   onError,
   onAnswer,
   onDismissBottomSheet,
+  onResize,
   style,
   ...rest
 }: PaywallProps) => {
@@ -168,9 +173,17 @@ const Paywall = ({
         onError={onError}
         onAnswer={onAnswer}
         onDismissBottomSheet={onDismissBottomSheet}
-        onUpdateHeight={ (value: any) => { 
+        onUpdateHeight={ (value: any) => {
           setPaywallHeight(value.nativeEvent.height);
         }}
+        onResize={fromNativeEvent<Extract<AccessEvents['resize'], EventCallbackFunction<any>>>((
+          e: Parameters<
+            Extract<AccessEvents['resize'], EventCallbackFunction<any>>
+          >[0]
+        ) => {
+          setPaywallHeight(e?.height);
+          onResize?.(e);
+        })}
       />
     </View>
   );

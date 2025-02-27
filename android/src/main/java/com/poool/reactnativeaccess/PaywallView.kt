@@ -21,6 +21,7 @@ import tech.poool.access.onPaywallSeen
 import tech.poool.access.onReady
 import tech.poool.access.onRegister
 import tech.poool.access.onRelease
+import tech.poool.access.onResize
 import tech.poool.access.onSubscribeClick
 
 class PaywallView(context: Context) : FrameLayout(context) {
@@ -97,17 +98,17 @@ class PaywallView(context: Context) : FrameLayout(context) {
   }
 
   fun setConfig(config: ReadableMap) {
-    this.config = config.toHashMap()
+    this.config = config.toHashMap().toMap() as Map<String, Any>
     reinit()
   }
 
   fun setStyles(styles: ReadableMap) {
-    this.styles = styles.toHashMap()
+    this.styles = styles.toHashMap().toMap() as Map<String, Any>
     reinit()
   }
 
   fun setVariables(variables: ReadableMap) {
-    this.variables = variables.toHashMap()
+    this.variables = variables.toHashMap().toMap() as Map<String, Any>
     reinit()
   }
 
@@ -172,12 +173,16 @@ class PaywallView(context: Context) : FrameLayout(context) {
       eventEmitter.receiveEvent(id, "onAlternativeClick", PaywallEventMapping.alternativeClickEvent(it))
     }
 
-    access?.onError {
-      eventEmitter.receiveEvent(id, "onError", PaywallEventMapping.errorEvent(it))
+    access?.onError { e, _ ->
+      eventEmitter.receiveEvent(id, "onError", PaywallEventMapping.errorEvent(e))
     }
 
     access?.onAnswer {
       eventEmitter.receiveEvent(id, "onAnswer", PaywallEventMapping.answerEvent(it))
+    }
+
+    access?.onResize {
+      eventEmitter.receiveEvent(id, "onResize", PaywallEventMapping.resizeEvent(it))
     }
   }
 }

@@ -12,7 +12,6 @@ buildscript {
 
     repositories {
         mavenCentral()
-        //mavenLocal()
         google()
     }
 
@@ -38,8 +37,8 @@ allprojects {
                 throw new GradleException("Could not find `react-native`");
             }())
         }
+        mavenLocal()
         mavenCentral()
-        //mavenLocal()
         google()
     }
 }

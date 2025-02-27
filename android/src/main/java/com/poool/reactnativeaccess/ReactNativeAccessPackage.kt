@@ -11,6 +11,7 @@ class ReactNativeAccessPackage : ReactPackage {
   }
 
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
+    println("REGISTERING PAYWALL VIEW MANAGER")
     return listOf(PaywallViewManager(reactContext))
   }
 }

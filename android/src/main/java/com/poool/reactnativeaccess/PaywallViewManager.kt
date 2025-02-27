@@ -64,6 +64,7 @@ class PaywallViewManager(
       "onLock", "onRelease", "onPaywallSeen", "onReady", "onRegister", "onSubscribeClick",
       "onAlternativeClick", "onAnswer", "onCustomButtonClick", "onDataPolicyClick",
       "onDiscoveryLinkClick", "onError", "onFormSubmit", "onLoginClick", "onDismissBottomSheet",
+      "onResize"
     )
 
     return events.associateWith {

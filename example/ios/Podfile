@@ -6,7 +6,7 @@ require "#{ws_dir}/node_modules/react-native-test-app/test_app.rb"
 
 workspace 'ReactNativeAccessExample.xcworkspace'
 
-use_test_app!
+use_test_app! :hermes_enabled => true
 
 def node_require(script)
   # Resolve script with node to allow for hoisting
