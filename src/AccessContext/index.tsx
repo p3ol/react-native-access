@@ -1,5 +1,5 @@
 import { type ComponentPropsWithoutRef, useCallback, useReducer } from 'react';
-import { type StateReducer, mockState } from '@junipero/core';
+import { mockState } from '@junipero/core';
 
 import { type AccessContextValue, AccessContext as Ctx } from '../contexts';
 
@@ -18,9 +18,7 @@ const AccessContext = ({
   variables,
   ...rest
 }: AccessContextProps) => {
-  const [state, dispatch] = useReducer<
-    StateReducer<AccessContextState>
-  >(mockState, {
+  const [state, dispatch] = useReducer(mockState<AccessContextState>, {
     released: [],
   });
 
@@ -43,7 +41,7 @@ const AccessContext = ({
   ]);
 
   return (
-    <Ctx.Provider value={getContext()} { ...rest} />
+    <Ctx.Provider value={getContext()} { ...rest } />
   );
 };
 

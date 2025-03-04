@@ -24,6 +24,7 @@
     "ios",
     "cpp",
     "*.podspec",
+    "react-native.config.js",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -36,7 +37,7 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace @poool/react-native-access-example",
+    "example": "yarn workspace react-native-access-example",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -65,11 +66,11 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "15.0.1",
     "@react-native/eslint-config": "^0.73.1",
-    "@release-it/conventional-changelog": "^5.0.0",
+    "@release-it/conventional-changelog": "^9.0.2",
     "@types/jest": "^29.5.5",
-    "@types/poool-access": "^5.18.0",
-    "@types/react": "^18.2.44",
+    "@types/react": "^19.0.10",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
@@ -77,15 +78,12 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
-    "react": "18.2.0",
-    "react-native": "0.74.4",
-    "react-native-builder-bob": "^0.29.0",
-    "release-it": "^15.0.0",
+    "react": "19.0.0",
+    "react-native": "0.78.0",
+    "react-native-builder-bob": "^0.37.0",
+    "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
-  },
-  "resolutions": {
-    "@types/react": "^18.2.44"
   },
   "peerDependencies": {
     "react": "*",
@@ -94,7 +92,7 @@
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.7.0",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -132,7 +130,6 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
-      "react-native/no-inline-styles": "off",
       "prettier/prettier": [
         "off",
         {
@@ -160,6 +157,7 @@
     "source": "src",
     "output": "lib",
     "targets": [
+      "codegen",
       [
         "commonjs",
         {
@@ -181,12 +179,25 @@
       ]
     ]
   },
+  "codegenConfig": {
+    "name": "RNAccessViewSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "android": {
+      "javaPackageName": "tehc.poool.rnaccess"
+    },
+    "includesGeneratedCode": true
+  },
   "create-react-native-library": {
-    "type": "module-legacy",
-    "languages": "kotlin-swift",
-    "version": "0.40.0"
+    "languages": "kotlin-objc",
+    "type": "fabric-view",
+    "version": "0.48.3"
   },
   "dependencies": {
-    "@junipero/core": "3.7.1"
+    "@junipero/core": "^3.10.5"
   }
 }
