@@ -17,50 +17,25 @@ export default function App() {
   //   }
   // };
 
-  const app_id_1 = "LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8";
-  const app_id_2 = "ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH";
-
   return (
     <ScrollView>
       <AccessContext
-        appId={app_id_1}
+        appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
+        config={{ cookiesEnabled: true, forceWidget: 'gift' }}
       >
         <SafeAreaView style={styles.container}>
           <View collapsable={false} style={styles.wrapper}>
+            <Text style={styles.title}>Poool Access Example</Text>
             <Snippet>
               <Text>Synopsis</Text>
             </Snippet>
             <RestrictedContent>
               <Text>Full content</Text>
             </RestrictedContent>
-            <Paywall
-              config={{ debug: true }}
-              onReady={() => console.log('Paywall ready:', app_id_1)}
-              onDismissBottomSheet={() => console.log('Paywall bottom-sheet dismissed:', app_id_1)}
-            />
+            <Paywall />
           </View>
         </SafeAreaView>
       </AccessContext>
-
-      <AccessContext
-        appId={app_id_2}
-      >
-        <SafeAreaView style={styles.container}>
-          <View collapsable={false} style={styles.wrapper}>
-            <Snippet>
-              <Text>Deuxieme article</Text>
-            </Snippet>
-            <RestrictedContent>
-              <Text>Full content</Text>
-            </RestrictedContent>
-            <Paywall
-              config={{ debug: true }}
-              onReady={() => console.log('Paywall ready:', app_id_2)}
-            />
-          </View>
-        </SafeAreaView>
-      </AccessContext>
-
     </ScrollView>
   );
 }
@@ -72,5 +47,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
