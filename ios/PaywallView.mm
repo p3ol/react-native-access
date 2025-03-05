@@ -1,4 +1,4 @@
-#import "AccessView.h"
+#import "PaywallView.h"
 
 #import "generated/RNAccessViewSpec/ComponentDescriptors.h"
 #import "generated/RNAccessViewSpec/EventEmitters.h"
@@ -9,23 +9,23 @@
 
 using namespace facebook::react;
 
-@interface AccessView () <RCTAccessViewViewProtocol>
+@interface PaywallView () <RCTPaywallViewViewProtocol>
 
 @end
 
-@implementation AccessView {
+@implementation PaywallView {
     UIView * _view;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-    return concreteComponentDescriptorProvider<AccessViewComponentDescriptor>();
+    return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
   if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const AccessViewProps>();
+    static const auto defaultProps = std::make_shared<const PaywallViewProps>();
     _props = defaultProps;
 
     _view = [[UIView alloc] init];
@@ -38,20 +38,20 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<AccessViewProps const>(_props);
-    const auto &newViewProps = *std::static_pointer_cast<AccessViewProps const>(props);
+    const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
+    const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
 
-    if (oldViewProps.color != newViewProps.color) {
-        NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
-        [_view setBackgroundColor:[self hexStringToColor:colorToConvert]];
-    }
+    // if (oldViewProps.color != newViewProps.color) {
+    //     NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
+    //     [_view setBackgroundColor:[self hexStringToColor:colorToConvert]];
+    // }
 
     [super updateProps:props oldProps:oldProps];
 }
 
-Class<RCTComponentViewProtocol> AccessViewCls(void)
+Class<RCTComponentViewProtocol> PaywallViewCls(void)
 {
-    return AccessView.class;
+    return PaywallView.class;
 }
 
 - hexStringToColor:(NSString *)stringToConvert
