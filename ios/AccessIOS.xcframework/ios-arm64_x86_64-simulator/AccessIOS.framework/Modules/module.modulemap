@@ -1,4 +1,0 @@
-framework module AccessIOS {
-  header "AccessIOS-Swift.h"
-  requires objc
-}
