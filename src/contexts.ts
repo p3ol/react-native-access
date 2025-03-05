@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import type { NativeProps } from './specs/PaywallViewNativeComponent';
+
+import type { AccessConfig } from './types';
 
 export interface AccessContextValue {
   /**
@@ -15,7 +16,7 @@ export interface AccessContextValue {
    * More infos:
    * https://www.poool.dev/docs/access/javascript/access/configuration
    */
-  config?: NativeProps['config'];
+  config?: AccessConfig;
   /**
    * Your poool access texts ati_tag_options
    *

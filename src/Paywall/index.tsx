@@ -1,17 +1,25 @@
-import { useReducer, useRef } from 'react';
+import { useMemo, useReducer, useRef } from 'react';
 import { mockState } from '@junipero/core';
 
 import { useAccess } from '../hooks';
 import PaywallView, {
   type NativeProps,
 } from '../specs/PaywallViewNativeComponent';
+import type { AccessConfig } from '../types';
 
-export interface PaywallProps extends Omit<NativeProps, 'appId'> {
+export interface PaywallProps extends Omit<
+  NativeProps,
+  'appId' | 'config' | 'texts' | 'styles' | 'variables'
+> {
   /**
    * Optional unique paywall id. When released, the snippet with the same id
    * will be hidden, and the corresponding restricted content will be displayed.
    */
   id?: string;
+  config?: AccessConfig;
+  texts?: Record<string, string>;
+  styles?: Record<string, string>;
+  variables?: Record<string, any>;
 }
 
 export interface PaywallState {
@@ -45,6 +53,19 @@ const Paywall = ({
     height: 0,
   });
 
+  const serializedConfig = useMemo(() => (
+    JSON.stringify({ ...config || {}, ...factoryConfig || {} })
+  ), [config, factoryConfig]);
+  const serializedTexts = useMemo(() => (
+    JSON.stringify({ ...texts || {}, ...factoryTexts || {} })
+  ), [texts, factoryTexts]);
+  const serializedStyles = useMemo(() => (
+    JSON.stringify({ ...styles || {}, ...factoryStyles || {} })
+  ), [styles, factoryStyles]);
+  const serializedVariables = useMemo(() => (
+    JSON.stringify({ ...variables || {}, ...factoryVariables || {} })
+  ), [variables, factoryVariables]);
+
   const innerRef = useRef(null);
 
   return (
@@ -54,10 +75,10 @@ const Paywall = ({
       appId={appId!!}
       pageType={pageType}
       displayMode={displayMode}
-      config={{ ...config || {}, ...factoryConfig || {} }}
-      texts={{ ...texts || {}, ...factoryTexts || {} }}
-      styles={{ ...styles || {}, ...factoryStyles || {} }}
-      variables={{ ...variables || {}, ...factoryVariables || {} }}
+      config={serializedConfig}
+      texts={serializedTexts}
+      styles={serializedStyles}
+      variables={serializedVariables}
       style={[style, {
         minWidth: state.width,
         minHeight: state.height,
