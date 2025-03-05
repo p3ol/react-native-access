@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { NativeProps } from './PaywallViewNativeComponent';
+import type { NativeProps } from './specs/PaywallViewNativeComponent';
 
 export interface AccessContextValue {
   /**

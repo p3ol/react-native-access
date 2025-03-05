@@ -2,7 +2,9 @@ import { useReducer, useRef } from 'react';
 import { mockState } from '@junipero/core';
 
 import { useAccess } from '../hooks';
-import PaywallView, { type NativeProps } from '../PaywallViewNativeComponent';
+import PaywallView, {
+  type NativeProps,
+} from '../specs/PaywallViewNativeComponent';
 
 export interface PaywallProps extends Omit<NativeProps, 'appId'> {
   /**
