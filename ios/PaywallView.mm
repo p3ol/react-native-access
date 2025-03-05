@@ -7,8 +7,6 @@
 
 #import "RCTFabricComponentsPlugins.h"
 
-#import <AccessIOS/AccessIOS-Swift.h>
-
 using namespace facebook::react;
 
 @interface PaywallView () <RCTPaywallViewViewProtocol>
@@ -24,7 +22,9 @@ using namespace facebook::react;
   NSDictionary * styles;
   NSDictionary * texts;
   NSDictionary * variables;
-  
+
+  RCTDirectEventBlock * onDismissBottomSheet;
+
   Access * access;
 }
 
@@ -58,23 +58,23 @@ using namespace facebook::react;
     access = nil;
   }
 
-  [Access setDebug:[self.config[@"debug"] boolValue]];
-  self.access = [[Access alloc] initWithKey:self.appId];
-  [self.access config:self.config];
-  [self.access styles:self.styles];
-  [self.access texts:self.texts];
-  [self.access variables:self.variables];
+  [Access setDebug:[config[@"debug"] boolValue]];
+  access = [[Access alloc] initWithKey:appId];
+  [access config:config];
+  [access styles:styles];
+  [access texts:texts];
+  [access variables:variables];
 
   [self initEvents];
 
-  if ([self.displayMode isEqualToString:@"bottom-sheet"]) {
-    [self.access createPaywallWithPageType:self.pageType percent:0 completion:^(NSDictionary * _Nonnull result) {
-      if (self.onDismissBottomSheet) {
-        self.onDismissBottomSheet(@{});
+  if ([displayMode isEqualToString:@"bottom-sheet"]) {
+    [access createPaywallWithPageType:self.pageType percent:0 completion:^(NSDictionary * _Nonnull result) {
+      if (onDismissBottomSheet) {
+        onDismissBottomSheet(@{});
       }
     }];
   } else {
-    UIView *subView = [self.access createPaywallWithPageType:self.pageType];
+    UIView *subView = [access createPaywallWithPageType:pageType];
     subView.frame = self.frame;
 
     if (subView != nil) {
@@ -84,69 +84,6 @@ using namespace facebook::react;
 }
 
 - (void)initEvents {
-}
-
-- (void)setAppId:(NSString *)appId {
-  _appId = appId;
-  [self reinit];
-}
-
-- (NSString *)getAppId {
-  return _appId;
-}
-
-- (void)setPageType:(NSString *)pageType {
-  _pageType = pageType;
-  [self reinit];
-}
-
-- (NSString *)getPageType {
-  return _pageType;
-}
-
-- (void)setDisplayMode:(NSString *)displayMode {
-  _displayMode = displayMode;
-  [self reinit];
-}
-
-- (NSString *)getDisplayMode {
-  return _displayMode;
-}
-
-- (void)setConfig:(NSDictionary *)config {
-  _config = config;
-  [self reinit];
-}
-
-- (NSDictionary *)getConfig {
-  return _config;
-}
-
-- (void)setStyles:(NSDictionary *)styles {
-  _styles = styles;
-  [self reinit];
-}
-
-- (NSDictionary *)getStyles {
-  return _styles;
-}
-
-- (void)setTexts:(NSDictionary *)texts {
-  _texts = texts;
-  [self reinit];
-}
-
-- (NSDictionary *)getTexts {
-  return _texts;
-}
-
-- (void)setVariables:(NSDictionary *)variables {
-  _variables = variables;
-  [self reinit];
-}
-
-- (NSDictionary *)getVariables {
-  return _variables;
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
@@ -160,32 +97,20 @@ using namespace facebook::react;
     // }
 
     if (oldViewProps.appId != newViewProps.appId) {
-      [self setAppId:newViewProps.appId];
+      appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
+      [self reinit];
     }
 
     if (oldViewProps.pageType != newViewProps.pageType) {
-      [self setPageType:newViewProps.pageType];
+      pageType = [[NSString alloc] initWithUTF8String: newViewProps.pageType.c_str()];
+      [self reinit];
     }
 
     if (oldViewProps.displayMode != newViewProps.displayMode) {
-      [self setDisplayMode:newViewProps.displayMode];
+      displayMode = [[NSString alloc] initWithUTF8String: newViewProps.displayMode.c_str()];
+      [self reinit];
     }
 
-    if (oldViewProps.config != newViewProps.config) {
-      [self setConfig:newViewProps.config];
-    }
-
-    if (oldViewProps.styles != newViewProps.styles) {
-      [self setStyles:newViewProps.styles];
-    }
-
-    if (oldViewProps.texts != newViewProps.texts) {
-      [self setTexts:newViewProps.texts];
-    }
-
-    if (oldViewProps.variables != newViewProps.variables) {
-      [self setVariables:newViewProps.variables];
-    }
 
     [super updateProps:props oldProps:oldProps];
 }
