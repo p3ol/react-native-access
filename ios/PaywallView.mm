@@ -45,7 +45,6 @@ using namespace facebook::react;
 
         self.contentView = _view;
     }
-
     return self;
 }
 
@@ -61,18 +60,15 @@ using namespace facebook::react;
         access = nil;
     }
     
-    BOOL debug = config[@"debug"];
+    BOOL debug = [config[@"debug"] boolValue];
     
-    NSLog(@"config: %@", config);
-    NSLog(@"debug: %@", debug);
-    
-    [Access setDebug:[config[@"debug"] boolValue]];
+    [Access setDebug: [config[@"debug"] boolValue]];
     
     access = [[Access alloc] initWithKey:appId];
     [access config:config :false];
-//    [access styles:styles :false];
-//    [access texts:texts :false];
-//    [access variables:variables];
+    [access styles:styles :false];
+    [access texts:texts :false];
+    [access variables:variables];
 
     [self initEvents];
 
@@ -84,7 +80,6 @@ using namespace facebook::react;
             self.eventEmitter.onResize(event);
         }];
     }
-
 }
 
 // Event emitter convenience method
@@ -101,39 +96,31 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
-    const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
-
-    // if (oldViewProps.color != newViewProps.color) {
-    //     NSString * colorToConvert = [[NSString alloc] initWithUTF8String: newViewProps.color.c_str()];
-    //     [_view setBackgroundColor:[self hexStringToColor:colorToConvert]];
-    // }
 
     appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
     pageType = [[NSString alloc] initWithUTF8String: newViewProps.pageType.c_str()];
 
     displayMode = [[NSString alloc] initWithUTF8String: newViewProps.displayMode.c_str()];
     
-    NSData *objData = [NSData dataWithBytes:&newViewProps.config length:sizeof(newViewProps.config)];
-    
-    NSString *objStr = [[NSString alloc] initWithData:objData encoding: NSISOLatin1StringEncoding];
-
-    NSData *dataUTF8 = [objStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSLog(@"objStr: %@", objStr);
-    
-    NSError *error;
-    NSDictionary *configYo = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
-    
-    NSLog(@"%@", error);
-    
-    config = configYo;
-
+    config = [self stringToDict:newViewProps.config.c_str()];
+    styles = [self stringToDict:newViewProps.styles.c_str()];
+    texts = [self stringToDict:newViewProps.texts.c_str()];
+    variables = [self stringToDict:newViewProps.variables.c_str()];
     
     [self reinit];
-
-
     [super updateProps:props oldProps:oldProps];
+}
+
+-(NSDictionary*)stringToDict:(const char*)charStr
+{
+    NSString *str = [[NSString alloc] initWithUTF8String: charStr];
+    NSData *dataUTF8 = [str dataUsingEncoding:NSUTF8StringEncoding];
+        
+    NSError *error;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+    
+    return dict;
 }
 
 Class<RCTComponentViewProtocol> PaywallViewCls(void)

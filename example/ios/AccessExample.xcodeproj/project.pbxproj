@@ -280,7 +280,6 @@
 					"$(inherited)",
 					"\"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/universal\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built\"",
-					"\"$(PROJECT_DIR)/AccessExample/AccessIOS.xcframework\"",
 				);
 				INFOPLIST_FILE = AccessExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -314,7 +313,6 @@
 					"$(inherited)",
 					"\"${PODS_ROOT}/hermes-engine/destroot/Library/Frameworks/universal\"",
 					"\"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built\"",
-					"\"$(PROJECT_DIR)/AccessExample/AccessIOS.xcframework\"",
 				);
 				INFOPLIST_FILE = AccessExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -404,10 +402,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -476,10 +471,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
