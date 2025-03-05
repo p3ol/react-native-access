@@ -7,6 +7,8 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewManagerDelegate
 import com.facebook.react.viewmanagers.PaywallViewManagerInterface
 import com.facebook.react.viewmanagers.PaywallViewManagerDelegate
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @ReactModule(name = PaywallViewManager.NAME)
 class PaywallViewManager : SimpleViewManager<PaywallView>(),
@@ -37,20 +39,24 @@ class PaywallViewManager : SimpleViewManager<PaywallView>(),
     view?.setDisplayMode(value ?: "")
   }
 
-  override fun setConfig(view: PaywallView?, value: ReadableMap?) {
-    view?.setConfig(value)
+  override fun setConfig(view: PaywallView?, value: String?) {
+    val config: Map<String, Any>? = value?.let { Gson().fromJson(value, ConfigType) }
+    view?.setConfig(config ?: mapOf())
   }
 
-  override fun setStyles(view: PaywallView?, value: ReadableMap?) {
-    view?.setStyles(value)
+  override fun setStyles(view: PaywallView?, value: String?) {
+    val styles: Map<String, Any>? = value?.let { Gson().fromJson(value, ConfigType) }
+    view?.setStyles(styles ?: mapOf())
   }
 
-  override fun setVariables(view: PaywallView?, value: ReadableMap?) {
-    view?.setVariables(value)
+  override fun setVariables(view: PaywallView?, value: String?) {
+    val variables: Map<String, Any>? = value?.let { Gson().fromJson(value, ConfigType) }
+    view?.setVariables(variables ?: mapOf())
   }
 
-  override fun setTexts(view: PaywallView?, value: ReadableMap?) {
-    view?.setTexts(value)
+  override fun setTexts(view: PaywallView?, value: String?) {
+    val texts: Map<String, String>? = value?.let { Gson().fromJson(value, TextsType) }
+    view?.setTexts(texts ?: mapOf())
   }
 
   override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any> {
@@ -68,5 +74,8 @@ class PaywallViewManager : SimpleViewManager<PaywallView>(),
 
   companion object {
     const val NAME = "PaywallView"
+
+    val ConfigType = object: TypeToken<Map<String, Any>>(){}.type
+    val TextsType = object: TypeToken<Map<String, String>>(){}.type
   }
 }
