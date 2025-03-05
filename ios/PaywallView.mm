@@ -5,7 +5,11 @@
 #import "generated/RNAccessViewSpec/Props.h"
 #import "generated/RNAccessViewSpec/RCTComponentViewHelpers.h"
 
+#import "RCTView.h"
+
 #import "RCTFabricComponentsPlugins.h"
+
+#import <AccessIOS/AccessIOS-Swift.h>
 
 using namespace facebook::react;
 
@@ -14,76 +18,85 @@ using namespace facebook::react;
 @end
 
 @implementation PaywallView {
-  UIView * _view;
-  NSString * appId;
-  NSString * pageType;
-  NSString * displayMode;
-  NSDictionary * config;
-  NSDictionary * styles;
-  NSDictionary * texts;
-  NSDictionary * variables;
-
-  RCTDirectEventBlock * onDismissBottomSheet;
-
-  Access * access;
+    UIView * _view;
+    NSString * appId;
+    NSString * pageType;
+    NSString * displayMode;
+    NSDictionary * config;
+    NSDictionary * styles;
+    NSDictionary * texts;
+    NSDictionary * variables;
+    
+    Access * access;
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
-  return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
+    return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-  if (self = [super initWithFrame:frame]) {
-    static const auto defaultProps = std::make_shared<const PaywallViewProps>();
-    _props = defaultProps;
+    if (self = [super initWithFrame:frame]) {
+        static const auto defaultProps = std::make_shared<const PaywallViewProps>();
+        _props = defaultProps;
 
-    _view = [[UIView alloc] init];
+        _view = [[UIView alloc] init];
 
-    self.contentView = _view;
-  }
+        self.contentView = _view;
+    }
 
-  return self;
+    return self;
 }
 
 - (void)reinit {
-  if (appId == nil || pageType == nil || config == nil || styles == nil ||
-      texts == nil || variables == nil || displayMode == nil) {
-    return;
-  }
-
-  if (access != nil) {
-    [access destroy];
-    access = nil;
-  }
-
-  [Access setDebug:[config[@"debug"] boolValue]];
-  access = [[Access alloc] initWithKey:appId];
-  [access config:config];
-  [access styles:styles];
-  [access texts:texts];
-  [access variables:variables];
-
-  [self initEvents];
-
-  if ([displayMode isEqualToString:@"bottom-sheet"]) {
-    [access createPaywallWithPageType:self.pageType percent:0 completion:^(NSDictionary * _Nonnull result) {
-      if (onDismissBottomSheet) {
-        onDismissBottomSheet(@{});
-      }
-    }];
-  } else {
-    UIView *subView = [access createPaywallWithPageType:pageType];
-    subView.frame = self.frame;
-
-    if (subView != nil) {
-      [self addSubview:subView];
+    NSLog(@"reinit");
+    
+    if (appId == nil || config == nil) {
+        return;
     }
-  }
+
+    if (access != nil) {
+        [access destroy];
+        access = nil;
+    }
+    
+    BOOL debug = config[@"debug"];
+    
+    NSLog(@"config: %@", config);
+    NSLog(@"debug: %@", debug);
+    
+    [Access setDebug:[config[@"debug"] boolValue]];
+    
+    access = [[Access alloc] initWithKey:appId];
+    [access config:config :false];
+//    [access styles:styles :false];
+//    [access texts:texts :false];
+//    [access variables:variables];
+
+    [self initEvents];
+
+    if ([displayMode isEqualToString:@"bottom-sheet"]) {
+        [access createPaywallWithPageType:pageType view:nil percent: nil];
+    } else {
+        [access createReactNativePaywallWithPageType:pageType view:self percent:@100 didSetHeight:^(CGFloat height) {
+            PaywallViewEventEmitter::OnResize event = PaywallViewEventEmitter::OnResize { 0, static_cast<int>(height) };
+            self.eventEmitter.onResize(event);
+        }];
+    }
+
+}
+
+// Event emitter convenience method
+- (const PaywallViewEventEmitter &)eventEmitter
+{
+    return static_cast<const PaywallViewEventEmitter &>(*_eventEmitter);
 }
 
 - (void)initEvents {
+    
+    
+    
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
@@ -96,20 +109,28 @@ using namespace facebook::react;
     //     [_view setBackgroundColor:[self hexStringToColor:colorToConvert]];
     // }
 
-    if (oldViewProps.appId != newViewProps.appId) {
-      appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
-      [self reinit];
-    }
+    appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
+    pageType = [[NSString alloc] initWithUTF8String: newViewProps.pageType.c_str()];
 
-    if (oldViewProps.pageType != newViewProps.pageType) {
-      pageType = [[NSString alloc] initWithUTF8String: newViewProps.pageType.c_str()];
-      [self reinit];
-    }
+    displayMode = [[NSString alloc] initWithUTF8String: newViewProps.displayMode.c_str()];
+    
+    NSData *objData = [NSData dataWithBytes:&newViewProps.config length:sizeof(newViewProps.config)];
+    
+    NSString *objStr = [[NSString alloc] initWithData:objData encoding: NSISOLatin1StringEncoding];
 
-    if (oldViewProps.displayMode != newViewProps.displayMode) {
-      displayMode = [[NSString alloc] initWithUTF8String: newViewProps.displayMode.c_str()];
-      [self reinit];
-    }
+    NSData *dataUTF8 = [objStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSLog(@"objStr: %@", objStr);
+    
+    NSError *error;
+    NSDictionary *configYo = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+    
+    NSLog(@"%@", error);
+    
+    config = configYo;
+
+    
+    [self reinit];
 
 
     [super updateProps:props oldProps:oldProps];

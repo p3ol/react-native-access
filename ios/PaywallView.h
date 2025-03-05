@@ -1,5 +1,6 @@
 #import <React/RCTViewComponentView.h>
 #import <UIKit/UIKit.h>
+#import "RCTView.h"
 
 #ifndef PaywallViewNativeComponent_h
 #define PaywallViewNativeComponent_h

@@ -1,0 +1,131 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-experimental-feature AccessLevelOnImport -enable-bare-slash-regex -module-name AccessIOS
+import Combine
+import DeveloperToolsSupport
+import Foundation
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@objc final public class Access : ObjectiveC.NSObject {
+  @objc public init(key: Swift.String)
+  @objc deinit
+  @objc final public func destroy()
+  @objc final public func createPaywall(pageType: Swift.String = "page", view: UIKit.UIView? = nil, percent: Foundation.NSNumber? = nil)
+  final public func createFlutter(pageType: Swift.String = "page", didSetHeight: ((CoreFoundation.CGFloat) -> Swift.Void)? = nil) -> UIKit.UIView?
+  @objc final public func createReactNativePaywall(pageType: Swift.String = "page", view: UIKit.UIView? = nil, percent: Foundation.NSNumber? = nil, didSetHeight: ((CoreFoundation.CGFloat) -> Swift.Void)? = nil)
+  final public func createPaywall(pageType: Swift.String = "page") -> UIKit.UIView?
+  @_Concurrency.MainActor final public func createPaywall(pageType: Swift.String) -> some SwiftUI.View
+  
+}
+@objc extension AccessIOS.Access {
+  @objc public static func setDebug(_ enabled: Swift.Bool)
+  @objc final public func config(_ config: [Swift.String : Any], _ readOnly: Swift.Bool = false)
+  @objc final public func texts(_ texts: [Swift.String : Swift.String], _ readOnly: Swift.Bool = false)
+  @objc final public func styles(_ styles: [Swift.String : Any], _ readOnly: Swift.Bool = false)
+  @objc final public func variables(_ variables: [Swift.String : Any])
+}
+@objc public class UserEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var userId: Swift.String
+  public var contextName: Swift.String
+  public var contextType: Swift.String
+  public var contextValue: Swift.String
+  public var groupSlug: Swift.String
+  public var scenarioName: Swift.String
+  public var widget: Swift.String
+  public var actionName: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class WidgetEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var widget: Swift.String
+  public var actionName: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class RegisterEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var email: Swift.String
+  public var newsletterId: Swift.String?
+  public var passId: Swift.String?
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class ClickEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var widget: Swift.String
+  public var actionName: Swift.String
+  public var button: Swift.String
+  public var url: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class AlternativeClickEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var widget: Swift.String
+  public var actionName: Swift.String
+  public var button: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class ErrorEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var error: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class FormEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var name: Swift.String
+  public var fields: [Swift.String : Any]
+  public var valid: [Swift.String : Swift.Bool]
+  required public init(from decoder: any Swift.Decoder) throws
+  @objc deinit
+}
+@objc public class AnswerEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var questionId: Swift.String
+  public var answer: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class CustomButtonClickEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var name: Swift.String
+  public var buttonId: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+@objc public class CustomButtonLinkEvent : ObjectiveC.NSObject, Swift.Decodable {
+  public var url: Swift.String
+  public var buttonId: Swift.String
+  @objc deinit
+  required public init(from decoder: any Swift.Decoder) throws
+}
+extension AccessIOS.Access {
+  @objc final public func onIdentityAvailable(once: Swift.Bool = false, _ event: @escaping (AccessIOS.UserEvent?) -> Swift.Void)
+  @objc final public func onLock(once: Swift.Bool = false, _ event: @escaping () -> Swift.Void)
+  @objc final public func onReady(once: Swift.Bool = false, _ event: @escaping (AccessIOS.WidgetEvent?) -> Swift.Void)
+  @objc final public func onPaywallSeen(once: Swift.Bool = false, _ event: @escaping (AccessIOS.WidgetEvent?) -> Swift.Void)
+  @objc final public func onRelease(once: Swift.Bool = false, _ event: @escaping (AccessIOS.WidgetEvent?) -> Swift.Void)
+  @objc final public func onSubscribeTapped(once: Swift.Bool = false, _ event: @escaping (AccessIOS.ClickEvent?) -> Swift.Void)
+  @objc final public func onLoginTapped(once: Swift.Bool = false, _ event: @escaping (AccessIOS.ClickEvent?) -> Swift.Void)
+  @objc final public func onDiscoveryLinkTapped(once: Swift.Bool = false, _ event: @escaping (AccessIOS.ClickEvent?) -> Swift.Void)
+  @objc final public func onAlternativeTapEvent(once: Swift.Bool = false, _ event: @escaping (AccessIOS.AlternativeClickEvent?) -> Swift.Void)
+  @objc final public func onError(once: Swift.Bool = false, _ event: @escaping (AccessIOS.ErrorEvent?) -> Swift.Void)
+  @objc final public func onDataPolicyTapped(once: Swift.Bool = false, _ event: @escaping (AccessIOS.ClickEvent?) -> Swift.Void)
+  public struct InvalidForm {
+    public init(fieldKey: Swift.String, message: Swift.String? = nil)
+  }
+  public typealias FormSubmitResult = (_ invalidForms: [AccessIOS.Access.InvalidForm]) -> Swift.Void
+  public typealias SubmittedForm = (_ event: AccessIOS.FormEvent, _ result: @escaping AccessIOS.Access.FormSubmitResult) -> Swift.Void
+  final public func onFormSubmit(submitter: @escaping AccessIOS.Access.SubmittedForm)
+  public typealias RegisterSubmitResult = (_ email: Swift.String?) -> Swift.Void
+  public typealias SubmittedRegister = (_ event: AccessIOS.RegisterEvent, _ result: @escaping AccessIOS.Access.RegisterSubmitResult) -> Swift.Void
+  final public func onRegister(_ submitter: @escaping AccessIOS.Access.SubmittedRegister)
+  final public func onAnswer(once: Swift.Bool = false, _ event: @escaping (AccessIOS.AnswerEvent?) -> Swift.Void)
+  final public func onCustomButtonTapped(once: Swift.Bool = false, _ event: @escaping (AccessIOS.CustomButtonClickEvent?) -> Swift.Void)
+  final public func userDidCloseBottomSheet(_ event: @escaping () -> Swift.Void)
+  final public func off(_ event: Swift.String)
+}
+@available(iOS 13.0, *)
+extension SwiftUI.View {
+  public func createPaywall(access: AccessIOS.Access, pageType: Swift.String = "page", percent: Swift.Int? = nil) -> some SwiftUI.View
+  
+}

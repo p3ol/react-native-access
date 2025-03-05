@@ -70,6 +70,7 @@ const Paywall = ({
         onRelease?.(e);
       }}
       onResize={({ nativeEvent }) => {
+        console.log("yoyoy: ", nativeEvent.height)
         dispatch({ width: nativeEvent.width, height: nativeEvent.height });
       }}
     />

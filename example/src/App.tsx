@@ -21,7 +21,7 @@ export default function App() {
     <ScrollView>
       <AccessContext
         appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
-        config={{ cookiesEnabled: true, forceWidget: 'gift' }}
+        config={{ cookiesEnabled: true, forceWidget: 'gift', debug: true }}
       >
         <SafeAreaView style={styles.container}>
           <View collapsable={false} style={styles.wrapper}>

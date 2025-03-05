@@ -1,0 +1,81 @@
+{
+  "configurations" : [
+    {
+      "id" : "3DD0C607-123D-48B4-895F-E98EE97DB960",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:AccessIOS.xcodeproj",
+        "identifier" : "906B75DC2BF5041800D6A9C0",
+        "name" : "AccessIOSTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessPaywall",
+        "identifier" : "AccessPaywallTests",
+        "name" : "AccessPaywallTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessConfiguration",
+        "identifier" : "AccessConfigurationTests",
+        "name" : "AccessConfigurationTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessCore",
+        "identifier" : "AccessCoreTests",
+        "name" : "AccessCoreTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessEvents",
+        "identifier" : "AccessEventsTests",
+        "name" : "AccessEventsTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessLogger",
+        "identifier" : "AccessLoggerTests",
+        "name" : "AccessLoggerTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessNetwork",
+        "identifier" : "AccessNetworkTests",
+        "name" : "AccessNetworkTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:..\/Packages\/AccessStorage",
+        "identifier" : "AccessStorageTests",
+        "name" : "AccessStorageTests"
+      }
+    }
+  ],
+  "version" : 1
+}
