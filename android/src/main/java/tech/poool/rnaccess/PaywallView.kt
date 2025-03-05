@@ -214,23 +214,23 @@ class PaywallView(context: Context) : LinearLayout(context) {
     reinit()
   }
 
-  fun setConfig(config: ReadableMap?) {
-    this.config = config?.toHashMap()?.toMap() as Map<String, Any>
+  fun setConfig(config: Map<String, Any>) {
+    this.config = config
     reinit()
   }
 
-  fun setStyles(styles: ReadableMap?) {
-    this.styles = styles?.toHashMap()?.toMap() as Map<String, Any>
+  fun setStyles(styles: Map<String, Any>) {
+    this.styles = styles
     reinit()
   }
 
-  fun setVariables(variables: ReadableMap?) {
-    this.variables = variables?.toHashMap()?.toMap() as Map<String, Any>
+  fun setVariables(variables: Map<String, Any>) {
+    this.variables = variables
     reinit()
   }
 
-  fun setTexts(texts: ReadableMap?) {
-    this.texts = texts?.toHashMap()?.toMap()?.mapValues { it.value.toString() }
+  fun setTexts(texts: Map<String, String>) {
+    this.texts = texts
     reinit()
   }
 
