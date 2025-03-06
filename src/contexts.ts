@@ -36,13 +36,6 @@ export interface AccessContextValue {
    */
   variables?: { [key: string]: any };
   /**
-   * The poool access script url
-   *
-   * More infos:
-   * https://www.poool.dev/docs/access/javascript/access/installation
-   */
-  scriptUrl?: string;
-  /**
    * The released paywalls
    */
   released?: (string | boolean)[]
