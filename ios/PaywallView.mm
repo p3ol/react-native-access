@@ -75,8 +75,8 @@ using namespace facebook::react;
     if ([displayMode isEqualToString:@"bottom-sheet"]) {
         [access createPaywallWithPageType:pageType view:nil percent: nil];
     } else {
-        [access createReactNativePaywallWithPageType:pageType view:self percent:@100 didSetHeight:^(CGFloat height) {
-            PaywallViewEventEmitter::OnResize event = PaywallViewEventEmitter::OnResize { 0, static_cast<int>(height) };
+        [access createReactNativePaywallWithPageType:pageType view:self percent:@100 didSetSize:^(CGSize size) {
+            PaywallViewEventEmitter::OnResize event = PaywallViewEventEmitter::OnResize { static_cast<int>(size.width), static_cast<int>(size.height) };
             self.eventEmitter.onResize(event);
         }];
     }
