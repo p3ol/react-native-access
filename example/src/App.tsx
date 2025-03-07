@@ -21,7 +21,7 @@ export default function App() {
     <ScrollView>
       <AccessContext
         appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
-        config={{ cookiesEnabled: true, forceWidget: 'gift', debug: true }}
+        config={{ cookiesEnabled: true, debug: true }}
       >
         <SafeAreaView style={styles.container}>
           <View collapsable={false} style={styles.wrapper}>
@@ -32,7 +32,14 @@ export default function App() {
             <RestrictedContent>
               <Text>Full content</Text>
             </RestrictedContent>
-            <Paywall />
+            <Paywall
+              onFormSubmit={async (e) => {
+                console.log('onFormSubmit', e.nativeEvent);
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+
+                return [{ fieldKey: 'email', message: 'Invalid email' }];
+              }}
+            />
           </View>
         </SafeAreaView>
       </AccessContext>

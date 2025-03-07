@@ -1,6 +1,5 @@
 package tech.poool.rnaccess
 
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
@@ -24,7 +23,8 @@ class PaywallViewManager : SimpleViewManager<PaywallView>(),
   }
 
   public override fun createViewInstance(context: ThemedReactContext): PaywallView {
-    return PaywallView(context)
+    val module = context.getNativeModule(NativePaywallModule::class.java)
+    return PaywallView(context, module)
   }
 
   override fun setAppId(view: PaywallView?, appId: String?) {

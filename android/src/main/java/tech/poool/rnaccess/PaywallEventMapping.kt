@@ -55,7 +55,7 @@ class PaywallEventMapping {
     fun formEvent (event: FormEvent): WritableMap {
       return Arguments.createMap().apply {
         putString("name", event.name)
-        //putMap("fields", Arguments.makeNativeArray(event.fields.toList()))
+        putArray("fields", Arguments.makeNativeArray(event.fields.toList()))
         putMap("valid", Arguments.makeNativeMap(event.valid.toMap()))
       }
     }
@@ -112,14 +112,18 @@ class OnPaywallSeenEvent(surfaceId: Int, viewId: Int, event: WidgetEvent) :
 
 class OnRegisterEvent(surfaceId: Int, viewId: Int, event: RegisterEvent) :
   Event<OnRegisterEvent>(surfaceId, viewId) {
-  private val payload = PaywallEventMapping.registerEvent(event)
+  private val payload = PaywallEventMapping.registerEvent(event).apply {
+    putInt("_messageId", uniqueID)
+  }
   override fun getEventName() = "onRegister"
   override fun getEventData() = payload
 }
 
 class OnFormSubmitEvent(surfaceId: Int, viewId: Int, event: FormEvent) :
   Event<OnFormSubmitEvent>(surfaceId, viewId) {
-  private val payload = PaywallEventMapping.formEvent(event)
+  private val payload = PaywallEventMapping.formEvent(event).apply {
+    putInt("_messageId", uniqueID)
+  }
   override fun getEventName() = "onFormSubmit"
   override fun getEventData() = payload
 }
@@ -200,3 +204,9 @@ class OnResizeEvent(
   override fun getEventName() = "onResize"
   override fun getEventData() = payload
 }
+
+data class NativeMessage<T> (
+  val type: String,
+  val data: T,
+  val _messageId: Int,
+)

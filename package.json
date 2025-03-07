@@ -188,7 +188,7 @@
       "android": "android/generated"
     },
     "android": {
-      "javaPackageName": "tehc.poool.rnaccess"
+      "javaPackageName": "tech.poool.rnaccess"
     },
     "includesGeneratedCode": true
   },

@@ -14,6 +14,8 @@ class RNAccessPackage : ReactPackage {
   }
 
   override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
-    return emptyList()
+    return listOf(
+      NativePaywallModule(reactContext)
+    ).toMutableList()
   }
 }

@@ -1,3 +1,5 @@
+import type { NativeSyntheticEvent } from 'react-native';
+
 export interface AccessConfig {
     debug?: boolean;
     percent?: number;
@@ -24,3 +26,13 @@ export interface AccessConfig {
     customReaderId?: string;
     customSegment?: string;
   }
+
+export type DirectEventHandlerWithResult<
+  T,
+  R = void
+> = (event: NativeSyntheticEvent<T>) => R | Promise<R>;
+
+export interface FieldError {
+  fieldKey: string;
+  message: string;
+}
