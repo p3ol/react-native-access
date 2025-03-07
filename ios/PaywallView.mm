@@ -80,7 +80,6 @@ using namespace facebook::react;
     }
 }
 
-// Event emitter convenience method
 - (const PaywallViewEventEmitter &)eventEmitter
 {
     return static_cast<const PaywallViewEventEmitter &>(*_eventEmitter);
@@ -90,14 +89,14 @@ using namespace facebook::react;
     
     [access onIdentityAvailableWithOnce:false :^(UserEvent * _Nullable event) {
         PaywallViewEventEmitter::OnIdentityAvailable rnEvent = PaywallViewEventEmitter::OnIdentityAvailable {
+            [event.widget UTF8String],
+            [event.actionName UTF8String],
             [event.userId UTF8String],
             [event.contextName UTF8String],
             [event.contextType UTF8String],
             [event.contextValue UTF8String],
             [event.groupSlug UTF8String],
-            [event.scenarioName UTF8String],
-            [event.widget UTF8String],
-            [event.actionName UTF8String]
+            [event.scenarioName UTF8String]
         };
         self.eventEmitter.onIdentityAvailable(rnEvent);
     }];
@@ -179,7 +178,6 @@ using namespace facebook::react;
         self.eventEmitter.onError(rnEvent);
     }];
 
-
     [access onAnswerWithOnce:false :^(AnswerEvent * _Nullable event) {
         PaywallViewEventEmitter::OnAnswer rnEvent = PaywallViewEventEmitter::OnAnswer {
             [event.questionId UTF8String],
@@ -200,61 +198,135 @@ using namespace facebook::react;
         self.eventEmitter.onDismissBottomSheet(rnEvent);
     }];
     
-    
-    [access onFormSubmitWithSubmitter:^(FormEvent * _Nonnull event, void (^ _Nonnull)(NSArray<InvalidForm *> * _Nonnull)) {
-        NSString *fieldsStr = [self dictToString:event.fields];
-        NSString *validStr = [self dictToString:event.valid];
+    [access onFormSubmitWithSubmitter:^(FormEvent * _Nonnull event, void (^ _Nonnull method)(NSArray<InvalidForm *> * _Nonnull)) {
+        NSString *notifName = @"formSubmitNotification";
+        NSNumber *messageId = @(arc4random());
+        
+        NSString *fieldsStr = [self arrayToString:event.fields.allKeys];
+        NSString *valuesStr = [self arrayToString:event.fields.allValues];
+        NSString *validStr = [self arrayToString:event.valid.allValues];
+        
+        [NSNotificationCenter.defaultCenter addObserverForName:notifName
+                                            object:nil
+                                            queue:[NSOperationQueue mainQueue]
+                                            usingBlock:^(NSNotification * _Nonnull notification) {
+            [self onFormSubmitNotification:notification messageId:messageId method: method];
+            [NSNotificationCenter.defaultCenter removeObserver:self name:notifName object:nil];
+        }];
         
         PaywallViewEventEmitter::OnFormSubmit rnEvent = PaywallViewEventEmitter::OnFormSubmit {
-            [event.name UTF8String],
             [fieldsStr UTF8String],
-            [validStr UTF8String]
+            [valuesStr UTF8String],
+            [validStr UTF8String],
+            [messageId doubleValue]
         };
+        
         self.eventEmitter.onFormSubmit(rnEvent);
     }];
-    [access onRegister:^(RegisterEvent * _Nonnull event, void (^ _Nonnull)(NSString * _Nullable)) {
+    [access onRegister:^(RegisterEvent * _Nonnull event, void (^ _Nonnull method)(NSString * _Nullable)) {
+        NSString *notifName = @"registerNotification";
+        NSNumber *messageId = @(arc4random());
+ 
+        NSString *newsletterId = event.newsletterId ? event.newsletterId : @"";
+        NSString *passId = event.passId ? event.passId : @"";
+        
+        [NSNotificationCenter.defaultCenter addObserverForName:notifName
+                                            object:nil
+                                            queue:[NSOperationQueue mainQueue]
+                                            usingBlock:^(NSNotification * _Nonnull notification) {
+            [self onRegisterNotification:notification messageId:messageId method: method];
+            [NSNotificationCenter.defaultCenter removeObserver:self name:notifName object:nil];
+        }];
+        
         PaywallViewEventEmitter::OnRegister rnEvent = PaywallViewEventEmitter::OnRegister {
             [event.email UTF8String],
-            [event.newsletterId UTF8String],
-            [event.passId UTF8String]
+            [newsletterId UTF8String],
+            [passId UTF8String]
         };
         self.eventEmitter.onRegister(rnEvent);
     }];
 }
 
+-(void)onFormSubmitNotification:(NSNotification*)notification
+                      messageId:(NSNumber*)messageId
+                         method:(void (^ _Nonnull)(NSArray<InvalidForm *> * _Nonnull))method
+{
+    id object = notification.userInfo[@"object"];
+    
+    if ([object isKindOfClass:[NSString class]]) {
+        NSError *error;
+        NSData *dataUTF8 = [(NSString*)object dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+
+        if (error) { return; }
+        
+        if (dict[@"_messageId"] == messageId) {
+            NSArray *remoteArray = dict[@"data"];
+            NSMutableArray *invalidForms = [[NSMutableArray alloc] init];
+            
+            for (NSDictionary *form in remoteArray) {
+                NSString* key = form[@"fieldKey"];
+                NSString* message = form[@"message"];
+                
+                InvalidForm *invalid = [[InvalidForm alloc] initWithFieldKey:key message: message];
+                [invalidForms addObject:invalid];
+            }
+            
+            method(invalidForms);
+        }
+    }
+}
+
+-(void)onRegisterNotification:(NSNotification*)notification
+                    messageId:(NSNumber*)messageId
+                       method:(void (^ _Nonnull)(NSString * _Nullable))method
+{
+    // TODO: finish this.
+    method(nil);
+}
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
-
+            
+    if (oldViewProps.appId == newViewProps.appId &&
+        oldViewProps.pageType == newViewProps.pageType &&
+        oldViewProps.displayMode == newViewProps.displayMode &&
+        oldViewProps.config == newViewProps.config &&
+        oldViewProps.styles == newViewProps.styles &&
+        oldViewProps.texts == newViewProps.texts &&
+        oldViewProps.variables == newViewProps.variables) {
+        return;
+    }
+    
     appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
+    
     pageType = [[NSString alloc] initWithUTF8String: newViewProps.pageType.c_str()];
-
     displayMode = [[NSString alloc] initWithUTF8String: newViewProps.displayMode.c_str()];
     
-    config = [self stringToDict:newViewProps.config.c_str()];
-    styles = [self stringToDict:newViewProps.styles.c_str()];
-    texts = [self stringToDict:newViewProps.texts.c_str()];
-    variables = [self stringToDict:newViewProps.variables.c_str()];
+    config = [self cppStringToDict:newViewProps.config.c_str()];
+    styles = [self cppStringToDict:newViewProps.styles.c_str()];
+    texts = [self cppStringToDict:newViewProps.texts.c_str()];
+    variables = [self cppStringToDict:newViewProps.variables.c_str()];
     
     [self reinit];
     [super updateProps:props oldProps:oldProps];
 }
 
--(NSDictionary*)stringToDict:(const char*)charStr
+-(NSDictionary*)cppStringToDict:(const char*)charStr
 {
     NSString *str = [[NSString alloc] initWithUTF8String: charStr];
     NSData *dataUTF8 = [str dataUsingEncoding:NSUTF8StringEncoding];
-        
     NSError *error;
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
     
     return dict;
 }
 
--(NSString*)dictToString:(NSDictionary*)dict {
+-(NSString*)arrayToString:(NSArray*)array {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array
                                             options:NSJSONWritingPrettyPrinted
                                             error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];

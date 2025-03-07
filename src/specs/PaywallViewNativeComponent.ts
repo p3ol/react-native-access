@@ -73,11 +73,10 @@ export interface ErrorEvent {
   error: string;
 }
 
-export interface FormEvent extends WidgetEvent {
-  name: string;
+export interface FormEvent {
   fields: string;
-  valid: string;
   values: string;
+  valid: string;
   _messageId: Double;
 }
 
