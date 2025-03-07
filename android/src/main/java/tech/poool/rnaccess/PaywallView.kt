@@ -18,6 +18,7 @@ import tech.poool.access.onDataPolicyClick
 import tech.poool.access.onDiscoveryLinkClick
 import tech.poool.access.onError
 import tech.poool.access.onFormSubmit
+import tech.poool.access.onIdentityAvailable
 import tech.poool.access.onLock
 import tech.poool.access.onLoginClick
 import tech.poool.access.onPaywallSeen
@@ -88,6 +89,14 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   }
 
   private fun initEvents () {
+    access?.onIdentityAvailable {
+      eventDispatcher?.dispatchEvent(OnIdentityAvailableEvent(
+        UIManagerHelper.getSurfaceId(context),
+        id,
+        it
+      ))
+    }
+
     access?.onLock {
       eventDispatcher?.dispatchEvent(OnLockEvent(
         UIManagerHelper.getSurfaceId(context),

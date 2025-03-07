@@ -11,10 +11,24 @@ import tech.poool.access.CustomButtonClickEvent
 import tech.poool.access.ErrorEvent
 import tech.poool.access.FormEvent
 import tech.poool.access.RegisterEvent
+import tech.poool.access.UserEvent
 import tech.poool.access.WidgetEvent
 
 class PaywallEventMapping {
   companion object {
+    fun userEvent (event: UserEvent): WritableMap {
+      return Arguments.createMap().apply {
+        putString("userId", event.userId)
+        putString("contextName", event.contextName)
+        putString("contextType", event.contextType)
+        putString("contextValue", event.contextValue)
+        putString("groupSlug", event.groupSlug)
+        putString("scenarioName", event.scenarioName)
+        putString("widget", event.widget)
+        putString("actionName", event.actionName)
+      }
+    }
+
     fun widgetEvent (event: WidgetEvent): WritableMap {
       return Arguments.createMap().apply {
         putString("widget", event.widget)
@@ -84,6 +98,13 @@ class PaywallEventMapping {
       }
     }
   }
+}
+
+class OnIdentityAvailableEvent(surfaceId: Int, viewId: Int, event: UserEvent) :
+  Event<OnIdentityAvailableEvent>(surfaceId, viewId) {
+  private val payload = PaywallEventMapping.userEvent(event)
+  override fun getEventName() = "onIdentityAvailable"
+  override fun getEventData(): WritableMap = payload
 }
 
 class OnReadyEvent(surfaceId: Int, viewId: Int, event: WidgetEvent) :
