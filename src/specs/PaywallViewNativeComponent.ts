@@ -65,7 +65,9 @@ export interface ErrorEvent {
 
 export interface FormEvent extends WidgetEvent {
   name: string;
-  fields: { fieldKey: string }[];
+  fields: string;
+  valid: string;
+  values: string;
   _messageId: Double;
 }
 

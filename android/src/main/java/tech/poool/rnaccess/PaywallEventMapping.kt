@@ -3,6 +3,7 @@ package tech.poool.rnaccess
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event
+import com.google.gson.Gson
 import tech.poool.access.AlternativeClickEvent
 import tech.poool.access.AnswerEvent
 import tech.poool.access.ClickEvent
@@ -53,10 +54,12 @@ class PaywallEventMapping {
     }
 
     fun formEvent (event: FormEvent): WritableMap {
+      val transformer = Gson()
       return Arguments.createMap().apply {
         putString("name", event.name)
-        putArray("fields", Arguments.makeNativeArray(event.fields.toList()))
-        putMap("valid", Arguments.makeNativeMap(event.valid.toMap()))
+        putString("fields", transformer.toJson(event.fields.toList()))
+        putString("valid", transformer.toJson(event.valid.toMap()))
+        putString("values", transformer.toJson(event.values.toMap()))
       }
     }
 

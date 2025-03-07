@@ -134,6 +134,9 @@ const Paywall = ({
         e.persist();
 
         try {
+          e.nativeEvent.fields = JSON.parse(e.nativeEvent.fields);
+          e.nativeEvent.values = JSON.parse(e.nativeEvent.values);
+          e.nativeEvent.valid = JSON.parse(e.nativeEvent.valid);
           const result = await onFormSubmit?.(e);
           sendMessage(e, 'onFormSubmit:resolve', result);
         } catch (error) {
