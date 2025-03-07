@@ -13,6 +13,7 @@ export interface NativeProps extends ViewProps {
   variables?: string;
   texts?: string;
   displayMode?: string;
+  onIdentityAvailable?: DirectEventHandler<UserEvent>;
   onLock?: DirectEventHandler<LockEvent>;
   onReady?: DirectEventHandler<WidgetEvent>;
   onRelease?: DirectEventHandler<WidgetEvent>;
@@ -34,6 +35,15 @@ export interface NativeProps extends ViewProps {
 export default codegenNativeComponent<NativeProps>('PaywallView');
 
 export interface LockEvent {}
+
+export interface UserEvent extends WidgetEvent {
+  userId: string;
+  contextName: string;
+  contextType: string;
+  contextValue: string;
+  groupSlug: string;
+  scenarioName: string;
+}
 
 export interface DismissBottomSheetEvent {}
 
