@@ -1,15 +1,24 @@
 import { useMemo, useReducer, useRef } from 'react';
 import { mockState } from '@junipero/core';
 
+import type {
+  AccessConfig,
+  DirectEventHandlerWithResult,
+  FieldError,
+} from '../types';
 import { useAccess } from '../hooks';
 import PaywallView, {
   type NativeProps,
+  type FormEvent,
+  type RegisterEvent,
 } from '../specs/PaywallViewNativeComponent';
-import type { AccessConfig } from '../types';
+import NativePaywallModule from '../specs/NativePaywallModule';
+import type { NativeSyntheticEvent } from 'react-native';
 
 export interface PaywallProps extends Omit<
   NativeProps,
-  'appId' | 'config' | 'texts' | 'styles' | 'variables'
+  'appId' | 'config' | 'texts' | 'styles' | 'variables' |
+  'onFormSubmit' | 'onRegister'
 > {
   /**
    * Optional unique paywall id. When released, the snippet with the same id
@@ -20,6 +29,9 @@ export interface PaywallProps extends Omit<
   texts?: Record<string, string>;
   styles?: Record<string, string>;
   variables?: Record<string, any>;
+
+  onFormSubmit?: DirectEventHandlerWithResult<FormEvent, FieldError[]>;
+  onRegister?: DirectEventHandlerWithResult<RegisterEvent, FieldError[]>;
 }
 
 export interface PaywallState {
@@ -37,6 +49,8 @@ const Paywall = ({
   displayMode = 'default',
   pageType = 'premium',
   onRelease,
+  onFormSubmit,
+  onRegister,
   ...rest
 }: PaywallProps) => {
   const {
@@ -68,6 +82,29 @@ const Paywall = ({
 
   const innerRef = useRef(null);
 
+  const sendMessage = (
+    e: NativeSyntheticEvent<FormEvent | RegisterEvent>,
+    type: string,
+    data: any,
+  ) => {
+    const message = JSON.stringify({
+      type,
+      data,
+      _messageId: e.nativeEvent._messageId
+    });
+
+    if (factoryConfig?.debug || config?.debug) {
+      console.log(
+        'Poool/Access/ReactNative:',
+        'Sending message to native module ->',
+        'poool:rn:event.' + type,
+        message
+      );
+    }
+
+    NativePaywallModule.emit('poool:rn:event.' + type, message);
+  };
+
   return (
     <PaywallView
       ref={innerRef}
@@ -91,8 +128,34 @@ const Paywall = ({
         onRelease?.(e);
       }}
       onResize={({ nativeEvent }) => {
-        console.log("yoyoy: ", nativeEvent.height)
         dispatch({ width: nativeEvent.width, height: nativeEvent.height });
+      }}
+      onFormSubmit={async e => {
+        e.persist();
+
+        try {
+          e.nativeEvent.fields = JSON.parse(e.nativeEvent.fields);
+          e.nativeEvent.values = JSON.parse(e.nativeEvent.values);
+          e.nativeEvent.valid = JSON.parse(e.nativeEvent.valid);
+          const result = await onFormSubmit?.(e);
+          sendMessage(e, 'onFormSubmit:resolve', result);
+        } catch (error) {
+          sendMessage(e, 'onFormSubmit:reject', {
+            message: (error as Error).message || error,
+          });
+        }
+      }}
+      onRegister={async e => {
+        e.persist();
+
+        try {
+          const result = await onRegister?.(e);
+          sendMessage(e, 'onRegister:resolve', result);
+        } catch (error) {
+          sendMessage(e, 'onRegister:reject', {
+            message: (error as Error).message || error,
+          });
+        }
       }}
     />
   );

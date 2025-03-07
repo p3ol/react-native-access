@@ -3,6 +3,7 @@ package tech.poool.rnaccess
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.uimanager.events.Event
+import com.google.gson.Gson
 import tech.poool.access.AlternativeClickEvent
 import tech.poool.access.AnswerEvent
 import tech.poool.access.ClickEvent
@@ -10,10 +11,24 @@ import tech.poool.access.CustomButtonClickEvent
 import tech.poool.access.ErrorEvent
 import tech.poool.access.FormEvent
 import tech.poool.access.RegisterEvent
+import tech.poool.access.UserEvent
 import tech.poool.access.WidgetEvent
 
 class PaywallEventMapping {
   companion object {
+    fun userEvent (event: UserEvent): WritableMap {
+      return Arguments.createMap().apply {
+        putString("userId", event.userId)
+        putString("contextName", event.contextName)
+        putString("contextType", event.contextType)
+        putString("contextValue", event.contextValue)
+        putString("groupSlug", event.groupSlug)
+        putString("scenarioName", event.scenarioName)
+        putString("widget", event.widget)
+        putString("actionName", event.actionName)
+      }
+    }
+
     fun widgetEvent (event: WidgetEvent): WritableMap {
       return Arguments.createMap().apply {
         putString("widget", event.widget)
@@ -53,10 +68,12 @@ class PaywallEventMapping {
     }
 
     fun formEvent (event: FormEvent): WritableMap {
+      val transformer = Gson()
       return Arguments.createMap().apply {
         putString("name", event.name)
-        //putMap("fields", Arguments.makeNativeArray(event.fields.toList()))
-        putMap("valid", Arguments.makeNativeMap(event.valid.toMap()))
+        putString("fields", transformer.toJson(event.fields.toList()))
+        putString("valid", transformer.toJson(event.valid.toMap()))
+        putString("values", transformer.toJson(event.values.toMap()))
       }
     }
 
@@ -81,6 +98,13 @@ class PaywallEventMapping {
       }
     }
   }
+}
+
+class OnIdentityAvailableEvent(surfaceId: Int, viewId: Int, event: UserEvent) :
+  Event<OnIdentityAvailableEvent>(surfaceId, viewId) {
+  private val payload = PaywallEventMapping.userEvent(event)
+  override fun getEventName() = "onIdentityAvailable"
+  override fun getEventData(): WritableMap = payload
 }
 
 class OnReadyEvent(surfaceId: Int, viewId: Int, event: WidgetEvent) :
@@ -112,14 +136,18 @@ class OnPaywallSeenEvent(surfaceId: Int, viewId: Int, event: WidgetEvent) :
 
 class OnRegisterEvent(surfaceId: Int, viewId: Int, event: RegisterEvent) :
   Event<OnRegisterEvent>(surfaceId, viewId) {
-  private val payload = PaywallEventMapping.registerEvent(event)
+  private val payload = PaywallEventMapping.registerEvent(event).apply {
+    putInt("_messageId", uniqueID)
+  }
   override fun getEventName() = "onRegister"
   override fun getEventData() = payload
 }
 
 class OnFormSubmitEvent(surfaceId: Int, viewId: Int, event: FormEvent) :
   Event<OnFormSubmitEvent>(surfaceId, viewId) {
-  private val payload = PaywallEventMapping.formEvent(event)
+  private val payload = PaywallEventMapping.formEvent(event).apply {
+    putInt("_messageId", uniqueID)
+  }
   override fun getEventName() = "onFormSubmit"
   override fun getEventData() = payload
 }
@@ -200,3 +228,9 @@ class OnResizeEvent(
   override fun getEventName() = "onResize"
   override fun getEventData() = payload
 }
+
+data class NativeMessage<T> (
+  val type: String,
+  val data: T,
+  val _messageId: Int,
+)

@@ -3,11 +3,14 @@ package tech.poool.rnaccess
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
+import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.EventDispatcher
+import com.google.gson.internal.LinkedTreeMap
+import kotlinx.coroutines.suspendCancellableCoroutine
 import tech.poool.access.Access
+import tech.poool.access.FieldError
 import tech.poool.access.onAlternativeClick
 import tech.poool.access.onAnswer
 import tech.poool.access.onCustomButtonClick
@@ -15,6 +18,7 @@ import tech.poool.access.onDataPolicyClick
 import tech.poool.access.onDiscoveryLinkClick
 import tech.poool.access.onError
 import tech.poool.access.onFormSubmit
+import tech.poool.access.onIdentityAvailable
 import tech.poool.access.onLock
 import tech.poool.access.onLoginClick
 import tech.poool.access.onPaywallSeen
@@ -22,8 +26,10 @@ import tech.poool.access.onReady
 import tech.poool.access.onRegister
 import tech.poool.access.onRelease
 import tech.poool.access.onSubscribeClick
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
-class PaywallView(context: Context) : LinearLayout(context) {
+class PaywallView(context: Context, private val module: NativePaywallModule?) : LinearLayout(context) {
   private var access: Access? = null
 
   private var appId: String? = null
@@ -83,6 +89,14 @@ class PaywallView(context: Context) : LinearLayout(context) {
   }
 
   private fun initEvents () {
+    access?.onIdentityAvailable {
+      eventDispatcher?.dispatchEvent(OnIdentityAvailableEvent(
+        UIManagerHelper.getSurfaceId(context),
+        id,
+        it
+      ))
+    }
+
     access?.onLock {
       eventDispatcher?.dispatchEvent(OnLockEvent(
         UIManagerHelper.getSurfaceId(context),
@@ -115,23 +129,37 @@ class PaywallView(context: Context) : LinearLayout(context) {
     }
 
     access?.onRegister {
-      eventDispatcher?.dispatchEvent(OnRegisterEvent(
+      val result = dispatchWithResult<List<LinkedTreeMap<String, String>>?>(OnRegisterEvent(
         UIManagerHelper.getSurfaceId(context),
         id,
         it
       ))
 
-      return@onRegister null
+      return@onRegister result?.map { field ->
+        FieldError(field["name"] as String, field["message"] as String)
+      }
     }
 
     access?.onFormSubmit {
-      eventDispatcher?.dispatchEvent(OnFormSubmitEvent(
+      val result = dispatchWithResult<List<LinkedTreeMap<String, String>>?>(OnFormSubmitEvent(
         UIManagerHelper.getSurfaceId(context),
         id,
         it
       ))
 
-      return@onFormSubmit null
+      println(result?.map { field ->
+        FieldError(
+          field["fieldKey"] as String,
+          field["message"] as String
+        )
+      })
+
+      return@onFormSubmit result?.map { field ->
+        FieldError(
+          field["fieldKey"] as String,
+          field["message"] as String
+        )
+      }
     }
 
     access?.onSubscribeClick {
@@ -257,5 +285,38 @@ class PaywallView(context: Context) : LinearLayout(context) {
   private fun convertPixelsToDp (value: Int): Double {
     val displayDensity = context.resources.displayMetrics.density
     return (value / displayDensity).toDouble()
+  }
+
+  private suspend fun <R> dispatchWithResult (
+    event: Event<*>,
+  ): R {
+    val eventName = "poool:rn:event." + event.eventName;
+
+    return suspendCancellableCoroutine { continuation ->
+      var onResolve: ((NativeMessage<R>) -> Unit) = {}
+      var onReject: ((NativeMessage<Throwable>) -> Unit) = {}
+
+      onResolve = { data: NativeMessage<R> ->
+        if (event.uniqueID == data._messageId) {
+          module?.events?.off("$eventName:resolve", onResolve);
+          module?.events?.off("$eventName:reject", onReject);
+
+          continuation.resume(data.data);
+        }
+      }
+
+      onReject = { data: NativeMessage<Throwable> ->
+        if (event.uniqueID == data._messageId) {
+          module?.events?.off("$eventName:resolve", onResolve);
+          module?.events?.off("$eventName:reject", onReject);
+          continuation.resumeWithException(Throwable(data.data.toString()));
+        }
+      }
+
+      module?.events?.on("$eventName:resolve", onResolve);
+      module?.events?.on("$eventName:reject", onReject);
+
+      eventDispatcher?.dispatchEvent(event)
+    }
   }
 }

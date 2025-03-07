@@ -1,6 +1,7 @@
 import type { ViewProps } from 'react-native';
 import type {
   DirectEventHandler,
+  Double,
   Int32,
 } from 'react-native/Libraries/Types/CodegenTypes';
 import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
@@ -56,6 +57,7 @@ export interface RegisterEvent {
   email: string;
   newsletterId: string;
   passId: string;
+  _messageId: Double;
 }
 
 export interface ClickEvent extends WidgetEvent {
@@ -73,7 +75,10 @@ export interface ErrorEvent {
 
 export interface FormEvent extends WidgetEvent {
   name: string;
-  fields: { fieldKey: string }[];
+  fields: string;
+  valid: string;
+  values: string;
+  _messageId: Double;
 }
 
 export interface AnswerEvent {
