@@ -27,6 +27,9 @@ using namespace facebook::react;
     NSDictionary * texts;
     NSDictionary * variables;
     
+    NSMutableDictionary *_formSubmitObservers;
+    NSMutableDictionary *_registerObservers;
+    
     Access * access;
 }
 
@@ -44,6 +47,9 @@ using namespace facebook::react;
         _view = [[UIView alloc] init];
 
         self.contentView = _view;
+
+        _formSubmitObservers = [[NSMutableDictionary alloc] init];
+        _registerObservers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -59,7 +65,7 @@ using namespace facebook::react;
         [access destroy];
         access = nil;
     }
-        
+
     [Access setDebug: [config[@"debug"] boolValue]];
     
     access = [[Access alloc] initWithKey:appId];
@@ -206,13 +212,13 @@ using namespace facebook::react;
         NSString *valuesStr = [self arrayToString:event.fields.allValues];
         NSString *validStr = [self arrayToString:event.valid.allValues];
         
-        [NSNotificationCenter.defaultCenter addObserverForName:notifName
+        id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
                                             object:nil
                                             queue:[NSOperationQueue mainQueue]
                                             usingBlock:^(NSNotification * _Nonnull notification) {
             [self onFormSubmitNotification:notification messageId:messageId method: method];
-            [NSNotificationCenter.defaultCenter removeObserver:self name:notifName object:nil];
         }];
+        [self->_formSubmitObservers setObject:observer forKey:messageId];
         
         PaywallViewEventEmitter::OnFormSubmit rnEvent = PaywallViewEventEmitter::OnFormSubmit {
             [fieldsStr UTF8String],
@@ -230,18 +236,19 @@ using namespace facebook::react;
         NSString *newsletterId = event.newsletterId ? event.newsletterId : @"";
         NSString *passId = event.passId ? event.passId : @"";
         
-        [NSNotificationCenter.defaultCenter addObserverForName:notifName
+        id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
                                             object:nil
                                             queue:[NSOperationQueue mainQueue]
                                             usingBlock:^(NSNotification * _Nonnull notification) {
             [self onRegisterNotification:notification messageId:messageId method: method];
-            [NSNotificationCenter.defaultCenter removeObserver:self name:notifName object:nil];
         }];
-        
+        [self->_registerObservers setObject:observer forKey:messageId];
+                
         PaywallViewEventEmitter::OnRegister rnEvent = PaywallViewEventEmitter::OnRegister {
             [event.email UTF8String],
             [newsletterId UTF8String],
-            [passId UTF8String]
+            [passId UTF8String],
+            [messageId doubleValue]
         };
         self.eventEmitter.onRegister(rnEvent);
     }];
@@ -252,37 +259,62 @@ using namespace facebook::react;
                          method:(void (^ _Nonnull)(NSArray<InvalidForm *> * _Nonnull))method
 {
     id object = notification.userInfo[@"object"];
+ 
+    NSDictionary *dict = [self extractDictFromNotifObject:object];
     
-    if ([object isKindOfClass:[NSString class]]) {
-        NSError *error;
-        NSData *dataUTF8 = [(NSString*)object dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
-
-        if (error) { return; }
+    if (dict[@"_messageId"] == messageId) {
+        NSArray *remoteArray = dict[@"data"];
+        NSMutableArray *invalidForms = [[NSMutableArray alloc] init];
         
-        if (dict[@"_messageId"] == messageId) {
-            NSArray *remoteArray = dict[@"data"];
-            NSMutableArray *invalidForms = [[NSMutableArray alloc] init];
+        for (NSDictionary *form in remoteArray) {
+            NSString* key = form[@"fieldKey"];
+            NSString* message = form[@"message"];
             
-            for (NSDictionary *form in remoteArray) {
-                NSString* key = form[@"fieldKey"];
-                NSString* message = form[@"message"];
-                
-                InvalidForm *invalid = [[InvalidForm alloc] initWithFieldKey:key message: message];
-                [invalidForms addObject:invalid];
-            }
-            
-            method(invalidForms);
+            InvalidForm *invalid = [[InvalidForm alloc] initWithFieldKey:key message: message];
+            [invalidForms addObject:invalid];
         }
+        method(invalidForms);
+        
+        [NSNotificationCenter.defaultCenter removeObserver:_formSubmitObservers[messageId]];
+        [_formSubmitObservers removeObjectForKey:messageId];
     }
 }
 
 -(void)onRegisterNotification:(NSNotification*)notification
                     messageId:(NSNumber*)messageId
                        method:(void (^ _Nonnull)(NSString * _Nullable))method
-{
-    // TODO: finish this.
-    method(nil);
+{    
+    id object = notification.userInfo[@"object"];
+    
+    NSDictionary *dict = [self extractDictFromNotifObject:object];
+    
+    if (dict[@"_messageId"] == messageId) {
+        NSArray *remoteArray = dict[@"data"];
+        
+        NSString* message;
+        
+        if (dict.count > 0) {
+            message = remoteArray[0][@"message"];
+        }
+        
+        method(message);
+        
+        [NSNotificationCenter.defaultCenter removeObserver:_registerObservers[messageId]];
+        [_registerObservers removeObjectForKey:messageId];
+    }
+}
+
+-(NSDictionary*)extractDictFromNotifObject:(id _Nullable)object {
+    if (object == nil) { return @{}; }
+    
+    if ([object isKindOfClass:[NSString class]]) {
+        NSError *error;
+        NSData *dataUTF8 = [(NSString*)object dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:dataUTF8 options:0 error:&error];
+        
+        if (!error) { return dict; }
+    }
+    return @{};
 }
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
