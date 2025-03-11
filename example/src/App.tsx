@@ -1,4 +1,13 @@
-import { SafeAreaView, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { useEffect } from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Platform,
+} from 'react-native';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import {
   AccessContext,
   Paywall,
@@ -7,15 +16,15 @@ import {
 } from '@poool/react-native-access';
 
 export default function App() {
-  // useEffect(() => {
-  //   init();
-  // }, []);
+  useEffect(() => {
+    init();
+  }, []);
 
-  // const init = async () => {
-  //   if (Platform.OS === 'ios') {
-  //     await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
-  //   }
-  // };
+  const init = async () => {
+    if (Platform.OS === 'ios') {
+      await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
+    }
+  };
 
   return (
     <ScrollView>
