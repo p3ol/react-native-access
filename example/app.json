@@ -1,4 +1,10 @@
 {
   "name": "AccessExample",
-  "displayName": "AccessExample"
+  "displayName": "AccessExample",
+  "ios": {
+    "developmentTeam": "NONE",
+    "infoPlist": {
+      "NSUserTrackingUsageDescription": "We use tracking to provide you with a better experience"
+    }
+  }
 }

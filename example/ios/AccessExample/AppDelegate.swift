@@ -1,5 +1,4 @@
 import UIKit
-import AppTrackingTransparency
 import React
 import React_RCTAppDelegate
 import ReactAppDependencyProvider
@@ -14,19 +13,6 @@ class AppDelegate: RCTAppDelegate {
     // They will be passed down to the ViewController used by React Native.
     self.initialProps = [:]
 
-    
-    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-      ATTrackingManager.requestTrackingAuthorization { status in
-        switch status {
-        case .authorized:
-          print("ATT authorized")
-          break
-        default:
-          break
-        }
-      }
-    }
-    
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
