@@ -41,6 +41,6 @@ Pod::Spec.new do |s|
     end
   end
 
-  # s.dependency "AccessIOS"
-  s.vendored_frameworks = "ios/AccessIOS.xcframework"
+  s.dependency "AccessIOS"
+  #s.vendored_frameworks = "ios/AccessIOS.xcframework"
 end
