@@ -2633,7 +2633,7 @@ __metadata:
     "@react-native/metro-config": 0.74.86
     "@react-native/typescript-config": 0.74.86
     "@rnx-kit/metro-config": ^1.3.15
-    react: 18.2.0
+    react: 18.3.1
     react-native: 0.74.4
     react-native-builder-bob: ^0.29.0
     react-native-permissions: 4.1.5
@@ -2660,7 +2660,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.1
     jest: ^29.7.0
     prettier: ^3.0.3
-    react: 18.2.0
+    react: 18.3.1
     react-native: 0.74.4
     react-native-builder-bob: ^0.29.0
     release-it: ^15.0.0
@@ -3513,12 +3513,12 @@ __metadata:
   linkType: hard
 
 "@types/react@npm:^18.2.44":
-  version: 18.3.3
-  resolution: "@types/react@npm:18.3.3"
+  version: 18.3.20
+  resolution: "@types/react@npm:18.3.20"
   dependencies:
     "@types/prop-types": "*"
     csstype: ^3.0.2
-  checksum: c63d6a78163244e2022b01ef79b0baec4fe4da3475dc4a90bb8accefad35ef0c43560fd0312e5974f92a0f1108aa4d669ac72d73d66396aa060ea03b5d2e3873
+  checksum: a93a4eec87c671ad9d68eaedaa2aa3688926409802939d2b291800cf926c771eb505a18721174364217ae9e1e8b89d09c1519f06ba1f168271de9f4c832710ea
   languageName: node
   linkType: hard
 
@@ -11202,12 +11202,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0":
-  version: 18.2.0
-  resolution: "react@npm:18.2.0"
+"react@npm:18.3.1":
+  version: 18.3.1
+  resolution: "react@npm:18.3.1"
   dependencies:
     loose-envify: ^1.1.0
-  checksum: 88e38092da8839b830cda6feef2e8505dec8ace60579e46aa5490fc3dc9bba0bd50336507dc166f43e3afc1c42939c09fe33b25fae889d6f402721dcd78fca1b
+  checksum: a27bcfa8ff7c15a1e50244ad0d0c1cb2ad4375eeffefd266a64889beea6f6b64c4966c9b37d14ee32d6c9fcd5aa6ba183b6988167ab4d127d13e7cb5b386a376
   languageName: node
   linkType: hard
 
