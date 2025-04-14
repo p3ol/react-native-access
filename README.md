@@ -35,7 +35,7 @@ export default = () => (
     */ }
     <AccessContext
       appId="insert_your_app_id"
-      config={{ cookies_enabled: true }}
+      config={{ cookiesEnabled: true }}
     >
       { /*
         Place your snippet & restricted content where you want them to be
@@ -76,6 +76,8 @@ export default = () => (
 - `id` {`String`} (optional, default: null) Paywall id
 
 ### `<Snippet />`
+
+#### Props
 
 - `id` {`String`} (optional, default: null) Paywall id
 
