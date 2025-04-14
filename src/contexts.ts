@@ -1,5 +1,6 @@
-import type { Poool } from 'poool-access';
 import { createContext } from 'react';
+
+import type { AccessConfig } from './types';
 
 export interface AccessContextValue {
   /**
@@ -15,7 +16,7 @@ export interface AccessContextValue {
    * More infos:
    * https://www.poool.dev/docs/access/javascript/access/configuration
    */
-  config?: Poool.AccessConfigOptions;
+  config?: AccessConfig;
   /**
    * Your poool access texts ati_tag_options
    *
@@ -27,20 +28,13 @@ export interface AccessContextValue {
    *
    * More infos: https://www.poool.dev/docs/access/javascript/access/styles
    */
-  styles?: Poool.styles;
+  styles?: { [key: string]: string };
   /**
    * Your pool access variables
    *
    * More infos: https://www.poool.dev/docs/access/javascript/access/variables
    */
   variables?: { [key: string]: any };
-  /**
-   * The poool access script url
-   *
-   * More infos:
-   * https://www.poool.dev/docs/access/javascript/access/installation
-   */
-  scriptUrl?: string;
   /**
    * The released paywalls
    */

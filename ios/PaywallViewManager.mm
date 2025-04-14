@@ -1,8 +1,19 @@
-#import <MapKit/MapKit.h>
-
 #import <React/RCTViewManager.h>
+#import <React/RCTUIManager.h>
+#import "RCTBridge.h"
 
-@interface RCT_EXTERN_MODULE(PaywallViewManager, RCTViewManager)
+@interface AccessViewManager : RCTViewManager
+@end
+
+@implementation AccessViewManager
+
+RCT_EXPORT_MODULE(AccessView)
+
+- (UIView *)view
+{
+  return [[UIView alloc] init];
+}
+
 RCT_EXPORT_VIEW_PROPERTY(appId, NSString)
 RCT_EXPORT_VIEW_PROPERTY(pageType, NSString)
 RCT_EXPORT_VIEW_PROPERTY(displayMode, NSString)
@@ -24,4 +35,6 @@ RCT_EXPORT_VIEW_PROPERTY(onAlternativeClick, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onError, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onAnswer, RCTDirectEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onDismissBottomSheet, RCTDirectEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onResize, RCTDirectEventBlock)
+
 @end

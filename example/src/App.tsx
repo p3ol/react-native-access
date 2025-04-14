@@ -1,5 +1,12 @@
 import { useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Platform, Text, View } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
 import {
   AccessContext,
@@ -20,26 +27,32 @@ export default function App() {
   };
 
   return (
-    <AccessContext
-      appId="ZRGA3EYZ4GRBTSHREG345HGGZRTHZEGEH"
-      config={{ cookies_enabled: true }}
-    >
-      <SafeAreaView style={styles.container}>
-        <View collapsable={false} style={styles.wrapper}>
-          <Snippet>
-            <Text>Synopsis</Text>
-          </Snippet>
-          <RestrictedContent>
-            <Text>Full content</Text>
-          </RestrictedContent>
-          <Paywall
-            config={{ debug: true }}
-            onReady={() => console.log('Paywall ready')}
-            style={{ paddingTop: 20 }}
-          />
-        </View>
-      </SafeAreaView>
-    </AccessContext>
+    <ScrollView>
+      <AccessContext
+        appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
+        config={{ cookiesEnabled: true, debug: true }}
+      >
+        <SafeAreaView style={styles.container}>
+          <View collapsable={false} style={styles.wrapper}>
+            <Text style={styles.title}>Poool Access Example</Text>
+            <Snippet>
+              <Text>Synopsis</Text>
+            </Snippet>
+            <RestrictedContent>
+              <Text>Full content</Text>
+            </RestrictedContent>
+            <Paywall
+              onFormSubmit={async (e) => {
+                console.log('onFormSubmit', e.nativeEvent);
+                await new Promise((resolve) => setTimeout(resolve, 2000));
+
+                return [{ fieldKey: 'email', message: 'Invalid email' }];
+              }}
+            />
+          </View>
+        </SafeAreaView>
+      </AccessContext>
+    </ScrollView>
   );
 }
 
@@ -50,5 +63,11 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });

@@ -1,118 +1,56 @@
-import type { Poool } from 'poool-access';
-import { useRef } from 'react';
-import { type ViewProps, View, StyleSheet } from 'react-native';
+import { useMemo, useReducer, useRef } from 'react';
+import { mockState } from '@junipero/core';
 
-import type { AccessEvents, EventCallbackFunction } from '../types';
-import type { AccessContextValue } from '../contexts';
-import { fromNativeEvent } from '../utils';
+import type {
+  AccessConfig,
+  DirectEventHandlerWithResult,
+  FieldError,
+} from '../types';
 import { useAccess } from '../hooks';
-import PaywallView from '../PaywallView';
+import PaywallView, {
+  type NativeProps,
+  type FormEvent,
+  type RegisterEvent,
+} from '../specs/PaywallViewNativeComponent';
+import NativePaywallModule from '../specs/NativePaywallModule';
+import type { NativeSyntheticEvent } from 'react-native';
 
-export interface PaywallProps extends Pick<
-  AccessContextValue, 'config' | 'texts' | 'styles' | 'variables'
->, ViewProps {
-  /**
-   * The current page type
-   *
-   * More infos:
-   * https://www.poool.dev/docs/access/javascript/access/installation
-   */
-  pageType?: Parameters<Poool.AccessFactory['createPaywall']>[0]['pageType'];
-  /**
-   * The paywall display style
-   */
-  displayMode?: 'default' | 'bottom-sheet',
+export interface PaywallProps extends Omit<
+  NativeProps,
+  'appId' | 'config' | 'texts' | 'styles' | 'variables' |
+  'onFormSubmit' | 'onRegister'
+> {
   /**
    * Optional unique paywall id. When released, the snippet with the same id
    * will be hidden, and the corresponding restricted content will be displayed.
    */
   id?: string;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#lock
-   */
-  onLock?: Extract<AccessEvents['lock'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#release
-   */
-  onReady?: Extract<AccessEvents['ready'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#release
-   */
-  onRelease?: Extract<AccessEvents['release'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#paywallSeen
-   */
-  onPaywallSeen?: Extract<AccessEvents['paywallSeen'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#identityAvailable
-   */
-  onRegister?: Extract<AccessEvents['register'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#formSubmit
-   */
-  onFormSubmit?: Extract<AccessEvents['formSubmit'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#subscribeClick
-   */
-  onSubscribeClick?: Extract<AccessEvents['subscribeClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#loginClick
-   */
-  onLoginClick?: Extract<AccessEvents['loginClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#discoveryLinkClick
-   */
-  onDiscoveryLinkClick?: Extract<AccessEvents['discoveryLinkClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#customButtonClick
-   */
-  onCustomButtonClick?: Extract<AccessEvents['customButtonClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#dataPolicyClick
-   */
-  onDataPolicyClick?: Extract<AccessEvents['dataPolicyClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#alternativeClick
-   */
-  onAlternativeClick?: Extract<AccessEvents['alternativeClick'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#error
-   */
-  onError?: Extract<AccessEvents['error'], EventCallbackFunction<any>>;
-  /**
-   * See https://www.poool.dev/docs/access/javascript/access/events#answer
-   */
-  onAnswer?: Extract<AccessEvents['answer'], EventCallbackFunction<any>>;
-  /**
-   * Callback triggered when the bottom sheet is dismissed
-   */
-  onDismissBottomSheet?: () => void;
+  config?: AccessConfig;
+  texts?: Record<string, string>;
+  styles?: Record<string, string>;
+  variables?: Record<string, any>;
+
+  onFormSubmit?: DirectEventHandlerWithResult<FormEvent, FieldError[]>;
+  onRegister?: DirectEventHandlerWithResult<RegisterEvent, FieldError[]>;
+}
+
+export interface PaywallState {
+  width: number;
+  height: number;
 }
 
 const Paywall = ({
   id,
+  style,
   config,
   texts,
   styles,
   variables,
   displayMode = 'default',
   pageType = 'premium',
-  onLock,
   onRelease,
-  onReady,
-  onPaywallSeen,
-  onRegister,
   onFormSubmit,
-  onSubscribeClick,
-  onLoginClick,
-  onDiscoveryLinkClick,
-  onCustomButtonClick,
-  onDataPolicyClick,
-  onAlternativeClick,
-  onError,
-  onAnswer,
-  onDismissBottomSheet,
-  style,
+  onRegister,
   ...rest
 }: PaywallProps) => {
   const {
@@ -123,60 +61,106 @@ const Paywall = ({
     variables: factoryVariables,
     releaseContent,
   } = useAccess();
+
+  const [state, dispatch] = useReducer(mockState<PaywallState>, {
+    width: 0,
+    height: 0,
+  });
+
+  const serializedConfig = useMemo(() => (
+    JSON.stringify({ ...config || {}, ...factoryConfig || {} })
+  ), [config, factoryConfig]);
+  const serializedTexts = useMemo(() => (
+    JSON.stringify({ ...texts || {}, ...factoryTexts || {} })
+  ), [texts, factoryTexts]);
+  const serializedStyles = useMemo(() => (
+    JSON.stringify({ ...styles || {}, ...factoryStyles || {} })
+  ), [styles, factoryStyles]);
+  const serializedVariables = useMemo(() => (
+    JSON.stringify({ ...variables || {}, ...factoryVariables || {} })
+  ), [variables, factoryVariables]);
+
   const innerRef = useRef(null);
 
+  const sendMessage = (
+    e: NativeSyntheticEvent<FormEvent | RegisterEvent>,
+    type: string,
+    data: any,
+  ) => {
+    const message = JSON.stringify({
+      type,
+      data,
+      _messageId: e.nativeEvent._messageId
+    });
+
+    if (factoryConfig?.debug || config?.debug) {
+      console.log(
+        'Poool/Access/ReactNative:',
+        'Sending message to native module ->',
+        'poool:rn:event.' + type,
+        message
+      );
+    }
+
+    NativePaywallModule.emit('poool:rn:event.' + type, message);
+  };
+
   return (
-    <View
-      collapsable={false}
+    <PaywallView
+      ref={innerRef}
       { ...rest }
-      style={[internalStyles.container, style]}
-    >
-      <PaywallView
-        ref={innerRef}
-        appId={appId}
-        pageType={pageType}
-        displayMode={displayMode}
-        config={{ ...config || {}, ...factoryConfig || {} }}
-        texts={{ ...texts || {}, ...factoryTexts || {} }}
-        styles={{ ...styles || {}, ...factoryStyles || {} }}
-        variables={{ ...variables || {}, ...factoryVariables || {} }}
-        style={internalStyles.wrapper}
-        onRelease={fromNativeEvent<Extract<AccessEvents['release'], EventCallbackFunction<any>>>((
-          e: Parameters<
-            Extract<AccessEvents['release'], EventCallbackFunction<any>>
-          >[0]
-        ) => {
+      appId={appId!!}
+      pageType={pageType}
+      displayMode={displayMode}
+      config={serializedConfig}
+      texts={serializedTexts}
+      styles={serializedStyles}
+      variables={serializedVariables}
+      style={[style, {
+        minWidth: state.width,
+        minHeight: state.height,
+      }]}
+      onRelease={e => {
+        if (displayMode === 'default') {
           releaseContent?.(id || true);
-          onRelease?.(e);
-        })}
-        onLock={onLock}
-        onReady={onReady}
-        onPaywallSeen={onPaywallSeen}
-        onRegister={onRegister}
-        onFormSubmit={onFormSubmit}
-        onSubscribeClick={onSubscribeClick}
-        onLoginClick={onLoginClick}
-        onDiscoveryLinkClick={onDiscoveryLinkClick}
-        onCustomButtonClick={onCustomButtonClick}
-        onDataPolicyClick={onDataPolicyClick}
-        onAlternativeClick={onAlternativeClick}
-        onError={onError}
-        onAnswer={onAnswer}
-        onDismissBottomSheet={onDismissBottomSheet}
-      />
-    </View>
+        }
+
+        onRelease?.(e);
+      }}
+      onResize={({ nativeEvent }) => {
+        dispatch({ width: nativeEvent.width, height: nativeEvent.height });
+      }}
+      onFormSubmit={async e => {
+        e.persist();
+
+        try {
+          e.nativeEvent.fields = JSON.parse(e.nativeEvent.fields);
+          e.nativeEvent.values = JSON.parse(e.nativeEvent.values);
+          e.nativeEvent.valid = JSON.parse(e.nativeEvent.valid);
+          const result = await onFormSubmit?.(e);
+          sendMessage(e, 'onFormSubmit:resolve', result);
+        } catch (error) {
+          sendMessage(e, 'onFormSubmit:reject', {
+            message: (error as Error).message || error,
+          });
+        }
+      }}
+      onRegister={async e => {
+        e.persist();
+
+        try {
+          const result = await onRegister?.(e);
+          sendMessage(e, 'onRegister:resolve', result);
+        } catch (error) {
+          sendMessage(e, 'onRegister:reject', {
+            message: (error as Error).message || error,
+          });
+        }
+      }}
+    />
   );
 };
 
 Paywall.displayName = 'Paywall';
 
 export default Paywall;
-
-const internalStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  wrapper: {
-    flex: 1,
-  },
-});

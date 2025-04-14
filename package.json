@@ -1,6 +1,6 @@
 {
   "name": "@poool/react-native-access",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Poool Access, but for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -24,6 +24,7 @@
     "ios",
     "cpp",
     "*.podspec",
+    "react-native.config.js",
     "!ios/build",
     "!android/build",
     "!android/gradle",
@@ -36,13 +37,15 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace @poool/react-native-access-example",
+    "example": "yarn workspace react-native-access-example",
     "test": "jest",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
-    "release": "release-it"
+    "build": "bob build",
+    "release": "commit-and-tag-version && git push --follow-tags",
+    "release:dry": "commit-and-tag-version --dry-run"
   },
   "keywords": [
     "react-native",
@@ -62,30 +65,31 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "devDependencies": {
-    "@commitlint/config-conventional": "^17.0.2",
-    "@evilmartians/lefthook": "^1.5.0",
-    "@react-native/eslint-config": "^0.73.1",
-    "@release-it/conventional-changelog": "^5.0.0",
-    "@types/jest": "^29.5.5",
-    "@types/poool-access": "^5.18.0",
-    "@types/react": "^18.2.44",
-    "commitlint": "^17.0.2",
-    "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "jest": "^29.7.0",
-    "prettier": "^3.0.3",
-    "react": "18.2.0",
-    "react-native": "0.74.4",
-    "react-native-builder-bob": "^0.29.0",
-    "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
-    "typescript": "^5.2.2"
+  "dependencies": {
+    "@junipero/core": "3.10.5"
   },
-  "resolutions": {
-    "@types/react": "^18.2.44"
+  "devDependencies": {
+    "@commitlint/config-conventional": "19.8.0",
+    "@evilmartians/lefthook": "1.11.3",
+    "@react-native-community/cli": "15.0.1",
+    "@react-native/eslint-config": "0.78.0",
+    "@release-it/conventional-changelog": "10.0.0",
+    "@types/jest": "29.5.14",
+    "@types/react": "19.0.10",
+    "commit-and-tag-version": "12.5.0",
+    "commitlint": "19.8.0",
+    "del-cli": "6.0.0",
+    "eslint": "8.57.0",
+    "eslint-config-prettier": "10.1.1",
+    "eslint-plugin-prettier": "5.2.3",
+    "jest": "29.7.0",
+    "prettier": "3.5.3",
+    "react": "19.0.0",
+    "react-native": "0.78.2",
+    "react-native-builder-bob": "0.37.0",
+    "release-it": "18.1.2",
+    "turbo": "1.10.7",
+    "typescript": "5.8.2"
   },
   "peerDependencies": {
     "react": "*",
@@ -94,7 +98,7 @@
   "workspaces": [
     "example"
   ],
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "yarn@4.7.0",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
@@ -132,7 +136,6 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
-      "react-native/no-inline-styles": "off",
       "prettier/prettier": [
         "off",
         {
@@ -160,6 +163,7 @@
     "source": "src",
     "output": "lib",
     "targets": [
+      "codegen",
       [
         "commonjs",
         {
@@ -181,12 +185,22 @@
       ]
     ]
   },
-  "create-react-native-library": {
-    "type": "module-legacy",
-    "languages": "kotlin-swift",
-    "version": "0.40.0"
+  "codegenConfig": {
+    "name": "RNAccessViewSpec",
+    "type": "all",
+    "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "android": {
+      "javaPackageName": "tech.poool.rnaccess"
+    },
+    "includesGeneratedCode": true
   },
-  "dependencies": {
-    "@junipero/core": "3.7.1"
+  "create-react-native-library": {
+    "languages": "kotlin-objc",
+    "type": "fabric-view",
+    "version": "0.48.3"
   }
 }
