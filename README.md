@@ -7,10 +7,15 @@
 ## Installation
 
 ```bash
-yarn add @poool/react-native-access
+yarn add @poool/react-native-access react-native-permissions
 ```
 
 ⚠ **Important**: This package is a wrapper that requires native Poool SDKs to be linked to your project. React Native does it automatically for you, but if you encounter any issues, please refer to the [React Native documentation](https://reactnative.dev/docs/linking-libraries-ios) about linking native libraries.
+
+## Requirements
+
+- React Native >= 0.78 (not tested on older versions)
+- React Native Permissions >= 5.3.0 (not tested on older versions) (see [react-native-permissions' setup](https://github.com/zoontek/react-native-permissions) for more details)
 
 ## Usage
 
@@ -136,6 +141,14 @@ or
 ```bash
 yarn example android
 ```
+
+### Known issues
+
+#### `yarn example android` fails with `command "node" failed`
+
+- Stop all gradlew daemons: `cd example/android && ./gradlew --stop`
+- Ensure the right node version is selected `nvm use`
+- Run `yarn example android` again
 
 ## License
 
