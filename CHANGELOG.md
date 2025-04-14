@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.1](https://github.com/p3ol/react-native-access/compare/v1.0.0...v1.0.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* wrong build config ([6bd9377](https://github.com/p3ol/react-native-access/commit/6bd937721b66bfad3f65c027b7e99f33743c7966))
+
 ## 1.0.0 (2025-04-14)
 
 
