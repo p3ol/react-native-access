@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,15 +16,15 @@ import {
 } from '@poool/react-native-access';
 
 export default function App() {
-  useEffect(() => {
-    init();
-  }, []);
-
-  const init = async () => {
+  const init = useCallback(async () => {
     if (Platform.OS === 'ios') {
       await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    init();
+  }, [init]);
 
   return (
     <ScrollView>
