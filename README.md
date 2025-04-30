@@ -4,6 +4,11 @@
 
 > The easiest way to add Poool Access to your React Native app ✨
 
+## Requirements
+
+- React Native >= 0.78 (not tested on older versions)
+- React Native Permissions >= 5.3.0 (not tested on older versions) (see [react-native-permissions' setup](https://github.com/zoontek/react-native-permissions) for more details)
+
 ## Installation
 
 ```bash
@@ -12,15 +17,27 @@ yarn add @poool/react-native-access react-native-permissions
 
 ⚠ **Important**: This package is a wrapper that requires native Poool SDKs to be linked to your project. React Native does it automatically for you, but if you encounter any issues, please refer to the [React Native documentation](https://reactnative.dev/docs/linking-libraries-ios) about linking native libraries.
 
-## Requirements
+### Additional step for iOS
 
-- React Native >= 0.78 (not tested on older versions)
-- React Native Permissions >= 5.3.0 (not tested on older versions) (see [react-native-permissions' setup](https://github.com/zoontek/react-native-permissions) for more details)
+After installing dependencies, add the necessary [ReactNativePermission config](https://github.com/zoontek/react-native-permissions/blob/master/README.md#ios) to your Podfile and request the `AppTrackingTransparency` permission:
+
+```ruby
+setup_permissions([
+  'AppTrackingTransparency',
+])
+```
+
+And reinstall pods:
+```bash
+cd ios && pod install
+```
 
 ## Usage
 
 ```jsx
-import { Text } from 'react-native';
+import { useCallback, useEffect } from 'react';
+import { SafeAreaView, Text } from 'react-native';
+import { PERMISSIONS, request } from 'react-native-permissions';
 import {
   AccessContext,
   Snippet,
@@ -28,33 +45,45 @@ import {
   Paywall,
 } from '@poool/react-native-access';
 
-export default = () => (
-  <>
-    { /*
-      Wrap everything with our AccessContext component
-    */ }
-    <AccessContext
-      appId="insert_your_app_id"
-      config={{ cookiesEnabled: true }}
-    >
-      { /*
-        Place your snippet & restricted content where you want them to be
-        */ }
-      <Snippet>
-        <Text>Synopsis</Text>
-      </Snippet>
-      <RestrictedContent>
-        <Text>Full content</Text>
-      </RestrictedContent>
+export default () => {
+  const init = useCallback(async () => {
+    if (Platform.OS === 'ios') {
+      await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
+    }
+  }, []);
 
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  return (
+    <SafeAreaView>
       { /*
-        Place our <Paywall /> component where you want your paywall to be
-        displayed
+        Wrap everything with our AccessContext component
       */ }
-      <Paywall />
-    </AccessContext>
-  </>
-);
+      <AccessContext
+        appId="insert_your_app_id"
+        config={{ cookiesEnabled: true }}
+      >
+        { /*
+          Place your snippet & restricted content where you want them to be
+          */ }
+        <Snippet>
+          <Text>Synopsis</Text>
+        </Snippet>
+        <RestrictedContent>
+          <Text>Full content</Text>
+        </RestrictedContent>
+  
+        { /*
+          Place our <Paywall /> component where you want your paywall to be
+          displayed
+        */ }
+        <Paywall />
+      </AccessContext>
+    </SafeAreaView>
+  );
+};
 ```
 
 ## Documentation
