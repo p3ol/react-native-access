@@ -74,7 +74,7 @@ export default () => {
         <RestrictedContent>
           <Text>Full content</Text>
         </RestrictedContent>
-  
+
         { /*
           Place our <Paywall /> component where you want your paywall to be
           displayed
@@ -180,6 +180,11 @@ yarn example android
 - Stop all gradlew daemons: `cd example/android && ./gradlew --stop`
 - Ensure the right node version is selected `nvm use`
 - Run `yarn example android` again
+
+#### Cannot gradle sync for an unknown reason
+
+- Stop all gradlew daemons: `cd example/android && ./gradlew --stop`
+- Retry
 
 ## License
 
