@@ -181,7 +181,7 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAlternativeClick(rnEvent);
     }];
-    [access onErrorWithOnce:false :^(ErrorEvent * _Nullable event) {
+    [access onError:^(ErrorEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnError rnEvent = PaywallViewEventEmitter::OnError {
             [event.error UTF8String]
         };
