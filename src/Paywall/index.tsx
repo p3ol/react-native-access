@@ -67,9 +67,17 @@ const Paywall = ({
     height: 0,
   });
 
+  const rawConfig = useMemo(() => ({
+    ...factoryConfig,
+    ...config,
+  }), [config, factoryConfig]);
   const serializedConfig = useMemo(() => (
-    JSON.stringify({ ...config || {}, ...factoryConfig || {} })
-  ), [config, factoryConfig]);
+    JSON.stringify({
+      ...rawConfig,
+      context: ([] as string[]).concat(rawConfig?.context || []),
+    })
+  ), [rawConfig]);
+
   const serializedTexts = useMemo(() => (
     JSON.stringify({ ...texts || {}, ...factoryTexts || {} })
   ), [texts, factoryTexts]);
