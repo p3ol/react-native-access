@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.2](https://github.com/p3ol/react-native-access/compare/v1.0.1...v1.0.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* correctly implement ios onError event ([187052a](https://github.com/p3ol/react-native-access/commit/187052afd33058a1b62924ca22c62868f691b07f))
+* universal context type ([f0fb5f3](https://github.com/p3ol/react-native-access/commit/f0fb5f31972c087918a65ae31f06cf8b012b78cb))
+* update android ([612573c](https://github.com/p3ol/react-native-access/commit/612573cb44490752f25e358c99729084fff82318))
+* update android version ([1916d59](https://github.com/p3ol/react-native-access/commit/1916d5923ede634a8afc16140fa2b3361a027bf4))
+* update ios version ([8e81854](https://github.com/p3ol/react-native-access/commit/8e818547830b00fc26abb113b61d6c360896e468))
+
 ## [1.0.1](https://github.com/p3ol/react-native-access/compare/v1.0.0...v1.0.1) (2025-04-14)
 
 
