@@ -40,7 +40,9 @@ using namespace facebook::react;
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
+    NSLog(@"initWithFrame");
     if (self = [super initWithFrame:frame]) {
+      NSLog(@"initWithFrame:if");
         static const auto defaultProps = std::make_shared<const PaywallViewProps>();
         _props = defaultProps;
 
@@ -323,6 +325,7 @@ using namespace facebook::react;
 
 - (void)updateProps:(Props::Shared const &)props oldProps:(Props::Shared const &)oldProps
 {
+    NSLog(@"updateProps");
     const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
 

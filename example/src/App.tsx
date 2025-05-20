@@ -1,25 +1,22 @@
-import { useCallback, useEffect } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { AccessContext, Paywall, RestrictedContent, Snippet } from '@poool/react-native-access';
+import { StyleSheet, View, Text, Platform, Button, SafeAreaView } from 'react-native';
 import { PERMISSIONS, request } from 'react-native-permissions';
-import {
-  AccessContext,
-  Paywall,
-  Snippet,
-  RestrictedContent,
-} from '@poool/react-native-access';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import PagerView from 'react-native-pager-view';
 
-export default function App() {
+const App = () => {
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
+
   const init = useCallback(async () => {
     if (Platform.OS === 'ios') {
       await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
     }
+  }, []);
+
+  const open = useCallback(() => {
+    bottomSheetRef.current?.present();
   }, []);
 
   useEffect(() => {
@@ -27,47 +24,59 @@ export default function App() {
   }, [init]);
 
   return (
-    <ScrollView>
-      <AccessContext
-        appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
-        config={{ cookiesEnabled: true, debug: true }}
-      >
-        <SafeAreaView style={styles.container}>
-          <View collapsable={false} style={styles.wrapper}>
-            <Text style={styles.title}>Poool Access Example</Text>
-            <Snippet>
-              <Text>Synopsis</Text>
-            </Snippet>
-            <RestrictedContent>
-              <Text>Full content</Text>
-            </RestrictedContent>
-            <Paywall
-              onFormSubmit={async (e) => {
-                console.log('onFormSubmit', e.nativeEvent);
-                await new Promise((resolve) => setTimeout(resolve, 2000));
-
-                return [{ fieldKey: 'email', message: 'Invalid email' }];
-              }}
-            />
-          </View>
+    <AccessContext
+      appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF"
+      config={{ cookiesEnabled: true, debug: true }}
+    >
+      <GestureHandlerRootView>
+        <SafeAreaView>
+          <Button
+            title="Open bottom sheet"
+            onPress={open}
+          />
         </SafeAreaView>
-      </AccessContext>
-    </ScrollView>
+        <BottomSheetModalProvider>
+          <BottomSheetModal
+            snapPoints={['90%']}
+            enableDynamicSizing={false}
+            ref={bottomSheetRef}
+            style={styles.modal}
+          >
+            <BottomSheetView style={styles.container}>
+              <PagerView initialPage={0} style={styles.container}>
+                <View key="0" collapsable={false}>
+                  <Snippet id="paywall-1"><Text>Snippet 1</Text></Snippet>
+                  <RestrictedContent id="paywall-1"><Text>Full content 1</Text></RestrictedContent>
+                  <Paywall id="paywall-1" />
+                </View>
+                <View key="1" collapsable={false}>
+                  <Snippet id="paywall-2"><Text>Snippet 2</Text></Snippet>
+                  <RestrictedContent id="paywall-2"><Text>Full content 2</Text></RestrictedContent>
+                  <Paywall id="paywall-2" />
+                </View>
+              </PagerView>
+            </BottomSheetView>
+          </BottomSheetModal>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </AccessContext>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  wrapper: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
+  modal: {
+    shadowColor: 'rgba(0, 0, 0, 0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 24,
   },
 });
