@@ -3,6 +3,7 @@ package tech.poool.rnaccess
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.doOnAttach
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
@@ -83,7 +84,10 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
       }
       else -> {
         val view = access?.returnPaywallView(pageType ?: "premium", context)
-        addView(view)
+
+        doOnAttach {
+          addView(view)
+        }
       }
     }
   }
@@ -266,6 +270,8 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
     super.requestLayout()
 
     post {
+      if (!isAttachedToWindow) return@post
+
       measure(
         MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST),
         MeasureSpec.makeMeasureSpec(2000, MeasureSpec.AT_MOST))
