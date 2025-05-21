@@ -290,7 +290,7 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   private suspend fun <R> dispatchWithResult (
     event: Event<*>,
   ): R {
-    val eventName = "poool:rn:event." + event.eventName;
+    val eventName = "poool:rn:event." + event.eventName
 
     return suspendCancellableCoroutine { continuation ->
       var onResolve: ((NativeMessage<R>) -> Unit) = {}
@@ -298,23 +298,23 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
 
       onResolve = { data: NativeMessage<R> ->
         if (event.uniqueID == data._messageId) {
-          module?.events?.off("$eventName:resolve", onResolve);
-          module?.events?.off("$eventName:reject", onReject);
+          module?.events?.off("$eventName:resolve", onResolve)
+          module?.events?.off("$eventName:reject", onReject)
 
-          continuation.resume(data.data);
+          continuation.resume(data.data)
         }
       }
 
       onReject = { data: NativeMessage<Throwable> ->
         if (event.uniqueID == data._messageId) {
-          module?.events?.off("$eventName:resolve", onResolve);
-          module?.events?.off("$eventName:reject", onReject);
-          continuation.resumeWithException(Throwable(data.data.toString()));
+          module?.events?.off("$eventName:resolve", onResolve)
+          module?.events?.off("$eventName:reject", onReject)
+          continuation.resumeWithException(Throwable(data.data.toString()))
         }
       }
 
-      module?.events?.on("$eventName:resolve", onResolve);
-      module?.events?.on("$eventName:reject", onReject);
+      module?.events?.on("$eventName:resolve", onResolve)
+      module?.events?.on("$eventName:reject", onReject)
 
       eventDispatcher?.dispatchEvent(event)
     }
