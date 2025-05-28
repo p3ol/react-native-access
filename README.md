@@ -115,6 +115,7 @@ export default () => {
 #### Props
 
 - `id` {`String`} (optional, default: null) Paywall id: used to link the paywall release event to the corresponding snippet/restricted content
+- `displayMode` {`String`} (optional, default: `'default'`) Display mode of the paywall (supported modes: `default`, `bottom-sheet`)
 - `pageType` {`String`} (optional, default: `'premium'`) Current page type (supported types: `page`, `premium`, `free`)
 - `config` {`Object`} (optional) Paywall config (see the [configuration](https://poool.dev/docs/javascript/access/configuration) documentation).
 - `styles` {`Object`} (optional) Paywall styles (see the [styles](https://poool.dev//docs/javascript/access/appearances) documentation).
