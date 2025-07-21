@@ -1,5 +1,5 @@
 PODS:
-  - AccessIOS (2.5.0)
+  - AccessIOS (2.6.1)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
@@ -1526,8 +1526,8 @@ PODS:
     - React-logger (= 0.78.2)
     - React-perflogger (= 0.78.2)
     - React-utils (= 0.78.2)
-  - RNAccessIOS (1.0.1):
-    - AccessIOS (= 2.5.0)
+  - RNAccessIOS (1.0.3):
+    - AccessIOS (= 2.6.1)
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1789,7 +1789,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AccessIOS: 2a027a0b912909cde40faed581a38c4d9b594a18
+  AccessIOS: 9c1936bff2d2d9f8424508f61dfd678e2406755c
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
@@ -1855,7 +1855,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 4893bde33952f997a323eb1a1ee87a72764018ff
   ReactCodegen: 99ea3536c05be3c18d0c517acb56b5a6d726fc7b
   ReactCommon: 865ebe76504a95e115b6229dd00a31e56d2d4bfe
-  RNAccessIOS: 67976796adee53ed7b58e7b8e57cfede29d28f2e
+  RNAccessIOS: b1b6e27dc54e43b0000480ad94b74fd92bd475f5
   RNPermissions: 9076a001ee581bb3a432a64ad77423fa46d9a8b3
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: e14bad835e12b6c7e2260fc320bd00e0f4b45add
