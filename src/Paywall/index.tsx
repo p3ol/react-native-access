@@ -60,6 +60,7 @@ const Paywall = ({
     styles: factoryStyles,
     variables: factoryVariables,
     releaseContent,
+    released,
   } = useAccess();
 
   const [state, dispatch] = useReducer(mockState<PaywallState>, {
@@ -124,6 +125,7 @@ const Paywall = ({
       texts={serializedTexts}
       styles={serializedStyles}
       variables={serializedVariables}
+      released={(!id && released?.includes(true)) || released?.includes(id || 'unknown')}
       style={[style, {
         minWidth: state.width,
         minHeight: state.height,
@@ -132,11 +134,10 @@ const Paywall = ({
         if (displayMode === 'default') {
           releaseContent?.(id || true);
         }
-
         onRelease?.(e);
       }}
       onResize={({ nativeEvent }) => {
-        dispatch({ width: nativeEvent.width, height: nativeEvent.height });
+        dispatch({ width: nativeEvent.width, height: nativeEvent.height});
       }}
       onFormSubmit={async e => {
         e.persist();

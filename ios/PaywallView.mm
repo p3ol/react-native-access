@@ -31,7 +31,10 @@ using namespace facebook::react;
     NSMutableDictionary *_registerObservers;
 
     Access * access;
+  
+    BOOL cleaned;
 }
+
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
@@ -45,18 +48,46 @@ using namespace facebook::react;
         _props = defaultProps;
 
         _view = [[UIView alloc] init];
+      
+        self->cleaned = NO;
 
-        self.contentView = _view;
-
+        self.contentView = _view;  
+        _view.layer.borderWidth = 2.0;
+        _view.layer.borderColor = UIColor.redColor.CGColor;
+      
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
-- (void)reinit {
-    NSLog(@"reinit");
+- (void)cleanUp
+{
+  [access destroy];
+  access = nil;
+  cleaned = YES;
+  
+  CGRect frame = self.contentView.frame;
+  frame.size.height = 0.0;
+  self.contentView.frame = frame;
+  _view.frame = frame;
 
+  [_view layoutSubviews];
+  [self.contentView layoutSubviews];
+}
+
+- (void)prepareForRecycle
+{
+  [self cleanUp];
+  [super prepareForRecycle];
+}
+
+- (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask
+{
+    [super finalizeUpdates:updateMask];
+}
+
+- (void)reinit {
     if (appId == nil || config == nil) {
         return;
     }
@@ -66,6 +97,8 @@ using namespace facebook::react;
         access = nil;
     }
 
+    cleaned = NO;
+    
     [Access setDebug: [config[@"debug"] boolValue]];
 
     access = [[Access alloc] initWithKey:appId];
@@ -78,7 +111,7 @@ using namespace facebook::react;
 
     BOOL isBottomSheet = [displayMode isEqualToString:@"bottom-sheet"];
 
-    UIView* target = isBottomSheet ? nil : self;
+    UIView* target = isBottomSheet ? nil : _view;
     void (^ _Nullable didSetSize)(CGSize size);
 
     if (!isBottomSheet) {
@@ -325,15 +358,22 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
-
+    
     if (oldViewProps.appId == newViewProps.appId &&
         oldViewProps.pageType == newViewProps.pageType &&
         oldViewProps.displayMode == newViewProps.displayMode &&
         oldViewProps.config == newViewProps.config &&
         oldViewProps.styles == newViewProps.styles &&
         oldViewProps.texts == newViewProps.texts &&
-        oldViewProps.variables == newViewProps.variables) {
+        oldViewProps.released == newViewProps.released &&
+        oldViewProps.variables == newViewProps.variables && !cleaned) {
+        [super updateProps:props oldProps:oldProps];
         return;
+    }
+      
+    if (newViewProps.released) {
+      [super updateProps:props oldProps:oldProps];
+      return;
     }
 
     appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
