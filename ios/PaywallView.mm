@@ -50,7 +50,6 @@ using namespace facebook::react;
         _view = [[UIView alloc] init];
       
         self->cleaned = NO;
-
         self.contentView = _view;
         
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
@@ -61,23 +60,23 @@ using namespace facebook::react;
 
 - (void)cleanUp
 {
-  [access destroy];
-  access = nil;
-  cleaned = YES;
-  
-  CGRect frame = self.contentView.frame;
-  frame.size.height = 0.0;
-  self.contentView.frame = frame;
-  _view.frame = frame;
+    [access destroy];
+    access = nil;
+    cleaned = YES;
 
-  [_view layoutSubviews];
-  [self.contentView layoutSubviews];
+    CGRect frame = self.contentView.frame;
+    frame.size.height = 0.0;
+    self.contentView.frame = frame;
+    _view.frame = frame;
+
+    [_view layoutSubviews];
+    [self.contentView layoutSubviews];
 }
 
 - (void)prepareForRecycle
 {
-  [self cleanUp];
-  [super prepareForRecycle];
+    [self cleanUp];
+    [super prepareForRecycle];
 }
 
 - (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask
@@ -370,8 +369,8 @@ using namespace facebook::react;
     }
       
     if (newViewProps.released) {
-      [super updateProps:props oldProps:oldProps];
-      return;
+        [super updateProps:props oldProps:oldProps];
+        return;
     }
 
     appId = [[NSString alloc] initWithUTF8String: newViewProps.appId.c_str()];
