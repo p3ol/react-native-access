@@ -137,7 +137,7 @@ const Paywall = ({
         onRelease?.(e);
       }}
       onResize={({ nativeEvent }) => {
-        dispatch({ width: nativeEvent.width, height: nativeEvent.height});
+        dispatch({ width: nativeEvent.width, height: nativeEvent.height });
       }}
       onFormSubmit={async e => {
         e.persist();
