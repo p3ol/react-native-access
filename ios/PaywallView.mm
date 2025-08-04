@@ -51,10 +51,8 @@ using namespace facebook::react;
       
         self->cleaned = NO;
 
-        self.contentView = _view;  
-        _view.layer.borderWidth = 2.0;
-        _view.layer.borderColor = UIColor.redColor.CGColor;
-      
+        self.contentView = _view;
+        
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
     }
