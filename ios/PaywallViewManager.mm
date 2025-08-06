@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE(AccessView)
 
 - (UIView *)view
 {
-  return [[UIView alloc] init];
+    return [[UIView alloc] init];
 }
 
 RCT_EXPORT_VIEW_PROPERTY(appId, NSString)
