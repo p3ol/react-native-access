@@ -276,9 +276,9 @@ using namespace facebook::react;
         NSString *validStr = [self arrayToString:event.valid.allValues];
 
         id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
-                                            object:nil
-                                            queue:[NSOperationQueue mainQueue]
-                                            usingBlock:^(NSNotification * _Nonnull notification) {
+                                                                      object:nil
+                                                                       queue:[NSOperationQueue mainQueue]
+                                                                  usingBlock:^(NSNotification * _Nonnull notification) {
             [self onFormSubmitNotification:notification messageId:messageId method: method];
         }];
         [self->_formSubmitObservers setObject:observer forKey:messageId];
@@ -300,9 +300,9 @@ using namespace facebook::react;
         NSString *passId = event.passId ? event.passId : @"";
 
         id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
-                                            object:nil
-                                            queue:[NSOperationQueue mainQueue]
-                                            usingBlock:^(NSNotification * _Nonnull notification) {
+                                                                      object:nil
+                                                                       queue:[NSOperationQueue mainQueue]
+                                                                  usingBlock:^(NSNotification * _Nonnull notification) {
             [self onRegisterNotification:notification messageId:messageId method: method];
         }];
         [self->_registerObservers setObject:observer forKey:messageId];
@@ -438,7 +438,7 @@ using namespace facebook::react;
 
 Class<RCTComponentViewProtocol> PaywallViewCls(void)
 {
-  return PaywallView.class;
+    return PaywallView.class;
 }
 
 @end
