@@ -1,4 +1,5 @@
 #import "PaywallView.h"
+#import "PaywallViewController.h"
 
 #import "generated/RNAccessViewSpec/ComponentDescriptors.h"
 #import "generated/RNAccessViewSpec/EventEmitters.h"
@@ -18,7 +19,7 @@ using namespace facebook::react;
 @end
 
 @implementation PaywallView {
-    UIView * _view;
+    PaywallViewController * controller;
     NSString * appId;
     NSString * pageType;
     NSString * displayMode;
@@ -32,6 +33,7 @@ using namespace facebook::react;
 
     Access * access;
   
+    BOOL parented;
     BOOL cleaned;
 }
 
@@ -39,6 +41,31 @@ using namespace facebook::react;
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
     return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
+}
+
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    
+    if (parented) { return; }
+        
+    UIViewController *parentVC = [self findParentViewController];
+    
+    if (parentVC != nil) {
+        [parentVC addChildViewController: controller];
+        [controller didMoveToParentViewController: parentVC];
+        parented = YES;
+    }
+}
+
+- (UIViewController *)findParentViewController {
+    UIResponder *responder = self;
+    while (responder) {
+        if ([responder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)responder;
+        }
+        responder = [responder nextResponder];
+    }
+    return nil;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -63,13 +90,15 @@ using namespace facebook::react;
     [access destroy];
     access = nil;
     cleaned = YES;
+    parented = NO;
 
     CGRect frame = self.contentView.frame;
     frame.size.height = 0.0;
     self.contentView.frame = frame;
-    _view.frame = frame;
-
-    [_view layoutSubviews];
+    
+    controller.view.frame = frame;
+    [controller.view layoutSubviews];
+    
     [self.contentView layoutSubviews];
 }
 

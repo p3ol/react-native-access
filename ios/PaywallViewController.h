@@ -10,7 +10,6 @@
 
 @interface PaywallViewController : UIViewController
 
-@property (nonatomic, copy) NSString *index;
 @property (nonatomic, weak) id<PaywallViewControllerDelegate> delegate;
 
 @end
