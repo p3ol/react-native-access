@@ -14,8 +14,7 @@
 
 using namespace facebook::react;
 
-@interface PaywallView () <RCTPaywallViewViewProtocol>
-
+@interface PaywallView () <RCTPaywallViewViewProtocol, PaywallViewControllerDelegate>
 @end
 
 @implementation PaywallView {
@@ -35,8 +34,17 @@ using namespace facebook::react;
   
     BOOL parented;
     BOOL cleaned;
+    BOOL released;
 }
 
+- (void)paywallWillAppear {
+    
+    if (released) {
+        return;
+    }
+    
+    [self reinit];
+}
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
@@ -73,11 +81,16 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const PaywallViewProps>();
         _props = defaultProps;
-
-        _view = [[UIView alloc] init];
-      
-        self->cleaned = NO;
-        self.contentView = _view;
+        
+        controller = [[PaywallViewController alloc] init];
+        controller.delegate = self;
+        
+        
+        cleaned = NO;
+        released = NO;
+        parented = NO;
+        
+        self.contentView = controller.view;
         
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
@@ -108,11 +121,6 @@ using namespace facebook::react;
     [super prepareForRecycle];
 }
 
-- (void)finalizeUpdates:(RNComponentViewUpdateMask)updateMask
-{
-    [super finalizeUpdates:updateMask];
-}
-
 - (void)reinit {
     if (appId == nil || config == nil) {
         return;
@@ -134,10 +142,14 @@ using namespace facebook::react;
     [access variables:variables];
 
     [self initEvents];
+    
+    [self createPaywall];
+}
 
+- (void) createPaywall {
     BOOL isBottomSheet = [displayMode isEqualToString:@"bottom-sheet"];
-
-    UIView* target = isBottomSheet ? nil : _view;
+    
+    UIView* target = isBottomSheet ? nil : self.contentView;
     void (^ _Nullable didSetSize)(CGSize size);
 
     if (!isBottomSheet) {
@@ -396,7 +408,9 @@ using namespace facebook::react;
         [super updateProps:props oldProps:oldProps];
         return;
     }
-      
+    
+    released = newViewProps.released;
+    
     if (newViewProps.released) {
         [super updateProps:props oldProps:oldProps];
         return;
@@ -429,8 +443,8 @@ using namespace facebook::react;
 -(NSString*)arrayToString:(NSArray*)array {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array
-                                            options:NSJSONWritingPrettyPrinted
-                                            error:&error];
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 
     return jsonString;
