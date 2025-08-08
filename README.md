@@ -93,10 +93,10 @@ export default () => {
 #### Props
 
 - `appId` {`String`} Your Poool App ID
-- `config` {`Object`} (optional) Default paywall config (see the [configuration](https://poool.dev/docs/react-native/access/configuration) documentation).
-- `styles` {`Object`} (optional) Default paywall styles (see the [styles](https://poool.dev//docs/react-native/access/appearances) documentation).
-- `texts` {`Object`} (optional) Default paywall texts (see the [texts](https://poool.dev/docs/react-native/access/texts) documentation).
-- `variables` {`Object`} (optional) Paywall variables (see the [variables](https://poool.dev/docs/react-native/access/variables) documentation).
+- `config` {`Object`} (optional) Default paywall config (see the [configuration](https://poool.dev/docs/javascript/access/configuration) documentation).
+- `styles` {`Object`} (optional) Default paywall styles (see the [styles](https://poool.dev/docs/javascript/access/appearances) documentation).
+- `texts` {`Object`} (optional) Default paywall texts (see the [texts](https://poool.dev/docs/javascript/access/texts) documentation).
+- `variables` {`Object`} (optional) Paywall variables (see the [variables](https://poool.dev/docs/javascript/access/variables) documentation).
 
 ### `<RestrictedContent />`
 
@@ -121,7 +121,7 @@ export default () => {
 - `styles` {`Object`} (optional) Paywall styles (see the [styles](https://poool.dev//docs/javascript/access/appearances) documentation).
 - `texts` {`Object`} (optional) Paywall texts (see the [texts](https://poool.dev/docs/javascript/access/texts) documentation).
 - `variables` {`Object`} (optional) Paywall variables (see the [variables](https://poool.dev/docs/javascript/access/variables) documentation).
-- `on*` {`Function`} (optional) Event listeners (see the [events](https://poool.dev/docs/react-native/access/events) documentation).
+- `on*` {`Function`} (optional) Event listeners (see the [events](https://poool.dev/docs/javascript/access/events) documentation).
 
 ### useAccess()
 
