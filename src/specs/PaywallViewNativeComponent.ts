@@ -14,6 +14,7 @@ export interface NativeProps extends ViewProps {
   variables?: string;
   texts?: string;
   displayMode?: string;
+  released?: boolean;
   onIdentityAvailable?: DirectEventHandler<UserEvent>;
   onLock?: DirectEventHandler<LockEvent>;
   onReady?: DirectEventHandler<WidgetEvent>;

@@ -1,4 +1,5 @@
 #import "PaywallView.h"
+#import "PaywallViewController.h"
 
 #import "generated/RNAccessViewSpec/ComponentDescriptors.h"
 #import "generated/RNAccessViewSpec/EventEmitters.h"
@@ -13,12 +14,11 @@
 
 using namespace facebook::react;
 
-@interface PaywallView () <RCTPaywallViewViewProtocol>
-
+@interface PaywallView () <RCTPaywallViewViewProtocol, PaywallViewControllerDelegate>
 @end
 
 @implementation PaywallView {
-    UIView * _view;
+    PaywallViewController * controller;
     NSString * appId;
     NSString * pageType;
     NSString * displayMode;
@@ -31,6 +31,19 @@ using namespace facebook::react;
     NSMutableDictionary *_registerObservers;
 
     Access * access;
+  
+    BOOL parented;
+    BOOL cleaned;
+    BOOL released;
+}
+
+- (void)paywallWillAppear {
+    
+    if (released) {
+        return;
+    }
+    
+    [self reinit];
 }
 
 + (ComponentDescriptorProvider)componentDescriptorProvider
@@ -38,25 +51,77 @@ using namespace facebook::react;
     return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
 }
 
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+    
+    if (parented) { return; }
+        
+    UIViewController *parentVC = [self findParentViewController];
+    
+    if (parentVC != nil) {
+        [parentVC addChildViewController: controller];
+        [controller didMoveToParentViewController: parentVC];
+        parented = YES;
+    }
+}
+
+- (UIViewController *)findParentViewController {
+    UIResponder *responder = self;
+    while (responder) {
+        if ([responder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)responder;
+        }
+        responder = [responder nextResponder];
+    }
+    return nil;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const PaywallViewProps>();
         _props = defaultProps;
-
-        _view = [[UIView alloc] init];
-
-        self.contentView = _view;
-
+        
+        controller = [[PaywallViewController alloc] init];
+        controller.delegate = self;
+        
+        
+        cleaned = NO;
+        released = NO;
+        parented = NO;
+        
+        self.contentView = controller.view;
+        
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
-- (void)reinit {
-    NSLog(@"reinit");
+- (void)cleanUp
+{
+    [access destroy];
+    access = nil;
+    cleaned = YES;
+    parented = NO;
 
+    CGRect frame = self.contentView.frame;
+    frame.size.height = 0.0;
+    self.contentView.frame = frame;
+    
+    controller.view.frame = frame;
+    [controller.view layoutSubviews];
+    
+    [self.contentView layoutSubviews];
+}
+
+- (void)prepareForRecycle
+{
+    [self cleanUp];
+    [super prepareForRecycle];
+}
+
+- (void)reinit {
     if (appId == nil || config == nil) {
         return;
     }
@@ -66,6 +131,8 @@ using namespace facebook::react;
         access = nil;
     }
 
+    cleaned = NO;
+    
     [Access setDebug: [config[@"debug"] boolValue]];
 
     access = [[Access alloc] initWithKey:appId];
@@ -75,10 +142,14 @@ using namespace facebook::react;
     [access variables:variables];
 
     [self initEvents];
+    
+    [self createPaywall];
+}
 
+- (void) createPaywall {
     BOOL isBottomSheet = [displayMode isEqualToString:@"bottom-sheet"];
-
-    UIView* target = isBottomSheet ? nil : self;
+    
+    UIView* target = isBottomSheet ? nil : self.contentView;
     void (^ _Nullable didSetSize)(CGSize size);
 
     if (!isBottomSheet) {
@@ -217,9 +288,9 @@ using namespace facebook::react;
         NSString *validStr = [self arrayToString:event.valid.allValues];
 
         id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
-                                            object:nil
-                                            queue:[NSOperationQueue mainQueue]
-                                            usingBlock:^(NSNotification * _Nonnull notification) {
+                                                                      object:nil
+                                                                       queue:[NSOperationQueue mainQueue]
+                                                                  usingBlock:^(NSNotification * _Nonnull notification) {
             [self onFormSubmitNotification:notification messageId:messageId method: method];
         }];
         [self->_formSubmitObservers setObject:observer forKey:messageId];
@@ -241,9 +312,9 @@ using namespace facebook::react;
         NSString *passId = event.passId ? event.passId : @"";
 
         id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
-                                            object:nil
-                                            queue:[NSOperationQueue mainQueue]
-                                            usingBlock:^(NSNotification * _Nonnull notification) {
+                                                                      object:nil
+                                                                       queue:[NSOperationQueue mainQueue]
+                                                                  usingBlock:^(NSNotification * _Nonnull notification) {
             [self onRegisterNotification:notification messageId:messageId method: method];
         }];
         [self->_registerObservers setObject:observer forKey:messageId];
@@ -325,14 +396,23 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
-
+    
     if (oldViewProps.appId == newViewProps.appId &&
         oldViewProps.pageType == newViewProps.pageType &&
         oldViewProps.displayMode == newViewProps.displayMode &&
         oldViewProps.config == newViewProps.config &&
         oldViewProps.styles == newViewProps.styles &&
         oldViewProps.texts == newViewProps.texts &&
-        oldViewProps.variables == newViewProps.variables) {
+        oldViewProps.released == newViewProps.released &&
+        oldViewProps.variables == newViewProps.variables && !cleaned) {
+        [super updateProps:props oldProps:oldProps];
+        return;
+    }
+    
+    released = newViewProps.released;
+    
+    if (newViewProps.released) {
+        [super updateProps:props oldProps:oldProps];
         return;
     }
 
@@ -363,8 +443,8 @@ using namespace facebook::react;
 -(NSString*)arrayToString:(NSArray*)array {
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array
-                                            options:NSJSONWritingPrettyPrinted
-                                            error:&error];
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 
     return jsonString;
@@ -372,7 +452,7 @@ using namespace facebook::react;
 
 Class<RCTComponentViewProtocol> PaywallViewCls(void)
 {
-  return PaywallView.class;
+    return PaywallView.class;
 }
 
 @end
