@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.5](https://github.com/p3ol/react-native-access/compare/v1.0.4...v1.0.5) (2025-08-14)
+
+
+### Bug Fixes
+
+* apply ios fixes on android ([e790061](https://github.com/p3ol/react-native-access/commit/e790061c2caaa314641afc444c1bd230226143ec))
+* detects cleaned and released paywall views ([67c3a3d](https://github.com/p3ol/react-native-access/commit/67c3a3d18b83ba55df75a3b88ddc5dd6804be354))
+* ensure the view is attached to window before add view & request layout ([e8118e7](https://github.com/p3ol/react-native-access/commit/e8118e71db7a7505ef10551c682316cf2c4dd683))
+* reload on page change ([dd40d36](https://github.com/p3ol/react-native-access/commit/dd40d36383e0e91a4b40c623564d1556de53a916))
+* reload on page change ([9e4d361](https://github.com/p3ol/react-native-access/commit/9e4d361ddfa726a803b2025d4eaaa97d364b6345))
+* reload on page change ([28b617a](https://github.com/p3ol/react-native-access/commit/28b617a1bd57c4fc9c98c98598125b7b27675397))
+
 ## [1.0.4](https://github.com/p3ol/react-native-access/compare/v1.0.3...v1.0.4) (2025-07-21)
 
 
