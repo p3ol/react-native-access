@@ -41,6 +41,8 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   private var variables: Map<String, Any>? = null
   private var texts: Map<String, String>? = null
 
+  private var released: Boolean = false
+
   private var eventDispatcher: EventDispatcher? = UIManagerHelper
     .getEventDispatcherForReactTag(context as ThemedReactContext, id)
 
@@ -50,7 +52,8 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
 
   private fun reinit () {
     if (
-      appId == null
+      appId == null ||
+      released
     ) {
       return
     }
@@ -264,6 +267,10 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   fun setTexts(texts: Map<String, String>) {
     this.texts = texts
     reinit()
+  }
+
+  fun setReleased(value: Boolean) {
+    released = value
   }
 
   override fun requestLayout() {

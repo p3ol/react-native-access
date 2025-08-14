@@ -39,6 +39,10 @@ class PaywallViewManager : SimpleViewManager<PaywallView>(),
     view?.setDisplayMode(value ?: "")
   }
 
+  override fun setReleased(view: PaywallView?, value: Boolean) {
+    view?.setReleased(value)
+  }
+
   override fun setConfig(view: PaywallView?, value: String?) {
     val config: Map<String, Any>? = value?.let { Gson().fromJson(value, ConfigType) }
     view?.setConfig(config ?: mapOf())
