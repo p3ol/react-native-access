@@ -11,6 +11,7 @@ import PaywallView, {
   type NativeProps,
   type FormEvent,
   type RegisterEvent,
+  type ClickEvent,
 } from '../specs/PaywallViewNativeComponent';
 import NativePaywallModule from '../specs/NativePaywallModule';
 import type { NativeSyntheticEvent } from 'react-native';
@@ -18,7 +19,8 @@ import type { NativeSyntheticEvent } from 'react-native';
 export interface PaywallProps extends Omit<
   NativeProps,
   'appId' | 'config' | 'texts' | 'styles' | 'variables' |
-  'onFormSubmit' | 'onRegister'
+  'onFormSubmit' | 'onRegister' | 
+  'onSubscribeClick' | 'onLoginClick' | 'onDiscoveryLinkClick' | 'onDataPolicyClick'
 > {
   /**
    * Optional unique paywall id. When released, the snippet with the same id
@@ -32,6 +34,11 @@ export interface PaywallProps extends Omit<
 
   onFormSubmit?: DirectEventHandlerWithResult<FormEvent, FieldError[]>;
   onRegister?: DirectEventHandlerWithResult<RegisterEvent, FieldError[]>;
+
+  onSubscribeClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
+  onLoginClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
+  onDiscoveryLinkClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
+  onDataPolicyClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
 }
 
 export interface PaywallState {
@@ -51,6 +58,10 @@ const Paywall = ({
   onRelease,
   onFormSubmit,
   onRegister,
+  onSubscribeClick,
+  onLoginClick,
+  onDiscoveryLinkClick,
+  onDataPolicyClick,
   ...rest
 }: PaywallProps) => {
   const {
@@ -72,6 +83,7 @@ const Paywall = ({
     ...factoryConfig,
     ...config,
   }), [config, factoryConfig]);
+  
   const serializedConfig = useMemo(() => (
     JSON.stringify({
       ...rawConfig,
@@ -92,13 +104,14 @@ const Paywall = ({
   const innerRef = useRef(null);
 
   const sendMessage = (
-    e: NativeSyntheticEvent<FormEvent | RegisterEvent>,
+    e: NativeSyntheticEvent<FormEvent | RegisterEvent | ClickEvent>,
     type: string,
     data: any,
   ) => {
     const message = JSON.stringify({
       type,
       data,
+      prevented: (e.nativeEvent as any).prevented,
       _messageId: e.nativeEvent._messageId
     });
 
@@ -113,6 +126,27 @@ const Paywall = ({
 
     NativePaywallModule.emit('poool:rn:event.' + type, message);
   };
+
+  const sendClickEvent = async (
+    event: NativeSyntheticEvent<ClickEvent>,
+    eventName: string,
+    onClick: ((e: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void) | undefined,
+  ) => {
+    event.persist();
+
+    try {
+      event.nativeEvent.prevented = false;
+      await onClick?.(event, () => {
+        console.log(eventName + ' default behavior prevented');
+        event.nativeEvent.prevented = true;
+      });
+      sendMessage(event, eventName + ':resolve', {});
+    } catch (error) {
+      sendMessage(event, eventName + ':reject', {
+        message: (error as Error).message || error,
+      });
+    }
+  }
 
   return (
     <PaywallView
@@ -165,6 +199,18 @@ const Paywall = ({
             message: (error as Error).message || error,
           });
         }
+      }}
+      onSubscribeClick={ async (e) => {
+        await sendClickEvent(e, 'onSubscribeClick', onSubscribeClick);
+      }}
+      onLoginClick={ async (e) => {
+        await sendClickEvent(e, 'onLoginClick', onLoginClick);
+      }}
+      onDataPolicyClick={ async (e) => {
+        await sendClickEvent(e, 'onDataPolicyClick', onDataPolicyClick);
+      }}
+      onDiscoveryLinkClick={ async (e) => {
+        await sendClickEvent(e, 'onDiscoveryLinkClick', onDiscoveryLinkClick);
       }}
     />
   );
