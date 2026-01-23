@@ -368,7 +368,7 @@ using namespace facebook::react;
 
         NSString* message;
 
-        if (dict.count > 0) {
+        if (remoteArray.count > 0) {
             message = remoteArray[0][@"message"];
         }
 
