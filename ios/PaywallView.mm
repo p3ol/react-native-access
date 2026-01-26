@@ -96,6 +96,7 @@ using namespace facebook::react;
         
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
+        _preventActionObservers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -417,7 +418,7 @@ using namespace facebook::react;
     if (dict[@"_messageId"] == messageId) {
         NSArray *remoteArray = dict[@"data"];
 
-        NSString* message;
+        NSString* message = nil;
 
         if (remoteArray.count > 0) {
             message = remoteArray[0][@"message"];

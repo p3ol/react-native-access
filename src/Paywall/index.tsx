@@ -35,10 +35,10 @@ export interface PaywallProps extends Omit<
   onFormSubmit?: DirectEventHandlerWithResult<FormEvent, FieldError[]>;
   onRegister?: DirectEventHandlerWithResult<RegisterEvent, FieldError[]>;
 
-  onSubscribeClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
-  onLoginClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
-  onDiscoveryLinkClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
-  onDataPolicyClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void;
+  onSubscribeClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void | Promise<void>;
+  onLoginClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void | Promise<void>;
+  onDiscoveryLinkClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void | Promise<void>;
+  onDataPolicyClick?: (event: NativeSyntheticEvent<ClickEvent>, prevent: () => void) => void | Promise<void>;
 }
 
 export interface PaywallState {
@@ -145,7 +145,7 @@ const Paywall = ({
         message: (error as Error).message || error,
       });
     }
-  }
+  };
 
   return (
     <PaywallView
