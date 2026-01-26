@@ -137,7 +137,6 @@ const Paywall = ({
     try {
       event.nativeEvent.prevented = false;
       await onClick?.(event, () => {
-        console.log(eventName + ' default behavior prevented');
         event.nativeEvent.prevented = true;
       });
       sendMessage(event, eventName + ':resolve', {});

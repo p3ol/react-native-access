@@ -23,9 +23,7 @@
     }
     
     NSString *notifName = [[NSString alloc] initWithFormat:@"%@Notification", extractedEventName];
-    
-    NSLog(@"Firing %@", notifName);
-    
+        
     [NSNotificationCenter.defaultCenter postNotificationName:notifName
                                         object:self
                                         userInfo:@{@"object": data}];
