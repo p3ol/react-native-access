@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.6](https://github.com/p3ol/react-native-access/compare/v1.0.5...v1.0.6) (2026-02-05)
+
+
+### Bug Fixes
+
+* **ios:** upgrade to latest access-ios ([331c6ba](https://github.com/p3ol/react-native-access/commit/331c6ba13bbb96bd9538e2812528afc272572057))
+* **ios:** various compilation errors ([2b55bb5](https://github.com/p3ol/react-native-access/commit/2b55bb561dfb8b6c636a62065d0a8414d383f4b6))
+
 ## [1.0.5](https://github.com/p3ol/react-native-access/compare/v1.0.4...v1.0.5) (2025-08-14)
 
 
