@@ -235,7 +235,7 @@ using namespace facebook::react;
 
     [access onDiscoveryLinkTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull prevent)()) {
         NSNumber *messageId = [self setupObserverForNotif:@"onDiscoveryLinkClickNotification" method:prevent];
-        
+
         PaywallViewEventEmitter::OnDiscoveryLinkClick rnEvent = PaywallViewEventEmitter::OnDiscoveryLinkClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
@@ -267,7 +267,7 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAlternativeClick(rnEvent);
     }];
-    
+
     [access onErrorWithOnce:false :^(ErrorEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnError rnEvent = PaywallViewEventEmitter::OnError {
             [event.error UTF8String]
@@ -282,9 +282,9 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAnswer(rnEvent);
     }];
-    [access onCustomButtonTappedWithOnce:false :^(CustomButtonClickEvent * _Nullable event) {
+    [access onCustomButtonTappedWithOnce:false :^(CustomButtonClickEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnCustomButtonClick rnEvent = PaywallViewEventEmitter::OnCustomButtonClick {
-            [event.name UTF8String],
+            [event.event UTF8String],
             [event.buttonId UTF8String]
         };
         self.eventEmitter.onCustomButtonClick(rnEvent);
@@ -297,6 +297,7 @@ using namespace facebook::react;
 
     [access onFormSubmitWithOnce:false submitter:^(FormEvent * _Nonnull event, void (^ _Nonnull method)(NSArray<InvalidForm *> * _Nonnull)) {
         NSString *notifName = @"onFormSubmitNotification";
+
         NSNumber *messageId = @(arc4random());
 
         NSString *fieldsStr = [self arrayToString:event.fields.allKeys];
@@ -324,6 +325,7 @@ using namespace facebook::react;
     [access onRegisterWithOnce:false :^(RegisterEvent * _Nonnull event, void (^ _Nonnull method)(NSString * _Nullable)) {
         
         NSString *notifName = @"onRegisterNotification";
+
         NSNumber *messageId = @(arc4random());
 
         NSString *newsletterId = event.newsletterId ? event.newsletterId : @"";
