@@ -266,9 +266,9 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAnswer(rnEvent);
     }];
-    [access onCustomButtonTappedWithOnce:false :^(CustomButtonClickEvent * _Nullable event) {
+    [access onCustomButtonTappedWithOnce:false :^(CustomButtonClickEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnCustomButtonClick rnEvent = PaywallViewEventEmitter::OnCustomButtonClick {
-            [event.name UTF8String],
+            [event.event UTF8String],
             [event.buttonId UTF8String]
         };
         self.eventEmitter.onCustomButtonClick(rnEvent);
