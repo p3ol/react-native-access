@@ -8,6 +8,8 @@
 
 - React Native >= 0.78 (not tested on older versions)
 - React Native Permissions >= 5.3.0 (not tested on older versions) (see [react-native-permissions' setup](https://github.com/zoontek/react-native-permissions) for more details)
+- Android SDK >= 35 (build), 24 (min)
+- iOS >= 15.0 (build), 13.0 (min)
 
 ## Installation
 
