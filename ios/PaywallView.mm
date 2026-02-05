@@ -204,7 +204,7 @@ using namespace facebook::react;
         self.eventEmitter.onPaywallSeen(rnEvent);
     }];
 
-    [access onSubscribeTappedWithOnce:false :^(ClickEvent * _Nullable event) {
+    [access onSubscribeTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
         PaywallViewEventEmitter::OnSubscribeClick rnEvent = PaywallViewEventEmitter::OnSubscribeClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
@@ -214,7 +214,7 @@ using namespace facebook::react;
         self.eventEmitter.onSubscribeClick(rnEvent);
     }];
 
-    [access onLoginTappedWithOnce:false :^(ClickEvent * _Nullable event) {
+    [access onLoginTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
         PaywallViewEventEmitter::OnLoginClick rnEvent = PaywallViewEventEmitter::OnLoginClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
@@ -224,7 +224,7 @@ using namespace facebook::react;
         self.eventEmitter.onLoginClick(rnEvent);
     }];
 
-    [access onDiscoveryLinkTappedWithOnce:false :^(ClickEvent * _Nullable event) {
+    [access onDiscoveryLinkTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
         PaywallViewEventEmitter::OnDiscoveryLinkClick rnEvent = PaywallViewEventEmitter::OnDiscoveryLinkClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
@@ -234,7 +234,7 @@ using namespace facebook::react;
         self.eventEmitter.onDiscoveryLinkClick(rnEvent);
     }];
 
-    [access onDataPolicyTappedWithOnce:false :^(ClickEvent * _Nullable event) {
+    [access onDataPolicyTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
         PaywallViewEventEmitter::OnDataPolicyClick rnEvent = PaywallViewEventEmitter::OnDataPolicyClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
@@ -252,7 +252,7 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAlternativeClick(rnEvent);
     }];
-    [access onError:^(ErrorEvent * _Nullable event, void (^ _Nonnull)(void)) {
+    [access onErrorWithOnce:false :^(ErrorEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnError rnEvent = PaywallViewEventEmitter::OnError {
             [event.error UTF8String]
         };
@@ -274,12 +274,12 @@ using namespace facebook::react;
         self.eventEmitter.onCustomButtonClick(rnEvent);
     }];
 
-    [access userDidCloseBottomSheet:^{
+    [access userDidCloseBottomSheetWithOnce:false :^{
         PaywallViewEventEmitter::OnDismissBottomSheet rnEvent = PaywallViewEventEmitter::OnDismissBottomSheet {};
         self.eventEmitter.onDismissBottomSheet(rnEvent);
     }];
 
-    [access onFormSubmitWithSubmitter:^(FormEvent * _Nonnull event, void (^ _Nonnull method)(NSArray<InvalidForm *> * _Nonnull)) {
+    [access onFormSubmitWithOnce:false submitter:^(FormEvent * _Nonnull event, void (^ _Nonnull method)(NSArray<InvalidForm *> * _Nonnull)) {
         NSString *notifName = @"formSubmitNotification";
         NSNumber *messageId = @(arc4random());
 
@@ -304,7 +304,7 @@ using namespace facebook::react;
 
         self.eventEmitter.onFormSubmit(rnEvent);
     }];
-    [access onRegister:^(RegisterEvent * _Nonnull event, void (^ _Nonnull method)(NSString * _Nullable)) {
+    [access onRegisterWithOnce:false :^(RegisterEvent * _Nonnull event, void (^ _Nonnull method)(NSString * _Nullable)) {
         NSString *notifName = @"registerNotification";
         NSNumber *messageId = @(arc4random());
 

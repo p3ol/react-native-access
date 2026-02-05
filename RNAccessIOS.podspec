@@ -41,6 +41,11 @@ Pod::Spec.new do |s|
     end
   end
 
-  s.dependency "AccessIOS", "2.7.0"
+  # spm_dependency(s,
+  #   url: 'https://github.com/p3ol/access-package-ios.git',
+  #   requirement: { kind: 'upToNextMajorVersion', minimumVersion: '2.10.0' },
+  #   products: ['AccessIOS']
+  # )
+  s.dependency "AccessIOS", "2.10.0"
   # s.vendored_frameworks = "ios/AccessIOS.xcframework"
 end
