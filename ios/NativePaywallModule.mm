@@ -10,12 +10,20 @@
 - (void)emit:(NSString *)event
         data:(NSString *)data {
     
-    NSString *notifName = @"registerNotification";
+    NSString *extractedEventName = @"";
+    NSRange eventPrefixRange = [event rangeOfString:@"event."];
+    NSRange resolveSuffixRange = [event rangeOfString:@":resolve" options:NSBackwardsSearch];
     
-    if ([event containsString:@"onFormSubmit"]) {
-        notifName = @"formSubmitNotification";
+    if (eventPrefixRange.location != NSNotFound && resolveSuffixRange.location != NSNotFound &&
+        eventPrefixRange.location + eventPrefixRange.length < resolveSuffixRange.location) {
+        
+        NSRange nameRange = NSMakeRange(eventPrefixRange.location + eventPrefixRange.length,
+                                        resolveSuffixRange.location - (eventPrefixRange.location + eventPrefixRange.length));
+        extractedEventName = [event substringWithRange:nameRange];
     }
     
+    NSString *notifName = [[NSString alloc] initWithFormat:@"%@Notification", extractedEventName];
+        
     [NSNotificationCenter.defaultCenter postNotificationName:notifName
                                         object:self
                                         userInfo:@{@"object": data}];

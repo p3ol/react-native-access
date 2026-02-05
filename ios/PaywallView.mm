@@ -30,6 +30,8 @@ using namespace facebook::react;
     NSMutableDictionary *_formSubmitObservers;
     NSMutableDictionary *_registerObservers;
 
+    NSMutableDictionary *_preventActionObservers;
+    
     Access * access;
   
     BOOL parented;
@@ -94,6 +96,7 @@ using namespace facebook::react;
         
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
+        _preventActionObservers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -204,42 +207,54 @@ using namespace facebook::react;
         self.eventEmitter.onPaywallSeen(rnEvent);
     }];
 
-    [access onSubscribeTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
+    [access onSubscribeTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull prevent)()) {
+        NSNumber *messageId = [self setupObserverForNotif:@"onSubscribeClickNotification" method:prevent];
+        
         PaywallViewEventEmitter::OnSubscribeClick rnEvent = PaywallViewEventEmitter::OnSubscribeClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
-            [event.button UTF8String],
             [event.url UTF8String],
+            [event.button UTF8String],
+            [messageId doubleValue],
         };
         self.eventEmitter.onSubscribeClick(rnEvent);
     }];
-
-    [access onLoginTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
+    
+    [access onLoginTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull prevent)()) {
+        NSNumber *messageId = [self setupObserverForNotif:@"onLoginClickNotification" method:prevent];
+        
         PaywallViewEventEmitter::OnLoginClick rnEvent = PaywallViewEventEmitter::OnLoginClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
-            [event.button UTF8String],
             [event.url UTF8String],
+            [event.button UTF8String],
+            [messageId doubleValue],
         };
         self.eventEmitter.onLoginClick(rnEvent);
     }];
 
-    [access onDiscoveryLinkTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
+    [access onDiscoveryLinkTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull prevent)()) {
+        NSNumber *messageId = [self setupObserverForNotif:@"onDiscoveryLinkClickNotification" method:prevent];
+
         PaywallViewEventEmitter::OnDiscoveryLinkClick rnEvent = PaywallViewEventEmitter::OnDiscoveryLinkClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
             [event.button UTF8String],
             [event.url UTF8String],
+            [messageId doubleValue],
         };
         self.eventEmitter.onDiscoveryLinkClick(rnEvent);
     }];
 
-    [access onDataPolicyTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull callback)(void)) {
+    [access onDataPolicyTappedWithOnce:false :^(ClickEvent * _Nullable event, void (^ _Nonnull prevent)()) {
+        NSNumber *messageId = [self setupObserverForNotif:@"onDataPolicyClickNotification" method:prevent];
+        
         PaywallViewEventEmitter::OnDataPolicyClick rnEvent = PaywallViewEventEmitter::OnDataPolicyClick {
             [event.widget UTF8String],
             [event.actionName UTF8String],
             [event.button UTF8String],
             [event.url UTF8String],
+            [messageId doubleValue],
         };
         self.eventEmitter.onDataPolicyClick(rnEvent);
     }];
@@ -252,6 +267,7 @@ using namespace facebook::react;
         };
         self.eventEmitter.onAlternativeClick(rnEvent);
     }];
+
     [access onErrorWithOnce:false :^(ErrorEvent * _Nullable event, void (^ _Nonnull)(void)) {
         PaywallViewEventEmitter::OnError rnEvent = PaywallViewEventEmitter::OnError {
             [event.error UTF8String]
@@ -280,7 +296,8 @@ using namespace facebook::react;
     }];
 
     [access onFormSubmitWithOnce:false submitter:^(FormEvent * _Nonnull event, void (^ _Nonnull method)(NSArray<InvalidForm *> * _Nonnull)) {
-        NSString *notifName = @"formSubmitNotification";
+        NSString *notifName = @"onFormSubmitNotification";
+
         NSNumber *messageId = @(arc4random());
 
         NSString *fieldsStr = [self arrayToString:event.fields.allKeys];
@@ -304,8 +321,11 @@ using namespace facebook::react;
 
         self.eventEmitter.onFormSubmit(rnEvent);
     }];
+
     [access onRegisterWithOnce:false :^(RegisterEvent * _Nonnull event, void (^ _Nonnull method)(NSString * _Nullable)) {
-        NSString *notifName = @"registerNotification";
+        
+        NSString *notifName = @"onRegisterNotification";
+
         NSNumber *messageId = @(arc4random());
 
         NSString *newsletterId = event.newsletterId ? event.newsletterId : @"";
@@ -327,6 +347,40 @@ using namespace facebook::react;
         };
         self.eventEmitter.onRegister(rnEvent);
     }];
+}
+
+-(NSNumber*)setupObserverForNotif:(NSString*)notifName method:(void (^ _Nonnull)())prevent
+{
+    NSNumber *messageId = @(arc4random());
+    
+    id observer = [NSNotificationCenter.defaultCenter addObserverForName:notifName
+                                                                  object:nil
+                                                                   queue:[NSOperationQueue mainQueue]
+                                                              usingBlock:^(NSNotification * _Nonnull notification) {
+        [self onClickNotification:notification messageId:messageId method:prevent];
+    }];
+    
+    [self->_preventActionObservers setObject:observer forKey:messageId];
+    
+    return messageId;
+}
+
+-(void)onClickNotification:(NSNotification*)notification
+                 messageId:(NSNumber*)messageId
+                 method:(void (^ _Nonnull)())prevent
+{
+    NSDictionary *dataDict = [self extractDictFromNotifObject: notification.userInfo[@"object"]];
+
+    if (dataDict[@"_messageId"] == messageId) {
+        [NSNotificationCenter.defaultCenter removeObserver:_preventActionObservers[messageId]];
+        [_preventActionObservers removeObjectForKey:messageId];
+        
+        BOOL prevented = [(NSNumber*)dataDict[@"prevented"] boolValue];
+        
+        if (prevented) {
+            prevent();
+        }
+    }
 }
 
 -(void)onFormSubmitNotification:(NSNotification*)notification
@@ -366,9 +420,9 @@ using namespace facebook::react;
     if (dict[@"_messageId"] == messageId) {
         NSArray *remoteArray = dict[@"data"];
 
-        NSString* message;
+        NSString* message = nil;
 
-        if (dict.count > 0) {
+        if (remoteArray.count > 0) {
             message = remoteArray[0][@"message"];
         }
 
