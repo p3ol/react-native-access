@@ -29,7 +29,9 @@ export interface NativeProps extends ViewProps {
   onResize?: CodegenTypes.DirectEventHandler<ResizeEvent>;
 }
 
-export default codegenNativeComponent<NativeProps>('PaywallView') as HostComponent<NativeProps>;
+export default codegenNativeComponent<NativeProps>(
+  'PaywallView'
+) as HostComponent<NativeProps>;
 
 export interface LockEvent {}
 

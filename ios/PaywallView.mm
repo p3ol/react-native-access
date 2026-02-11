@@ -455,9 +455,9 @@ using namespace facebook::react;
     return jsonString;
 }
 
-// Class<RCTComponentViewProtocol> PaywallViewCls(void)
-// {
-//     return PaywallView.class;
-// }
+Class<RCTComponentViewProtocol> PaywallViewCls(void)
+{
+    return PaywallView.class;
+}
 
 @end
