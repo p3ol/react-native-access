@@ -1,10 +1,5 @@
-import type { ViewProps } from 'react-native';
-import type {
-  DirectEventHandler,
-  Double,
-  Int32,
-} from 'react-native/Libraries/Types/CodegenTypes';
-import codegenNativeComponent from 'react-native/Libraries/Utilities/codegenNativeComponent';
+import type { HostComponent, ViewProps, CodegenTypes } from 'react-native';
+import { codegenNativeComponent } from 'react-native';
 
 export interface NativeProps extends ViewProps {
   appId: string;
@@ -15,26 +10,26 @@ export interface NativeProps extends ViewProps {
   texts?: string;
   displayMode?: string;
   released?: boolean;
-  onIdentityAvailable?: DirectEventHandler<UserEvent>;
-  onLock?: DirectEventHandler<LockEvent>;
-  onReady?: DirectEventHandler<WidgetEvent>;
-  onRelease?: DirectEventHandler<WidgetEvent>;
-  onPaywallSeen?: DirectEventHandler<WidgetEvent>;
-  onRegister?: DirectEventHandler<RegisterEvent>;
-  onFormSubmit?: DirectEventHandler<FormEvent>;
-  onSubscribeClick?: DirectEventHandler<ClickEvent>;
-  onLoginClick?: DirectEventHandler<ClickEvent>;
-  onDiscoveryLinkClick?: DirectEventHandler<ClickEvent>;
-  onCustomButtonClick?: DirectEventHandler<CustomButtonClickEvent>;
-  onDataPolicyClick?: DirectEventHandler<ClickEvent>;
-  onAlternativeClick?: DirectEventHandler<AlternativeClickEvent>;
-  onError?: DirectEventHandler<ErrorEvent>;
-  onAnswer?: DirectEventHandler<AnswerEvent>;
-  onDismissBottomSheet?: DirectEventHandler<DismissBottomSheetEvent>;
-  onResize?: DirectEventHandler<ResizeEvent>;
+  onIdentityAvailable?: CodegenTypes.DirectEventHandler<UserEvent>;
+  onLock?: CodegenTypes.DirectEventHandler<LockEvent>;
+  onReady?: CodegenTypes.DirectEventHandler<WidgetEvent>;
+  onRelease?: CodegenTypes.DirectEventHandler<WidgetEvent>;
+  onPaywallSeen?: CodegenTypes.DirectEventHandler<WidgetEvent>;
+  onRegister?: CodegenTypes.DirectEventHandler<RegisterEvent>;
+  onFormSubmit?: CodegenTypes.DirectEventHandler<FormEvent>;
+  onSubscribeClick?: CodegenTypes.DirectEventHandler<ClickEvent>;
+  onLoginClick?: CodegenTypes.DirectEventHandler<ClickEvent>;
+  onDiscoveryLinkClick?: CodegenTypes.DirectEventHandler<ClickEvent>;
+  onCustomButtonClick?: CodegenTypes.DirectEventHandler<CustomButtonClickEvent>;
+  onDataPolicyClick?: CodegenTypes.DirectEventHandler<ClickEvent>;
+  onAlternativeClick?: CodegenTypes.DirectEventHandler<AlternativeClickEvent>;
+  onError?: CodegenTypes.DirectEventHandler<ErrorEvent>;
+  onAnswer?: CodegenTypes.DirectEventHandler<AnswerEvent>;
+  onDismissBottomSheet?: CodegenTypes.DirectEventHandler<DismissBottomSheetEvent>;
+  onResize?: CodegenTypes.DirectEventHandler<ResizeEvent>;
 }
 
-export default codegenNativeComponent<NativeProps>('PaywallView');
+export default codegenNativeComponent<NativeProps>('PaywallView') as HostComponent<NativeProps>;
 
 export interface LockEvent {}
 
@@ -58,7 +53,7 @@ export interface RegisterEvent {
   email: string;
   newsletterId: string;
   passId: string;
-  _messageId: Double;
+  _messageId: CodegenTypes.Double;
 }
 
 export interface ClickEvent extends WidgetEvent {
@@ -78,7 +73,7 @@ export interface FormEvent {
   fields: string;
   values: string;
   valid: string;
-  _messageId: Double;
+  _messageId: CodegenTypes.Double;
 }
 
 export interface AnswerEvent {
@@ -97,6 +92,6 @@ export interface CustomButtonLinkEvent {
 }
 
 export interface ResizeEvent {
-  width: Int32;
-  height: Int32;
+  width: CodegenTypes.Int32;
+  height: CodegenTypes.Int32;
 };
