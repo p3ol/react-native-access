@@ -134,6 +134,11 @@
     "name": "RNAccessViewSpec",
     "type": "all",
     "jsSrcsDir": "src",
+    "outputDir": {
+      "android": "android/generated",
+      "ios": "ios/generated"
+    },
+    "includesGeneratedCode": true,
     "android": {
       "javaPackageName": "tech.poool.rnaccess"
     }
