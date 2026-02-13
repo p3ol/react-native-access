@@ -141,6 +141,11 @@
     "includesGeneratedCode": true,
     "android": {
       "javaPackageName": "tech.poool.rnaccess"
+    },
+    "ios": {
+      "componentProvider": {
+        "PaywallView": "PaywallView"
+      }
     }
   },
   "create-react-native-library": {
