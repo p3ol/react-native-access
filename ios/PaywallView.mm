@@ -1,10 +1,10 @@
 #import "PaywallView.h"
 #import "PaywallViewController.h"
 
-#import <react/renderer/components/RNAccessViewSpec/ComponentDescriptors.h>
-#import <react/renderer/components/RNAccessViewSpec/EventEmitters.h>
-#import <react/renderer/components/RNAccessViewSpec/Props.h>
-#import <react/renderer/components/RNAccessViewSpec/RCTComponentViewHelpers.h>
+#import <generated/RNAccessViewSpec/ComponentDescriptors.h>
+#import <generated/RNAccessViewSpec/EventEmitters.h>
+#import <generated/RNAccessViewSpec/Props.h>
+#import <generated/RNAccessViewSpec/RCTComponentViewHelpers.h>
 
 #import "RCTView.h"
 
