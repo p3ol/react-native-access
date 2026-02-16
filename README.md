@@ -161,7 +161,7 @@ yarn install
 (Optional-iOS Only) Install pods:
 
 ```bash
-yarn example ios:install
+npx pod-install example/ios
 ```
 
 Run examples:
