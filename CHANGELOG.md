@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/p3ol/react-native-access/compare/v1.0.6...v1.1.0) (2026-02-16)
+
+
+### Features
+
+* update android access to 1.7.0 ([a81e89d](https://github.com/p3ol/react-native-access/commit/a81e89d5a13c31a7828e497a030a6d1efb2ceb9e))
+* upgrade android compile sdk to 36 ([77f1409](https://github.com/p3ol/react-native-access/commit/77f14093f6c81c0755b6e64fede719d1412350f1))
+
+
+### Bug Fixes
+
+* codegen config ([aecf3cf](https://github.com/p3ol/react-native-access/commit/aecf3cf40aae09615741b3122ee9d5a213b94629))
+* ios codegen paths ([519d70f](https://github.com/p3ol/react-native-access/commit/519d70f481f444dc0167b2fceeed72d6dc3a7bec))
+* missing codegen from cocoapods script ([dad4a7f](https://github.com/p3ol/react-native-access/commit/dad4a7f61145db360d34d8795ae78f460f5f5531))
+* missing gem for ruby 4.0.0 ([39bf33a](https://github.com/p3ol/react-native-access/commit/39bf33ac8526ab0554955a2baa0f0fdc69549e45))
+* update to rn 0.83.1 ([6114ea9](https://github.com/p3ol/react-native-access/commit/6114ea9a5a5a375137fc31eb606f0d6d87d1254c))
+* upgrade various deps ([05b48b7](https://github.com/p3ol/react-native-access/commit/05b48b70e2fe55fa437cbfa9d261db0956321bb1))
+
 ## [1.0.6](https://github.com/p3ol/react-native-access/compare/v1.0.5...v1.0.6) (2026-02-05)
 
 
