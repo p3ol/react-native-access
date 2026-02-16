@@ -3589,6 +3589,7 @@ __metadata:
     commitlint: "npm:20.4.1"
     del-cli: "npm:7.0.0"
     eslint: "npm:9.39.2"
+    eslint-plugin-ft-flow: "npm:3.0.11"
     eslint-plugin-prettier: "npm:5.5.5"
     jest: "npm:30.2.0"
     lefthook: "npm:2.1.1"
@@ -6377,6 +6378,19 @@ __metadata:
   peerDependencies:
     eslint: ">=4.19.1"
   checksum: 10/4aa0d31a78ac7746002e37ca0cb436f3e5b481a97d28be07bad831e161a2ffcc4dedff44820edef9a1e80f6a0ab1ef44ed9a46e3a4c4a050350438451908972b
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-ft-flow@npm:3.0.11":
+  version: 3.0.11
+  resolution: "eslint-plugin-ft-flow@npm:3.0.11"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    string-natural-compare: "npm:^3.0.1"
+  peerDependencies:
+    eslint: ^8.56.0 || ^9.0.0
+    hermes-eslint: ">=0.15.0"
+  checksum: 10/f516500f10e7659cac7cf42adbf15aa41dbe4ac75cdc5893658b073e0564acedba8ceb33c20de999c546208d3e94f03ef178df4d124cef113e179003070b53c7
   languageName: node
   linkType: hard
 
