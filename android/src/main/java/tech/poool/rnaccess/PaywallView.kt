@@ -53,6 +53,7 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   private fun reinit () {
     if (
       appId == null ||
+      config == null ||
       released
     ) {
       return
