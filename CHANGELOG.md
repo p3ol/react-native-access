@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.1](https://github.com/p3ol/react-native-access/compare/v1.1.0...v1.1.1) (2026-02-17)
+
+
+### Bug Fixes
+
+* **android:** correctly batch config ([6538930](https://github.com/p3ol/react-native-access/commit/653893088aeecffe33fa651d709c239883c3e6aa))
+* **android:** prevent multiple reinits by batching props updates ([7d79b58](https://github.com/p3ol/react-native-access/commit/7d79b58dff31cac149f0cee3d6593920163e3a93))
+* build conflicts with expo ([b4771a4](https://github.com/p3ol/react-native-access/commit/b4771a47de78a0babb73894df40cae39b53a3c4a))
+
 ## [1.1.0](https://github.com/p3ol/react-native-access/compare/v1.0.6...v1.1.0) (2026-02-16)
 
 
