@@ -9,6 +9,11 @@ import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.google.gson.internal.LinkedTreeMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import tech.poool.access.Access
 import tech.poool.access.FieldError
@@ -42,6 +47,7 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   private var texts: Map<String, String>? = null
 
   private var released: Boolean = false
+  private var reinitJob: Job? = null
 
   private var eventDispatcher: EventDispatcher? = UIManagerHelper
     .getEventDispatcherForReactTag(context as ThemedReactContext, id)
@@ -51,6 +57,17 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
   }
 
   private fun reinit () {
+    if (reinitJob?.isActive == true) {
+      reinitJob?.cancel()
+    }
+
+    reinitJob = CoroutineScope(Dispatchers.Main).launch {
+      delay((config?.get("batchPropsUpdateDelay") as? Double)?.toLong() ?: 50)
+      reinitCallback()
+    }
+  }
+
+  private fun reinitCallback () {
     if (
       appId == null ||
       config == null ||

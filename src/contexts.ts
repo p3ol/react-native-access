@@ -16,7 +16,16 @@ export interface AccessContextValue {
    * More infos:
    * https://www.poool.dev/docs/access/javascript/access/configuration
    */
-  config?: AccessConfig;
+  config?: AccessConfig & {
+    /**
+     * Delay in milliseconds to batch props updates (config, texts, styles,
+     * variables) when they are updated at the same time. This can help improve
+     * performance by reducing the number of re-renders.
+     * @default 50
+     * @android
+     */
+    batchPropsUpdateDelay?: number;
+  };
   /**
    * Your poool access texts ati_tag_options
    *
