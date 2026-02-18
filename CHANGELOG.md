@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.3](https://github.com/p3ol/react-native-access/compare/v1.1.2...v1.1.3) (2026-02-18)
+
+
+### Bug Fixes
+
+* **ios:** prevent dev framework from being included in npm archive ([27dcbea](https://github.com/p3ol/react-native-access/commit/27dcbea196942559f89b7ea3ef208e4a31b6a4f5))
+
 ## [1.1.2](https://github.com/p3ol/react-native-access/compare/v1.1.1...v1.1.2) (2026-02-17)
 
 
