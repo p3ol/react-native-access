@@ -81,7 +81,7 @@ dependencies {
   implementation "com.facebook.react:react-android"
 
   implementation "com.google.code.gson:gson:2.12.1"
-  implementation("tech.poool:access-android:1.7.0") {
+  implementation("tech.poool:access-android:1.7.1") {
     exclude group: "com.squareup.okhttp3", module: "logging-interceptor"
   }
 }
