@@ -1,0 +1,6 @@
+ios/AccessIOS.xcframework
+example
+.vscode
+.github
+renovate.json
+.yarn
