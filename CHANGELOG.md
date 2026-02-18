@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.4](https://github.com/p3ol/react-native-access/compare/v1.1.3...v1.1.4) (2026-02-18)
+
+
+### Bug Fixes
+
+* **android:** missing context in the instance ([d76da43](https://github.com/p3ol/react-native-access/commit/d76da43a82ce84c82c003bfe6d15e31cf5545553))
+* **android:** update sdk version ([f3179be](https://github.com/p3ol/react-native-access/commit/f3179be779ac6fe0d598be0d1551806430cf8052))
+
 ## [1.1.3](https://github.com/p3ol/react-native-access/compare/v1.1.2...v1.1.3) (2026-02-18)
 
 
