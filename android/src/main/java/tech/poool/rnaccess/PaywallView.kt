@@ -81,7 +81,7 @@ class PaywallView(context: Context, private val module: NativePaywallModule?) : 
       access = null
     }
 
-    access = Access(appId!!)
+    access = Access(appId!!, context)
     access?.config(config ?: mapOf())
     access?.styles(styles ?: mapOf())
     access?.variables(variables ?: mapOf())
