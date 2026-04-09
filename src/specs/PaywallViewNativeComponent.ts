@@ -61,7 +61,7 @@ export interface RegisterEvent {
 export interface ClickEvent extends WidgetEvent {
   url: string;
   button: string;
-  _messageId: Double;
+  _messageId: CodegenTypes.Double;
   prevented: boolean;
 }
 

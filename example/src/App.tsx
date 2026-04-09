@@ -39,7 +39,7 @@ export default function App() {
       <AccessContext
         appId="LgyCF4bWrrvd8RhiCigDD90N69eSM6vNxKJASUNFalstZPXK9LFQxXkkMcvtO4S8" // App Morgan (prod)
         // appId="CknhMIMaTpNFRkEfkXB6d7EIZBQl4VPuPQgTlaChiulgdVeURmHlLBMeGu8wgJiF" // Poool Externe React Native (prod)
-        config={{ cookiesEnabled: true, debug: true, hide_gradient: true }}
+        config={{ cookiesEnabled: true, debug: true }}
       >
         <SafeAreaView style={styles.container}>
           <View collapsable={false} style={styles.wrapper}>
