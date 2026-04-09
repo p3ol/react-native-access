@@ -6,10 +6,17 @@
 
 ## Requirements
 
-- React Native >= 0.78 (not tested on older versions)
+- React Native with New Arch (0.82+)
 - React Native Permissions >= 5.3.0 (not tested on older versions) (see [react-native-permissions' setup](https://github.com/zoontek/react-native-permissions) for more details)
-- Android SDK >= 35 (build), 24 (min)
+- Android SDK >= 36 (build), 24 (min)
 - iOS >= 15.0 (build), 13.0 (min)
+
+## Compatibility table
+
+| React Native version | @poool/react-native-access version |
+| ------------------- | --------------------------------- |
+| >= 0.82            | >= 1.1.0                          |
+| >= 0.79 & < 0.82   | <= 1.0.6                          |
 
 ## Installation
 
@@ -127,7 +134,7 @@ export default () => {
 
 ### useAccess()
 
-Can be used to retrieve some properties from the current access context, as well as the Access SDK itself.
+Can be used to retrieve some properties from the current access context.
 
 #### Returns
 
@@ -161,7 +168,7 @@ yarn install
 (Optional-iOS Only) Install pods:
 
 ```bash
-yarn example ios:install
+npx pod-install example/ios
 ```
 
 Run examples:

@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "generated/RNAccessViewSpec/RNAccessViewSpec.h"
+#import "generated/ReactCodegen/RNAccessViewSpec/RNAccessViewSpec.h"
 
 @interface NativePaywallModule: NSObject<NativePaywallModuleSpec>
 @end

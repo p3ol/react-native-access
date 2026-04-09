@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.4](https://github.com/p3ol/react-native-access/compare/v1.1.3...v1.1.4) (2026-02-18)
+
+
+### Bug Fixes
+
+* **android:** missing context in the instance ([d76da43](https://github.com/p3ol/react-native-access/commit/d76da43a82ce84c82c003bfe6d15e31cf5545553))
+* **android:** update sdk version ([f3179be](https://github.com/p3ol/react-native-access/commit/f3179be779ac6fe0d598be0d1551806430cf8052))
+
+## [1.1.3](https://github.com/p3ol/react-native-access/compare/v1.1.2...v1.1.3) (2026-02-18)
+
+
+### Bug Fixes
+
+* **ios:** prevent dev framework from being included in npm archive ([27dcbea](https://github.com/p3ol/react-native-access/commit/27dcbea196942559f89b7ea3ef208e4a31b6a4f5))
+
+## [1.1.2](https://github.com/p3ol/react-native-access/compare/v1.1.1...v1.1.2) (2026-02-17)
+
+
+### Bug Fixes
+
+* **android:** exclude okhttp3 logging interceptor ([f1a7c2b](https://github.com/p3ol/react-native-access/commit/f1a7c2bf0dd0af374cf4fae45ac558334dc30137))
+
+## [1.1.1](https://github.com/p3ol/react-native-access/compare/v1.1.0...v1.1.1) (2026-02-17)
+
+
+### Bug Fixes
+
+* **android:** correctly batch config ([6538930](https://github.com/p3ol/react-native-access/commit/653893088aeecffe33fa651d709c239883c3e6aa))
+* **android:** prevent multiple reinits by batching props updates ([7d79b58](https://github.com/p3ol/react-native-access/commit/7d79b58dff31cac149f0cee3d6593920163e3a93))
+* build conflicts with expo ([b4771a4](https://github.com/p3ol/react-native-access/commit/b4771a47de78a0babb73894df40cae39b53a3c4a))
+
+## [1.1.0](https://github.com/p3ol/react-native-access/compare/v1.0.6...v1.1.0) (2026-02-16)
+
+
+### Features
+
+* update android access to 1.7.0 ([a81e89d](https://github.com/p3ol/react-native-access/commit/a81e89d5a13c31a7828e497a030a6d1efb2ceb9e))
+* upgrade android compile sdk to 36 ([77f1409](https://github.com/p3ol/react-native-access/commit/77f14093f6c81c0755b6e64fede719d1412350f1))
+
+
+### Bug Fixes
+
+* codegen config ([aecf3cf](https://github.com/p3ol/react-native-access/commit/aecf3cf40aae09615741b3122ee9d5a213b94629))
+* ios codegen paths ([519d70f](https://github.com/p3ol/react-native-access/commit/519d70f481f444dc0167b2fceeed72d6dc3a7bec))
+* missing codegen from cocoapods script ([dad4a7f](https://github.com/p3ol/react-native-access/commit/dad4a7f61145db360d34d8795ae78f460f5f5531))
+* missing gem for ruby 4.0.0 ([39bf33a](https://github.com/p3ol/react-native-access/commit/39bf33ac8526ab0554955a2baa0f0fdc69549e45))
+* update to rn 0.83.1 ([6114ea9](https://github.com/p3ol/react-native-access/commit/6114ea9a5a5a375137fc31eb606f0d6d87d1254c))
+* upgrade various deps ([05b48b7](https://github.com/p3ol/react-native-access/commit/05b48b70e2fe55fa437cbfa9d261db0956321bb1))
+
 ## [1.0.6](https://github.com/p3ol/react-native-access/compare/v1.0.5...v1.0.6) (2026-02-05)
 
 

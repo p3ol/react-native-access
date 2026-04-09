@@ -1,10 +1,10 @@
 #import "PaywallView.h"
 #import "PaywallViewController.h"
 
-#import "generated/RNAccessViewSpec/ComponentDescriptors.h"
-#import "generated/RNAccessViewSpec/EventEmitters.h"
-#import "generated/RNAccessViewSpec/Props.h"
-#import "generated/RNAccessViewSpec/RCTComponentViewHelpers.h"
+#import "generated/ReactCodegen/RNAccessViewSpec/ComponentDescriptors.h"
+#import "generated/ReactCodegen/RNAccessViewSpec/EventEmitters.h"
+#import "generated/ReactCodegen/RNAccessViewSpec/Props.h"
+#import "generated/ReactCodegen/RNAccessViewSpec/RCTComponentViewHelpers.h"
 
 #import "RCTView.h"
 
@@ -33,18 +33,18 @@ using namespace facebook::react;
     NSMutableDictionary *_preventActionObservers;
     
     Access * access;
-  
+
     BOOL parented;
     BOOL cleaned;
     BOOL released;
 }
 
-- (void)paywallWillAppear {
-    
+- (void)paywallWillAppear
+{
     if (released) {
         return;
     }
-    
+
     [self reinit];
 }
 
@@ -53,13 +53,14 @@ using namespace facebook::react;
     return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
 }
 
-- (void)didMoveToWindow {
+- (void)didMoveToWindow
+{
     [super didMoveToWindow];
-    
+
     if (parented) { return; }
-        
+
     UIViewController *parentVC = [self findParentViewController];
-    
+
     if (parentVC != nil) {
         [parentVC addChildViewController: controller];
         [controller didMoveToParentViewController: parentVC];
@@ -67,7 +68,8 @@ using namespace facebook::react;
     }
 }
 
-- (UIViewController *)findParentViewController {
+- (UIViewController *)findParentViewController
+{
     UIResponder *responder = self;
     while (responder) {
         if ([responder isKindOfClass:[UIViewController class]]) {
@@ -83,17 +85,16 @@ using namespace facebook::react;
     if (self = [super initWithFrame:frame]) {
         static const auto defaultProps = std::make_shared<const PaywallViewProps>();
         _props = defaultProps;
-        
+
         controller = [[PaywallViewController alloc] init];
         controller.delegate = self;
-        
-        
+
         cleaned = NO;
         released = NO;
         parented = NO;
-        
+
         self.contentView = controller.view;
-        
+
         _formSubmitObservers = [[NSMutableDictionary alloc] init];
         _registerObservers = [[NSMutableDictionary alloc] init];
         _preventActionObservers = [[NSMutableDictionary alloc] init];
@@ -111,10 +112,10 @@ using namespace facebook::react;
     CGRect frame = self.contentView.frame;
     frame.size.height = 0.0;
     self.contentView.frame = frame;
-    
+
     controller.view.frame = frame;
     [controller.view layoutSubviews];
-    
+
     [self.contentView layoutSubviews];
 }
 
@@ -124,7 +125,8 @@ using namespace facebook::react;
     [super prepareForRecycle];
 }
 
-- (void)reinit {
+- (void)reinit
+{
     if (appId == nil || config == nil) {
         return;
     }
@@ -135,7 +137,7 @@ using namespace facebook::react;
     }
 
     cleaned = NO;
-    
+
     [Access setDebug: [config[@"debug"] boolValue]];
 
     access = [[Access alloc] initWithKey:appId];
@@ -145,13 +147,14 @@ using namespace facebook::react;
     [access variables:variables];
 
     [self initEvents];
-    
+
     [self createPaywall];
 }
 
-- (void) createPaywall {
+- (void) createPaywall
+{
     BOOL isBottomSheet = [displayMode isEqualToString:@"bottom-sheet"];
-    
+
     UIView* target = isBottomSheet ? nil : self.contentView;
     void (^ _Nullable didSetSize)(CGSize size);
 
@@ -169,8 +172,8 @@ using namespace facebook::react;
     return static_cast<const PaywallViewEventEmitter &>(*_eventEmitter);
 }
 
-- (void)initEvents {
-
+- (void)initEvents
+{
     [access onIdentityAvailableWithOnce:false :^(UserEvent * _Nullable event) {
         PaywallViewEventEmitter::OnIdentityAvailable rnEvent = PaywallViewEventEmitter::OnIdentityAvailable {
             [event.widget UTF8String],
@@ -433,7 +436,8 @@ using namespace facebook::react;
     }
 }
 
--(NSDictionary*)extractDictFromNotifObject:(id _Nullable)object {
+-(NSDictionary*)extractDictFromNotifObject:(id _Nullable)object
+{
     if (object == nil) { return @{}; }
 
     if ([object isKindOfClass:[NSString class]]) {
@@ -450,7 +454,7 @@ using namespace facebook::react;
 {
     const auto &oldViewProps = *std::static_pointer_cast<PaywallViewProps const>(_props);
     const auto &newViewProps = *std::static_pointer_cast<PaywallViewProps const>(props);
-    
+
     if (oldViewProps.appId == newViewProps.appId &&
         oldViewProps.pageType == newViewProps.pageType &&
         oldViewProps.displayMode == newViewProps.displayMode &&
@@ -462,9 +466,9 @@ using namespace facebook::react;
         [super updateProps:props oldProps:oldProps];
         return;
     }
-    
+
     released = newViewProps.released;
-    
+
     if (newViewProps.released) {
         [super updateProps:props oldProps:oldProps];
         return;
@@ -494,7 +498,8 @@ using namespace facebook::react;
     return dict;
 }
 
--(NSString*)arrayToString:(NSArray*)array {
+-(NSString*)arrayToString:(NSArray*)array
+{
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array
                                                        options:NSJSONWritingPrettyPrinted
