@@ -48,6 +48,27 @@ export default function App() {
 
                 return [{ fieldKey: 'email', message: 'Invalid email' }];
               }}
+              onRegister={ async (_) => {
+                await new Promise((resolve) => setTimeout(resolve, 1000));
+
+                return [{ fieldKey: 'email', message: 'Invalid register!!!!!' }];
+              }}
+              onSubscribeClick={ (e, prevent) => {
+                  console.log('onSubscribeClick', e.nativeEvent);
+                  prevent();
+              }}
+              onLoginClick={ (e, prevent) => {
+                  console.log('onLoginClick', e.nativeEvent);
+                  prevent();
+              }}
+              onDiscoveryLinkClick={ (e, prevent) => {
+                  console.log('onDiscoveryLinkClick', e.nativeEvent);
+                  prevent();
+              }}
+              onDataPolicyClick={ (e, prevent) => {
+                  console.log('onDataPolicyClick', e.nativeEvent);
+                  prevent();
+              }}
             />
           </View>
         </SafeAreaView>
