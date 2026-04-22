@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
   #   requirement: { kind: 'upToNextMajorVersion', minimumVersion: '2.10.1' },
   #   products: ['AccessIOS']
   # )
-  s.dependency "AccessIOS", "2.10.1"
+  s.dependency "AccessIOS", "2.10.2"
   # s.vendored_frameworks = "ios/AccessIOS.xcframework"
 end
