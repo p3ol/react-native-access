@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.0](https://github.com/p3ol/react-native-access/compare/v1.1.4...v1.2.0) (2026-04-22)
+
+
+### Features
+
+* adding ios part ([230513b](https://github.com/p3ol/react-native-access/commit/230513b))
+* adds bigger article text ([7fabca2](https://github.com/p3ol/react-native-access/commit/7fabca2))
+* invoke events from test app ([e2ccf21](https://github.com/p3ol/react-native-access/commit/e2ccf21))
+* ios notifications ([9f26ceb](https://github.com/p3ol/react-native-access/commit/9f26ceb))
+* modifies click event types ([ea615b4](https://github.com/p3ol/react-native-access/commit/ea615b4))
+
+### Bug Fixes
+
+* adds podfile.lock ([a772a78](https://github.com/p3ol/react-native-access/commit/a772a78))
+* applying copilot suggestions ([1fd973e](https://github.com/p3ol/react-native-access/commit/1fd973e))
+* crash on register ([3b78407](https://github.com/p3ol/react-native-access/commit/3b78407))
+* native SDKs update ([1abf853](https://github.com/p3ol/react-native-access/commit/1abf853))
+* removes pager view from lock ([70ec6ae](https://github.com/p3ol/react-native-access/commit/70ec6ae))
+* typecheck ([6a04ff5](https://github.com/p3ol/react-native-access/commit/6a04ff5))
+* xcode 26.4 cpp version error ([84863f8](https://github.com/p3ol/react-native-access/commit/84863f8))
+
+
 ## [1.1.4](https://github.com/p3ol/react-native-access/compare/v1.1.3...v1.1.4) (2026-02-18)
 
 
