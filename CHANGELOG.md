@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [1.2.2](https://github.com/p3ol/react-native-access/compare/v1.2.1...v1.2.2) (2026-05-06)
+
+
+### Bug Fixes
+
+* codegen prepare command ([6ccccd6](https://github.com/p3ol/react-native-access/commit/6ccccd6))
+* update gem & pod lockfiles ([ec1e81a](https://github.com/p3ol/react-native-access/commit/ec1e81a))
+* upgrade compat to RN 0.83.9 ([9651ef5](https://github.com/p3ol/react-native-access/commit/9651ef5))
+
+
 ### [1.2.1](https://github.com/p3ol/react-native-access/compare/v1.2.0...v1.2.1) (2026-04-29)
 
 
