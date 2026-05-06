@@ -35,7 +35,7 @@
     "example": "yarn workspace react-native-access-example",
     "test": "jest",
     "typecheck": "tsc",
-    "codegen": "npx react-native codegen",
+    "codegen": "npx pod-install example/ios",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "yarn lint && yarn tsc && yarn codegen && bob build",
