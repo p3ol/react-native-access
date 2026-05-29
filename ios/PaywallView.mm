@@ -57,14 +57,25 @@ using namespace facebook::react;
 {
     [super didMoveToWindow];
 
-    if (parented) { return; }
+    UIViewController *parentVC = self.window ? [self findParentViewController] : nil;
 
-    UIViewController *parentVC = [self findParentViewController];
+    // Making sure controller detaches from its parent, to avoid dumb recycle crash from react native.
+    if (controller.parentViewController != parentVC) {
+        if (controller.parentViewController) {
+            [controller willMoveToParentViewController:nil];
+            [controller removeFromParentViewController];
+        }
 
-    if (parentVC != nil) {
-        [parentVC addChildViewController: controller];
-        [controller didMoveToParentViewController: parentVC];
-        parented = YES;
+        if (parentVC) {
+            [parentVC addChildViewController:controller];
+            [controller didMoveToParentViewController:parentVC];
+        }
+    }
+    
+    // Manually triggering controller.viewWillAppear(_:). Cuz' it's not being fired. Cuz react native dumb af.
+    if (self.window) {
+        [controller beginAppearanceTransition:YES animated:NO];
+        [controller endAppearanceTransition];
     }
 }
 
@@ -112,6 +123,12 @@ using namespace facebook::react;
     CGRect frame = self.contentView.frame;
     frame.size.height = 0.0;
     self.contentView.frame = frame;
+    
+    if (parented) {
+        [controller willMoveToParentViewController:nil];
+        [controller removeFromParentViewController];
+        parented = NO;
+    }
 
     controller.view.frame = frame;
     [controller.view layoutSubviews];
