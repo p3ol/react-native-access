@@ -34,9 +34,9 @@ using namespace facebook::react;
     
     Access * access;
 
-    BOOL parented;
     BOOL cleaned;
     BOOL released;
+    BOOL isAppeared;
 }
 
 - (void)paywallWillAppear
@@ -56,7 +56,13 @@ using namespace facebook::react;
 - (void)didMoveToWindow
 {
     [super didMoveToWindow];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resolveViewControllerState) object:nil];
+    [self performSelector:@selector(resolveViewControllerState) withObject:nil afterDelay:0.0];
+}
 
+-(void)resolveViewControllerState
+{
     UIViewController *parentVC = self.window ? [self findParentViewController] : nil;
 
     // Making sure controller detaches from its parent, to avoid dumb recycle crash from react native.
@@ -74,8 +80,17 @@ using namespace facebook::react;
     
     // Manually triggering controller.viewWillAppear(_:). Cuz' it's not being fired. Cuz react native dumb af.
     if (self.window) {
-        [controller beginAppearanceTransition:YES animated:NO];
-        [controller endAppearanceTransition];
+        if (!isAppeared) {            
+            [controller beginAppearanceTransition:YES animated:NO];
+            [controller endAppearanceTransition];
+            isAppeared = YES;
+        }
+    } else { // and viewWillDisappear here
+        if (isAppeared) {
+            [controller beginAppearanceTransition:NO animated:NO];
+            [controller endAppearanceTransition];
+            isAppeared = NO;
+        }
     }
 }
 
@@ -102,7 +117,7 @@ using namespace facebook::react;
 
         cleaned = NO;
         released = NO;
-        parented = NO;
+        isAppeared = NO;
 
         self.contentView = controller.view;
 
@@ -115,19 +130,19 @@ using namespace facebook::react;
 
 - (void)cleanUp
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resolveViewControllerState) object:nil];
+    
     [access destroy];
     access = nil;
     cleaned = YES;
-    parented = NO;
 
     CGRect frame = self.contentView.frame;
     frame.size.height = 0.0;
     self.contentView.frame = frame;
     
-    if (parented) {
+    if (controller.parentViewController) {
         [controller willMoveToParentViewController:nil];
         [controller removeFromParentViewController];
-        parented = NO;
     }
 
     controller.view.frame = frame;
