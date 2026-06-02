@@ -48,39 +48,21 @@ using namespace facebook::react;
     [self reinit];
 }
 
+- (void)paywallWillDisappear
+{
+    
+}
+
 + (ComponentDescriptorProvider)componentDescriptorProvider
 {
     return concreteComponentDescriptorProvider<PaywallViewComponentDescriptor>();
 }
 
-- (void)didMoveToWindow
+- (void)resolveViewControllerState
 {
-    [super didMoveToWindow];
-    
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resolveViewControllerState) object:nil];
-    [self performSelector:@selector(resolveViewControllerState) withObject:nil afterDelay:0.0];
-}
-
--(void)resolveViewControllerState
-{
-    UIViewController *parentVC = self.window ? [self findParentViewController] : nil;
-
-    // Making sure controller detaches from its parent, to avoid dumb recycle crash from react native.
-    if (controller.parentViewController != parentVC) {
-        if (controller.parentViewController) {
-            [controller willMoveToParentViewController:nil];
-            [controller removeFromParentViewController];
-        }
-
-        if (parentVC) {
-            [parentVC addChildViewController:controller];
-            [controller didMoveToParentViewController:parentVC];
-        }
-    }
-    
     // Manually triggering controller.viewWillAppear(_:). Cuz' it's not being fired. Cuz react native dumb af.
     if (self.window) {
-        if (!isAppeared) {            
+        if (!isAppeared) {
             [controller beginAppearanceTransition:YES animated:NO];
             [controller endAppearanceTransition];
             isAppeared = YES;
@@ -94,21 +76,10 @@ using namespace facebook::react;
     }
 }
 
-- (UIViewController *)findParentViewController
-{
-    UIResponder *responder = self;
-    while (responder) {
-        if ([responder isKindOfClass:[UIViewController class]]) {
-            return (UIViewController *)responder;
-        }
-        responder = [responder nextResponder];
-    }
-    return nil;
-}
-
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+                
         static const auto defaultProps = std::make_shared<const PaywallViewProps>();
         _props = defaultProps;
 
@@ -130,8 +101,6 @@ using namespace facebook::react;
 
 - (void)cleanUp
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resolveViewControllerState) object:nil];
-    
     [access destroy];
     access = nil;
     cleaned = YES;
@@ -139,11 +108,6 @@ using namespace facebook::react;
     CGRect frame = self.contentView.frame;
     frame.size.height = 0.0;
     self.contentView.frame = frame;
-    
-    if (controller.parentViewController) {
-        [controller willMoveToParentViewController:nil];
-        [controller removeFromParentViewController];
-    }
 
     controller.view.frame = frame;
     [controller.view layoutSubviews];
@@ -183,7 +147,7 @@ using namespace facebook::react;
     [self createPaywall];
 }
 
-- (void) createPaywall
+- (void)createPaywall
 {
     BOOL isBottomSheet = [displayMode isEqualToString:@"bottom-sheet"];
 
@@ -500,7 +464,7 @@ using namespace facebook::react;
     }
 
     released = newViewProps.released;
-
+    
     if (newViewProps.released) {
         [super updateProps:props oldProps:oldProps];
         return;

@@ -7,6 +7,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PaywallView : RCTViewComponentView
+
+- (void)remove;
+
 @end
 
 NS_ASSUME_NONNULL_END

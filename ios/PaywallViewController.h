@@ -5,6 +5,7 @@
 @protocol PaywallViewControllerDelegate <NSObject>
 
 - (void)paywallWillAppear;
+- (void)paywallWillDisappear;
 
 @end
 
