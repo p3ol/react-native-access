@@ -14,6 +14,9 @@
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    if ([self.delegate respondsToSelector:@selector(paywallWillDisappear)]) {
+        [self.delegate paywallWillDisappear];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
