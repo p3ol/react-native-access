@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [1.2.3](https://github.com/p3ol/react-native-access/compare/v1.2.2...v1.2.3) (2026-06-09)
+
+
+### Bug Fixes
+
+* crash on swiping pager like a dumby ([18afad0](https://github.com/p3ol/react-native-access/commit/18afad0))
+* parent controller crash ([cd3f6c3](https://github.com/p3ol/react-native-access/commit/cd3f6c3))
+* upgrade android sdk dependency ([c14f2f6](https://github.com/p3ol/react-native-access/commit/c14f2f6))
+* upgrade ios sdk dependency ([c5d6259](https://github.com/p3ol/react-native-access/commit/c5d6259))
+* view controller parent crash ([4c1f8d6](https://github.com/p3ol/react-native-access/commit/4c1f8d6))
+
+
 ### [1.2.2](https://github.com/p3ol/react-native-access/compare/v1.2.1...v1.2.2) (2026-05-06)
 
 
