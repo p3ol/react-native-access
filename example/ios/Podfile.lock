@@ -2502,7 +2502,7 @@ PODS:
     - React-perflogger (= 0.83.9)
     - React-utils (= 0.83.9)
     - SocketRocket
-  - RNAccessIOS (1.2.3):
+  - RNAccessIOS (1.2.4):
     - AccessIOS (= 2.11.2)
     - boost
     - DoubleConversion
@@ -2893,7 +2893,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 87593e9dfdba8dac1d7b2af1af05f0eff2a05684
   ReactCodegen: 417334350a76a91784cc20f7aff392327e217dc4
   ReactCommon: 5f2db7556b60816bdc5761a359539bacd2d0250d
-  RNAccessIOS: 63767288a930e71d628ec6e8622c100989f241ef
+  RNAccessIOS: d9d8a148e71b8e7e48b827f1ddfc94facfe6e433
   RNPermissions: 5948049420432e86de5657c90ade83d50ed590dc
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: e6489bbfdab9b98f8d51993484d6bd40216b7834
