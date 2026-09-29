@@ -1,3 +1,4 @@
+import type { NativeSyntheticEvent } from 'react-native';
 import { useMemo, useReducer, useRef } from 'react';
 import { fromPairs, mockState } from '@junipero/core';
 
@@ -14,7 +15,6 @@ import PaywallView, {
   type ClickEvent,
 } from '../specs/PaywallViewNativeComponent';
 import NativePaywallModule from '../specs/NativePaywallModule';
-import type { NativeSyntheticEvent } from 'react-native';
 import { snakeCase } from '../utils';
 
 export interface PaywallProps extends Omit<
