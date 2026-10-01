@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [1.2.5](https://github.com/p3ol/react-native-access/compare/v1.2.4...v1.2.5) (2026-10-01)
+
+
+### Bug Fixes
+
+* aligne the RN okhttp version to avoid NoClassDefFoundError ([c573f7c](https://github.com/p3ol/react-native-access/commit/c573f7c))
+* convert the config keys to snake_case ([08e9432](https://github.com/p3ol/react-native-access/commit/08e9432))
+
+
 ### [1.2.4](https://github.com/p3ol/react-native-access/compare/v1.2.3...v1.2.4) (2026-06-22)
 
 
