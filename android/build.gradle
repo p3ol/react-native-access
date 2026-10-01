@@ -84,6 +84,8 @@ dependencies {
   implementation("tech.poool:access-android:1.7.5") {
     exclude group: "com.squareup.okhttp3", module: "logging-interceptor"
   }
+
+  implementation(platform("com.squareup.okhttp3:okhttp-bom:5.3.2"))
 }
 
 react {
