@@ -1,5 +1,6 @@
+import type { NativeSyntheticEvent } from 'react-native';
 import { useMemo, useReducer, useRef } from 'react';
-import { mockState } from '@junipero/core';
+import { fromPairs, mockState } from '@junipero/core';
 
 import type {
   AccessConfig,
@@ -14,12 +15,12 @@ import PaywallView, {
   type ClickEvent,
 } from '../specs/PaywallViewNativeComponent';
 import NativePaywallModule from '../specs/NativePaywallModule';
-import type { NativeSyntheticEvent } from 'react-native';
+import { snakeCase } from '../utils';
 
 export interface PaywallProps extends Omit<
   NativeProps,
   'appId' | 'config' | 'texts' | 'styles' | 'variables' |
-  'onFormSubmit' | 'onRegister' | 
+  'onFormSubmit' | 'onRegister' |
   'onSubscribeClick' | 'onLoginClick' | 'onDiscoveryLinkClick' | 'onDataPolicyClick'
 > {
   /**
@@ -79,11 +80,14 @@ const Paywall = ({
     height: 0,
   });
 
-  const rawConfig = useMemo(() => ({
+  const rawConfig = useMemo(() => fromPairs(Object.entries({
     ...factoryConfig,
     ...config,
-  }), [config, factoryConfig]);
-  
+  }).map(([key, value]) => [
+    snakeCase(key),
+    value,
+  ])), [config, factoryConfig]);
+
   const serializedConfig = useMemo(() => (
     JSON.stringify({
       ...rawConfig,
