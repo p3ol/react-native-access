@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+### [1.2.6](https://github.com/p3ol/react-native-access/compare/v1.2.5...v1.2.6) (2026-11-27)
+
+
+### Bug Fixes
+
+* native sdks update ([6d63443](https://github.com/p3ol/react-native-access/commit/6d63443))
+
+
 ### [1.2.5](https://github.com/p3ol/react-native-access/compare/v1.2.4...v1.2.5) (2026-10-01)
 
 
