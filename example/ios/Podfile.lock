@@ -1,5 +1,5 @@
 PODS:
-  - AccessIOS (2.11.2)
+  - AccessIOS (2.12.3)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
   - fast_float (8.0.0)
@@ -2503,7 +2503,7 @@ PODS:
     - React-utils (= 0.83.9)
     - SocketRocket
   - RNAccessIOS (1.2.5):
-    - AccessIOS (= 2.11.2)
+    - AccessIOS (= 2.12.3)
     - boost
     - DoubleConversion
     - fast_float
@@ -2815,7 +2815,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
-  AccessIOS: d66c4c543c6b10d300070224907df593080e70c9
+  AccessIOS: ce83cff0a3dee0424ac36efe689d534752c9d40e
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: b32c788ed9c6a8c584d114d0047beda9664e7cc6
@@ -2893,7 +2893,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 87593e9dfdba8dac1d7b2af1af05f0eff2a05684
   ReactCodegen: 417334350a76a91784cc20f7aff392327e217dc4
   ReactCommon: 5f2db7556b60816bdc5761a359539bacd2d0250d
-  RNAccessIOS: 308963b7e322fd68d639ce23e3f3b3ce4a5569b8
+  RNAccessIOS: 2df539e7f9e09e46f9c8952881246087abaff7c3
   RNPermissions: 5948049420432e86de5657c90ade83d50ed590dc
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: e6489bbfdab9b98f8d51993484d6bd40216b7834
